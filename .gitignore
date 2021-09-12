@@ -1,4 +1,6 @@
 
-Test Unity Project/Library/*
-
-Test Unity Project/Logs/*
+TestUnityProject/Library/*
+TestUnityProject/Logs/*
+TestUnityProject/Assets/_TerrainAutoUpgrade/*
+TestUnityProject/Assets/MobileARCourse/*
+TestUnityProject/Assets/Tutorial19_InteractionChallenge/*
