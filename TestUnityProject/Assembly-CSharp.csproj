@@ -54,59 +54,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets/ARObjectPlacement.cs" />
-    <Compile Include="Assets/MobileARCourse/Scripts/BallPrefab.cs" />
-    <Compile Include="Assets/MobileARCourse/Scripts/robotScript.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanScreenDepth.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanDestroy.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanOpenUrl.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelectable.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerDown.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerUp.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Scripts/LightEstimationUI.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/DinoIsland/Scene_FX/water/JPWater.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Scripts/LeanGesture.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanScale.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanTranslate.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelectableGraphicColor.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanCameraMove.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelectableBehaviour.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/Manager/manager.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerHeld.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerSet.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Scripts/LightEstimation.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/Creatures/Models/Compsognathus/comp.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSpawnAt.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelectableSpriteRendererColor.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Scripts/LeanSnapshot.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerTrail.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerLine.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Scripts/ARFeatheredPlaneMeshVisualizer.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanPlane.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanCanvasArrow.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/Creatures/Shared/shared.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Scripts/PlaceOnPlane.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerTap.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanFingerSwipe.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Scripts/LeanFinger.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanTouchEvents.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelectableRendererColor.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanSelect.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanRotate.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanCameraZoom.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Scripts/LeanTouch.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanRotateCustomAxis.cs" />
-    <Compile Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Scripts/LeanPath.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Fonts/OFL.txt" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/DinoIsland/Scene_FX/JPshaders/JPFX.shader" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/ProjectSettings/ProjectVersion.txt" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/DinoIsland/Scene_FX/JPshaders/JPWater.shader" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Shaders/FeatheredPlaneShader.shader" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/External/Jurassic Pack/Sounds/about sounds.txt" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Shaders/Smooth.shader" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/LeanTouch/Examples/Shaders/Skybox.shader" />
-    <None Include="Assets/Tutorial19_InteractionChallenge/Assets/External/link.xml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
