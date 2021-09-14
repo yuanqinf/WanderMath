@@ -352,31 +352,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 807451487}
-  - component: {fileID: 807451486}
   m_Layer: 0
   m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &807451486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 807451485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fe8f2133dbb4582a4401f407affd85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cabinetToPlace: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
-  shelfToPlace: {fileID: 2792411751521230197, guid: 15a13e94528a444358c8a1e71acba527, type: 3}
-  bottle: {fileID: 919132149155446097, guid: 1103f6bddc2844d4da722e4a0633b790, type: 3}
-  cup: {fileID: 6755327898158593536, guid: 510b265613bb841f3852a38402c0088f, type: 3}
-  placementIndicator: {fileID: 169946321}
+  m_IsActive: 0
 --- !u!4 &807451487
 Transform:
   m_ObjectHideFlags: 0
@@ -524,6 +506,7 @@ GameObject:
   - component: {fileID: 1214205955}
   - component: {fileID: 1214205956}
   - component: {fileID: 1214205957}
+  - component: {fileID: 1214205958}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -599,6 +582,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PointCloudPrefab: {fileID: 5688144966297134164, guid: fd0ffc4650ead479aa84354665fcc16b, type: 3}
+--- !u!114 &1214205958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214205952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fe8f2133dbb4582a4401f407affd85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cabinetToPlace: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
+  shelfToPlace: {fileID: 2792411751521230197, guid: 15a13e94528a444358c8a1e71acba527, type: 3}
+  bottle: {fileID: 919132149155446097, guid: 1103f6bddc2844d4da722e4a0633b790, type: 3}
+  cup: {fileID: 6755327898158593536, guid: 510b265613bb841f3852a38402c0088f, type: 3}
+  placementIndicator: {fileID: 169946321}
 --- !u!1 &1987539401
 GameObject:
   m_ObjectHideFlags: 0
