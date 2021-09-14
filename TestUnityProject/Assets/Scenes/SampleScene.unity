@@ -374,6 +374,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cabinetToPlace: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
   shelfToPlace: {fileID: 2792411751521230197, guid: 15a13e94528a444358c8a1e71acba527, type: 3}
+  bottle: {fileID: 919132149155446097, guid: 1103f6bddc2844d4da722e4a0633b790, type: 3}
+  cup: {fileID: 6755327898158593536, guid: 510b265613bb841f3852a38402c0088f, type: 3}
   placementIndicator: {fileID: 169946321}
 --- !u!4 &807451487
 Transform:
