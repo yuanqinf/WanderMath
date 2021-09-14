@@ -16,7 +16,7 @@ public class ARObjectPlacement : MonoBehaviour
     private ARSessionOrigin arOrigin;
     private ARRaycastManager raycastManager;
     private Pose placementPose;
-private Vector2 touchPosition = default;
+    private Vector2 touchPosition = default;
 
     private bool placementPoseIsValid = false;
     private bool isBeginningObjectSpawned = false;
@@ -52,7 +52,11 @@ private Vector2 touchPosition = default;
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Moved)
             {
-                transform.position = new Vector3(transform.position.x + touch.deltaPosition.x * objectMovingSpeed, transform.position.y, transform.position.z + touch.deltaPosition.y * objectMovingSpeed);
+                bottle.transform.position = new Vector3(
+                    bottle.transform.position.x + touch.deltaPosition.x * objectMovingSpeed,
+                    bottle.transform.position.y,
+                    bottle.transform.position.z + touch.deltaPosition.y * objectMovingSpeed
+                );
             }
             //touchPosition = touch.position;
 
@@ -93,12 +97,12 @@ private Vector2 touchPosition = default;
     private void PlaceObjectBeginning()
     {
         // things to place related to cabinet
-        Instantiate(cabinetToPlace, placementPose.position + new Vector3(0.0f, 0.5f, 0.5f), placementPose.rotation);
-        Instantiate(cup, placementPose.position + new Vector3(0.0f, 1.0f, 0.5f), placementPose.rotation);
+        cabinetToPlace = Instantiate(cabinetToPlace, placementPose.position + new Vector3(0.0f, 0.5f, 0.5f), placementPose.rotation);
+        cup = Instantiate(cup, placementPose.position + new Vector3(0.0f, 1.0f, 0.5f), placementPose.rotation);
 
         // things to place related to shelf
-        Instantiate(shelfToPlace, placementPose.position + new Vector3(0.0f, 0.4f, -0.4f), placementPose.rotation);
-        Instantiate(bottle, placementPose.position + new Vector3(0.0f, 0.8f, -0.4f), placementPose.rotation);
+        shelfToPlace =Instantiate(shelfToPlace, placementPose.position + new Vector3(0.0f, 0.5f, -0.5f), placementPose.rotation);
+        bottle = Instantiate(bottle, placementPose.position + new Vector3(0.0f, 1.0f, -0.5f), placementPose.rotation);
 
         placementIndicator.SetActive(false);
         isBeginningObjectSpawned = true; // prevent object from being placed anymore
