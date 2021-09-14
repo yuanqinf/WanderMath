@@ -7,3 +7,6 @@ TestUnityProject/Assets/Tutorial19_InteractionChallenge/*
 TestUnityProject/Temp/*
 TestUnityProject/TestUnityProject.sln
 TestUnityProject/ProjectSettings/ProjectSettings.asset
+TestUnityProject/Assembly-CSharp.csproj
+TestUnityProject/.vs/*
+
