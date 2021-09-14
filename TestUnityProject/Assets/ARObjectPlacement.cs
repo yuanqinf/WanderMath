@@ -7,16 +7,14 @@ using System;
 
 public class ARObjectPlacement : MonoBehaviour
 {
-    public GameObject objectToPlace;
+    public GameObject cabinetToPlace;
+    public GameObject shelfToPlace;
     public GameObject placementIndicator;
 
     private ARSessionOrigin arOrigin;
     private ARRaycastManager raycastManager;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
-
-    //var hitsList = new List<ARRaycastHit>();
-    //var rayCastMgr = GetComponent<ARRaycastManager>();
 
     void Start()
     {
@@ -38,7 +36,8 @@ public class ARObjectPlacement : MonoBehaviour
 
     private void PlaceObject()
     {
-        Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        Instantiate(cabinetToPlace, placementPose.position, placementPose.rotation);
+        Instantiate(shelfToPlace, placementPose.position, placementPose.rotation);
     }
 
     private void UpdatePlacementIndicator()

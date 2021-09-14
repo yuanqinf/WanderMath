@@ -182,7 +182,7 @@ Transform:
   m_GameObject: {fileID: 228017895}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 1.1, y: 1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 169946322}
   m_RootOrder: 0
@@ -372,7 +372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fe8f2133dbb4582a4401f407affd85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPlace: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
+  cabinetToPlace: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
+  shelfToPlace: {fileID: 2792411751521230197, guid: 15a13e94528a444358c8a1e71acba527, type: 3}
   placementIndicator: {fileID: 169946321}
 --- !u!4 &807451487
 Transform:
@@ -581,7 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 5975401907547907251, guid: 899134af5056c4ad7a1cc7a9b7280462, type: 3}
+  m_PlanePrefab: {fileID: 0}
   m_DetectionMode: 1
 --- !u!114 &1214205957
 MonoBehaviour:
