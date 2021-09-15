@@ -47,50 +47,17 @@ public class ARObjectPlacement : MonoBehaviour
             }
         }
         
-        if (isBeginningObjectSpawned == true && Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Moved)
-            {
-                bottle.transform.position = new Vector3(
-                    bottle.transform.position.x + touch.deltaPosition.x * objectMovingSpeed,
-                    bottle.transform.position.y,
-                    bottle.transform.position.z + touch.deltaPosition.y * objectMovingSpeed
-                );
-            }
-            //touchPosition = touch.position;
-
-            //if (touch.phase == TouchPhase.Began)
-            //{
-            //    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            //    RaycastHit hitObject;
-            //    if (Physics.Raycast(ray, out hitObject, 5.0f))
-            //    {
-            //        placedObject = hitObject.transform.GetComponent<GameObject>();
-
-            //        MeshRenderer meshRenderer = placedObject.GetComponent<MeshRenderer>();
-            //        meshRenderer.material.color = new Color(1, 0, 0, 1);
-            //        if (hitObject.transform.tag.Contains("bottle"))
-            //        {
-            //            isTouchHolding = true;
-            //        }
-            //    }
-            //}
-            //if (touch.phase == TouchPhase.Ended)
-            //{
-            //    isTouchHolding = false;
-            //}
-            //if (isTouchHolding)
-            //{
-            //    //touchPosition = touch.position;
-            //    placedObject.transform.position = touch.position;
-            //    //placedObject.transform.rotation = touch.rotation;
-            //}
-        }
-        //if (isTouchHolding)
+        //if (isBeginningObjectSpawned == true && Input.touchCount > 0)
         //{
-        //    placedObject.transform.position = hitPose.position;
-        //    placedObject.transform.rotation = hitPose.rotation;
+        //    Touch touch = Input.GetTouch(0);
+        //    if (touch.phase == TouchPhase.Moved)
+        //    {
+        //        bottle.transform.position = new Vector3(
+        //            bottle.transform.position.x + touch.deltaPosition.x * objectMovingSpeed,
+        //            bottle.transform.position.y,
+        //            bottle.transform.position.z + touch.deltaPosition.y * objectMovingSpeed
+        //        );
+        //    }
         //}
     }
 
