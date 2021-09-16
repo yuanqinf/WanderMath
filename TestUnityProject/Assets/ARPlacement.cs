@@ -7,9 +7,11 @@ using UnityEngine.XR.ARSubsystems;
 public class ARPlacement : MonoBehaviour
 {
 
-    public GameObject arObjectToSpawn;
+    public GameObject arCupToSpawn;
+    public GameObject arBottleToSpawn;
     public GameObject placementIndicator;
     public GameObject wallModel;
+    public GameObject shelfModel;
     private GameObject spawnedObject;
     private ARRaycastManager aRRaycastManager;
     private bool layoutPlaced = false;
@@ -36,7 +38,7 @@ public class ARPlacement : MonoBehaviour
     }
     void UpdatePlacementIndicator()
     {
-        if (spawnedObject == null && placementPoseIsValid)
+        if (spawnedObject == null && placementPoseIsValid && layoutPlaced == false)
         {
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
@@ -62,16 +64,16 @@ public class ARPlacement : MonoBehaviour
 
     private void ARPlaceLayout()
     {
-        
-        GameObject wall1 = Instantiate(wallModel, PlacementPose.position + new Vector3(0.0f, 0.0f, 0.5f), PlacementPose.rotation);
-        GameObject wall2 = Instantiate(wallModel, PlacementPose.position + new Vector3(0.0f, 0.0f, -0.5f),  PlacementPose.rotation);
-        GameObject wall3 = Instantiate(wallModel, PlacementPose.position + new Vector3(0.5f, 0.0f, 0.0f), PlacementPose.rotation);
-        GameObject wall4 = Instantiate(wallModel, PlacementPose.position + new Vector3(-0.5f, 0.0f, 0.0f), PlacementPose.rotation);
-        wall3.transform.Rotate(0f, 90f, 0f);
-        wall4.transform.Rotate(0f, 90f, 0f);
-        spawnedObject = Instantiate(arObjectToSpawn, PlacementPose.position, PlacementPose.rotation);
-        layoutPlaced = true;
+        // things to place related to cabinet
+        wallModel = Instantiate(wallModel, PlacementPose.position + new Vector3(0.0f, 0.5f, 1.0f), PlacementPose.rotation);
+        arCupToSpawn = Instantiate(arCupToSpawn, PlacementPose.position + new Vector3(0.0f, 1.0f, 1.0f), PlacementPose.rotation);
+
+        // things to place related to shelf
+        shelfModel = Instantiate(shelfModel, PlacementPose.position + new Vector3(0.0f, 0.5f, -1.0f), PlacementPose.rotation);
+        arBottleToSpawn = Instantiate(arBottleToSpawn, PlacementPose.position + new Vector3(0.0f, 1.0f, -1.0f), PlacementPose.rotation);
+
         placementIndicator.SetActive(false);
+        layoutPlaced = true;
     }
 
     void ARPlaceObject()
