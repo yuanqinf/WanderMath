@@ -751,7 +751,7 @@ MonoBehaviour:
   arBottleToSpawn: {fileID: 8364689464217616260, guid: 7513387196145402fbe327e93347c72b, type: 3}
   placementIndicator: {fileID: 169946321}
   wallModel: {fileID: 2792411751521230197, guid: 82d282f235c604174bd06700d07afe1f, type: 3}
-  shelfModel: {fileID: 2792411751521230197, guid: 15a13e94528a444358c8a1e71acba527, type: 3}
+  shelfModel: {fileID: 9152371190494581775, guid: f3416cd990e024018823cd4309c38c13, type: 3}
 --- !u!4 &1342276924
 Transform:
   m_ObjectHideFlags: 0

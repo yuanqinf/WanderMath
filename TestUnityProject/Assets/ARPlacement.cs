@@ -29,9 +29,7 @@ public class ARPlacement : MonoBehaviour
         if (!layoutPlaced && placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             ARPlaceLayout();
-            Debug.Log("detecting plane");
         }
-        Debug.LogWarning("testing log");
 
         UpdatePlacementPose();
         UpdatePlacementIndicator();
