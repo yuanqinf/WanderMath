@@ -1,12 +1,12 @@
 
-TestUnityProject/Library/*
-TestUnityProject/Logs/*
-TestUnityProject/Assets/_TerrainAutoUpgrade/*
-TestUnityProject/Assets/MobileARCourse/*
-TestUnityProject/Assets/Tutorial19_InteractionChallenge/*
-TestUnityProject/Temp/*
-TestUnityProject/TestUnityProject.sln
-TestUnityProject/ProjectSettings/ProjectSettings.asset
-TestUnityProject/Assembly-CSharp.csproj
-TestUnityProject/.vs/*
+Library/*
+Logs/*
+Assets/_TerrainAutoUpgrade/*
+Assets/MobileARCourse/*
+Assets/Tutorial19_InteractionChallenge/*
+Temp/*
+TestUnityProject.sln
+ProjectSettings/ProjectSettings.asset
+Assembly-CSharp.csproj
+.vs/*
 
