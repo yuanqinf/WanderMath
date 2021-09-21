@@ -9,4 +9,5 @@ TestUnityProject.sln
 ProjectSettings/ProjectSettings.asset
 Assembly-CSharp.csproj
 .vs/*
+.DS_Store
 
