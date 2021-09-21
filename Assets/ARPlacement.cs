@@ -7,16 +7,18 @@ using UnityEngine.XR.ARSubsystems;
 public class ARPlacement : MonoBehaviour
 {
 
-    public GameObject arCupToSpawn;
-    public GameObject arBottleToSpawn;
+    public GameObject arCubeToSpawn;
+    public GameObject arCharacterToSpawn;
     public GameObject placementIndicator;
-    public GameObject wallModel;
-    public GameObject shelfModel;
+
     private GameObject spawnedObject;
     private ARRaycastManager aRRaycastManager;
+    private Pose PlacementPose;
     private bool layoutPlaced = false;
     private bool placementPoseIsValid = false;
-    private Pose PlacementPose;
+    private float objectMovingSpeed = 0.01f;
+
+    private bool IsSelected = false;
 
     void Start()
     {
@@ -26,14 +28,59 @@ public class ARPlacement : MonoBehaviour
     // need to update placement indicator, placement pose and spawn 
     void Update()
     {
-        if (!layoutPlaced && placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (!layoutPlaced)
         {
-            ARPlaceLayout();
+            UpdatePlacementPose();
+            UpdatePlacementIndicator();
+            if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                ARPlaceLayout();
+            }
         }
 
-        UpdatePlacementPose();
-        UpdatePlacementIndicator();
+        if (layoutPlaced && Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            var touchPosition = touch.position;
+            Debug.Log("touch position is: " + touchPosition);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = Camera.current.ScreenPointToRay(touch.position);
+
+                var hits = new List<ARRaycastHit>();
+                aRRaycastManager.Raycast(touch.position, hits, TrackableType.All);
+
+                if (hits.Count > 0)
+                {
+                    GameObject gameObject = hits[0].trackable.GetComponent<GameObject>();
+                    Destroy(gameObject);
+                }
+                if (Physics.Raycast(ray, out RaycastHit hitObject))
+                {
+                    GameObject gameObject = hitObject.transform.GetComponent<GameObject>();
+                    Debug.Log("Game Object is: " + gameObject);
+                    Debug.Log("hitObject is: " + hitObject.collider);
+                    Destroy(gameObject);
+
+                    ARObjectPlacement placementObject = hitObject.transform.GetComponent<ARObjectPlacement>();
+                    Debug.Log("Object is: " + placementObject);
+                }
+            }
+
+            //if (touch.phase == TouchPhase.Moved)
+            //{
+            //    Debug.Log("moving touch: " + touch);
+
+            //    arCharacterToSpawn.transform.position = new Vector3(
+            //        arCharacterToSpawn.transform.position.x + touch.deltaPosition.x * objectMovingSpeed,
+            //        arCharacterToSpawn.transform.position.y,
+            //        arCharacterToSpawn.transform.position.z + touch.deltaPosition.y * objectMovingSpeed
+            //    );
+            //}
+        }
     }
+
     void UpdatePlacementIndicator()
     {
         if (spawnedObject == null && placementPoseIsValid && layoutPlaced == false)
@@ -62,22 +109,13 @@ public class ARPlacement : MonoBehaviour
 
     private void ARPlaceLayout()
     {
-        // things to place related to cabinet
-        wallModel = Instantiate(wallModel, PlacementPose.position + new Vector3(0.0f, 0.5f, 1.0f), PlacementPose.rotation);
-        arCupToSpawn = Instantiate(arCupToSpawn, PlacementPose.position + new Vector3(0.0f, 1.0f, 1.0f), PlacementPose.rotation);
-
-        // things to place related to shelf
-        shelfModel = Instantiate(shelfModel, PlacementPose.position + new Vector3(0.0f, 0.5f, -1.0f), PlacementPose.rotation);
-        arBottleToSpawn = Instantiate(arBottleToSpawn, PlacementPose.position + new Vector3(0.0f, 1.0f, -1.0f), PlacementPose.rotation);
+        // things to place when initialized
+        // to be placed at the corner
+        arCharacterToSpawn = Instantiate(arCharacterToSpawn, PlacementPose.position + new Vector3(0.0f, 0.0f, -0.05f), PlacementPose.rotation);
+        // to be placed in the sky and dropped down
+        arCubeToSpawn = Instantiate(arCubeToSpawn, PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f), PlacementPose.rotation);
 
         placementIndicator.SetActive(false);
         layoutPlaced = true;
     }
-
-    void ARPlaceObject()
-    {
-        // place more object
-    }
-
-
 }
