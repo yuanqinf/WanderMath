@@ -11,6 +11,8 @@ public class ARPlacement : MonoBehaviour
     public GameObject arCharacterToSpawn;
     public GameObject placementIndicator;
 
+    public Camera arCamera;
+
     private GameObject spawnedObject;
     private ARRaycastManager aRRaycastManager;
     private Pose PlacementPose;
@@ -42,30 +44,39 @@ public class ARPlacement : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
             var touchPosition = touch.position;
-            Debug.Log("touch position is: " + touchPosition);
 
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = Camera.current.ScreenPointToRay(touch.position);
-
-                var hits = new List<ARRaycastHit>();
-                aRRaycastManager.Raycast(touch.position, hits, TrackableType.All);
-
-                if (hits.Count > 0)
+                Ray ray = arCamera.ScreenPointToRay(touch.position);
+                RaycastHit hitObject;
+                Debug.Log("touch position is: " + touchPosition);
+                if (Physics.Raycast(ray, out hitObject))
                 {
-                    GameObject gameObject = hits[0].trackable.GetComponent<GameObject>();
-                    Destroy(gameObject);
+                    Debug.Log("start raycast!!!!");
+                    //GameObject gameObject = hitObject.transform.GetComponent<GameObject>();
+                    Debug.Log("gameObject: " + hitObject.transform.position);
                 }
-                if (Physics.Raycast(ray, out RaycastHit hitObject))
-                {
-                    GameObject gameObject = hitObject.transform.GetComponent<GameObject>();
-                    Debug.Log("Game Object is: " + gameObject);
-                    Debug.Log("hitObject is: " + hitObject.collider);
-                    Destroy(gameObject);
 
-                    ARObjectPlacement placementObject = hitObject.transform.GetComponent<ARObjectPlacement>();
-                    Debug.Log("Object is: " + placementObject);
-                }
+
+                //var hits = new List<ARRaycastHit>();
+                //aRRaycastManager.Raycast(touch.position, hits, TrackableType.All);
+
+                //if (hits.Count > 0)
+                //{
+                //    GameObject gameObject = hits[0].trackable.GetComponent<GameObject>();
+                //    Destroy(gameObject);
+                //}
+
+                //if (Physics.Raycast(ray, out RaycastHit hitObject))
+                //{
+                //    GameObject gameObject = hitObject.transform.GetComponent<GameObject>();
+                //    Debug.Log("Game Object is: " + gameObject);
+                //    Debug.Log("hitObject is: " + hitObject.collider);
+                //    Destroy(gameObject);
+
+                //    ARObjectPlacement placementObject = hitObject.transform.GetComponent<ARObjectPlacement>();
+                //    Debug.Log("Object is: " + placementObject);
+                //}
             }
 
             //if (touch.phase == TouchPhase.Moved)

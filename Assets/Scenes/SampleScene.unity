@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -876,6 +876,7 @@ MonoBehaviour:
   arCubeToSpawn: {fileID: 3706513530264442439, guid: 648651ba4c30a4e5895e3a259bc975f5, type: 3}
   arCharacterToSpawn: {fileID: 9152371190494581775, guid: f3416cd990e024018823cd4309c38c13, type: 3}
   placementIndicator: {fileID: 169946321}
+  arCamera: {fileID: 1195867877}
 --- !u!4 &1342276924
 Transform:
   m_ObjectHideFlags: 0
@@ -1106,11 +1107,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1485140055417343274, guid: f5abe0e09d3464fca896145ab5a247c6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1485140055417343274, guid: f5abe0e09d3464fca896145ab5a247c6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5abe0e09d3464fca896145ab5a247c6, type: 3}

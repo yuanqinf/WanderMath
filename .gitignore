@@ -11,3 +11,6 @@ Assembly-CSharp.csproj
 .vs/*
 .DS_Store
 
+*.cache
+Assets/StreamingAssets/build_info
+Assets/StreamingAssets/build_info
