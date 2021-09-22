@@ -13,7 +13,6 @@ public class ARPlacement : MonoBehaviour
     public Camera arCamera;
     public int rotateDegree = 1;
 
-    private GameObject spawnedObject;
     private ARRaycastManager aRRaycastManager;
     private Pose PlacementPose;
     private bool layoutPlaced = false;
@@ -50,7 +49,7 @@ public class ARPlacement : MonoBehaviour
             RaycastHit hitObject;
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = arCamera.ScreenPointToRay(touch.position);
+                Ray ray = Camera.current.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out hitObject))
                 {
                     initTouchPosition = touch.position;
@@ -90,7 +89,7 @@ public class ARPlacement : MonoBehaviour
 
     void UpdatePlacementIndicator()
     {
-        if (spawnedObject == null && placementPoseIsValid && layoutPlaced == false)
+        if (placementPoseIsValid && layoutPlaced == false)
         {
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
@@ -118,7 +117,7 @@ public class ARPlacement : MonoBehaviour
     {
         // things to place when initialized
         // to be placed at the corner
-        arCharacterToSpawn = Instantiate(arCharacterToSpawn, PlacementPose.position + new Vector3(0.0f, 0.0f, -0.05f), PlacementPose.rotation);
+        arCharacterToSpawn = Instantiate(arCharacterToSpawn, PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f), PlacementPose.rotation);
         // to be placed in the sky and dropped down
         arCubeToSpawn = Instantiate(arCubeToSpawn, PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f), PlacementPose.rotation);
 
