@@ -70,12 +70,12 @@ public class ARPlacement : MonoBehaviour
                     if(newTouchPosition.y > initTouchPosition.y || newTouchPosition.x > initTouchPosition.x)
                     {
                         Debug.Log("rotating upward");
-                        touchedObject.transform.parent.Rotate(new Vector3(rotateDegree, 0, 0));
+                        touchedObject.transform.parent.Rotate(new Vector3(-rotateDegree, 0, 0));
                     }
                     else
                     {
                         Debug.Log("rotating downward");
-                        touchedObject.transform.parent.Rotate(new Vector3(-rotateDegree, 0, 0));
+                        touchedObject.transform.parent.Rotate(new Vector3(rotateDegree, 0, 0));
                     }
                 }
             }
