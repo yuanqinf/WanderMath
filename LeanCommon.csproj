@@ -297,20 +297,17 @@
  <Reference Include="UnityEditor.iOS.Extensions">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.14f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll</HintPath>
  </Reference>
- <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
- <HintPath>/Applications/Visual Studio.app/Contents/Resources/lib/monodevelop/AddIns/MonoDevelop.Unity/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Plastic.Antlr3.Runtime">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll</HintPath>
  </Reference>
  <Reference Include="log4netPlastic">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/log4netPlastic.dll</HintPath>
  </Reference>
  <Reference Include="Newtonsoft.Json">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="unityplastic">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/PackageCache/com.unity.collab-proxy@1.7.1/Lib/Editor/PlasticSCM/unityplastic.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.14f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -664,10 +661,10 @@
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.14f1/Unity.app/Contents/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>/Users/yuanqin/Documents/GitHub/WanderMath/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ <HintPath>/Users/demo/Documents/GitHub/WanderMath/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

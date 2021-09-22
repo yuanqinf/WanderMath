@@ -14,3 +14,7 @@ Assembly-CSharp.csproj
 *.cache
 Assets/StreamingAssets/build_info
 Assets/StreamingAssets/build_info
+*.csproj
+LeanCommon.csproj
+*.csproj
+Assets/StreamingAssets/build_info
