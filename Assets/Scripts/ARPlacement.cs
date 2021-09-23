@@ -71,24 +71,60 @@ public class ARPlacement : MonoBehaviour
                 }
             }
 
-            //if (touch.phase == TouchPhase.Moved)
-            //{
-            //    Vector2 newTouchPosition = Input.GetTouch(0).position;
-            //    Debug.Log("newTouchPosition: " + newTouchPosition.y + " , " + newTouchPosition.x);
-            //    if(touchedObject != null)
-            //    {
-            //        if(newTouchPosition.y > initTouchPosition.y || newTouchPosition.x > initTouchPosition.x)
-            //        {
-            //            Debug.Log("rotating upward");
-            //            touchedObject.transform.parent.Rotate(new Vector3(-rotateDegree, 0, 0));
-            //        }
-            //        else
-            //        {
-            //            Debug.Log("rotating downward");
-            //            touchedObject.transform.parent.Rotate(new Vector3(rotateDegree, 0, 0));
-            //        }
-            //    }
-            //}
+            if (touch.phase == TouchPhase.Moved)
+            {
+                Vector2 newTouchPosition = Input.GetTouch(0).position;
+                Debug.Log("newTouchPosition: " + newTouchPosition.x + " , " + newTouchPosition.y);
+                if (touchedObject != null)
+                {
+                    Debug.Log(touchedObject.name);
+                    switch (touchedObject.name)
+                    {
+                        case "Plane1": case "Plane3":
+                            if (newTouchPosition.y > initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                            } else if (newTouchPosition.y < initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                            }
+                            break;
+                        case "Plane2":
+                            if (newTouchPosition.x > initTouchPosition.x)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                            }
+                            else if (newTouchPosition.x < initTouchPosition.x)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                            }
+                            break;
+                        case "Plane5":
+                            if (newTouchPosition.x > initTouchPosition.x)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                            }
+                            else if (newTouchPosition.x < initTouchPosition.x)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                            }
+                            break;
+                        case "Plane6":
+                            if (newTouchPosition.y > initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                            }
+                            else if (newTouchPosition.y < initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                            }
+                            break;
+                        default:
+                            Debug.Log("objectname: " + touchedObject.name);
+                            break;
+                    }
+                }
+            }
 
             if (touch.phase == TouchPhase.Ended)
             {
@@ -102,37 +138,38 @@ public class ARPlacement : MonoBehaviour
             }
         }
 
-        if(sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
-        {
-            touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
-        }
+        //if(sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
+        //{
+        //    touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
+        //}
 
-        // snap
-        if (handleSnapControl.canSnap)
-        {
-            float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
-            if(curAngle > 180)
-            {
-                curAngle -= 360;
-            }
+        //// snap
+        //if (handleSnapControl.canSnap)
+        //{
+        //    float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
+        //    if(curAngle > 180)
+        //    {
+        //        curAngle -= 360;
+        //    }
 
-            Debug.Log("touchedObject curAngle: " + curAngle);
-            if (curAngle > 50)
-            {
-                Debug.Log("snap now!!! >50");
+        //    Debug.Log("touchedObject curAngle: " + curAngle);
+        //    if (curAngle > 50)
+        //    {
+        //        Debug.Log("snap now!!! >50");
 
-                touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-            }
+        //        touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
+        //    }
 
-            if (curAngle < -50)
-            {
-                Debug.Log("snap now!!! < -50");
-                touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-            }
-            handleSnapControl.canSnap = false;
-        }
+        //    if (curAngle < -50)
+        //    {
+        //        Debug.Log("snap now!!! < -50");
+        //        touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
+        //    }
+        //    handleSnapControl.canSnap = false;
+        //}
     }
 
+    #region AR object placement code
     // Enable or disable placement tracker graphics
     void UpdatePlacementIndicator()
     {
@@ -161,7 +198,6 @@ public class ARPlacement : MonoBehaviour
         }
     }
 
-    #region AR object placement settings
     private void ARPlaceLayout()
     {
         // things to place when initialized
@@ -169,10 +205,11 @@ public class ARPlacement : MonoBehaviour
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn,
             PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
-            PlacementPose.rotation
+            arCharacterToSpawn.transform.rotation
         );
+        //arCharacterToSpawn.transform.Rotate(0.0f, 180.0f, 0.0f);
         // cube to be placed in the sky and dropped down
-        var movementDistance = 0.5f; // distance to move down (1.0f is 1 meter)
+        var movementDistance = 0.25f; // distance to move down (1.0f is 1 meter)
 
         var endPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
         var startPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * movementDistance;
