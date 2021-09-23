@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.UI;
 
 public class ARPlacement : MonoBehaviour
 {
@@ -10,8 +11,9 @@ public class ARPlacement : MonoBehaviour
     public GameObject arCubeToSpawn;
     public GameObject arCharacterToSpawn;
     public GameObject placementIndicator;
+    public RectTransform sliderHandleTransform;
     public Camera arCamera;
-    public int rotateDegree = 1;
+    public float rotateDegreeFactor;
 
     private ARRaycastManager aRRaycastManager;
     private Pose PlacementPose;
@@ -19,14 +21,12 @@ public class ARPlacement : MonoBehaviour
     private bool placementPoseIsValid = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
-
-    private Vector2 prevPos;
-    private bool IsSelected = false;
-    private Vector3 currentEulerAngles;
+    private HandleSnapControl handleSnapControl;
 
     void Start()
     {
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
+        handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
     }
 
     // need to update placement indicator, placement pose and spawn 
@@ -54,36 +54,67 @@ public class ARPlacement : MonoBehaviour
                 {
                     initTouchPosition = touch.position;
                     touchedObject = hitObject.transform.gameObject;
-
-                    Debug.Log("initTouchPosition: " + initTouchPosition.y + " , " + initTouchPosition.x);
-                    Debug.Log("name: " + hitObject.transform.name);
                 }
             }
 
-            if (touch.phase == TouchPhase.Moved)
+            //if (touch.phase == TouchPhase.Moved)
+            //{
+            //    Vector2 newTouchPosition = Input.GetTouch(0).position;
+            //    Debug.Log("newTouchPosition: " + newTouchPosition.y + " , " + newTouchPosition.x);
+            //    if(touchedObject != null)
+            //    {
+            //        if(newTouchPosition.y > initTouchPosition.y || newTouchPosition.x > initTouchPosition.x)
+            //        {
+            //            Debug.Log("rotating upward");
+            //            touchedObject.transform.parent.Rotate(new Vector3(-rotateDegree, 0, 0));
+            //        }
+            //        else
+            //        {
+            //            Debug.Log("rotating downward");
+            //            touchedObject.transform.parent.Rotate(new Vector3(rotateDegree, 0, 0));
+            //        }
+            //    }
+            //}
+
+            //if (touch.phase == TouchPhase.Ended)
+            //{
+            //    float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
+            //    Debug.Log("unselected!!! : " + curAngle);
+            //    if (curAngle > 80 && curAngle < 100)
+            //    {
+            //        touchedObject.transform.parent.Rotate(new Vector3(180, 0, 0));
+            //    }
+            //}
+        }
+
+        if(sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
+        {
+            touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
+        }
+
+        // snap
+        if (handleSnapControl.canSnap)
+        {
+            float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
+            if(curAngle > 180)
             {
-                Vector2 newTouchPosition = Input.GetTouch(0).position;
-                Debug.Log("newTouchPosition: " + newTouchPosition.y + " , " + newTouchPosition.x);
-                if(touchedObject != null)
-                {
-                    if(newTouchPosition.y > initTouchPosition.y || newTouchPosition.x > initTouchPosition.x)
-                    {
-                        Debug.Log("rotating upward");
-                        touchedObject.transform.parent.Rotate(new Vector3(-rotateDegree, 0, 0));
-                    }
-                    else
-                    {
-                        Debug.Log("rotating downward");
-                        touchedObject.transform.parent.Rotate(new Vector3(rotateDegree, 0, 0));
-                    }
-                }
+                curAngle -= 360;
             }
 
-            if (touch.phase == TouchPhase.Ended)
+            Debug.Log("touchedObject curAngle: " + curAngle);
+            if (curAngle > 50)
             {
-                Debug.Log("unselected!!!");
-                touchedObject = null;
+                Debug.Log("snap now!!! >50");
+
+                touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
             }
+
+            if (curAngle < -50)
+            {
+                Debug.Log("snap now!!! < -50");
+                touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
+            }
+            handleSnapControl.canSnap = false;
         }
     }
 
