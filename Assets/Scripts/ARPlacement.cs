@@ -23,13 +23,13 @@ public class ARPlacement : MonoBehaviour
     private Vector2 initTouchPosition;
     private HandleSnapControl handleSnapControl;
 
+
     void Start()
     {
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
     }
 
-    // need to update placement indicator, placement pose and spawn 
     void Update()
     {
         if (!layoutPlaced)
@@ -54,6 +54,20 @@ public class ARPlacement : MonoBehaviour
                 {
                     initTouchPosition = touch.position;
                     touchedObject = hitObject.transform.gameObject;
+                    // move cube1 closer to player as a whole
+                    if (touchedObject.tag == "cube1")
+                    {
+                        var startPos = touchedObject.transform.position;
+                        var endPos = startPos + new Vector3(
+                            0,
+                            (Camera.main.transform.position.y - startPos.y) / 2,
+                            (Camera.main.transform.position.z - startPos.z) / 4
+                        );
+                        var timeTakenToMove = 5.0f
+
+                        touchedObject.GetComponent<BoxCollider>().enabled = false;
+                        StartCoroutine(LerpMovement(startPos, endPos, timeTakenToMove, touchedObject));
+                    }
                 }
             }
 
@@ -76,15 +90,16 @@ public class ARPlacement : MonoBehaviour
             //    }
             //}
 
-            //if (touch.phase == TouchPhase.Ended)
-            //{
-            //    float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
-            //    Debug.Log("unselected!!! : " + curAngle);
-            //    if (curAngle > 80 && curAngle < 100)
-            //    {
-            //        touchedObject.transform.parent.Rotate(new Vector3(180, 0, 0));
-            //    }
-            //}
+            if (touch.phase == TouchPhase.Ended)
+            {
+                touchedObject = null; // unselect object
+                //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
+                //Debug.Log("unselected!!! : " + curAngle);
+                //if (curAngle > 80 && curAngle < 100)
+                //{
+                //    touchedObject.transform.parent.Rotate(new Vector3(180, 0, 0));
+                //}
+            }
         }
 
         if(sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
@@ -118,6 +133,7 @@ public class ARPlacement : MonoBehaviour
         }
     }
 
+    // Enable or disable placement tracker graphics
     void UpdatePlacementIndicator()
     {
         if (placementPoseIsValid && layoutPlaced == false)
@@ -131,6 +147,7 @@ public class ARPlacement : MonoBehaviour
         }
     }
 
+    // Activate the tracker when a horizontal plane is tracked
     void UpdatePlacementPose()
     {
         var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
@@ -144,15 +161,53 @@ public class ARPlacement : MonoBehaviour
         }
     }
 
+    #region AR object placement settings
     private void ARPlaceLayout()
     {
         // things to place when initialized
         // to be placed at the corner
-        arCharacterToSpawn = Instantiate(arCharacterToSpawn, PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f), PlacementPose.rotation);
-        // to be placed in the sky and dropped down
-        arCubeToSpawn = Instantiate(arCubeToSpawn, PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f), PlacementPose.rotation);
+        arCharacterToSpawn = Instantiate(
+            arCharacterToSpawn,
+            PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
+            PlacementPose.rotation
+        );
+        // cube to be placed in the sky and dropped down
+        var movementDistance = 0.5f; // distance to move down (1.0f is 1 meter)
+
+        var endPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
+        var startPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * movementDistance;
+        arCubeToSpawn = Instantiate(
+            arCubeToSpawn,
+            startPos,
+            PlacementPose.rotation
+        );
 
         placementIndicator.SetActive(false);
         layoutPlaced = true;
+
+        var startingLerpTime = 10.0f; // duration to leap (10s)
+        StartCoroutine(LerpMovement(startPos, endPos, startingLerpTime, arCubeToSpawn));
     }
+
+    /// <summary>
+    /// Move object from a starting point to an ending point within a lerpTime
+    /// </summary>
+    /// <param name="startPos">initial pos of object</param>
+    /// <param name="endPos">final position of object</param>
+    /// <param name="lerpTime">time taken for object to move into position</param>
+    /// <param name="gameObject">game object to be moving</param>
+    /// <returns></returns>
+    IEnumerator LerpMovement(Vector3 startPos, Vector3 endPos, float lerpTime, GameObject gameObject)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < lerpTime)
+        {
+            gameObject.transform.position = Vector3.Lerp(startPos, endPos, timeElapsed / lerpTime);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+    #endregion finish ar object placement
 }
