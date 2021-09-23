@@ -63,7 +63,7 @@ public class ARPlacement : MonoBehaviour
                             (Camera.main.transform.position.y - startPos.y) / 2,
                             (Camera.main.transform.position.z - startPos.z) / 4
                         );
-                        var timeTakenToMove = 5.0f
+                        var timeTakenToMove = 5.0f;
 
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
                         StartCoroutine(LerpMovement(startPos, endPos, timeTakenToMove, touchedObject));
