@@ -152,7 +152,7 @@ public class ARPlacement : MonoBehaviour
         {
             Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
             touchedObject.transform.parent.transform.eulerAngles = newAngle;
-            touchedObject.transform.parent.GetComponent<Rigidbody>().freezeRotation = true;
+            touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
 
 
             //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;

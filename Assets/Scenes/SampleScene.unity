@@ -430,7 +430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &460881654
 RectTransform:
   m_ObjectHideFlags: 0
@@ -732,7 +732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &998176891
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1287,7 +1287,7 @@ MonoBehaviour:
   sliderHandleTransform: {fileID: 374289126}
   arCamera: {fileID: 1195867877}
   rotateDegreeFactor: 0.05
-  UiCanvas: {fileID: 0}
+  UiCanvas: {fileID: 1602182256}
 --- !u!4 &1342276924
 Transform:
   m_ObjectHideFlags: 0
