@@ -15,8 +15,6 @@ public class ARPlacement : MonoBehaviour
     public Camera arCamera;
     public float rotateDegreeFactor;
 
-    public Canvas UiCanvas;
-
     private ARRaycastManager aRRaycastManager;
     private Pose PlacementPose;
     private bool layoutPlaced = false;
@@ -24,6 +22,11 @@ public class ARPlacement : MonoBehaviour
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
     private HandleSnapControl handleSnapControl;
+    [SerializeField]
+    private GameObject UiController;
+
+    private bool isPlane2Snapped = false;
+    private bool isPlane3Snapped = false;
 
 
     void Start()
@@ -31,6 +34,7 @@ public class ARPlacement : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
+        //UiController = UiController.GetComponent<UiController>();
     }
 
     void Update()
@@ -66,7 +70,7 @@ public class ARPlacement : MonoBehaviour
                             (Camera.main.transform.position.y - startPos.y) / 2,
                             (Camera.main.transform.position.z - startPos.z) / 4
                         );
-                        var timeTakenToMove = 5.0f;
+                        var timeTakenToMove = 1.0f;
 
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
                         StartCoroutine(LerpMovement(startPos, endPos, timeTakenToMove, touchedObject));
@@ -77,17 +81,25 @@ public class ARPlacement : MonoBehaviour
             if (touch.phase == TouchPhase.Moved)
             {
                 Vector2 newTouchPosition = Input.GetTouch(0).position;
-                Debug.Log("newTouchPosition: " + newTouchPosition.x + " , " + newTouchPosition.y);
                 if (touchedObject != null)
                 {
-                    Debug.Log(touchedObject.name);
                     switch (touchedObject.name)
                     {
-                        case "Plane1": case "Plane3":
+                        case "Plane1":
                             if (newTouchPosition.y > initTouchPosition.y)
                             {
                                 touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             } else if (newTouchPosition.y < initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                            }
+                            break;
+                        case "Plane3":
+                            if (newTouchPosition.y > initTouchPosition.y)
+                            {
+                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                            }
+                            else if (newTouchPosition.y < initTouchPosition.y)
                             {
                                 touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
@@ -131,7 +143,7 @@ public class ARPlacement : MonoBehaviour
 
             if (touch.phase == TouchPhase.Ended)
             {
-                //touchedObject = null; // unselect object
+                touchedObject = null; // unselect object
                 //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
                 //Debug.Log("unselected!!! : " + curAngle);
                 //if (curAngle > 80 && curAngle < 100)
@@ -141,41 +153,121 @@ public class ARPlacement : MonoBehaviour
             }
         }
 
-        if (sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
+        if (touchedObject != null && sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
         {
             touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
         }
 
         // snap
-        if (touchedObject.transform.parent.GetComponent<Transform>().rotation.eulerAngles.x < 280 &&
-            touchedObject.transform.parent.GetComponent<Transform>().rotation.eulerAngles.x > 260)
+        if (touchedObject != null)
         {
-            Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
-            touchedObject.transform.parent.transform.eulerAngles = newAngle;
-            touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-
-
-            //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
-            //if (curAngle > 180)
-            //{
-            //    curAngle -= 360;
-            //}
-
-            //Debug.Log("touchedObject curAngle: " + curAngle);
-            //if (curAngle > 50)
-            //{
-            //    Debug.Log("snap now!!! >50");
-
-            //    touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-            //}
-
-            //if (curAngle < -50)
-            //{
-            //    Debug.Log("snap now!!! < -50");
-            //    touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-            //}
-            //handleSnapControl.canSnap = false;
+            switch (touchedObject.name)
+            {
+                case "Plane1":
+                    Debug.Log("plane 1 angle: " + touchedObject.transform.parent.transform.eulerAngles);
+                    if (isPlane3Snapped == false && touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
+                        touchedObject.transform.parent.transform.eulerAngles.x > 260)
+                    {
+                        Debug.Log("touched object 1 snap" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(-90, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                    } else if (isPlane2Snapped == false && touchedObject.transform.parent.transform.eulerAngles.y < 280 &&
+                        touchedObject.transform.parent.transform.eulerAngles.y > 260)
+                    {
+                        Debug.Log("touched object 1 for plane y" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(0, 270f, touchedObject.transform.parent.transform.eulerAngles.z);
+                    } else if ((isPlane2Snapped && isPlane3Snapped) && (touchedObject.transform.parent.eulerAngles.x > 350 ||
+                                touchedObject.transform.parent.eulerAngles.x < 10))
+                    {
+                        Debug.Log("touched object 1 after plane3" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(0, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                    }
+                    break;
+                case "Plane2":
+                    if (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
+                        touchedObject.transform.parent.transform.eulerAngles.x > 260)
+                    {
+                        Debug.Log("touched object 2 snap" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(-90, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                        isPlane2Snapped = true;
+                    }
+                    else if (touchedObject.transform.parent.transform.eulerAngles.y < 190 &&
+                        touchedObject.transform.parent.transform.eulerAngles.y > 170)
+                    {
+                        Debug.Log("touched object 2 y snap" + touchedObject.transform.eulerAngles);
+                        snapObject(0, 180f, touchedObject.transform.parent.transform.eulerAngles.z);
+                        isPlane2Snapped = true;
+                    }
+                    break;
+                case "Plane5":
+                    if (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
+                        touchedObject.transform.parent.transform.eulerAngles.x > 260)
+                    {
+                        Debug.Log("touched object 5 snap" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(-90, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                    }
+                    break;
+                case "Plane3":
+                    if (touchedObject.transform.parent.transform.eulerAngles.x < 285 &&
+                        touchedObject.transform.parent.transform.eulerAngles.x > 255)
+                    {
+                        Debug.Log("touched object 3 x snap" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(-90, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                        isPlane3Snapped = true;
+                    }
+                    else if (touchedObject.transform.parent.transform.eulerAngles.y < 100 &&
+                              touchedObject.transform.parent.transform.eulerAngles.y > 80)
+                    {
+                        Debug.Log("touched object 3 y snap" + touchedObject.transform.eulerAngles);
+                        snapObject(0, 90f, touchedObject.transform.parent.transform.eulerAngles.z);
+                        isPlane3Snapped = true;
+                    }
+                    break;
+                case "Plane6":
+                    if (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
+                        touchedObject.transform.parent.transform.eulerAngles.x > 260)
+                    {
+                        Debug.Log("touched object 6 x snap" + touchedObject.transform.parent.transform.eulerAngles);
+                        snapObject(-90, touchedObject.transform.parent.transform.eulerAngles.y, 0);
+                    } else if (touchedObject.transform.parent.transform.eulerAngles.y < 100 &&
+                                touchedObject.transform.parent.transform.eulerAngles.y > 80)
+                    {
+                        Debug.Log("touched object 6 y snap" + touchedObject.transform.eulerAngles);
+                        snapObject(0, 90f, touchedObject.transform.parent.transform.eulerAngles.z);
+                    }
+                    break;
+            }
         }
+        //if (touchedObject != null && (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
+        //    touchedObject.transform.parent.transform.eulerAngles.x > 260))
+        //{
+
+        //    Debug.Log("local rot: " + touchedObject.transform.parent.transform.eulerAngles);
+        //    Debug.Log("global rot: " + touchedObject.transform.parent.transform.rotation);
+
+        //    Debug.Log("snapped object is: " + touchedObject.name);
+        //    Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
+        //    touchedObject.transform.parent.transform.eulerAngles = newAngle;
+        //    touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+        //    Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
+        //    touchedObject = null; // unselect object
+        //}
+    }
+
+    private void snapObject(float x, float y, float z)
+    {
+        Debug.Log("local rot: " + touchedObject.transform.eulerAngles);
+        Debug.Log("parent local rot: " + touchedObject.transform.parent.transform.eulerAngles);
+
+        Debug.Log("snapped object is: " + touchedObject.name);
+        Vector3 newAngle = new Vector3(x, y, z);
+        Debug.Log(newAngle);
+        touchedObject.transform.parent.transform.eulerAngles = newAngle;
+        //touchedObject.transform.eulerAngles = newAngle;
+        touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+        Debug.Log("new object rot angle: " + touchedObject.transform.eulerAngles);
+        Debug.Log("new parent object rot angle: " + touchedObject.transform.parent.transform.eulerAngles);
+        //Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
+        touchedObject = null; // unselect object
     }
 
     #region AR object placement code
@@ -184,11 +276,13 @@ public class ARPlacement : MonoBehaviour
     {
         if (placementPoseIsValid && layoutPlaced == false)
         {
+            //UiController.setPreStartText(false); // remove preStart text
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
         }
         else
         {
+            //UiController.setPreStartText(true); // enable preStart text
             placementIndicator.SetActive(false);
         }
     }
@@ -225,13 +319,13 @@ public class ARPlacement : MonoBehaviour
         arCubeToSpawn = Instantiate(
             arCubeToSpawn,
             startPos,
-            PlacementPose.rotation
+            arCubeToSpawn.transform.rotation
         );
 
         placementIndicator.SetActive(false);
         layoutPlaced = true;
 
-        var startingLerpTime = 3.0f; // duration to leap (10s)
+        var startingLerpTime = 1.0f; // duration to leap (10s)
         StartCoroutine(LerpMovement(startPos, endPos, startingLerpTime, arCubeToSpawn));
     }
 

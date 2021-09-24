@@ -5,29 +5,28 @@ using UnityEngine;
 public class PivotControl : MonoBehaviour
 {
 
+    public Vector3 parentLocal;
+    public Quaternion parentGlobal;
+    public Vector3 newParentLocal;
+
+    public Vector3 local;
+    public Quaternion global;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        //gameObject.transform.eulerAngles = new Vector3(-80,0,0);
-        //gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        //Debug.Log("rotate: " + (gameObject.GetComponent<Transform>().rotation.eulerAngles.x));
+        parentLocal = transform.parent.transform.eulerAngles;
+        parentGlobal = transform.parent.transform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(canSnap && transform.localRotation.eulerAngles.x > 80)
-        //{
-        //    transform.Rotate((90 - transform.localRotation.eulerAngles.x), 0, 0, Space.Self);
-        //    //canSnap = false;
-        //}
+        parentLocal = transform.parent.transform.eulerAngles;
+        parentGlobal = transform.parent.transform.rotation;
+        newParentLocal = transform.parent.GetComponent<Transform>().eulerAngles;
 
-        //if (canSnap && transform.localRotation.eulerAngles.x < -90)
-        //{
-        //    transform.Rotate((-90 - transform.localRotation.eulerAngles.x), 0, 0, Space.Self);
-        //    //canSnap = false;
-        //}
+        local = this.GetComponent<Transform>().eulerAngles;
+        global = transform.rotation;
     }
 }
