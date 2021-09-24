@@ -5,13 +5,14 @@ using UnityEngine;
 public class PivotControl : MonoBehaviour
 {
 
-    [System.NonSerialized]
-    private int offset = 5;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        //gameObject.transform.eulerAngles = new Vector3(-80,0,0);
+        //gameObject.GetComponent<Rigidbody>().freezeRotation = true;
+        //Debug.Log("rotate: " + (gameObject.GetComponent<Transform>().rotation.eulerAngles.x));
     }
 
     // Update is called once per frame

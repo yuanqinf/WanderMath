@@ -128,7 +128,7 @@ public class ARPlacement : MonoBehaviour
 
             if (touch.phase == TouchPhase.Ended)
             {
-                touchedObject = null; // unselect object
+                //touchedObject = null; // unselect object
                 //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
                 //Debug.Log("unselected!!! : " + curAngle);
                 //if (curAngle > 80 && curAngle < 100)
@@ -138,35 +138,41 @@ public class ARPlacement : MonoBehaviour
             }
         }
 
-        //if(sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
-        //{
-        //    touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
-        //}
+        if (sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
+        {
+            touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
+        }
 
-        //// snap
-        //if (handleSnapControl.canSnap)
-        //{
-        //    float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
-        //    if(curAngle > 180)
-        //    {
-        //        curAngle -= 360;
-        //    }
+        // snap
+        if (touchedObject.transform.parent.GetComponent<Transform>().rotation.eulerAngles.x < 280 &&
+            touchedObject.transform.parent.GetComponent<Transform>().rotation.eulerAngles.x > 260)
+        {
+            Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
+            touchedObject.transform.parent.transform.eulerAngles = newAngle;
+            touchedObject.transform.parent.GetComponent<Rigidbody>().freezeRotation = true;
 
-        //    Debug.Log("touchedObject curAngle: " + curAngle);
-        //    if (curAngle > 50)
-        //    {
-        //        Debug.Log("snap now!!! >50");
 
-        //        touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-        //    }
+            //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
+            //if (curAngle > 180)
+            //{
+            //    curAngle -= 360;
+            //}
 
-        //    if (curAngle < -50)
-        //    {
-        //        Debug.Log("snap now!!! < -50");
-        //        touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
-        //    }
-        //    handleSnapControl.canSnap = false;
-        //}
+            //Debug.Log("touchedObject curAngle: " + curAngle);
+            //if (curAngle > 50)
+            //{
+            //    Debug.Log("snap now!!! >50");
+
+            //    touchedObject.transform.parent.Rotate((90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
+            //}
+
+            //if (curAngle < -50)
+            //{
+            //    Debug.Log("snap now!!! < -50");
+            //    touchedObject.transform.parent.Rotate((-90 - touchedObject.transform.localRotation.eulerAngles.x), 0, 0);
+            //}
+            //handleSnapControl.canSnap = false;
+        }
     }
 
     #region AR object placement code
