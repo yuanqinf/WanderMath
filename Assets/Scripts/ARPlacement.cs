@@ -175,8 +175,8 @@ public class ARPlacement : MonoBehaviour
                     {
                         Debug.Log("touched object 1 for plane y" + touchedObject.transform.parent.transform.eulerAngles);
                         snapObject(0, 270f, touchedObject.transform.parent.transform.eulerAngles.z);
-                    } else if ((isPlane2Snapped && isPlane3Snapped) && (touchedObject.transform.parent.eulerAngles.x > 350 ||
-                                touchedObject.transform.parent.eulerAngles.x < 10))
+                    } else if (isPlane3Snapped && (touchedObject.transform.parent.eulerAngles.x > 350 ||
+                             touchedObject.transform.parent.eulerAngles.x < 10))
                     {
                         Debug.Log("touched object 1 after plane3" + touchedObject.transform.parent.transform.eulerAngles);
                         snapObject(0, touchedObject.transform.parent.transform.eulerAngles.y, 0);
