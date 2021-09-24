@@ -1,13 +1,17 @@
 
 Library/*
 Logs/*
-Assets/_TerrainAutoUpgrade/*
-Assets/MobileARCourse/*
-Assets/Tutorial19_InteractionChallenge/*
 Temp/*
-TestUnityProject.sln
+WanderMath.sln
 ProjectSettings/ProjectSettings.asset
 Assembly-CSharp.csproj
 .vs/*
 .DS_Store
 
+*.cache
+*.csproj
+LeanCommon.csproj
+*.csproj
+Assets/StreamingAssets/build_info
+Builds/*
+obj/*

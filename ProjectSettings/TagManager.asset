@@ -6,6 +6,7 @@ TagManager:
   tags:
   - bottle
   - cup
+  - cube1
   layers:
   - Default
   - TransparentFX

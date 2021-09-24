@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 45576abddd5a9469db10a4d4dba20575
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - arCubeToSpawn: {fileID: 8396129812823229662, guid: 8a4272a792d694f608715e1a93d164d3, type: 3}
+  - arCharacterToSpawn: {fileID: 9152371190494581775, guid: f3416cd990e024018823cd4309c38c13, type: 3}
+  - placementIndicator: {fileID: 1485140055393347347, guid: f5abe0e09d3464fca896145ab5a247c6, type: 3}
+  - arCamera: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
