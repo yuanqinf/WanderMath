@@ -15,6 +15,8 @@ public class ARPlacement : MonoBehaviour
     public Camera arCamera;
     public float rotateDegreeFactor;
 
+    public Canvas UiCanvas;
+
     private ARRaycastManager aRRaycastManager;
     private Pose PlacementPose;
     private bool layoutPlaced = false;
@@ -26,6 +28,7 @@ public class ARPlacement : MonoBehaviour
 
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
     }
@@ -228,7 +231,7 @@ public class ARPlacement : MonoBehaviour
         placementIndicator.SetActive(false);
         layoutPlaced = true;
 
-        var startingLerpTime = 10.0f; // duration to leap (10s)
+        var startingLerpTime = 3.0f; // duration to leap (10s)
         StartCoroutine(LerpMovement(startPos, endPos, startingLerpTime, arCubeToSpawn));
     }
 

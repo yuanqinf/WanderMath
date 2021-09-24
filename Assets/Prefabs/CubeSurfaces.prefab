@@ -675,7 +675,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8396129814272263463}
-  - component: {fileID: 2686137893490139432}
   m_Layer: 0
   m_Name: Pivot6
   m_TagString: Untagged
@@ -698,18 +697,6 @@ Transform:
   m_Father: {fileID: 8396129813601146640}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &2686137893490139432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8396129814272263456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bac9ddee4f92a497a8ec42cc6e7bfd11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8396129814854294703
 GameObject:
   m_ObjectHideFlags: 0
