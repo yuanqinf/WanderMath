@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de337d2b2bcd4fe5b885779b87aee91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeUpDistance: 0.8
 --- !u!4 &40919616
 Transform:
   m_ObjectHideFlags: 0
@@ -945,7 +946,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d0334d409e2b4b97a50bba3d87c5a39, type: 3}
   - {fileID: 8300000, guid: 180976fba39484ebb860962d11b14c23, type: 3}
   - {fileID: 8300000, guid: b5acbe79361aa429b81947d00e5bab1e, type: 3}
-  - {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
+  selectACubeClip: {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
 --- !u!4 &897245920
 Transform:
   m_ObjectHideFlags: 0
@@ -1231,7 +1232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1184344857
 RectTransform:
   m_ObjectHideFlags: 0

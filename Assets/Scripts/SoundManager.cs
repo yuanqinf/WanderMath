@@ -6,6 +6,8 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField]
     private AudioClip[] startingSubtitleClips;
+    [SerializeField]
+    private AudioClip selectACubeClip;
     private AudioSource audioSource;
 
     void Start()
@@ -13,6 +15,7 @@ public class SoundManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    #region Starting subtitles
     public int GetSubtitleAudioClipsLen()
     {
         return startingSubtitleClips.Length;
@@ -23,8 +26,20 @@ public class SoundManager : MonoBehaviour
         return startingSubtitleClips[num].length;
     }
 
-    public void PlaySubtitleAudio(int num)
+    public void PlayStartingSubtitleAudio(int num)
     {
         audioSource.PlayOneShot(startingSubtitleClips[num], 1);
     }
+    #endregion
+    #region Select subtitles
+    public float GetSelectSubtitleAudioDuration()
+    {
+        return selectACubeClip.length;
+    }
+
+    public void PlaySelectACubeAudio()
+    {
+        audioSource.PlayOneShot(selectACubeClip, 1);
+    }
+    #endregion
 }

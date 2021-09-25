@@ -16,7 +16,7 @@ public class ARPlacement : MonoBehaviour
     public float rotateDegreeFactor;
 
     private ARRaycastManager aRRaycastManager;
-    private Pose PlacementPose;
+    private Pose placementPose; // describe position of 3D object in space
     private bool layoutPlaced = false;
     private bool placementPoseIsValid = false;
     private GameObject touchedObject;
@@ -39,16 +39,22 @@ public class ARPlacement : MonoBehaviour
 
     void Update()
     {
+        // first part: object placement
         if (!layoutPlaced)
         {
             UpdatePlacementPose();
             UpdatePlacementIndicator();
             if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                ARPlaceLayout();
+                PlaceCharacterObject();
+                StartSubtitles();
+                placementIndicator.SetActive(false);
+                uiController.SetPreStartTextActive(false); // remove preStart text
+                layoutPlaced = true;
             }
         }
 
+        // second part: click object to move towards you
         if (layoutPlaced && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -62,22 +68,26 @@ public class ARPlacement : MonoBehaviour
                     initTouchPosition = touch.position;
                     touchedObject = hitObject.transform.gameObject;
                     // move cube1 closer to player as a whole
+                    // TODO: refactor code into GameController
                     if (touchedObject.tag == "cube1")
                     {
+                        // play audio & show subtitle
+                        var duration = gameController.StartMovingSubtitleWithAudio();
+                        // move object towards user
                         var startPos = touchedObject.transform.position;
                         var endPos = startPos + new Vector3(
                             0,
                             (arCamera.transform.position.y - startPos.y) / 2,
                             (arCamera.transform.position.z - startPos.z) / 4
                         );
-                        var timeTakenToMove = 1.0f;
 
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
-                        StartCoroutine(LerpMovement(startPos, endPos, timeTakenToMove, touchedObject));
+                        StartCoroutine(LerpMovement(startPos, endPos, duration, touchedObject));
                     }
                 }
             }
 
+            // third part: interact with cube to move
             if (touch.phase == TouchPhase.Moved)
             {
                 Vector2 newTouchPosition = Input.GetTouch(0).position;
@@ -264,7 +274,7 @@ public class ARPlacement : MonoBehaviour
         {
             uiController.SetPreStartTextActive(false); // remove preStart text
             placementIndicator.SetActive(true);
-            placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
+            placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
         }
         else
         {
@@ -283,38 +293,52 @@ public class ARPlacement : MonoBehaviour
         placementPoseIsValid = hits.Count > 0;
         if (placementPoseIsValid)
         {
-            PlacementPose = hits[0].pose;
+            placementPose = hits[0].pose; // update position
+            var cameraForward = arCamera.transform.forward;
+            var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
+            placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
     }
 
-    private void ARPlaceLayout()
+    /// <summary>
+    /// Initialize object based on duration & distance it'll float from.
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="upDistance"></param>
+    public void PlaceCubeInSky(float duration, float upDistance)
     {
-        // things to place when initialized
-        // to be placed at the corner
-        arCharacterToSpawn = Instantiate(
-            arCharacterToSpawn,
-            PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
-            arCharacterToSpawn.transform.rotation
-        );
-        gameController.StartSubtitlesWithAudio();
-
         // cube to be placed in the sky and dropped down
-        var movementDistance = 0.25f; // distance to move down (1.0f is 1 meter)
-
-        var endPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
-        var startPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * movementDistance;
+        var endPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
+        var startPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * upDistance;
         arCubeToSpawn = Instantiate(
             arCubeToSpawn,
             startPos,
-            arCubeToSpawn.transform.rotation
+            arCubeToSpawn.transform.rotation // placementPose.rotation *
         );
+        StartCoroutine(LerpMovement(startPos, endPos, duration, arCubeToSpawn));
+        StartCoroutine(AddCubeEffect(duration));
+    }
 
-        placementIndicator.SetActive(false);
-        uiController.SetPreStartTextActive(false); // remove preStart text
-        layoutPlaced = true;
+    IEnumerator AddCubeEffect(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        // TODO: Enable click & add partical effect to show click
+    }
 
-        var startingLerpTime = 1.0f; // duration to leap (10s)
-        StartCoroutine(LerpMovement(startPos, endPos, startingLerpTime, arCubeToSpawn));
+    private void PlaceCharacterObject()
+    {
+        // to be placed at the corner
+        Debug.Log("placement Pose: " + placementPose.rotation);
+        arCharacterToSpawn = Instantiate(
+            arCharacterToSpawn,
+            placementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
+            arCharacterToSpawn.transform.rotation // placementPose.rotation *
+        );
+    }
+
+    private void StartSubtitles()
+    {
+        gameController.StartSubtitlesWithAudio();
     }
 
     /// <summary>
