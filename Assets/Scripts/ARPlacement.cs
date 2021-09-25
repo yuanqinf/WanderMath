@@ -27,6 +27,7 @@ public class ARPlacement : MonoBehaviour
 
     private bool isPlane2Snapped = false;
     private bool isPlane3Snapped = false;
+    private int snappedSides = 0;
 
 
     void Start()
@@ -72,7 +73,7 @@ public class ARPlacement : MonoBehaviour
                     if (touchedObject.tag == "cube1")
                     {
                         // play audio & show subtitle
-                        var duration = gameController.StartMovingSubtitleWithAudio();
+                        var duration = gameController.StartSelectSubtitleWithAudio();
                         // move object towards user
                         var startPos = touchedObject.transform.position;
                         var endPos = startPos + new Vector3(
@@ -251,19 +252,23 @@ public class ARPlacement : MonoBehaviour
 
     private void snapObject(float x, float y, float z)
     {
-        Debug.Log("local rot: " + touchedObject.transform.eulerAngles);
-        Debug.Log("parent local rot: " + touchedObject.transform.parent.transform.eulerAngles);
-
-        Debug.Log("snapped object is: " + touchedObject.name);
+        Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         Vector3 newAngle = new Vector3(x, y, z);
-        Debug.Log(newAngle);
         touchedObject.transform.parent.transform.eulerAngles = newAngle;
-        //touchedObject.transform.eulerAngles = newAngle;
         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        Debug.Log("new object rot angle: " + touchedObject.transform.eulerAngles);
-        Debug.Log("new parent object rot angle: " + touchedObject.transform.parent.transform.eulerAngles);
-        //Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
+        Debug.Log("angle to assign: " + newAngle + "new parent object rot angle: " + touchedObject.transform.parent.transform.eulerAngles);
         touchedObject = null; // unselect object
+        snappedSides += 1;
+
+        // completed cube & move to chinchilla
+        if (snappedSides == 5)
+        {
+            // play audio & subtitle
+            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            // move cube to character
+            StartCoroutine(LerpMovement(arCubeToSpawn.transform.position, arCharacterToSpawn.transform.position, duration, arCubeToSpawn));
+            snappedSides = 0;
+        }
     }
 
     #region AR object placement code

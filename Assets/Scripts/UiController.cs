@@ -20,6 +20,7 @@ public class UiController : MonoBehaviour
     };
 
     private string selectCubeSubtitleLine = "Do you think you can make a cube out of that?";
+    private string completeCubeSubtitleLine = "No way! That's a cube. It makes sense, see, a cube has six faces.";
 
 
     void Start()
@@ -28,24 +29,33 @@ public class UiController : MonoBehaviour
         subtitles.SetActive(false);
     }
 
-    public void SetPreStartTextActive(bool isActive)
-    {
-        preStartText.SetActive(isActive);
-        //Debug.Log(preStartText.GetComponent<TextMeshProUGUI>().text);
-    }
-
+    #region helper functions
     public void SetSubtitleActive(bool isActive)
     {
         subtitles.SetActive(isActive);
     }
 
-    public void SetInitialSubtitleText(int num)
+    public void SetPreStartTextActive(bool isActive)
     {
-        subtitles.GetComponent<TextMeshProUGUI>().text = subtitleLines[num];
+        preStartText.SetActive(isActive);
+    }
+    #endregion
+
+    // part 3: start complete cube subtitles
+    public void SetCompleteCubeSubtitles()
+    {
+        subtitles.GetComponent<TextMeshProUGUI>().text = completeCubeSubtitleLine;
     }
 
+    // part 2: start select cube subtitles
     public void SetNextSubtitleText()
     {
         subtitles.GetComponent<TextMeshProUGUI>().text = selectCubeSubtitleLine;
+    }
+
+    // part 1: start initial subtitles
+    public void SetInitialSubtitleText(int num)
+    {
+        subtitles.GetComponent<TextMeshProUGUI>().text = subtitleLines[num];
     }
 }
