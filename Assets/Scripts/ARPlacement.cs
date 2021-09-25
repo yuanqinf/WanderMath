@@ -23,6 +23,7 @@ public class ARPlacement : MonoBehaviour
     private Vector2 initTouchPosition;
     [SerializeField]
     private UiController uiController;
+    private GameController gameController;
 
     private bool isPlane2Snapped = false;
     private bool isPlane3Snapped = false;
@@ -33,7 +34,7 @@ public class ARPlacement : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         uiController = FindObjectOfType<UiController>();
-        uiController.setPreStartText(false);
+        gameController = FindObjectOfType<GameController>();
     }
 
     void Update()
@@ -261,13 +262,13 @@ public class ARPlacement : MonoBehaviour
     {
         if (placementPoseIsValid && layoutPlaced == false)
         {
-            uiController.setPreStartText(false); // remove preStart text
+            uiController.SetPreStartTextActive(false); // remove preStart text
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
         }
         else
         {
-            uiController.setPreStartText(true); // enable preStart text
+            uiController.SetPreStartTextActive(true); // enable preStart text
             placementIndicator.SetActive(false);
         }
     }
@@ -295,7 +296,8 @@ public class ARPlacement : MonoBehaviour
             PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
             arCharacterToSpawn.transform.rotation
         );
-        //arCharacterToSpawn.transform.Rotate(0.0f, 180.0f, 0.0f);
+        gameController.StartSubtitlesWithAudio();
+
         // cube to be placed in the sky and dropped down
         var movementDistance = 0.25f; // distance to move down (1.0f is 1 meter)
 
@@ -308,7 +310,7 @@ public class ARPlacement : MonoBehaviour
         );
 
         placementIndicator.SetActive(false);
-        uiController.setPreStartText(false); // remove preStart text
+        uiController.SetPreStartTextActive(false); // remove preStart text
         layoutPlaced = true;
 
         var startingLerpTime = 1.0f; // duration to leap (10s)

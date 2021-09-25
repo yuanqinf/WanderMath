@@ -25,14 +25,26 @@ public class UiController : MonoBehaviour
         "No worries, I bet I'll find something cool to make out of it. Wanna see if we can find one that makes a cube?"
     };
 
-    public void setPreStartText(bool isActive)
+
+    void Start()
+    {
+        preStartText.SetActive(false);
+        subtitles.SetActive(false);
+    }
+
+    public void SetPreStartTextActive(bool isActive)
     {
         preStartText.SetActive(isActive);
         //Debug.Log(preStartText.GetComponent<TextMeshProUGUI>().text);
     }
 
-    public void startSubtitles(bool isActive)
+    public void SetSubtitleActive(bool isActive)
     {
-        //subtitles.SetActive(isActive);
+        subtitles.SetActive(isActive);
+    }
+
+    public void SetSubtitleText(int num)
+    {
+        subtitles.GetComponent<TextMeshProUGUI>().text = subtitleLines[num];
     }
 }
