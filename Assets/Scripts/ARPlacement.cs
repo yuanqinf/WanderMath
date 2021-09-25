@@ -21,9 +21,8 @@ public class ARPlacement : MonoBehaviour
     private bool placementPoseIsValid = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
-    private HandleSnapControl handleSnapControl;
     [SerializeField]
-    private GameObject UiController;
+    private UiController uiController;
 
     private bool isPlane2Snapped = false;
     private bool isPlane3Snapped = false;
@@ -33,8 +32,8 @@ public class ARPlacement : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
-        handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
-        //UiController = UiController.GetComponent<UiController>();
+        uiController = FindObjectOfType<UiController>();
+        uiController.setPreStartText(false);
     }
 
     void Update()
@@ -56,7 +55,7 @@ public class ARPlacement : MonoBehaviour
             RaycastHit hitObject;
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = Camera.current.ScreenPointToRay(touch.position);
+                Ray ray = arCamera.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out hitObject))
                 {
                     initTouchPosition = touch.position;
@@ -67,8 +66,8 @@ public class ARPlacement : MonoBehaviour
                         var startPos = touchedObject.transform.position;
                         var endPos = startPos + new Vector3(
                             0,
-                            (Camera.main.transform.position.y - startPos.y) / 2,
-                            (Camera.main.transform.position.z - startPos.z) / 4
+                            (arCamera.transform.position.y - startPos.y) / 2,
+                            (arCamera.transform.position.z - startPos.z) / 4
                         );
                         var timeTakenToMove = 1.0f;
 
@@ -237,20 +236,6 @@ public class ARPlacement : MonoBehaviour
                     break;
             }
         }
-        //if (touchedObject != null && (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
-        //    touchedObject.transform.parent.transform.eulerAngles.x > 260))
-        //{
-
-        //    Debug.Log("local rot: " + touchedObject.transform.parent.transform.eulerAngles);
-        //    Debug.Log("global rot: " + touchedObject.transform.parent.transform.rotation);
-
-        //    Debug.Log("snapped object is: " + touchedObject.name);
-        //    Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
-        //    touchedObject.transform.parent.transform.eulerAngles = newAngle;
-        //    touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        //    Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
-        //    touchedObject = null; // unselect object
-        //}
     }
 
     private void snapObject(float x, float y, float z)
@@ -276,13 +261,13 @@ public class ARPlacement : MonoBehaviour
     {
         if (placementPoseIsValid && layoutPlaced == false)
         {
-            //UiController.setPreStartText(false); // remove preStart text
+            uiController.setPreStartText(false); // remove preStart text
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
         }
         else
         {
-            //UiController.setPreStartText(true); // enable preStart text
+            uiController.setPreStartText(true); // enable preStart text
             placementIndicator.SetActive(false);
         }
     }
@@ -290,7 +275,7 @@ public class ARPlacement : MonoBehaviour
     // Activate the tracker when a horizontal plane is tracked
     void UpdatePlacementPose()
     {
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        var screenCenter = arCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         var hits = new List<ARRaycastHit>();
         aRRaycastManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
@@ -323,6 +308,7 @@ public class ARPlacement : MonoBehaviour
         );
 
         placementIndicator.SetActive(false);
+        uiController.setPreStartText(false); // remove preStart text
         layoutPlaced = true;
 
         var startingLerpTime = 1.0f; // duration to leap (10s)
