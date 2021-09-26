@@ -51,7 +51,6 @@ public class ARPlacement : MonoBehaviour
                 placementIndicator.SetActive(false);
                 uiController.SetPreStartTextActive(false); // remove preStart text
                 layoutPlaced = true;
-                //uiController.SetCursorActive(true);
             }
         }
 
@@ -59,16 +58,6 @@ public class ARPlacement : MonoBehaviour
         if (layoutPlaced && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
-            // solely for debugging
-            //if (touch.phase == TouchPhase.Moved)
-            //{
-            //    Debug.Log("pixel height: " + arCamera.pixelHeight + " pixel width: " + arCamera.pixelWidth);
-            //    var tempPoint = new Vector2(touch.position.x, touch.position.y);
-            //    var point = arCamera.ScreenToWorldPoint(new Vector3(tempPoint.x, -tempPoint.y, arCamera.nearClipPlane));
-            //    Debug.Log("point is: " + point + " touch position: " + touch.position + " tempPoint: " + tempPoint);
-            //    uiController.SetCursorPosition(point);
-            //}
 
             RaycastHit hitObject;
             if (touch.phase == TouchPhase.Began)
@@ -108,11 +97,7 @@ public class ARPlacement : MonoBehaviour
                 Vector2 newTouchPosition = Input.GetTouch(0).position;
                 if (touchedObject != null)
                 {
-                    //Debug.Log("pixel height: " + arCamera.pixelHeight + " pixel width: " + arCamera.pixelWidth);
-                    var tempPoint = new Vector2(newTouchPosition.x, arCamera.pixelHeight - newTouchPosition.y);
-                    var point = arCamera.ScreenToWorldPoint(new Vector3(tempPoint.x, -tempPoint.y, arCamera.nearClipPlane));
-                    Debug.Log("point is: " + point + " touch position: " + newTouchPosition + " tempPoint: " + tempPoint);
-                    uiController.SetCursorPosition(point);
+                    uiController.SetCursorPosition(newTouchPosition);
                     switch (touchedObject.name)
                     {
                         case "Plane1":
