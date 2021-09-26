@@ -11,6 +11,8 @@ public class UiController : MonoBehaviour
     private GameObject preStartText;
     [SerializeField]
     private GameObject subtitles;
+    [SerializeField]
+    private GameObject mouseCursor;
     private string[] subtitleLines = {
         "Oh, hi! I'm Quinnchilla, but you can call me Quinn. Nice to meet you!",
         "I was just wrapping some presents for my friends.",
@@ -27,6 +29,17 @@ public class UiController : MonoBehaviour
     {
         preStartText.SetActive(false);
         subtitles.SetActive(false);
+        mouseCursor.SetActive(false);
+    }
+
+    public void SetCursorActive(bool isActive)
+    {
+        mouseCursor.SetActive(isActive);
+    }
+
+    public void SetCursorPosition(Vector2 pos)
+    {
+        mouseCursor.transform.position = pos;
     }
 
     #region helper functions
