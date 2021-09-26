@@ -597,7 +597,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Subtitles here
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -947,6 +947,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 180976fba39484ebb860962d11b14c23, type: 3}
   - {fileID: 8300000, guid: b5acbe79361aa429b81947d00e5bab1e, type: 3}
   selectACubeClip: {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
+  completeCubeClip: {fileID: 8300000, guid: 426b07859fc6647e4987146fde806bb6, type: 3}
 --- !u!4 &897245920
 Transform:
   m_ObjectHideFlags: 0
