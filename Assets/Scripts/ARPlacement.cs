@@ -16,73 +16,103 @@ public class ARPlacement : MonoBehaviour
     public float rotateDegreeFactor;
 
     private ARRaycastManager aRRaycastManager;
-    private Pose PlacementPose;
+    private Pose placementPose; // describe position of 3D object in space
     private bool layoutPlaced = false;
     private bool placementPoseIsValid = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
-    private HandleSnapControl handleSnapControl;
-    [SerializeField]
-    private GameObject UiController;
+    private UiController uiController;
+    private GameController gameController;
 
     private bool isPlane2Snapped = false;
     private bool isPlane3Snapped = false;
+    private int snappedSides = 0;
 
 
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
-        handleSnapControl = sliderHandleTransform.gameObject.GetComponentInParent<HandleSnapControl>();
-        //UiController = UiController.GetComponent<UiController>();
+        uiController = FindObjectOfType<UiController>();
+        gameController = FindObjectOfType<GameController>();
     }
 
     void Update()
     {
+        // first part: object placement
         if (!layoutPlaced)
         {
             UpdatePlacementPose();
             UpdatePlacementIndicator();
             if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                ARPlaceLayout();
+                PlaceCharacterObject();
+                StartSubtitles();
+                placementIndicator.SetActive(false);
+                uiController.SetPreStartTextActive(false); // remove preStart text
+                layoutPlaced = true;
+                //uiController.SetCursorActive(true);
             }
         }
 
+        // second part: click object to move towards you
         if (layoutPlaced && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
+            // solely for debugging
+            //if (touch.phase == TouchPhase.Moved)
+            //{
+            //    Debug.Log("pixel height: " + arCamera.pixelHeight + " pixel width: " + arCamera.pixelWidth);
+            //    var tempPoint = new Vector2(touch.position.x, touch.position.y);
+            //    var point = arCamera.ScreenToWorldPoint(new Vector3(tempPoint.x, -tempPoint.y, arCamera.nearClipPlane));
+            //    Debug.Log("point is: " + point + " touch position: " + touch.position + " tempPoint: " + tempPoint);
+            //    uiController.SetCursorPosition(point);
+            //}
+
             RaycastHit hitObject;
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = Camera.current.ScreenPointToRay(touch.position);
+                Ray ray = arCamera.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out hitObject))
                 {
                     initTouchPosition = touch.position;
                     touchedObject = hitObject.transform.gameObject;
                     // move cube1 closer to player as a whole
+                    // TODO: refactor code into GameController
                     if (touchedObject.tag == "cube1")
                     {
+                        uiController.SetCursorActive(true);
+
+                        // play audio & show subtitle
+                        var duration = gameController.StartSelectSubtitleWithAudio();
+                        // move object towards user
                         var startPos = touchedObject.transform.position;
                         var endPos = startPos + new Vector3(
                             0,
-                            (Camera.main.transform.position.y - startPos.y) / 2,
-                            (Camera.main.transform.position.z - startPos.z) / 4
+                            (arCamera.transform.position.y - startPos.y) / 2,
+                            (arCamera.transform.position.z - startPos.z) / 4
                         );
-                        var timeTakenToMove = 1.0f;
 
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
-                        StartCoroutine(LerpMovement(startPos, endPos, timeTakenToMove, touchedObject));
+                        var emission = touchedObject.GetComponent<ParticleSystem>().emission;
+                        emission.enabled = false;
+                        StartCoroutine(LerpMovement(startPos, endPos, duration, touchedObject));
                     }
                 }
             }
 
+            // third part: interact with cube to move
             if (touch.phase == TouchPhase.Moved)
             {
                 Vector2 newTouchPosition = Input.GetTouch(0).position;
                 if (touchedObject != null)
                 {
+                    //Debug.Log("pixel height: " + arCamera.pixelHeight + " pixel width: " + arCamera.pixelWidth);
+                    var tempPoint = new Vector2(newTouchPosition.x, arCamera.pixelHeight - newTouchPosition.y);
+                    var point = arCamera.ScreenToWorldPoint(new Vector3(tempPoint.x, -tempPoint.y, arCamera.nearClipPlane));
+                    Debug.Log("point is: " + point + " touch position: " + newTouchPosition + " tempPoint: " + tempPoint);
+                    uiController.SetCursorPosition(point);
                     switch (touchedObject.name)
                     {
                         case "Plane1":
@@ -237,37 +267,28 @@ public class ARPlacement : MonoBehaviour
                     break;
             }
         }
-        //if (touchedObject != null && (touchedObject.transform.parent.transform.eulerAngles.x < 280 &&
-        //    touchedObject.transform.parent.transform.eulerAngles.x > 260))
-        //{
-
-        //    Debug.Log("local rot: " + touchedObject.transform.parent.transform.eulerAngles);
-        //    Debug.Log("global rot: " + touchedObject.transform.parent.transform.rotation);
-
-        //    Debug.Log("snapped object is: " + touchedObject.name);
-        //    Vector3 newAngle = new Vector3(-90, touchedObject.transform.eulerAngles.y, touchedObject.transform.eulerAngles.z);
-        //    touchedObject.transform.parent.transform.eulerAngles = newAngle;
-        //    touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        //    Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
-        //    touchedObject = null; // unselect object
-        //}
     }
 
     private void snapObject(float x, float y, float z)
     {
-        Debug.Log("local rot: " + touchedObject.transform.eulerAngles);
-        Debug.Log("parent local rot: " + touchedObject.transform.parent.transform.eulerAngles);
-
-        Debug.Log("snapped object is: " + touchedObject.name);
+        Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         Vector3 newAngle = new Vector3(x, y, z);
-        Debug.Log(newAngle);
         touchedObject.transform.parent.transform.eulerAngles = newAngle;
-        //touchedObject.transform.eulerAngles = newAngle;
         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        Debug.Log("new object rot angle: " + touchedObject.transform.eulerAngles);
-        Debug.Log("new parent object rot angle: " + touchedObject.transform.parent.transform.eulerAngles);
-        //Debug.Log(touchedObject.name + " enabled status: " + touchedObject.transform.GetComponent<BoxCollider>().enabled);
+        Debug.Log("angle to assign: " + newAngle + "new parent object rot angle: " + touchedObject.transform.parent.transform.eulerAngles);
         touchedObject = null; // unselect object
+        snappedSides += 1;
+
+        // completed cube & move to chinchilla
+        if (snappedSides == 5)
+        {
+            // play audio & subtitle
+            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            uiController.SetCursorActive(false);
+            // move cube to character
+            StartCoroutine(LerpMovement(arCubeToSpawn.transform.position, arCharacterToSpawn.transform.position, duration, arCubeToSpawn));
+            snappedSides = 0;
+        }
     }
 
     #region AR object placement code
@@ -276,13 +297,13 @@ public class ARPlacement : MonoBehaviour
     {
         if (placementPoseIsValid && layoutPlaced == false)
         {
-            //UiController.setPreStartText(false); // remove preStart text
+            uiController.SetPreStartTextActive(false); // remove preStart text
             placementIndicator.SetActive(true);
-            placementIndicator.transform.SetPositionAndRotation(PlacementPose.position, PlacementPose.rotation);
+            placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
         }
         else
         {
-            //UiController.setPreStartText(true); // enable preStart text
+            uiController.SetPreStartTextActive(true); // enable preStart text
             placementIndicator.SetActive(false);
         }
     }
@@ -290,43 +311,66 @@ public class ARPlacement : MonoBehaviour
     // Activate the tracker when a horizontal plane is tracked
     void UpdatePlacementPose()
     {
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        var screenCenter = arCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         var hits = new List<ARRaycastHit>();
         aRRaycastManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
         placementPoseIsValid = hits.Count > 0;
         if (placementPoseIsValid)
         {
-            PlacementPose = hits[0].pose;
+            placementPose = hits[0].pose; // update position
+            var cameraForward = arCamera.transform.forward;
+            var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
+            placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
     }
 
-    private void ARPlaceLayout()
+    /// <summary>
+    /// Initialize object based on duration & distance it'll float from.
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="upDistance"></param>
+    public void PlaceCubeInSky(float duration, float upDistance)
     {
-        // things to place when initialized
-        // to be placed at the corner
-        arCharacterToSpawn = Instantiate(
-            arCharacterToSpawn,
-            PlacementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
-            arCharacterToSpawn.transform.rotation
-        );
-        //arCharacterToSpawn.transform.Rotate(0.0f, 180.0f, 0.0f);
         // cube to be placed in the sky and dropped down
-        var movementDistance = 0.25f; // distance to move down (1.0f is 1 meter)
-
-        var endPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
-        var startPos = PlacementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * movementDistance;
+        var endPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
+        var startPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * upDistance;
+        // stop particle effect & collision
+        arCubeToSpawn.GetComponent<BoxCollider>().enabled = false;
+        var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
+        emission.enabled = false;
         arCubeToSpawn = Instantiate(
             arCubeToSpawn,
             startPos,
-            arCubeToSpawn.transform.rotation
+            arCubeToSpawn.transform.rotation // placementPose.rotation *
         );
+        StartCoroutine(LerpMovement(startPos, endPos, duration, arCubeToSpawn));
+        StartCoroutine(AddCubeEffect(duration + 4.5f));
+    }
 
-        placementIndicator.SetActive(false);
-        layoutPlaced = true;
+    IEnumerator AddCubeEffect(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        // add cube effect and enable box collisder
+        arCubeToSpawn.GetComponent<BoxCollider>().enabled = true;
+        var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
+        emission.enabled = true;
+    }
 
-        var startingLerpTime = 1.0f; // duration to leap (10s)
-        StartCoroutine(LerpMovement(startPos, endPos, startingLerpTime, arCubeToSpawn));
+    private void PlaceCharacterObject()
+    {
+        // to be placed at the corner
+        Debug.Log("placement Pose: " + placementPose.rotation);
+        arCharacterToSpawn = Instantiate(
+            arCharacterToSpawn,
+            placementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
+            arCharacterToSpawn.transform.rotation // placementPose.rotation *
+        );
+    }
+
+    private void StartSubtitles()
+    {
+        gameController.StartSubtitlesWithAudio();
     }
 
     /// <summary>
