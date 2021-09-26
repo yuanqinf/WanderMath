@@ -95,9 +95,9 @@ public class ARPlacement : MonoBehaviour
             if (touch.phase == TouchPhase.Moved)
             {
                 Vector2 newTouchPosition = Input.GetTouch(0).position;
+                uiController.SetCursorPosition(newTouchPosition);
                 if (touchedObject != null)
                 {
-                    uiController.SetCursorPosition(newTouchPosition);
                     switch (touchedObject.name)
                     {
                         case "Plane1":
