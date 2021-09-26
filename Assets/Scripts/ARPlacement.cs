@@ -21,7 +21,6 @@ public class ARPlacement : MonoBehaviour
     private bool placementPoseIsValid = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
-    [SerializeField]
     private UiController uiController;
     private GameController gameController;
 
@@ -83,6 +82,8 @@ public class ARPlacement : MonoBehaviour
                         );
 
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
+                        var emission = touchedObject.GetComponent<ParticleSystem>().emission;
+                        emission.enabled = false;
                         StartCoroutine(LerpMovement(startPos, endPos, duration, touchedObject));
                     }
                 }
@@ -315,6 +316,10 @@ public class ARPlacement : MonoBehaviour
         // cube to be placed in the sky and dropped down
         var endPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f);
         var startPos = placementPose.position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * upDistance;
+        // stop particle effect & collision
+        arCubeToSpawn.GetComponent<BoxCollider>().enabled = false;
+        var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
+        emission.enabled = false;
         arCubeToSpawn = Instantiate(
             arCubeToSpawn,
             startPos,
@@ -327,7 +332,10 @@ public class ARPlacement : MonoBehaviour
     IEnumerator AddCubeEffect(float duration)
     {
         yield return new WaitForSeconds(duration);
-        // TODO: Enable click & add partical effect to show click
+        // add cube effect and enable box collisder
+        arCubeToSpawn.GetComponent<BoxCollider>().enabled = true;
+        var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
+        emission.enabled = true;
     }
 
     private void PlaceCharacterObject()
