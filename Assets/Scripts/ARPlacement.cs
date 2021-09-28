@@ -24,6 +24,8 @@ public class ARPlacement : MonoBehaviour
     private UiController uiController;
     private GameController gameController;
 
+    //private GameObject arCube
+    private GameObject arCharacter;
     private bool isPlane2Snapped = false;
     private bool isPlane3Snapped = false;
     private int snappedSides = 0;
@@ -44,6 +46,7 @@ public class ARPlacement : MonoBehaviour
         {
             UpdatePlacementPose();
             UpdatePlacementIndicator();
+            Debug.Log(placementPose);
             if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 PlaceCharacterObject();
@@ -106,7 +109,7 @@ public class ARPlacement : MonoBehaviour
                                 touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             } else if (newTouchPosition.y < initTouchPosition.y)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane3":
@@ -116,7 +119,7 @@ public class ARPlacement : MonoBehaviour
                             }
                             else if (newTouchPosition.y < initTouchPosition.y)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane2":
@@ -126,7 +129,7 @@ public class ARPlacement : MonoBehaviour
                             }
                             else if (newTouchPosition.x < initTouchPosition.x)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane5":
@@ -136,7 +139,7 @@ public class ARPlacement : MonoBehaviour
                             }
                             else if (newTouchPosition.x < initTouchPosition.x)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             }
                             break;
                         case "Plane6":
@@ -146,7 +149,7 @@ public class ARPlacement : MonoBehaviour
                             }
                             else if (newTouchPosition.y < initTouchPosition.y)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             }
                             break;
                         default:
@@ -159,19 +162,15 @@ public class ARPlacement : MonoBehaviour
             if (touch.phase == TouchPhase.Ended)
             {
                 touchedObject = null; // unselect object
-                //float curAngle = touchedObject.transform.parent.GetComponent<Transform>().localRotation.eulerAngles.x;
-                //Debug.Log("unselected!!! : " + curAngle);
-                //if (curAngle > 80 && curAngle < 100)
-                //{
-                //    touchedObject.transform.parent.Rotate(new Vector3(180, 0, 0));
-                //}
             }
         }
 
-        if (touchedObject != null && sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
-        {
-            touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
-        }
+        // slider UI
+
+        //if (touchedObject != null && sliderHandleTransform.localPosition.y > 2 || sliderHandleTransform.localPosition.y < -2)
+        //{
+        //    touchedObject.transform.parent.Rotate(new Vector3(-sliderHandleTransform.localPosition.y * rotateDegreeFactor, 0, 0));
+        //}
 
         // snap
         if (touchedObject != null)
@@ -271,7 +270,7 @@ public class ARPlacement : MonoBehaviour
             var duration = gameController.StartCompleteCubeSubtitleWithAudio();
             uiController.SetCursorActive(false);
             // move cube to character
-            StartCoroutine(LerpMovement(arCubeToSpawn.transform.position, arCharacterToSpawn.transform.position, duration, arCubeToSpawn));
+            StartCoroutine(LerpMovement(arCubeToSpawn.transform.position, arCharacter.transform.position, duration, arCubeToSpawn));
             snappedSides = 0;
         }
     }
@@ -346,11 +345,19 @@ public class ARPlacement : MonoBehaviour
     {
         // to be placed at the corner
         Debug.Log("placement Pose: " + placementPose.rotation);
-        arCharacterToSpawn = Instantiate(
-            arCharacterToSpawn,
-            placementPose.position + new Vector3(-0.5f, 0.0f, -0.01f),
-            arCharacterToSpawn.transform.rotation // placementPose.rotation *
+
+        Vector3 rot = placementPose.rotation.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+        Vector3 characterPos = placementPose.position
+            + (placementIndicator.transform.forward * 0.4f) + (-placementIndicator.transform.right * 0.4f);
+
+        Quaternion characterRot = Quaternion.Euler(rot);
+
+        arCharacter = Instantiate(
+            arCharacterToSpawn, characterPos, characterRot
         );
+
     }
 
     private void StartSubtitles()
