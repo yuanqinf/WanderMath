@@ -106,30 +106,30 @@ public class ARPlacement : MonoBehaviour
                         case "Plane1":
                             if (newTouchPosition.y > initTouchPosition.y)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             } else if (newTouchPosition.y < initTouchPosition.y)
                             {
-                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane3":
                             if (newTouchPosition.y > initTouchPosition.y)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             }
                             else if (newTouchPosition.y < initTouchPosition.y)
                             {
-                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane2":
                             if (newTouchPosition.x > initTouchPosition.x)
                             {
-                                touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
+                                //touchedObject.transform.parent.Rotate(new Vector3(1, 0, 0));
                             }
                             else if (newTouchPosition.x < initTouchPosition.x)
                             {
-                                //touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
+                                touchedObject.transform.parent.Rotate(new Vector3(-1, 0, 0));
                             }
                             break;
                         case "Plane5":
@@ -322,11 +322,14 @@ public class ARPlacement : MonoBehaviour
         // stop particle effect & collision
         arCubeToSpawn.GetComponent<BoxCollider>().enabled = false;
         var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
+
+        Quaternion cubeRot = Quaternion.Euler(placementPose.rotation.eulerAngles);
+
         emission.enabled = false;
         arCubeToSpawn = Instantiate(
             arCubeToSpawn,
             startPos,
-            arCubeToSpawn.transform.rotation // placementPose.rotation *
+            cubeRot
         );
         StartCoroutine(LerpMovement(startPos, endPos, duration, arCubeToSpawn));
         StartCoroutine(AddCubeEffect(duration + 4.5f));
