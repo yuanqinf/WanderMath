@@ -15,3 +15,12 @@ LeanCommon.csproj
 Assets/StreamingAssets/build_info
 Builds/*
 obj/*
+
+com.kyrylokuzyk.arfoundationremote
+ARFoundationRemoteInstaller
+ARFoundationRemoteCompanionApp
+Packages/com.unity.xr.arfoundation@4.1.7
+Assets/Plugins
+Assets/XR/Loaders
+Assets/XR/Settings
+Plugins.meta
