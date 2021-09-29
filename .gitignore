@@ -24,3 +24,7 @@ Assets/Plugins
 Assets/XR/Loaders
 Assets/XR/Settings
 Plugins.meta
+Assembly-CSharp-Editor.csproj
+Assets/XR/XRGeneralSettings.asset
+LeanCommon.csproj
+LeanTouch.csproj
