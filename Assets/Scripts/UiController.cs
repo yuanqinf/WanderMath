@@ -8,17 +8,20 @@ public class UiController : MonoBehaviour
     [SerializeField]
     private Canvas canvasUi;
     [SerializeField]
-    private GameObject preStartText;
-    [SerializeField]
     private GameObject subtitles;
     [SerializeField]
     private GameObject mouseCursor;
-    private string[] subtitleLines = {
-        "Oh, hi! I'm Quinnchilla, but you can call me Quinn. Nice to meet you!",
+    private string[] genericSubtitles = {
         "I was just wrapping some presents for my friends.",
         "Well, I was trying to, anyway.",
         "I need some boxes, but I only have these flat pieces.",
         "Can you help me make a cube, so I can finish wrapping the presents?",
+    };
+    private string[] phase0Subtitles =
+    {
+        "Today is my friend Quinn's birthday!",
+        "I'm almost done making a birthday card. But I need to fold it!",
+        "Thanks for helping me fold the card!"
     };
 
     private string selectCubeSubtitleLine = "Do you think you can make a cube out of that?";
@@ -27,7 +30,6 @@ public class UiController : MonoBehaviour
 
     void Start()
     {
-        preStartText.SetActive(false);
         subtitles.SetActive(false);
         mouseCursor.SetActive(false);
     }
@@ -48,10 +50,6 @@ public class UiController : MonoBehaviour
         subtitles.SetActive(isActive);
     }
 
-    public void SetPreStartTextActive(bool isActive)
-    {
-        preStartText.SetActive(isActive);
-    }
     #endregion
 
     // part 3: start complete cube subtitles
@@ -69,6 +67,24 @@ public class UiController : MonoBehaviour
     // part 1: start initial subtitles
     public void SetInitialSubtitleText(int num)
     {
-        subtitles.GetComponent<TextMeshProUGUI>().text = subtitleLines[num];
+        subtitles.GetComponent<TextMeshProUGUI>().text = genericSubtitles[num];
+    }
+
+    /// <summary>
+    /// Generic method to play subtitles based on a fixed duration and text
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="duration"></param>
+    public void PlaySubtitles(string text, float duration)
+    {
+        subtitles.SetActive(true);
+        subtitles.GetComponent<TextMeshProUGUI>().text = text;
+        StartCoroutine(StopSubtitles(duration));
+    }
+
+    IEnumerator StopSubtitles(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        subtitles.SetActive(false);
     }
 }

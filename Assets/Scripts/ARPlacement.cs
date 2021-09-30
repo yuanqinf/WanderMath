@@ -9,16 +9,15 @@ public class ARPlacement : MonoBehaviour
 {
 
     public GameObject arCubeToSpawn;
-    public GameObject arCharacterToSpawn;
     public GameObject placementIndicator;
     public RectTransform sliderHandleTransform;
     public Camera arCamera;
     public float rotateDegreeFactor;
 
+    private Pose placementPose; // temp to be removed
+
     private ARRaycastManager aRRaycastManager;
-    private Pose placementPose; // describe position of 3D object in space
     private bool layoutPlaced = false;
-    private bool placementPoseIsValid = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
     private UiController uiController;
@@ -33,7 +32,6 @@ public class ARPlacement : MonoBehaviour
 
     void Start()
     {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         uiController = FindObjectOfType<UiController>();
         gameController = FindObjectOfType<GameController>();
@@ -41,22 +39,7 @@ public class ARPlacement : MonoBehaviour
 
     void Update()
     {
-        // first part: object placement
-        if (!layoutPlaced)
-        {
-            UpdatePlacementPose();
-            UpdatePlacementIndicator();
-            Debug.Log(placementPose);
-            if (placementPoseIsValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                PlaceCharacterObject();
-                StartSubtitles();
-                placementIndicator.SetActive(false);
-                uiController.SetPreStartTextActive(false); // remove preStart text
-                layoutPlaced = true;
-            }
-        }
-
+        var a = placementIndicator.transform;
         // second part: click object to move towards you
         if (layoutPlaced && Input.touchCount > 0)
         {
@@ -276,38 +259,6 @@ public class ARPlacement : MonoBehaviour
     }
 
     #region AR object placement code
-    // Enable or disable placement tracker graphics
-    void UpdatePlacementIndicator()
-    {
-        if (placementPoseIsValid && layoutPlaced == false)
-        {
-            uiController.SetPreStartTextActive(false); // remove preStart text
-            placementIndicator.SetActive(true);
-            placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
-        }
-        else
-        {
-            uiController.SetPreStartTextActive(true); // enable preStart text
-            placementIndicator.SetActive(false);
-        }
-    }
-
-    // Activate the tracker when a horizontal plane is tracked
-    void UpdatePlacementPose()
-    {
-        var screenCenter = arCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
-        var hits = new List<ARRaycastHit>();
-        aRRaycastManager.Raycast(screenCenter, hits, TrackableType.Planes);
-
-        placementPoseIsValid = hits.Count > 0;
-        if (placementPoseIsValid)
-        {
-            placementPose = hits[0].pose; // update position
-            var cameraForward = arCamera.transform.forward;
-            var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
-            placementPose.rotation = Quaternion.LookRotation(cameraBearing);
-        }
-    }
 
     /// <summary>
     /// Initialize object based on duration & distance it'll float from.
@@ -342,30 +293,6 @@ public class ARPlacement : MonoBehaviour
         arCubeToSpawn.GetComponent<BoxCollider>().enabled = true;
         var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
         emission.enabled = true;
-    }
-
-    private void PlaceCharacterObject()
-    {
-        // to be placed at the corner
-        Debug.Log("placement Pose: " + placementPose.rotation);
-
-        Vector3 rot = placementPose.rotation.eulerAngles;
-        rot = new Vector3(rot.x, rot.y + 180, rot.z);
-
-        Vector3 characterPos = placementPose.position
-            + (placementIndicator.transform.forward * 0.4f) + (-placementIndicator.transform.right * 0.4f);
-
-        Quaternion characterRot = Quaternion.Euler(rot);
-
-        arCharacter = Instantiate(
-            arCharacterToSpawn, characterPos, characterRot
-        );
-
-    }
-
-    private void StartSubtitles()
-    {
-        gameController.StartSubtitlesWithAudio();
     }
 
     /// <summary>
