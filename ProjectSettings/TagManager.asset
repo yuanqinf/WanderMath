@@ -8,6 +8,7 @@ TagManager:
   - cup
   - cube1
   - birthdaycard
+  - cube_easy
   layers:
   - Default
   - TransparentFX

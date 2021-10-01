@@ -14,18 +14,22 @@ public class ObjectMovementController : MonoBehaviour
     private BirthdayCardController birthdayCardController;
     private CharacterController characterController;
     private HelperUtils utils;
+    private CubeRotateControl cubeControl;
 
     void Start()
     {
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         characterController = FindObjectOfType<CharacterController>();
         utils = FindObjectOfType<HelperUtils>();
+        cubeControl = FindObjectOfType<CubeRotateControl>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isObjectMovementEnabled && Input.touchCount > 0)
+        //if (isObjectMovementEnabled && Input.touchCount > 0)
+
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -37,10 +41,10 @@ public class ObjectMovementController : MonoBehaviour
                 {
                     initTouchPosition = touch.position;
                     initialRealWorldPosition = hitObject.point;
-                    Debug.Log("hit position vector3: " + hitObject.point);
+                    //Debug.Log("hit position vector3: " + hitObject.point);
                     // arCamera.ScreenToWorldPoint(new Vector3(initTouchPosition.x, initTouchPosition.y, arCamera.nearClipPlane)) // doesnt work, always the same value
                     touchedObject = hitObject.transform.gameObject;
-                    Debug.Log("touchedObject location: " + touchedObject.transform.position);
+                    //Debug.Log("touchedObject location: " + touchedObject.transform.position);
                 }
             }
 
@@ -56,9 +60,10 @@ public class ObjectMovementController : MonoBehaviour
                     //uiController.SetCursorPosition(newTouchPosition);
                     if (touchedObject != null)
                     {
+                        //Debug.Log("this is touched object name: " + touchedObject.name);
                         switch (touchedObject.name)
                         {
-                            case "BirthdayCardToFold":
+                            case "BirthdayCardToFold": 
                                 var initialRotation = birthdayCardController.GetInitialDegree();
                                 Debug.Log(newRealWorldPosition + " : " + initialRealWorldPosition);
                                 // in charge of moving
@@ -69,7 +74,7 @@ public class ObjectMovementController : MonoBehaviour
                                 }
                                 // in charge of snapping logic
                                 var eulerAngle = touchedObject.transform.eulerAngles;
-                                Debug.Log("touched object angle: " + eulerAngle);
+                                //Debug.Log("touched object angle: " + eulerAngle);
                                 if (eulerAngle.y > 40 + initialRotation)
                                 {
                                     // TODO: add sound effects & visual effect
@@ -77,9 +82,14 @@ public class ObjectMovementController : MonoBehaviour
                                 }
                                 break;
                             default:
-                                Debug.Log("objectname: " + touchedObject.name);
+                                //Debug.Log("objectname: " + touchedObject.name);
                                 break;
                         }
+
+                        Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
+                        Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
+
+                        cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                     }
                 }
             }

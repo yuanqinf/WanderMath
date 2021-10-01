@@ -44,24 +44,24 @@ public class GameController : MonoBehaviour
             PlaceObjectWhenTouched();
         }
 
-        switch (gamePhase)
-        {
-            // birthday card stage
-            case "phase0":
-                // 1. phase0 subtitle
-                // 2. initialize birthday card falling with tutorial
-                birthdayCardController.InitializeBirthdayCard(placementController.GetPlacementPose());
-                // 4. flip birthday card to snap
-                // 5. keep the birthday card and say good job
-                Debug.Log("setting gamephase");
-                gamePhase = "waiting";
-                break;
-            // handles first cube
-            case "phase1":
-                break;
-            default:
-                break;
-        }
+        //switch (gamePhase)
+        //{
+        //    // birthday card stage
+        //    case "phase0":
+        //        // 1. phase0 subtitle
+        //        // 2. initialize birthday card falling with tutorial
+        //        birthdayCardController.InitializeBirthdayCard(placementController.GetPlacementPose());
+        //        // 4. flip birthday card to snap
+        //        // 5. keep the birthday card and say good job
+        //        Debug.Log("setting gamephase");
+        //        gamePhase = "waiting";
+        //        break;
+        //    // handles first cube
+        //    case "phase1":
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 
     /// <summary>
