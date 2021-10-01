@@ -20,8 +20,10 @@ public class ARPlacement : MonoBehaviour
     private bool layoutPlaced = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
+
     private UiController uiController;
     private GameController gameController;
+    private HelperUtils utils;
 
     //private GameObject arCube
     private GameObject arCharacter;
@@ -35,6 +37,7 @@ public class ARPlacement : MonoBehaviour
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         uiController = FindObjectOfType<UiController>();
         gameController = FindObjectOfType<GameController>();
+        utils = FindObjectOfType<HelperUtils>();
     }
 
     void Update()
@@ -72,7 +75,7 @@ public class ARPlacement : MonoBehaviour
                         touchedObject.GetComponent<BoxCollider>().enabled = false;
                         var emission = touchedObject.GetComponent<ParticleSystem>().emission;
                         emission.enabled = false;
-                        StartCoroutine(LerpMovement(startPos, endPos, duration, touchedObject));
+                        StartCoroutine(utils.LerpMovement(startPos, endPos, duration, touchedObject));
                     }
                 }
             }
@@ -253,7 +256,7 @@ public class ARPlacement : MonoBehaviour
             var duration = gameController.StartCompleteCubeSubtitleWithAudio();
             uiController.SetCursorActive(false);
             // move cube to character
-            StartCoroutine(LerpMovement(arCubeToSpawn.transform.position, arCharacter.transform.position, duration, arCubeToSpawn));
+            StartCoroutine(utils.LerpMovement(arCubeToSpawn.transform.position, arCharacter.transform.position, duration, arCubeToSpawn));
             snappedSides = 0;
         }
     }
@@ -282,7 +285,7 @@ public class ARPlacement : MonoBehaviour
             startPos,
             cubeRot
         );
-        StartCoroutine(LerpMovement(startPos, endPos, duration, arCubeToSpawn));
+        StartCoroutine(utils.LerpMovement(startPos, endPos, duration, arCubeToSpawn));
         StartCoroutine(AddCubeEffect(duration + 4.5f));
     }
 
@@ -294,26 +297,6 @@ public class ARPlacement : MonoBehaviour
         var emission = arCubeToSpawn.GetComponent<ParticleSystem>().emission;
         emission.enabled = true;
     }
-
-    /// <summary>
-    /// Move object from a starting point to an ending point within a lerpTime
-    /// </summary>
-    /// <param name="startPos">initial pos of object</param>
-    /// <param name="endPos">final position of object</param>
-    /// <param name="lerpTime">time taken for object to move into position</param>
-    /// <param name="gameObject">game object to be moving</param>
-    /// <returns></returns>
-    IEnumerator LerpMovement(Vector3 startPos, Vector3 endPos, float lerpTime, GameObject gameObject)
-    {
-        float timeElapsed = 0;
-
-        while (timeElapsed < lerpTime)
-        {
-            gameObject.transform.position = Vector3.Lerp(startPos, endPos, timeElapsed / lerpTime);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-    }
+   
     #endregion finish ar object placement
 }

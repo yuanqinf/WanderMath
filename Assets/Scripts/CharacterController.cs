@@ -15,7 +15,7 @@ public class CharacterController : MonoBehaviour
         uiController = FindObjectOfType<UiController>();
     }
 
-    public void InitCharacterFirst(Pose placementPose, Transform placementPos)
+    public float InitCharacterFirst(Pose placementPose, Transform placementPos)
     {
         // to be placed at the corner
         Debug.Log("placement Pose: " + placementPose.rotation);
@@ -31,12 +31,13 @@ public class CharacterController : MonoBehaviour
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, characterRot
         );
-        StartFirstLine();
+        return StartFirstLine();
     }
 
-    private void StartFirstLine()
+    private float StartFirstLine()
     {
         // TODO: add audio here and update duration
         uiController.PlaySubtitles(introLine, 3.0f);
+        return 3.0f;
     }
 }

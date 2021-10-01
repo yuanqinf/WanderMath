@@ -22,6 +22,7 @@ public class PlacementIndicatorController : MonoBehaviour
     void Start()
     {
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
+        placementIndicator.SetActive(false);
         preStartText.SetActive(false);
     }
 
@@ -63,6 +64,7 @@ public class PlacementIndicatorController : MonoBehaviour
     /// </summary>
     public void TurnOffPlacementAndText()
     {
+        isLayoutPlaced = true;
         placementIndicator.SetActive(false);
         preStartText.SetActive(false);
     }
