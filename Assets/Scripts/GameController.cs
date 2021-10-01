@@ -4,18 +4,85 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    // for debugging placement position
+    public Pose placementPose;
+
+    [SerializeField]
+    private Camera arCamera;
     [SerializeField]
     private float cubeUpDistance = 0.8f;
-    private UiController uiController;
-    private SoundManager soundManager;
-    private ARPlacement arPlacement;
 
-    void Start()
+    private ARPlacement arPlacement;
+    private CharacterController characterPlacement;
+    private PlacementIndicatorController placementController;
+    private BirthdayCardController birthdayCardController;
+    private SoundManager soundManager;
+    private UiController uiController;
+    private string gamePhase = "";
+
+    private void Start()
     {
-        uiController = FindObjectOfType<UiController>();
-        soundManager = FindObjectOfType<SoundManager>();
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         arPlacement = FindObjectOfType<ARPlacement>();
+        characterPlacement = FindObjectOfType<CharacterController>();
+        placementController = FindObjectOfType<PlacementIndicatorController>();
+        birthdayCardController = FindObjectOfType<BirthdayCardController>();
+        soundManager = FindObjectOfType<SoundManager>();
+        uiController = FindObjectOfType<UiController>();
+
+        // for testing purposes
+        //placementController.TurnOffPlacementAndText();
     }
+
+    private void Update()
+    {
+        placementPose = placementController.GetPlacementPose();
+        // handles indicator and object placement
+        if (!placementController.GetIsLayoutPlaced())
+        {
+            placementController.UpdatePlacementAndPose(arCamera);
+            PlaceObjectWhenTouched();
+        }
+
+        switch (gamePhase)
+        {
+            // birthday card stage
+            case "phase0":
+                // 1. phase0 subtitle
+                // 2. initialize birthday card falling with tutorial
+                birthdayCardController.InitializeBirthdayCard(placementController.GetPlacementPose());
+                // 4. flip birthday card to snap
+                // 5. keep the birthday card and say good job
+                Debug.Log("setting gamephase");
+                gamePhase = "waiting";
+                break;
+            // handles first cube
+            case "phase1":
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Place character object when set
+    /// </summary>
+    private void PlaceObjectWhenTouched()
+    {
+        if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            float duration = characterPlacement.InitCharacterFirst(placementController.GetPlacementPose(), placementController.GetPlacementIndicatorLocation());
+            placementController.TurnOffPlacementAndText();
+            StartCoroutine(WaitAudioFinish(duration));
+        }
+    }
+
+    IEnumerator WaitAudioFinish(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        gamePhase = "phase0";
+    }
+
 
     // part 3: finish building cube
     public float StartCompleteCubeSubtitleWithAudio()
@@ -55,7 +122,7 @@ public class GameController : MonoBehaviour
         uiController.SetSubtitleActive(false);
     }
 
-    // part 1: initialize cube
+    // part 1: initialize cube (TODO: to be changed)
     public void StartSubtitlesWithAudio()
     {
         StartCoroutine(InitialSubtitleWithAudio());

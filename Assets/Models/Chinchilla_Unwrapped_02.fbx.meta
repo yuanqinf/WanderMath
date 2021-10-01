@@ -1,12 +1,29 @@
 fileFormatVersion: 2
-guid: 87afe6bbf7e6a494db07431db0a71f5b
+guid: 8bb1b129158580044848add4974f2686
 ModelImporter:
-  serializedVersion: 20200
-  internalIDToNameTable:
+  serializedVersion: 21100
+  internalIDToNameTable: []
+  externalObjects:
   - first:
-      74: 1827226128182048838
-    second: spin
-  externalObjects: {}
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Finley_Body_MAT
+    second: {fileID: 2100000, guid: bd183acbde0ce51428db908ff7759aab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Finley_Pants_MAT
+    second: {fileID: 2100000, guid: 152e967e18d56554d9eea40adbe3b1fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Finley_Sneakers_MAT
+    second: {fileID: 2100000, guid: b13f1971ffc6e6841afd1b950bb85f88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Finley_Sweatshirt_MAT
+    second: {fileID: 2100000, guid: 4a457c22dbce15e4981cada2c62c2268, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -33,36 +50,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: spin
-      takeName: Take 001
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 59
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []
