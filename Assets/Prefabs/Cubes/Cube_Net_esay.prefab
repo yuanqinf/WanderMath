@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 2297342183582207129}
   m_Layer: 0
   m_Name: Cube_Net_esay
-  m_TagString: cube1
+  m_TagString: cube_easy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +475,7 @@ BoxCollider:
   m_GameObject: {fileID: 6632516031932541163}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 4.1430764, y: 0.58, z: 3.072309}
   m_Center: {x: -1.4315379, y: 0.28, z: -1.9849837}
