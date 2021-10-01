@@ -9,7 +9,7 @@ public class HelperUtils : MonoBehaviour
     /// </summary>
     /// <param name="duration"></param>
     /// <param name="upDistance"></param>
-    public void PlaceObjectInSky(GameObject gameObject, Vector3 position, Quaternion rotation, float duration, float upDistance)
+    public GameObject PlaceObjectInSky(GameObject gameObject, Vector3 position, Quaternion rotation, float duration, float upDistance)
     {
         var endPos = position + new Vector3(0.0f, 0.0f, 0.05f);
         var startPos = position + new Vector3(0.0f, 0.0f, 0.05f) + Vector3.up * upDistance;
@@ -22,6 +22,7 @@ public class HelperUtils : MonoBehaviour
             cubeRot
         );
         StartCoroutine(LerpMovement(startPos, endPos, duration, gameObject));
+        return gameObject;
     }
 
     /// <summary>

@@ -50,7 +50,6 @@ public class GameController : MonoBehaviour
             case "phase0":
                 // 1. phase0 subtitle
                 // 2. initialize birthday card falling
-                Debug.Log("new placement pose: " + placementController.GetPlacementPose());
                 birthdayCardController.InitializeBirthdayCard(placementController.GetPlacementPose());
                 // 3. add tutorial to flip birthday card
                 // 4. flip birthday card to snap
