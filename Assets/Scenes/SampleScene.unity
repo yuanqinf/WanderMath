@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   birthdayCard: {fileID: 9016676269535723159, guid: e10afb19a82c349078f12b4fc62df45f, type: 3}
+  initialDegree: 90
 --- !u!114 &40919620
 MonoBehaviour:
   m_ObjectHideFlags: 0
