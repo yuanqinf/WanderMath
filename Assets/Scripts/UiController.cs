@@ -19,7 +19,6 @@ public class UiController : MonoBehaviour
     };
     private string[] phase0Subtitles =
     {
-        "Today is my friend Quinn's birthday!",
         "I'm almost done making a birthday card. But I need to fold it!",
         "Thanks for helping me fold the card!"
     };

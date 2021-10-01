@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class ARPlacement : MonoBehaviour
 {
-
     public GameObject arCubeToSpawn;
     public GameObject placementIndicator;
     public RectTransform sliderHandleTransform;
@@ -16,7 +15,6 @@ public class ARPlacement : MonoBehaviour
 
     private Pose placementPose; // temp to be removed
 
-    private ARRaycastManager aRRaycastManager;
     private bool layoutPlaced = false;
     private GameObject touchedObject;
     private Vector2 initTouchPosition;
@@ -34,7 +32,6 @@ public class ARPlacement : MonoBehaviour
 
     void Start()
     {
-        aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         uiController = FindObjectOfType<UiController>();
         gameController = FindObjectOfType<GameController>();
         utils = FindObjectOfType<HelperUtils>();
@@ -42,7 +39,6 @@ public class ARPlacement : MonoBehaviour
 
     void Update()
     {
-        var a = placementIndicator.transform;
         // second part: click object to move towards you
         if (layoutPlaced && Input.touchCount > 0)
         {

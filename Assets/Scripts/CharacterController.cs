@@ -40,4 +40,9 @@ public class CharacterController : MonoBehaviour
         uiController.PlaySubtitles(introLine, 3.0f);
         return 3.0f;
     }
+
+    public Vector3 GetArCharacterPosition()
+    {
+        return arCharacterToSpawn.transform.position;
+    }
 }
