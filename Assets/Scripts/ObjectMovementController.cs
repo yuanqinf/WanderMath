@@ -73,29 +73,29 @@ public class ObjectMovementController : MonoBehaviour
                                 // in charge of moving
                                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                                 {
-                                    touchedObject.transform.Rotate(new Vector3(1.5f, 0, 0));
+                                    touchedObject.transform.Rotate(new Vector3(1.25f, 0, 0));
                                     birthdayCardController.SwitchOffAnimation();
                                 }
                                 // in charge of snapping logic
                                 var eulerAngle = touchedObject.transform.eulerAngles;
                                 //Debug.Log("touched object angle: " + eulerAngle);
-                                if (eulerAngle.y > 40 + initialRotation)
+                                if (eulerAngle.y > 50 + 90f)
                                 {
                                     soundManager.PlaySuccessSound();
                                     var duration = birthdayCardController.PlayBirthdayCardCompleteWithSubtitles();
-                                    var completedBirthdayCard = birthdayCardController.GetCompletedBirthdayCard();
-                                    snapObject(eulerAngle.x, 60 + initialRotation, eulerAngle.z, touchedObject, duration);
+                                    //var completedBirthdayCard = birthdayCardController.GetCompletedBirthdayCard();
+                                    snapObject(eulerAngle.x, 60 + 90f, eulerAngle.z, touchedObject, duration);
+                                    gameController.SetGamePhaseWithDelay("phase1", duration);
                                 }
                                 break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;
                         }
+                        cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
 
                         Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
                         Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
-
-                        cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                     }
                 }
             }

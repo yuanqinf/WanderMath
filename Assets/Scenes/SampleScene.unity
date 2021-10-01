@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7828424fcb242528c6278807ddd806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arCharacterToSpawn: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
+  arCharacterToSpawn: {fileID: 5223579461182373840, guid: 29c78f8a0d7796c49a46092bf8b03f1b, type: 3}
 --- !u!114 &40919619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486b2cbf360264811947a84dd15776d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeEasy: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
 --- !u!1 &70562695
 GameObject:
   m_ObjectHideFlags: 0

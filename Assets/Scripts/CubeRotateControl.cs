@@ -5,8 +5,20 @@ using UnityEngine;
 
 public class CubeRotateControl : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject cubeEasy;
+    private HelperUtils utils;
+    private SoundManager soundManager;
+    private UiController uiController;
 
-    public Vector3 testV3 = new Vector3(20, 20, 20);
+    private string cubeEasySubtitles = "Do you think you can make a cube out of that?";
+
+    private void Start()
+    {
+        utils = FindObjectOfType<HelperUtils>();
+        soundManager = FindObjectOfType<SoundManager>();
+        uiController = FindObjectOfType<UiController>();
+    }
 
     public void rotateFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
@@ -70,6 +82,20 @@ public class CubeRotateControl : MonoBehaviour
                 }
             }
         }
+    }
+
+    public float PlayCubeEasyWithSubtitles()
+    {
+        var duration = soundManager.PlaySelectACubeAudio();
+        uiController.PlaySubtitles(cubeEasySubtitles, duration);
+        return duration;
+    }
+
+    public void InitializeCube(Pose pose, float duration)
+    {
+        Vector3 rot = pose.rotation.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+        cubeEasy = utils.PlaceObjectInSky(cubeEasy, pose.position, Quaternion.Euler(rot), duration, 0.5f);
     }
 
     private void snapObject(GameObject touchedObject, float x, float y, float z)

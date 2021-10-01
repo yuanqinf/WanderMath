@@ -79,9 +79,10 @@ public class SoundManager : MonoBehaviour
         return selectACubeClip.length;
     }
 
-    public void PlaySelectACubeAudio()
+    public float PlaySelectACubeAudio()
     {
         audioSource.PlayOneShot(selectACubeClip, 1);
+        return selectACubeClip.length;
     }
     #endregion
 

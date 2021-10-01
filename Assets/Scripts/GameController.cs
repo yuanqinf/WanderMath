@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     private CharacterController characterController;
     private PlacementIndicatorController placementController;
     private BirthdayCardController birthdayCardController;
+    private CubeRotateControl cubeController;
     private SoundManager soundManager;
     private UiController uiController;
     private string gamePhase = "";
@@ -25,6 +26,7 @@ public class GameController : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         arPlacement = FindObjectOfType<ARPlacement>();
         characterController = FindObjectOfType<CharacterController>();
+        cubeController = FindObjectOfType<CubeRotateControl>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         soundManager = FindObjectOfType<SoundManager>();
@@ -57,6 +59,11 @@ public class GameController : MonoBehaviour
                 break;
             // handles first cube
             case "phase1":
+                // instantiate
+                Destroy(birthdayCardController.GetBirthdayCard());
+                duration = cubeController.PlayCubeEasyWithSubtitles();
+                cubeController.InitializeCube(placementController.GetPlacementPose(), duration);
+                gamePhase = "waiting";
                 break;
             default:
                 break;
@@ -74,6 +81,23 @@ public class GameController : MonoBehaviour
             placementController.TurnOffPlacementAndText();
             StartCoroutine(WaitAudioFinish(duration));
         }
+    }
+
+    public void SetGamePhaseWithDelay(string phaseName, float duration)
+    {
+        StartCoroutine(SetGamePhase(phaseName, duration));
+    }
+
+    IEnumerator SetGamePhase(string phaseName, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        gamePhase = phaseName;
+    }
+
+
+    public void SetGamePhase(string phaseName)
+    {
+        gamePhase = phaseName;
     }
 
     IEnumerator WaitAudioFinish(float duration)

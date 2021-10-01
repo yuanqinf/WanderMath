@@ -71,6 +71,11 @@ public class BirthdayCardController : MonoBehaviour
         objectMovementController.SetObjectMovementEnabled(true);
     }
 
+    public GameObject GetBirthdayCard()
+    {
+        return birthdayCard;
+    }
+
     public GameObject GetCompletedBirthdayCard()
     {
         return completedBirthdayCard;
