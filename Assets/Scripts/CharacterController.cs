@@ -8,11 +8,13 @@ public class CharacterController : MonoBehaviour
     private GameObject arCharacterToSpawn;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
+    private SoundManager soundManager;
     private UiController uiController;
 
     private void Start()
     {
         uiController = FindObjectOfType<UiController>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     public float InitCharacterFirst(Pose placementPose, Transform placementPos)
@@ -36,9 +38,9 @@ public class CharacterController : MonoBehaviour
 
     private float StartFirstLine()
     {
-        // TODO: add audio here and update duration
-        uiController.PlaySubtitles(introLine, 3.0f);
-        return 3.0f;
+        var duration = soundManager.PlayCharacterInitClip();
+        uiController.PlaySubtitles(introLine, duration);
+        return duration;
     }
 
     public Vector3 GetArCharacterPosition()

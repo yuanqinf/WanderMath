@@ -10,11 +10,55 @@ public class SoundManager : MonoBehaviour
     private AudioClip selectACubeClip;
     [SerializeField]
     private AudioClip completeCubeClip;
+// starting line
+    [SerializeField]
+    private AudioClip characterInitClip;
+
+// birthday audio
+    [SerializeField]
+    private AudioClip birthdayCardInitClip;
+    [SerializeField]
+    private AudioClip birthdayCardCompleteClip;
+
+// sound effects
+    [SerializeField]
+    private AudioClip[] soundEffects;
     private AudioSource audioSource;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+    }
+
+// Birthday card
+    public float PlayBirthdayCardInitClip()
+    {
+        audioSource.PlayOneShot(birthdayCardInitClip);
+        return birthdayCardInitClip.length;
+    }
+
+    public float PlayBirthdayCardCompleteClip()
+    {
+        audioSource.PlayOneShot(birthdayCardCompleteClip);
+        return birthdayCardCompleteClip.length;
+    }
+
+// Sound effects
+    public void PlaySuccessSound()
+    {
+        audioSource.PlayOneShot(soundEffects[0]);
+    }
+
+    public void PlaySnapSound()
+    {
+        audioSource.PlayOneShot(soundEffects[1]);
+    }
+
+// Play character sound
+    public float PlayCharacterInitClip()
+    {
+        audioSource.PlayOneShot(characterInitClip);
+        return characterInitClip.length;
     }
 
     #region part 3: complete cube audio

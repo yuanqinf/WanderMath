@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   birthdayCard: {fileID: 9016676269535723159, guid: e10afb19a82c349078f12b4fc62df45f, type: 3}
+  completedBirthdayCard: {fileID: 1237129045292012925, guid: c80cec1bdc246401891b6190035ba4bb, type: 3}
   initialDegree: 90
 --- !u!114 &40919620
 MonoBehaviour:
@@ -905,6 +906,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b5acbe79361aa429b81947d00e5bab1e, type: 3}
   selectACubeClip: {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
   completeCubeClip: {fileID: 8300000, guid: 426b07859fc6647e4987146fde806bb6, type: 3}
+  characterInitClip: {fileID: 8300000, guid: 075a7fb3eafaf4ad49c1feb4738169de, type: 3}
+  birthdayCardInitClip: {fileID: 8300000, guid: 5c867973cf0a84633bb472653a4f56e7, type: 3}
+  birthdayCardCompleteClip: {fileID: 8300000, guid: 0e5c21d50f8fd4676997916c5ccfef49, type: 3}
+  soundEffects:
+  - {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
+  - {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
 --- !u!4 &897245920
 Transform:
   m_ObjectHideFlags: 0

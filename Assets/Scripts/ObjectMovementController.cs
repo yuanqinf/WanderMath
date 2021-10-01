@@ -13,12 +13,16 @@ public class ObjectMovementController : MonoBehaviour
     private bool isObjectMovementEnabled = false;
     private BirthdayCardController birthdayCardController;
     private CharacterController characterController;
+    private GameController gameController;
     private HelperUtils utils;
+    private SoundManager soundManager;
 
     void Start()
     {
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         characterController = FindObjectOfType<CharacterController>();
+        gameController = FindObjectOfType<GameController>();
+        soundManager = FindObjectOfType<SoundManager>();
         utils = FindObjectOfType<HelperUtils>();
     }
 
@@ -64,7 +68,7 @@ public class ObjectMovementController : MonoBehaviour
                                 // in charge of moving
                                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                                 {
-                                    touchedObject.transform.Rotate(new Vector3(1, 0, 0));
+                                    touchedObject.transform.Rotate(new Vector3(1.5f, 0, 0));
                                     birthdayCardController.SwitchOffAnimation();
                                 }
                                 // in charge of snapping logic
@@ -72,8 +76,10 @@ public class ObjectMovementController : MonoBehaviour
                                 Debug.Log("touched object angle: " + eulerAngle);
                                 if (eulerAngle.y > 40 + initialRotation)
                                 {
-                                    // TODO: add sound effects & visual effect
-                                    snapObject(eulerAngle.x, 60 + initialRotation, eulerAngle.z, touchedObject);
+                                    soundManager.PlaySuccessSound();
+                                    var duration = birthdayCardController.PlayBirthdayCardCompleteWithSubtitles();
+                                    var completedBirthdayCard = birthdayCardController.GetCompletedBirthdayCard();
+                                    snapObject(eulerAngle.x, 60 + initialRotation, eulerAngle.z, touchedObject, duration);
                                 }
                                 break;
                             default:
@@ -86,7 +92,7 @@ public class ObjectMovementController : MonoBehaviour
         }
     }
 
-    private void snapObject(float x, float y, float z, GameObject gameObject)
+    private void snapObject(float x, float y, float z, GameObject gameObject, float duration)
     {
         Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         Vector3 newAngle = new Vector3(x, y, z);
@@ -95,9 +101,8 @@ public class ObjectMovementController : MonoBehaviour
         Debug.Log("angle to assign: " + newAngle + "new parent object rot angle: " + touchedObject.transform.eulerAngles);
         // play audio & subtitle
         //var duration = gameController.StartCompleteCubeSubtitleWithAudio();
-        var tempDuration = 5.0f;
         // move cube to character
-        StartCoroutine(utils.LerpMovement(touchedObject.transform.position, characterController.GetArCharacterPosition(), tempDuration, touchedObject.transform.parent.gameObject));
+        StartCoroutine(utils.LerpMovement(touchedObject.transform.position, characterController.GetArCharacterPosition(), duration, touchedObject.transform.parent.gameObject));
         touchedObject = null; // unselect object
     }
 

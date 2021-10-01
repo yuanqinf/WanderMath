@@ -17,11 +17,6 @@ public class UiController : MonoBehaviour
         "I need some boxes, but I only have these flat pieces.",
         "Can you help me make a cube, so I can finish wrapping the presents?",
     };
-    private string[] phase0Subtitles =
-    {
-        "I'm almost done making a birthday card. But I need to fold it!",
-        "Thanks for helping me fold the card!"
-    };
 
     private string selectCubeSubtitleLine = "Do you think you can make a cube out of that?";
     private string completeCubeSubtitleLine = "No way! That's a cube. It makes sense, see, a cube has six faces.";
