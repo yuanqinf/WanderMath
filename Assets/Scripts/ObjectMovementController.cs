@@ -73,7 +73,7 @@ public class ObjectMovementController : MonoBehaviour
                                 // in charge of moving
                                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                                 {
-                                    touchedObject.transform.Rotate(new Vector3(2.5f, 0, 0));
+                                    touchedObject.transform.Rotate(new Vector3(5f, 0, 0));
                                     birthdayCardController.SwitchOffAnimation();
                                 }
                                 // in charge of snapping logic
