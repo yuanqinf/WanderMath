@@ -135,9 +135,6 @@ GameObject:
   - component: {fileID: 40919615}
   - component: {fileID: 40919617}
   - component: {fileID: 40919618}
-  - component: {fileID: 40919619}
-  - component: {fileID: 40919620}
-  - component: {fileID: 40919621}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -172,7 +169,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 503, y: 287, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1558233066}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -203,47 +201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arCharacterToSpawn: {fileID: 5223579461182373840, guid: 29c78f8a0d7796c49a46092bf8b03f1b, type: 3}
---- !u!114 &40919619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40919614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af1c5398da3644d8cbcde30fb9c6b8ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  birthdayCard: {fileID: 9016676269535723159, guid: e10afb19a82c349078f12b4fc62df45f, type: 3}
-  completedBirthdayCard: {fileID: 1237129045292012925, guid: c80cec1bdc246401891b6190035ba4bb, type: 3}
-  initialDegree: 90
---- !u!114 &40919620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40919614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa648b1ace61246f19858b9b501322ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arCamera: {fileID: 1195867877}
---- !u!114 &40919621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40919614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 486b2cbf360264811947a84dd15776d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeEasy: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
 --- !u!1 &70562695
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +878,7 @@ MonoBehaviour:
   selectACubeClip: {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
   completeCubeClip: {fileID: 8300000, guid: 426b07859fc6647e4987146fde806bb6, type: 3}
   characterInitClip: {fileID: 8300000, guid: 075a7fb3eafaf4ad49c1feb4738169de, type: 3}
+  birthdayCardPreClip: {fileID: 8300000, guid: 5a15a5504caf545528e37d0969bea221, type: 3}
   birthdayCardInitClip: {fileID: 8300000, guid: 5c867973cf0a84633bb472653a4f56e7, type: 3}
   birthdayCardCompleteClip: {fileID: 8300000, guid: 0e5c21d50f8fd4676997916c5ccfef49, type: 3}
   soundEffects:
@@ -1621,6 +1579,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1558233065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558233066}
+  - component: {fileID: 1558233069}
+  - component: {fileID: 1558233068}
+  - component: {fileID: 1558233067}
+  m_Layer: 0
+  m_Name: ObjectScripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1558233066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -502.65955, y: -287.8799, z: 1.1527421}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 40919616}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1558233067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486b2cbf360264811947a84dd15776d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeEasy: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
+  curCubeSnappedSides: 0
+--- !u!114 &1558233068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa648b1ace61246f19858b9b501322ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arCamera: {fileID: 1195867877}
+--- !u!114 &1558233069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af1c5398da3644d8cbcde30fb9c6b8ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birthdayCard: {fileID: 9016676269535723159, guid: e10afb19a82c349078f12b4fc62df45f, type: 3}
+  completedBirthdayCard: {fileID: 1237129045292012925, guid: c80cec1bdc246401891b6190035ba4bb, type: 3}
+  initialDegree: 90
 --- !u!1 &1602182253
 GameObject:
   m_ObjectHideFlags: 0

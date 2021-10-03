@@ -16,6 +16,8 @@ public class SoundManager : MonoBehaviour
 
 // birthday audio
     [SerializeField]
+    private AudioClip birthdayCardPreClip;
+    [SerializeField]
     private AudioClip birthdayCardInitClip;
     [SerializeField]
     private AudioClip birthdayCardCompleteClip;
@@ -31,10 +33,20 @@ public class SoundManager : MonoBehaviour
     }
 
 // Birthday card
-    public float PlayBirthdayCardInitClip()
+    public float PlayBirthdayCardPreClip()
+    {
+        audioSource.PlayOneShot(birthdayCardPreClip);
+        return birthdayCardPreClip.length;
+    }
+
+    public float GetBirthdayCardInitClip()
+    {
+        return birthdayCardInitClip.length;
+    }
+
+    public void PlayBirthdayCardInitClip()
     {
         audioSource.PlayOneShot(birthdayCardInitClip);
-        return birthdayCardInitClip.length;
     }
 
     public float PlayBirthdayCardCompleteClip()

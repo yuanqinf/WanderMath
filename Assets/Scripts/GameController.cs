@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     private CubeRotateControl cubeController;
     private SoundManager soundManager;
     private UiController uiController;
-    private string gamePhase = "";
+    private string gamePhase = "setup";
 
     private void Start()
     {
@@ -38,31 +38,34 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        placementPose = placementController.GetPlacementPose();
-        // handles indicator and object placement
-        if (!placementController.GetIsLayoutPlaced())
-        {
-            placementController.UpdatePlacementAndPose(arCamera);
-            PlaceObjectWhenTouched();
-        }
-
         switch (gamePhase)
         {
+            // setting up stage
+            case "setup":
+                if (!placementController.GetIsLayoutPlaced())
+                {
+                    placementPose = placementController.UpdatePlacementAndPose(arCamera, placementPose);
+                    if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        var audioDuration = PlaceObjectAndAudio();
+                        SetGamePhaseWithDelay("phase0", audioDuration);
+                    }
+                }
+                break;
             // birthday card stage
             case "phase0":
-                // 1. phase0 subtitle TODO: replace with audio duration
+                // 1. phase0 subtitle
                 var duration = birthdayCardController.PlayBirthdayCardInitWithSubtitles();
                 // 2. initialize birthday card falling with tutorial
-                birthdayCardController.InitializeBirthdayCard(placementController.GetPlacementPose(), duration);
-                Debug.Log("setting gamephase");
+                birthdayCardController.InitializeBirthdayCard(placementPose, duration);
                 gamePhase = "waiting";
                 break;
             // handles first cube
             case "phase1":
                 // instantiate
-                Destroy(birthdayCardController.GetBirthdayCard());
+                Destroy(birthdayCardController.BirthdayCard);
                 duration = cubeController.PlayCubeEasyWithSubtitles();
-                cubeController.InitializeCube(placementController.GetPlacementPose(), duration);
+                cubeController.InitializeCube(placementPose, duration);
                 gamePhase = "waiting";
                 break;
             default:
@@ -73,16 +76,18 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Place character object and starting audio when set
     /// </summary>
-    private void PlaceObjectWhenTouched()
+    private float PlaceObjectAndAudio()
     {
-        if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            float duration = characterController.InitCharacterFirst(placementController.GetPlacementPose(), placementController.GetPlacementIndicatorLocation());
-            placementController.TurnOffPlacementAndText();
-            StartCoroutine(WaitAudioFinish(duration));
-        }
+        float duration = characterController.InitCharacterFirst(placementPose, placementController.GetPlacementIndicatorLocation());
+        placementController.TurnOffPlacementAndText();
+        return duration;
     }
 
+    /// <summary>
+    /// Sets the gamephase with a delay duration.
+    /// </summary>
+    /// <param name="phaseName"></param>
+    /// <param name="duration"></param>
     public void SetGamePhaseWithDelay(string phaseName, float duration)
     {
         StartCoroutine(SetGamePhase(phaseName, duration));
@@ -100,10 +105,9 @@ public class GameController : MonoBehaviour
         gamePhase = phaseName;
     }
 
-    IEnumerator WaitAudioFinish(float duration)
+    public Vector3 GetArCharacterPosition()
     {
-        yield return new WaitForSeconds(duration);
-        gamePhase = "phase0";
+        return characterController.GetArCharacterPosition();
     }
 
     // part 3: finish building cube

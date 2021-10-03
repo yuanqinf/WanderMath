@@ -185,6 +185,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetFace_5
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &1386064033718009380 stripped
@@ -262,6 +266,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: NetFace_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
@@ -346,6 +354,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetFace_3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &4625517393932488509 stripped
@@ -428,6 +440,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: NetFace_base
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
@@ -576,6 +592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetFace_4
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &8535334911334999876 stripped
@@ -658,6 +678,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: NetFace_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_TagString
+      value: cube_easy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}

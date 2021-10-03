@@ -65,34 +65,18 @@ public class ObjectMovementController : MonoBehaviour
                     if (touchedObject != null)
                     {
                         //Debug.Log("this is touched object name: " + touchedObject.name);
-                        switch (touchedObject.name)
+                        switch (touchedObject.tag)
                         {
-                            case "BirthdayCardToFold": 
-                                var initialRotation = birthdayCardController.GetInitialDegree();
-                                Debug.Log(newRealWorldPosition + " : " + initialRealWorldPosition);
-                                // in charge of moving
-                                if (newRealWorldPosition.x < initialRealWorldPosition.x)
-                                {
-                                    touchedObject.transform.Rotate(new Vector3(5f, 0, 0));
-                                    birthdayCardController.SwitchOffAnimation();
-                                }
-                                // in charge of snapping logic
-                                var eulerAngle = touchedObject.transform.eulerAngles;
-                                //Debug.Log("touched object angle: " + eulerAngle);
-                                if (eulerAngle.y > 50 + 90f)
-                                {
-                                    soundManager.PlaySuccessSound();
-                                    var duration = birthdayCardController.PlayBirthdayCardCompleteWithSubtitles();
-                                    //var completedBirthdayCard = birthdayCardController.GetCompletedBirthdayCard();
-                                    snapObject(eulerAngle.x, 60 + 90f, eulerAngle.z, touchedObject, duration);
-                                    gameController.SetGamePhaseWithDelay("phase1", duration);
-                                }
+                            case "birthdaycard":
+                                birthdayCardController.UpdateCardMovement(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                break;
+                            case "cube_easy":
+                                cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;
                         }
-                        cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
 
                         Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
                         Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
@@ -100,20 +84,6 @@ public class ObjectMovementController : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void snapObject(float x, float y, float z, GameObject gameObject, float duration)
-    {
-        Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
-        Vector3 newAngle = new Vector3(x, y, z);
-        touchedObject.transform.eulerAngles = newAngle;
-        touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        Debug.Log("angle to assign: " + newAngle + "new parent object rot angle: " + touchedObject.transform.eulerAngles);
-        // play audio & subtitle
-        //var duration = gameController.StartCompleteCubeSubtitleWithAudio();
-        // move cube to character
-        StartCoroutine(utils.LerpMovement(touchedObject.transform.position, characterController.GetArCharacterPosition(), duration, touchedObject.transform.parent.gameObject));
-        touchedObject = null; // unselect object
     }
 
     public void SetObjectMovementEnabled(bool isActive)

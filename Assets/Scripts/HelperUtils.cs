@@ -45,10 +45,4 @@ public class HelperUtils : MonoBehaviour
             yield return null;
         }
     }
-
-    public IEnumerator DelayTime(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-    }
-
 }

@@ -12,7 +12,6 @@ public class PlacementIndicatorController : MonoBehaviour
     [SerializeField]
     private GameObject preStartText;
 
-    private Pose placementPose; // describe position of 3D object in space
     private bool isLayoutPlaced = false;
     private bool isPlacementPoseValid = false;
 
@@ -32,20 +31,9 @@ public class PlacementIndicatorController : MonoBehaviour
         return isLayoutPlaced;
     }
 
-    public Pose GetPlacementPose()
-    {
-        return placementPose;
-    }
-
     public bool GetIsPlacementPoseValid()
     {
         return isPlacementPoseValid;
-    }
-
-    public void UpdatePlacementAndPose(Camera camera)
-    {
-        UpdatePlacementPose(camera);
-        UpdatePlacementIndicator();
     }
 
     public Transform GetPlacementIndicatorLocation()
@@ -69,8 +57,15 @@ public class PlacementIndicatorController : MonoBehaviour
         preStartText.SetActive(false);
     }
 
+    public Pose UpdatePlacementAndPose(Camera camera, Pose placementPose)
+    {
+        placementPose = UpdatePlacementPose(camera, placementPose);
+        UpdatePlacementIndicator(placementPose);
+        return placementPose;
+    }
+
     // Activate the tracker when a horizontal plane is tracked
-    private void UpdatePlacementPose(Camera camera)
+    private Pose UpdatePlacementPose(Camera camera, Pose placementPose)
     {
         var screenCenter = camera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         var hits = new List<ARRaycastHit>();
@@ -84,10 +79,11 @@ public class PlacementIndicatorController : MonoBehaviour
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
+        return placementPose;
     }
 
     // Enable or disable placement tracker graphics
-    private void UpdatePlacementIndicator()
+    private void UpdatePlacementIndicator(Pose placementPose)
     {
         if (isPlacementPoseValid && isLayoutPlaced == false)
         {
