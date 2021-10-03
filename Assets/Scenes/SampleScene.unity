@@ -875,6 +875,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d0334d409e2b4b97a50bba3d87c5a39, type: 3}
   - {fileID: 8300000, guid: 180976fba39484ebb860962d11b14c23, type: 3}
   - {fileID: 8300000, guid: b5acbe79361aa429b81947d00e5bab1e, type: 3}
+  setupCubeClipIntro:
+  - {fileID: 8300000, guid: 158bbd785f4094ecb93361c0899bab4b, type: 3}
+  - {fileID: 8300000, guid: 8d0334d409e2b4b97a50bba3d87c5a39, type: 3}
   selectACubeClip: {fileID: 8300000, guid: 4037d8c64c621440bafbbba202f11a39, type: 3}
   completeCubeClip: {fileID: 8300000, guid: 426b07859fc6647e4987146fde806bb6, type: 3}
   characterInitClip: {fileID: 8300000, guid: 075a7fb3eafaf4ad49c1feb4738169de, type: 3}

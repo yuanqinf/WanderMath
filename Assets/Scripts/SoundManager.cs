@@ -6,6 +6,9 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField]
     private AudioClip[] startingSubtitleClips;
+// cube making
+    [SerializeField]
+    private AudioClip[] setupCubeClipIntro;
     [SerializeField]
     private AudioClip selectACubeClip;
     [SerializeField]
@@ -32,7 +35,14 @@ public class SoundManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-// Birthday card
+// cube setup audio
+    public float PlaySetubCubeSubtitleAudio(int num)
+    {
+        audioSource.PlayOneShot(setupCubeClipIntro[num]);
+        return setupCubeClipIntro[num].length;
+    }
+
+    // Birthday card
     public float PlayBirthdayCardPreClip()
     {
         audioSource.PlayOneShot(birthdayCardPreClip);

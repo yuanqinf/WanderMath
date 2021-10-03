@@ -64,8 +64,7 @@ public class GameController : MonoBehaviour
             case "phase1":
                 // instantiate
                 Destroy(birthdayCardController.BirthdayCard);
-                duration = cubeController.PlayCubeEasyWithSubtitles();
-                cubeController.InitializeCube(placementPose, duration);
+                cubeController.StartPhase1(placementPose);
                 gamePhase = "waiting";
                 break;
             default:

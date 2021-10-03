@@ -87,9 +87,14 @@ public class BirthdayCardController : MonoBehaviour
         StartCoroutine(ShowTutorialAnimation(duration));
     }
 
+    /// <summary>
+    /// Allows the card to move accordingly when touched
+    /// </summary>
+    /// <param name="touchedObject"></param>
+    /// <param name="newRealWorldPosition"></param>
+    /// <param name="initialRealWorldPosition"></param>
     internal void UpdateCardMovement(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        // in charge of moving
         if (newRealWorldPosition.x < initialRealWorldPosition.x)
         {
             touchedObject.transform.Rotate(new Vector3(5f, 0, 0));

@@ -12,6 +12,11 @@ public class CubeRotateControl : MonoBehaviour
     private UiController uiController;
     private GameController gameController;
 
+    private string[] initCubeEasySubtitles =
+    {
+        "I was also going to wrap a present for Quinn!",
+        "Well, I was trying to, anyway."
+    };
     private string cubeEasySubtitles = "Do you think you can make a cube out of that?";
 
     public int curCubeSnappedSides = 0;
@@ -95,7 +100,7 @@ public class CubeRotateControl : MonoBehaviour
 
     }
 
-    public float PlayCubeEasyWithSubtitles()
+    private float PlayCubeEasyWithSubtitles()
     {
         var duration = soundManager.PlaySelectACubeAudio();
         uiController.PlaySubtitles(cubeEasySubtitles, duration);
@@ -107,6 +112,32 @@ public class CubeRotateControl : MonoBehaviour
         Vector3 rot = pose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
         cubeEasy = utils.PlaceObjectInSky(cubeEasy, pose.position, Quaternion.Euler(rot), duration, 0.5f);
+    }
+
+    /// <summary>
+    /// Play subtitles and audio for phase 1
+    /// </summary>
+    public void StartPhase1(Pose placementPose)
+    {
+        StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));
+    }
+
+    IEnumerator SetupCubeSubtitleWithAudio(Pose placementPose)
+    {
+        var totalLen = initCubeEasySubtitles.Length;
+        uiController.SetSubtitleActive(true);
+        for (int i = 0; i < totalLen; i++)
+        {
+            yield return new WaitForSeconds(1);
+            uiController.SetInitialSubtitleText(i);
+            var audioDuration = soundManager.PlaySetubCubeSubtitleAudio(i);
+
+            yield return new WaitForSeconds(audioDuration);
+        }
+        uiController.SetSubtitleActive(false);
+        var duration = PlayCubeEasyWithSubtitles();
+        InitializeCube(placementPose, duration);
+        yield return new WaitForSeconds(duration);
     }
 
     private void snapObject(GameObject touchedObject, float x, float y, float z)
