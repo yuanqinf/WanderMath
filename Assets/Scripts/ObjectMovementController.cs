@@ -75,9 +75,11 @@ public class ObjectMovementController : MonoBehaviour
                                 break;
                             case "cube_wrong":
                                 cubeControl.selectWrongCube();
+                                touchedObject = null;
                                 break;
                             case "cube_main":
                                 cubeControl.selectCorrectCube(touchedObject);
+                                touchedObject = null;
                                 break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);

@@ -6,7 +6,15 @@ using UnityEngine;
 public class CubeRotateControl : MonoBehaviour
 {
     public GameObject cubeEasy;
-    public GameObject[] cubes;
+
+    public GameObject cubeHard;
+    public GameObject cubeMed;
+    public GameObject cubeMed2;
+    public GameObject cubeWrong1;
+    public GameObject cubeWrong2;
+
+    private List<GameObject> cubes;
+
     private HelperUtils utils;
     private SoundManager soundManager;
     private UiController uiController;
@@ -41,10 +49,10 @@ public class CubeRotateControl : MonoBehaviour
 
     public void selectCorrectCube(GameObject touchedObject)
     {
-        Vector3 newPos = touchedObject.transform.position + new Vector3(0, 0, 1f);
-        utils.LerpMovement(touchedObject.transform.position, newPos, 2, touchedObject);
+        var duration = soundManager.PlaySelectACubeAudio();
+        Vector3 newPos = touchedObject.transform.position + new Vector3(0, 1f, 0f);
+        utils.LerpMovement(touchedObject.transform.position, newPos, duration, touchedObject);
         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-        soundManager.PlaySelectACubeAudio();
         selectedRightCube = true;
         return;
     }
@@ -59,14 +67,13 @@ public class CubeRotateControl : MonoBehaviour
                 Debug.Log("touching netface 1!!!!!!!");
                 if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, 1));
-                    if (touchedObject.transform.eulerAngles.z > 70)
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    if (touchedObject.transform.eulerAngles.z > 50)
                     {
-                        touchedObject.transform.transform.eulerAngles = new Vector3(touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
-                        soundManager.PlaySnapSound();
+                        snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        //snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
+                        touchedObject = null;
                     }
                 }
                 break;
@@ -74,12 +81,13 @@ public class CubeRotateControl : MonoBehaviour
                 Debug.Log("touching netface 2!!!!!!!");
                 if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, 1));
-                    if (touchedObject.transform.eulerAngles.z > 70)
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    if (touchedObject.transform.eulerAngles.z > 50)
                     {
                         if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        touchedObject = null;
                     }
                 }
                 break;
@@ -87,12 +95,13 @@ public class CubeRotateControl : MonoBehaviour
                 Debug.Log("touching netface 3!!!!!!!");
                 if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, 1));
-                    if (touchedObject.transform.eulerAngles.z > 70)
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    if (touchedObject.transform.eulerAngles.z > 50)
                     {
                         if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        touchedObject = null;
                     }
                 }
                 break;
@@ -100,12 +109,13 @@ public class CubeRotateControl : MonoBehaviour
                 Debug.Log("touching netface 4!!!!!!!");
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, 1));
-                    if (touchedObject.transform.eulerAngles.z > 70)
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    if (touchedObject.transform.eulerAngles.z > 50)
                     {
                         if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        touchedObject = null;
                     }
                 }
                 break;
@@ -113,12 +123,13 @@ public class CubeRotateControl : MonoBehaviour
                 Debug.Log("touching netface 5!!!!!!!");
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, 1));
-                    if (touchedObject.transform.eulerAngles.z > 70)
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    if (touchedObject.transform.eulerAngles.z > 50)
                     {
                         if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        touchedObject = null;
                     }
                 }
                 break;
@@ -179,10 +190,10 @@ public class CubeRotateControl : MonoBehaviour
         Vector3 newAngle = new Vector3(x, y, z);
         Debug.Log("newAngle: " + newAngle);
         touchedObject.transform.transform.eulerAngles = newAngle;
-        soundManager.PlaySnapSound();
         Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         if (curCubeSnappedSides == 5)
         {
+            soundManager.PlaySuccessSound();
             float duration = 0;
             //next phase
             if (!isPhase2)
@@ -202,6 +213,10 @@ public class CubeRotateControl : MonoBehaviour
             GameObject shapeObject = GameObject.FindGameObjectWithTag("cube_main");
             StartCoroutine(utils.LerpMovement(shapeObject.transform.position, chinchilla.transform.position, duration, shapeObject));
             curCubeSnappedSides = 0;
+        }
+        else
+        {
+            soundManager.PlaySnapSound();
         }
     }
 
@@ -223,11 +238,11 @@ public class CubeRotateControl : MonoBehaviour
         Vector3 pos5 = placementPose.position + new Vector3(0, 0, -0.6f);
 
 
-        var cubeHard = utils.PlaceObjectInSky(cubes[0], pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        var cubeMed = utils.PlaceObjectInSky(cubes[1], pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        var cubeMed2 = utils.PlaceObjectInSky(cubes[2], pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        var cubeWrong1 = utils.PlaceObjectInSky(cubes[3], pos4, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        var cubeWrong2 = utils.PlaceObjectInSky(cubes[4], pos5, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeHard = utils.PlaceObjectInSky(cubeHard, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeMed = utils.PlaceObjectInSky(cubeMed, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeWrong1 = utils.PlaceObjectInSky(cubeWrong1, pos4, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeWrong2 = utils.PlaceObjectInSky(cubeWrong2, pos5, Quaternion.Euler(rot), startAudioLen, 0.5f);
 
 
         //StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));

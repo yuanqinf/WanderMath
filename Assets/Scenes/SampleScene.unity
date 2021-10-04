@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1631,12 +1631,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeEasy: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
-  cubes:
-  - {fileID: 1305654439857742470, guid: e0fcaa833a2d748e8b20a793be192dac, type: 3}
-  - {fileID: 4051884593762727366, guid: 34836581cfded4d58bcb9c739eb7c8d7, type: 3}
-  - {fileID: 1519837505699721822, guid: 1443bd01fbc834cf3a7b806d1907f61d, type: 3}
-  - {fileID: 6033599923789715939, guid: bd87df1c06be441099a366c7cf204112, type: 3}
-  - {fileID: 2310935563785177626, guid: b61e120b8a1ae41a89cdf4271a55207b, type: 3}
+  cubeHard: {fileID: 1305654439857742470, guid: e0fcaa833a2d748e8b20a793be192dac, type: 3}
+  cubeMed: {fileID: 4051884593762727366, guid: 34836581cfded4d58bcb9c739eb7c8d7, type: 3}
+  cubeMed2: {fileID: 1519837505699721822, guid: 1443bd01fbc834cf3a7b806d1907f61d, type: 3}
+  cubeWrong1: {fileID: 6033599923789715939, guid: bd87df1c06be441099a366c7cf204112, type: 3}
+  cubeWrong2: {fileID: 2310935563785177626, guid: b61e120b8a1ae41a89cdf4271a55207b, type: 3}
   curCubeSnappedSides: 0
 --- !u!114 &1558233068
 MonoBehaviour:

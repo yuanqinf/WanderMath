@@ -13,7 +13,7 @@ public class SoundManager : MonoBehaviour
     private AudioClip selectACubeClip;
     [SerializeField]
     private AudioClip completeCubeClip;
-// starting line
+    // starting line
     [SerializeField]
     private AudioClip characterInitClip;
 
@@ -78,12 +78,12 @@ public class SoundManager : MonoBehaviour
     }
 
 // Sound effects
-    public void PlaySuccessSound()
+    public void PlaySnapSound()
     {
         audioSource.PlayOneShot(soundEffects[0]);
     }
 
-    public void PlaySnapSound()
+    public void PlaySuccessSound() 
     {
         audioSource.PlayOneShot(soundEffects[1]);
     }
@@ -102,6 +102,11 @@ public class SoundManager : MonoBehaviour
     }
 
     public void PlayCompleteCubeACubeAudio()
+    {
+        audioSource.PlayOneShot(completeCubeClip, 1);
+    }
+
+    public void PlayCompleteSnapAudio()
     {
         audioSource.PlayOneShot(completeCubeClip, 1);
     }
