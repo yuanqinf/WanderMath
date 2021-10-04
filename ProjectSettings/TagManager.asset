@@ -12,6 +12,8 @@ TagManager:
   - character
   - cube_main
   - cube_wrong
+  - hexagon
+  - pyramid
   layers:
   - Default
   - TransparentFX
