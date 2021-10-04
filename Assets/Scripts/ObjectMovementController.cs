@@ -73,6 +73,12 @@ public class ObjectMovementController : MonoBehaviour
                             case "cube_easy":
                                 cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
+                            case "cube_wrong":
+                                cubeControl.selectWrongCube();
+                                break;
+                            case "cube_main":
+                                cubeControl.selectCorrectCube(touchedObject);
+                                break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;

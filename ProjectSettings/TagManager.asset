@@ -10,6 +10,8 @@ TagManager:
   - birthdaycard
   - cube_easy
   - character
+  - cube_main
+  - cube_wrong
   layers:
   - Default
   - TransparentFX

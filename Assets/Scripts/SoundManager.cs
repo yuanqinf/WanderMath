@@ -30,6 +30,18 @@ public class SoundManager : MonoBehaviour
     private AudioClip[] soundEffects;
     private AudioSource audioSource;
 
+    // phase 2 sound effects
+    [SerializeField]
+    private AudioClip phase2WrongCube;
+    [SerializeField]
+    private AudioClip phase2PreStartSound;
+    [SerializeField]
+    private AudioClip phase2StartSound;
+    [SerializeField]
+    private AudioClip phase2EndSound;
+
+
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -124,4 +136,32 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(startingSubtitleClips[num], 1);
     }
     #endregion
+
+
+    public float PlayPhase2StartAudio()
+    {
+        audioSource.PlayOneShot(phase2PreStartSound);
+
+        //StartCoroutine(playSoundAfterTenSeconds(phase2PreStartSound.length + 1));
+
+        return phase2StartSound.length;
+    }
+
+    //IEnumerator playSoundAfterTenSeconds(float time)
+    //{
+    //    yield return new WaitForSeconds(time);
+    //    audioSource.PlayOneShot(phase2StartSound);
+    //}
+
+    public void PlayPhase2WrongCube()
+    {
+        audioSource.Stop();
+        audioSource.PlayOneShot(phase2WrongCube);
+    }
+
+    public float PlayPhase2EndAudio()
+    {
+        audioSource.PlayOneShot(phase2EndSound);
+        return phase2EndSound.length;
+    }
 }

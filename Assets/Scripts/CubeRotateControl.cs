@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class CubeRotateControl : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject cubeEasy;
+    public GameObject cubeEasy;
+    public GameObject[] cubes;
     private HelperUtils utils;
     private SoundManager soundManager;
     private UiController uiController;
     private GameController gameController;
+
+    private bool selectedRightCube = false;
+    private bool isPhase2 = false;
 
     private string[] initCubeEasySubtitles =
     {
@@ -29,12 +32,31 @@ public class CubeRotateControl : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
     }
 
+    public void selectWrongCube()
+    {
+        // select wrong one
+        soundManager.PlayPhase2WrongCube();
+        return;
+    }
+
+    public void selectCorrectCube(GameObject touchedObject)
+    {
+        Vector3 newPos = touchedObject.transform.position + new Vector3(0, 0, 1f);
+        utils.LerpMovement(touchedObject.transform.position, newPos, 2, touchedObject);
+        touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+        soundManager.PlaySelectACubeAudio();
+        selectedRightCube = true;
+        return;
+    }
+
     public void rotateFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
+
         switch (touchedObject.name)
         {
             // something wrong with the snapping of face 1
             case "NetFace_1":
+                Debug.Log("touching netface 1!!!!!!!");
                 if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, 1));
@@ -49,6 +71,7 @@ public class CubeRotateControl : MonoBehaviour
                 }
                 break;
             case "NetFace_2":
+                Debug.Log("touching netface 2!!!!!!!");
                 if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, 1));
@@ -61,6 +84,7 @@ public class CubeRotateControl : MonoBehaviour
                 }
                 break;
             case "NetFace_3":
+                Debug.Log("touching netface 3!!!!!!!");
                 if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, 1));
@@ -73,6 +97,7 @@ public class CubeRotateControl : MonoBehaviour
                 }
                 break;
             case "NetFace_4":
+                Debug.Log("touching netface 4!!!!!!!");
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, 1));
@@ -85,6 +110,7 @@ public class CubeRotateControl : MonoBehaviour
                 }
                 break;
             case "NetFace_5":
+                Debug.Log("touching netface 5!!!!!!!");
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, 1));
@@ -101,6 +127,13 @@ public class CubeRotateControl : MonoBehaviour
     }
 
     private float PlayCubeEasyWithSubtitles()
+    {
+        var duration = soundManager.PlaySelectACubeAudio();
+        uiController.PlaySubtitles(cubeEasySubtitles, duration);
+        return duration;
+    }
+
+    private float PlayCubeHardWithSubtitles()
     {
         var duration = soundManager.PlaySelectACubeAudio();
         uiController.PlaySubtitles(cubeEasySubtitles, duration);
@@ -150,13 +183,54 @@ public class CubeRotateControl : MonoBehaviour
         Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         if (curCubeSnappedSides == 5)
         {
-            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            float duration = 0;
+            //next phase
+            if (!isPhase2)
+            {
+                // start of phase 2
+                duration = gameController.StartCompleteCubeSubtitleWithAudio();
+                gameController.SetGamePhaseWithDelay("phase2", 10f);
+                isPhase2 = true;
+            }
+            else
+            {
+                // end of phase 2
+                soundManager.PlayPhase2EndAudio();
+            }
             uiController.SetCursorActive(false);
             GameObject chinchilla = GameObject.FindGameObjectWithTag("character");
-            GameObject shapeObject = GameObject.FindGameObjectWithTag("cube_easy");
+            GameObject shapeObject = GameObject.FindGameObjectWithTag("cube_main");
             StartCoroutine(utils.LerpMovement(shapeObject.transform.position, chinchilla.transform.position, duration, shapeObject));
             curCubeSnappedSides = 0;
         }
+    }
+
+    /// <summary>
+    /// Play subtitles and audio for phase 2
+    /// </summary>
+    public void StartPhase2(Pose placementPose)
+    {
+        //start phase 2 here
+        Debug.Log("phase 2 started!!!!!!!!!!!");
+        var startAudioLen = soundManager.PlayPhase2StartAudio();
+
+        Vector3 rot = placementPose.rotation.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+        Vector3 pos1 = placementPose.position;
+        Vector3 pos2 = placementPose.position + new Vector3(1f, 0, 0);
+        Vector3 pos3 = placementPose.position + new Vector3(-1f, 0, 0);
+        Vector3 pos4 = placementPose.position + new Vector3(0, 0, 1f);
+        Vector3 pos5 = placementPose.position + new Vector3(0, 0, -0.6f);
+
+
+        var cubeHard = utils.PlaceObjectInSky(cubes[0], pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        var cubeMed = utils.PlaceObjectInSky(cubes[1], pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        var cubeMed2 = utils.PlaceObjectInSky(cubes[2], pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        var cubeWrong1 = utils.PlaceObjectInSky(cubes[3], pos4, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        var cubeWrong2 = utils.PlaceObjectInSky(cubes[4], pos5, Quaternion.Euler(rot), startAudioLen, 0.5f);
+
+
+        //StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));
     }
 
 }

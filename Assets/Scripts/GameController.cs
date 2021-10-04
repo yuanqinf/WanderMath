@@ -67,6 +67,14 @@ public class GameController : MonoBehaviour
                 cubeController.StartPhase1(placementPose);
                 gamePhase = "waiting";
                 break;
+            // handles multiple cubes
+            case "phase2":
+                // instantiate
+                // success one cube and move on
+                Destroy(cubeController.cubeEasy);
+                cubeController.StartPhase2(placementPose);
+                gamePhase = "waiting";
+                break;
             default:
                 break;
         }

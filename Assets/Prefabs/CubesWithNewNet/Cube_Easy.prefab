@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 5676305390009045857}
   m_Layer: 0
   m_Name: Cube_Easy
-  m_TagString: cube_easy
+  m_TagString: cube_main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
