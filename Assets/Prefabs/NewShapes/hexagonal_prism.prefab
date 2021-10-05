@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eulerAngle: {x: 0, y: 0, z: 0}
+  localEulerAngle: {x: 0, y: 0, z: 0}
 --- !u!65 &2822625313407946556
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -141,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eulerAngle: {x: 0, y: 0, z: 0}
+  localEulerAngle: {x: 0, y: 0, z: 0}
 --- !u!65 &8515268999226574459
 BoxCollider:
   m_ObjectHideFlags: 0

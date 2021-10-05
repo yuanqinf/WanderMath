@@ -11,21 +11,29 @@ public class ObjectMovementController : MonoBehaviour
     private Vector2 initTouchPosition;
 
     private bool isObjectMovementEnabled = false;
-    private BirthdayCardController birthdayCardController;
     private CharacterController characterController;
     private GameController gameController;
     private HelperUtils utils;
     private SoundManager soundManager;
+
+    // object controllers
+    private BirthdayCardController birthdayCardController;
     private CubeRotateControl cubeControl;
+    private PyramidController pyramidController;
+    private HexagonController hexagonController;
+    private CuboidController cuboidController;
 
     void Start()
     {
-        birthdayCardController = FindObjectOfType<BirthdayCardController>();
         characterController = FindObjectOfType<CharacterController>();
         gameController = FindObjectOfType<GameController>();
         soundManager = FindObjectOfType<SoundManager>();
         utils = FindObjectOfType<HelperUtils>();
+        birthdayCardController = FindObjectOfType<BirthdayCardController>();
         cubeControl = FindObjectOfType<CubeRotateControl>();
+        pyramidController = FindObjectOfType<PyramidController>();
+        hexagonController = FindObjectOfType<HexagonController>();
+        cuboidController = FindObjectOfType<CuboidController>();
     }
 
     // Update is called once per frame
@@ -65,10 +73,14 @@ public class ObjectMovementController : MonoBehaviour
                     if (touchedObject != null)
                     {
                         //Debug.Log("this is touched object name: " + touchedObject.name);
+
+                        Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
+                        Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
                         switch (touchedObject.tag)
                         {
                             case "birthdaycard":
                                 birthdayCardController.UpdateCardMovement(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                this.touchedObject = null;
                                 break;
                             case "cube_easy":
                                 cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
@@ -81,13 +93,22 @@ public class ObjectMovementController : MonoBehaviour
                                 cubeControl.selectCorrectCube(touchedObject);
                                 touchedObject = null;
                                 break;
+                            case "pyramid":
+                                pyramidController.UpdatePyramidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                this.touchedObject = null;
+                                break;
+                            case "hexagon":
+                                hexagonController.UpdateHexRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                this.touchedObject = null;
+                                break;
+                            case "cuboid":
+                                cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                this.touchedObject = null;
+                                break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;
                         }
-
-                        Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
-                        Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
                     }
                 }
             }

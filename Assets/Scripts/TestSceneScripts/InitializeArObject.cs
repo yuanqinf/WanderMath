@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class InitializeArObject : MonoBehaviour
+public class InitializeArObject : GenericClass
 {
     public GameObject objectToSpawn;
     public GameObject placementIndicator;
@@ -18,11 +18,13 @@ public class InitializeArObject : MonoBehaviour
 
     private GameObject touchedObject;
     private Vector3 initialRealWorldPosition;
+    private CuboidController cuboidController;
 
     void Start()
     {
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         arCamera = FindObjectOfType<Camera>();
+        cuboidController = FindObjectOfType<CuboidController>();
     }
 
     private void Update()
@@ -33,6 +35,7 @@ public class InitializeArObject : MonoBehaviour
             UpdatePlacementIndicator();
             if (isPlacementPoseValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
+                //Quaternion.Euler(new Vector3(placementPose.rotation.x, placementPose.rotation.y + 180, placementPose.rotation.z))
                 Instantiate(objectToSpawn, placementPose.position, placementPose.rotation);
                 isObjectPlaced = true;
                 placementIndicator.SetActive(false);
@@ -71,11 +74,9 @@ public class InitializeArObject : MonoBehaviour
                         //Debug.Log("this is touched object name: " + touchedObject.name);
                         switch (touchedObject.tag)
                         {
-                            case "pyramid":
-                                UpdatePyramid(newRealWorldPosition);
-                                break;
-                            case "hexagon":
-                                UpdateHex(newRealWorldPosition);
+                            case "cuboid":
+                                cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                this.touchedObject = null;
                                 break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
@@ -90,170 +91,7 @@ public class InitializeArObject : MonoBehaviour
         }
     }
 
-    private void UpdateHex(Vector3 newRealWorldPosition)
-    {
-        switch (touchedObject.name)
-        {
-            case "hexSquare1":
-                Debug.Log("square1: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexSquare2":
-                Debug.Log("square2: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexSquare3":
-                Debug.Log("square3: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexSquare4":
-                Debug.Log("square4: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexSquare5":
-                Debug.Log("square5: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexSquare6":
-                Debug.Log("square6: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexDetection(touchedObject);
-                }
-                break;
-            case "hexCylinder":
-                Debug.Log("hexCylinder: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.y < initialRealWorldPosition.y)
-                {
-                    touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
-                    //touchedObject.transform.eulerAngles += new Vector3(Constants.ROTATION_DEGREE, 0, 0);
-                    SnapHexHexDetection(touchedObject);
-                }
-                break;
-        }
-    }
-
-    private void UpdatePyramid(Vector3 newRealWorldPosition)
-    {
-        switch (touchedObject.name)
-        {
-            case "isoTriangle1":
-                Debug.Log("touching isoTriangle1!");
-                Debug.Log("1: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
-                {
-                    touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
-                    SnapDetection(touchedObject);
-                }
-                break;
-            case "isoTriangle2":
-                Debug.Log("2: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                Debug.Log("touching isoTriangle2!");
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
-                {
-                    touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
-                    SnapDetection(touchedObject);
-                }
-                break;
-            case "isoTriangle3":
-                Debug.Log("3: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                Debug.Log("touching isoTriangle3!");
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
-                    SnapDetection(touchedObject);
-                }
-                break;
-            case "isoTriangle4":
-                Debug.Log("4: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                Debug.Log("touching isoTriangle4!");
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
-                {
-                    touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
-                    SnapDetection(touchedObject);
-                }
-                break;
-        }
-    }
-
-    private void SnapHexHexDetection(GameObject gameObject)
-    {
-        Debug.Log("new rotation angle is: " + gameObject.transform.rotation.eulerAngles);
-        Debug.Log("new rotation transofrm angle is: " + gameObject.transform.eulerAngles);
-        Debug.Log("new rotation transform is: " + gameObject.transform.rotation * Vector3.forward);
-        if (gameObject.transform.eulerAngles.x > 55f + 90f)
-        {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
-            //SnapHexHexObject(gameObject);
-            //gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        }
-    }
-
-    private void SnapHexHexObject(GameObject gameObject)
-    {
-        var hexSetDegree = 179f;
-        gameObject.transform.eulerAngles = new Vector3(hexSetDegree, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        this.touchedObject = null;
-    }
-
-    private void SnapHexDetection(GameObject gameObject)
-    {
-        if (gameObject.transform.eulerAngles.z > 65f)
-        {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
-            SnapHexObject(gameObject);
-            gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        }
-    }
-
-    private void SnapHexObject(GameObject gameObject)
-    {
-        var hexSetDegree = 90f;
-        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, hexSetDegree);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        this.touchedObject = null;
-    }
-
-    private void SnapDetection(GameObject gameObject)
-    {
-        if (gameObject.transform.eulerAngles.z > 85f)
-        {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
-            SnapObject(gameObject);
-            gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        }
-    }
-
-    private void SnapObject(GameObject gameObject)
-    {
-        var pyramidSetDegree = 116f;
-        gameObject.transform.eulerAngles = new Vector3(pyramidSetDegree, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        this.touchedObject = null;
-    }
-
+    #region only used for placement
     private void UpdatePlacementIndicator()
     {
         if (isPlacementPoseValid)
@@ -282,4 +120,5 @@ public class InitializeArObject : MonoBehaviour
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
     }
+    #endregion
 }

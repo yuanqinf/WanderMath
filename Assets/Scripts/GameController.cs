@@ -75,6 +75,8 @@ public class GameController : MonoBehaviour
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
                 break;
+            case "phase3":
+                break;
             default:
                 break;
         }
