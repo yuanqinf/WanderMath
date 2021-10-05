@@ -97,7 +97,7 @@ public class BirthdayCardController : MonoBehaviour
     {
         if (newRealWorldPosition.x < initialRealWorldPosition.x)
         {
-            touchedObject.transform.Rotate(new Vector3(5f, 0, 0));
+            touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
             SwitchOffAnimation();
         }
         // in charge of snapping logic
