@@ -221,6 +221,9 @@ GameObject:
   m_Component:
   - component: {fileID: 540170501}
   - component: {fileID: 540170502}
+  - component: {fileID: 540170505}
+  - component: {fileID: 540170504}
+  - component: {fileID: 540170503}
   m_Layer: 0
   m_Name: AdditionalScripts
   m_TagString: Untagged
@@ -255,6 +258,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cuboidThresholdDegree: 55
+--- !u!114 &540170503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540170500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391df7265a31748bb941ce2bb313c379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &540170504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540170500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ed9a0649b7d4608a70e4f50fdbb8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &540170505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540170500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5801e5649c2446b18ec57d15b0ce365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &797905096
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba4d07217bad4538bf02fce9fd220e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSpawn: {fileID: 3162858599689526101, guid: e77d0b9a379e8496583587cd0633d31d, type: 3}
+  objectToSpawn: {fileID: 1470318635573128937, guid: 755f36551ac54408d9123e54a7a892f6, type: 3}
   placementIndicator: {fileID: 2077043774}
   arCamera: {fileID: 922230702}
 --- !u!4 &797905098

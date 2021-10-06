@@ -73,13 +73,16 @@ public class GameController : MonoBehaviour
                 break;
             // handles multiple cubes
             case "phase2":
-                // instantiate
-                // success one cube and move on
+                // instantiate one cube and move on
                 Destroy(cubeController.cubeEasy);
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
                 break;
+            // handles multiple other shapes
             case "phase3":
+                Destroy(cubeController.cubeMed);
+                Destroy(cubeController.cubeWrong);
+                Destroy(cubeController.cubeMed2);
                 shapesController.StartPhase3(placementPose);
                 gamePhase = "waiting";
                 break;

@@ -17,10 +17,9 @@ public class WrongCubeSnap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(snapNum >= 3)
+        if(snapNum >= 5)
         {
             float time = soundManager.PlayPhase2WrongCube();
-            Destroy(this.gameObject, time);
         }
     }
 

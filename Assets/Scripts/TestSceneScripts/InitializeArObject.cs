@@ -19,12 +19,18 @@ public class InitializeArObject : GenericClass
     private GameObject touchedObject;
     private Vector3 initialRealWorldPosition;
     private CuboidController cuboidController;
+    private CubeEasy cubeEasy;
+    private CubeMed cubeMed;
+    private CubeMedTwo cubeMedTwo;
 
     void Start()
     {
         aRRaycastManager = FindObjectOfType<ARRaycastManager>();
         arCamera = FindObjectOfType<Camera>();
         cuboidController = FindObjectOfType<CuboidController>();
+        cubeEasy = FindObjectOfType<CubeEasy>();
+        cubeMed = FindObjectOfType<CubeMed>();
+        cubeMedTwo = FindObjectOfType<CubeMedTwo>();
     }
 
     private void Update()
@@ -36,7 +42,10 @@ public class InitializeArObject : GenericClass
             if (isPlacementPoseValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 //Quaternion.Euler(new Vector3(placementPose.rotation.x, placementPose.rotation.y + 180, placementPose.rotation.z))
-                Instantiate(objectToSpawn, placementPose.position, placementPose.rotation);
+                Vector3 rot = placementPose.rotation.eulerAngles;
+                rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+                Instantiate(objectToSpawn, placementPose.position, Quaternion.Euler(rot));
                 isObjectPlaced = true;
                 placementIndicator.SetActive(false);
             }
@@ -76,8 +85,17 @@ public class InitializeArObject : GenericClass
                         {
                             case "cuboid":
                                 cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                this.touchedObject = null;
                                 break;
+                            case "cube_easy":
+                                cubeEasy.RotateEasyFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                break;
+                            //case "cube_wrong":
+                            //    cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                            //    //cubeControl.selectWrongCube();
+                            //    break;
+                            //case "cube_main":
+                            //    cubeControl.selectCorrectCube(touchedObject);
+                            //    break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;

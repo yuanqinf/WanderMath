@@ -19,6 +19,9 @@ public class ObjectMovementController : MonoBehaviour
     // object controllers
     private BirthdayCardController birthdayCardController;
     private CubeRotateControl cubeControl;
+    private CubeEasy cubeEasy;
+    private CubeMed cubeMed;
+    private CubeMedTwo cubeMedTwo;
     private PyramidController pyramidController;
     private HexagonController hexagonController;
     private CuboidController cuboidController;
@@ -34,6 +37,9 @@ public class ObjectMovementController : MonoBehaviour
         pyramidController = FindObjectOfType<PyramidController>();
         hexagonController = FindObjectOfType<HexagonController>();
         cuboidController = FindObjectOfType<CuboidController>();
+        cubeEasy = FindObjectOfType<CubeEasy>();
+        cubeMed = FindObjectOfType<CubeMed>();
+        cubeMedTwo = FindObjectOfType<CubeMedTwo>();
     }
 
     // Update is called once per frame
@@ -87,7 +93,7 @@ public class ObjectMovementController : MonoBehaviour
                                 birthdayCardController.UpdateCardMovement(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
                             case "cube_easy":
-                                cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                cubeEasy.RotateEasyFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
                             case "cube_wrong":
                                 cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);

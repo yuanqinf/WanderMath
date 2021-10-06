@@ -157,7 +157,6 @@ public class CubeRotateControl : MonoBehaviour
                 }
                 break;
         }
-
     }
 
     private float PlayCubeEasyWithSubtitles()
@@ -174,11 +173,19 @@ public class CubeRotateControl : MonoBehaviour
         return duration;
     }
 
-    public void InitializeCube(Pose pose, float duration)
+    /// <summary>
+    /// Instantiate cube easy for phase 1
+    /// </summary>
+    /// <param name="pose"></param>
+    /// <param name="duration"></param>
+    public void InitializeCubeEasy(Pose pose, float duration)
     {
+        Vector3 cubeEasyPos = pose.position + new Vector3(0.25f, 0f, 0.25f);
+
         Vector3 rot = pose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
-        cubeEasy = utils.PlaceObjectInSky(cubeEasy, pose.position, Quaternion.Euler(rot), duration, 0.5f);
+
+        cubeEasy = utils.PlaceObjectInSky(cubeEasy, cubeEasyPos, Quaternion.Euler(rot), duration, 0.5f);
     }
 
     /// <summary>
@@ -203,7 +210,7 @@ public class CubeRotateControl : MonoBehaviour
         }
         uiController.SetSubtitleActive(false);
         var duration = PlayCubeEasyWithSubtitles();
-        InitializeCube(placementPose, duration);
+        InitializeCubeEasy(placementPose, duration);
         yield return new WaitForSeconds(duration);
     }
 
