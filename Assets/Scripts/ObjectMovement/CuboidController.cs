@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class CuboidController : GenericClass
 {
-    [SerializeField]
-    private float cuboidThresholdDegree = 50f;
     private float cuboidSetDegree = 90f;
     private int numSnapped = 0;
 
@@ -62,14 +60,14 @@ public class CuboidController : GenericClass
     {
         if (isSecondLayer)
         {
-            if (gameObject.transform.localEulerAngles.z > cuboidThresholdDegree)
+            if (gameObject.transform.localEulerAngles.z > Constants.ROTATION_THRESHOLD)
             {
                 SnapObject(gameObject, true);
             }
         }
         else
         {
-            if (gameObject.transform.eulerAngles.z > cuboidThresholdDegree)
+            if (gameObject.transform.eulerAngles.z > Constants.ROTATION_THRESHOLD)
             {
                 //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                 SnapObject(gameObject);
@@ -88,7 +86,7 @@ public class CuboidController : GenericClass
         {
             gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, cuboidSetDegree);
         }
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBOID, numSnapped);
     }
 }

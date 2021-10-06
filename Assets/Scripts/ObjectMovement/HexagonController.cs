@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HexagonController : GenericClass
 {
-    [SerializeField]
-    private float hexagonThresholdDegree = 55f;
     private float hexSetDegree = 90f;
     private int numSnapped = 0;
 
@@ -65,7 +63,7 @@ public class HexagonController : GenericClass
     /// <param name="gameObject"></param>
     private void SnapHexagonDetection(GameObject gameObject)
     {
-        if (gameObject.transform.localEulerAngles.x > hexagonThresholdDegree)
+        if (gameObject.transform.localEulerAngles.x > Constants.ROTATION_THRESHOLD)
         {
             SnapHexagonObject(gameObject);
         }
@@ -75,7 +73,7 @@ public class HexagonController : GenericClass
     {
         numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(hexSetDegree, gameObject.transform.localEulerAngles.y, gameObject.transform.localEulerAngles.z);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.HEXAGON, numSnapped);
     }
 
@@ -85,7 +83,7 @@ public class HexagonController : GenericClass
     /// <param name="gameObject"></param>
     private void SnapHexSquareDetection(GameObject gameObject)
     {
-        if (gameObject.transform.eulerAngles.z > hexagonThresholdDegree)
+        if (gameObject.transform.eulerAngles.z > Constants.ROTATION_THRESHOLD)
         {
             SnapHexObject(gameObject);
         }
@@ -95,7 +93,7 @@ public class HexagonController : GenericClass
     {
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, hexSetDegree);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.HEXAGON, numSnapped);
     }
 }

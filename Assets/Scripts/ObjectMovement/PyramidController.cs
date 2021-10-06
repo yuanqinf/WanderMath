@@ -5,7 +5,7 @@ using UnityEngine;
 public class PyramidController : GenericClass
 {
     [SerializeField]
-    private float pyramidThresholdDegree = 75f;
+    private float pyramidThresholdDegree = 55f;
     private float pyramidSetDegree = 116f;
     private int numSnapped = 0;
 
@@ -60,7 +60,7 @@ public class PyramidController : GenericClass
     {
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(pyramidSetDegree, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.PYRAMID, numSnapped);
     }
 }

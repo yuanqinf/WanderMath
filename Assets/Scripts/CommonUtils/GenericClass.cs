@@ -9,6 +9,7 @@ public class GenericClass : MonoBehaviour
     internal UiController uiController;
     internal TimelineController timelineController;
     internal GameController gameController;
+    internal ObjectMovementController objectMovementController;
 
     private void Start()
     {
@@ -17,5 +18,6 @@ public class GenericClass : MonoBehaviour
         uiController = FindObjectOfType<UiController>();
         timelineController = FindObjectOfType<TimelineController>();
         gameController = FindObjectOfType<GameController>();
+        objectMovementController = FindObjectOfType<ObjectMovementController>();
     }
 }

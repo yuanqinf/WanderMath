@@ -52,6 +52,13 @@ public class CubeEasy : GenericClass
                 }
                 break;
         }
+        if (numSnapped == 5)
+        {
+            Debug.Log("numSnapped = " + numSnapped);
+            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            gameController.SetGamePhaseWithDelay("phase2", 8.0f);
+            numSnapped++;
+        }
     }
 
     private void ChildSnapDetection(GameObject gameObject)
@@ -64,9 +71,10 @@ public class CubeEasy : GenericClass
 
     private void ChildSnapObject(GameObject gameObject)
     {
-        numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        numSnapped++;
+        objectMovementController.ResetGameObject();
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_EASY, numSnapped);
     }
 
     private void SnapDetection(GameObject gameObject)
@@ -79,9 +87,9 @@ public class CubeEasy : GenericClass
 
     private void SnapObject(GameObject gameObject)
     {
-        numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        numSnapped++;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_EASY, numSnapped);
     }
 }

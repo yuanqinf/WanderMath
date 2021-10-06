@@ -62,7 +62,7 @@ public class CubeWrong : GenericClass
     {
         numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_WRONG, numSnapped);
     }
 
@@ -78,7 +78,7 @@ public class CubeWrong : GenericClass
     {
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_WRONG, numSnapped);
     }
 }

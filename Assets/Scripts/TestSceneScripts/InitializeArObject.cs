@@ -22,6 +22,7 @@ public class InitializeArObject : GenericClass
     private CubeEasy cubeEasy;
     private CubeMed cubeMed;
     private CubeMedTwo cubeMedTwo;
+    private CubeWrong cubeWrong;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class InitializeArObject : GenericClass
         cubeEasy = FindObjectOfType<CubeEasy>();
         cubeMed = FindObjectOfType<CubeMed>();
         cubeMedTwo = FindObjectOfType<CubeMedTwo>();
+        cubeWrong = FindObjectOfType<CubeWrong>();
     }
 
     private void Update()
@@ -89,13 +91,16 @@ public class InitializeArObject : GenericClass
                             case "cube_easy":
                                 cubeEasy.RotateEasyFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
-                            //case "cube_wrong":
-                            //    cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                            //    //cubeControl.selectWrongCube();
-                            //    break;
-                            //case "cube_main":
-                            //    cubeControl.selectCorrectCube(touchedObject);
-                            //    break;
+                            case "cube_med":
+                                cubeMed.RotateMedFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                //cubeControl.selectWrongCube();
+                                break;
+                            case "cube_med2":
+                                cubeMedTwo.RotateMedTwoFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                break;
+                            case "cube_wrong":
+                                cubeWrong.RotateWrongFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
                                 break;

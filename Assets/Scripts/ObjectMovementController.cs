@@ -125,6 +125,12 @@ public class ObjectMovementController : MonoBehaviour
         }
     }
 
+    public void ResetGameObject()
+    {
+        this.touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+        this.touchedObject = null;
+    }
+
     public void SetObjectMovementEnabled(bool isActive)
     {
         isObjectMovementEnabled = isActive;

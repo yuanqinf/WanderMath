@@ -67,22 +67,22 @@ public class GameController : MonoBehaviour
             // handles first cube
             case "phase1":
                 // instantiate
-                Destroy(birthdayCardController.BirthdayCard);
+                DestroyImmediate(birthdayCardController.BirthdayCard);
                 cubeController.StartPhase1(placementPose);
                 gamePhase = "waiting";
                 break;
             // handles multiple cubes
             case "phase2":
                 // instantiate one cube and move on
-                Destroy(cubeController.cubeEasy);
+                DestroyImmediate(cubeController.cubeEasy);
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
                 break;
             // handles multiple other shapes
             case "phase3":
-                Destroy(cubeController.cubeMed);
-                Destroy(cubeController.cubeWrong);
-                Destroy(cubeController.cubeMed2);
+                DestroyImmediate(cubeController.cubeMed);
+                DestroyImmediate(cubeController.cubeMed2);
+                DestroyImmediate(cubeController.cubeWrong);
                 shapesController.StartPhase3(placementPose);
                 gamePhase = "waiting";
                 break;

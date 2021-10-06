@@ -6,7 +6,9 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField]
     private AudioClip[] startingSubtitleClips;
-// cube making
+    [SerializeField]
+    private AudioClip[] completeClips;
+    // cube making
     [SerializeField]
     private AudioClip[] setupCubeClipIntro;
     [SerializeField]

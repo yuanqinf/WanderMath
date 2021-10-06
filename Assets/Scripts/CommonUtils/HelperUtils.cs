@@ -74,7 +74,7 @@ public class HelperUtils : GenericClass
                 {
                     soundManager.PlayCompleteSnapAudio();
                 }
-                else
+                else if (numSnapped < 5)
                 {
                     soundManager.PlaySnapSound();
                 }

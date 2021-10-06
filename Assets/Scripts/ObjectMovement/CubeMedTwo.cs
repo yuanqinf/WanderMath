@@ -47,6 +47,12 @@ public class CubeMedTwo : GenericClass
                 }
                 break;
         }
+                if (numSnapped == 5)
+        {
+            var duration = soundManager.PlayPhase2EndAudio();
+            gameController.SetGamePhaseWithDelay("phase3", 8.0f);
+            numSnapped++;
+        }
     }
 
     private void ChildSnapDetection(GameObject gameObject)
@@ -61,7 +67,7 @@ public class CubeMedTwo : GenericClass
     {
         numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
     }
 
@@ -77,7 +83,7 @@ public class CubeMedTwo : GenericClass
     {
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-        gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
     }
 }
