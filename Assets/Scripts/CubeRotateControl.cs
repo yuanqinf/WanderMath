@@ -2,16 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class CubeRotateControl : MonoBehaviour
 {
     public GameObject cubeEasy;
 
-    public GameObject cubeHard;
     public GameObject cubeMed;
     public GameObject cubeMed2;
-    public GameObject cubeWrong1;
-    public GameObject cubeWrong2;
+    public GameObject cubeWrong;
 
     private List<GameObject> cubes;
 
@@ -21,6 +18,7 @@ public class CubeRotateControl : MonoBehaviour
     private GameController gameController;
 
     private bool selectedRightCube = false;
+    private GameObject lastSelectedShape = null;
     private bool isPhase2 = false;
 
     private string[] initCubeEasySubtitles =
@@ -40,12 +38,6 @@ public class CubeRotateControl : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
     }
 
-    public void selectWrongCube()
-    {
-        // select wrong one
-        soundManager.PlayPhase2WrongCube();
-        return;
-    }
 
     public void selectCorrectCube(GameObject touchedObject)
     {
@@ -57,9 +49,23 @@ public class CubeRotateControl : MonoBehaviour
         return;
     }
 
+    public void handleOutline(GameObject touchedObject)
+    {
+        // handle outline here
+        if (lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+        {
+            lastSelectedShape.GetComponent<Outline>().enabled = false;
+        }
+        if (touchedObject.transform.root.GetComponent<Outline>() != null)
+        {
+            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+        }
+        lastSelectedShape = touchedObject.transform.root.gameObject;
+    }
+
     public void rotateFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-
+        handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             // something wrong with the snapping of face 1
@@ -68,26 +74,43 @@ public class CubeRotateControl : MonoBehaviour
                 if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    if (touchedObject.transform.eulerAngles.z > 50)
+                    if (touchedObject.transform.localEulerAngles.z > 50)
                     {
-                        if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                        if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                        else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        touchedObject = null;
                     }
                 }
                 break;
             case "NetFace_2":
                 Debug.Log("touching netface 2!!!!!!!");
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if(touchedObject.tag == "cube_wrong")
                 {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    if (touchedObject.transform.eulerAngles.z > 50)
+                    if (newRealWorldPosition.x > initialRealWorldPosition.x)
                     {
-                        if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
-                        snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
-                        touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        touchedObject = null;
+                        touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                        if (touchedObject.transform.localEulerAngles.z > 50)
+                        {
+                            if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                            else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                            snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
+                            touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                    {
+                        touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                        if (touchedObject.transform.localEulerAngles.z > 50)
+                        {
+                            if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                            else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                            snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
+                            touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
+                        }
                     }
                 }
                 break;
@@ -96,12 +119,12 @@ public class CubeRotateControl : MonoBehaviour
                 if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    if (touchedObject.transform.eulerAngles.z > 50)
+                    if (touchedObject.transform.localEulerAngles.z > 50)
                     {
-                        if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                        if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                        else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        touchedObject = null;
                     }
                 }
                 break;
@@ -110,12 +133,12 @@ public class CubeRotateControl : MonoBehaviour
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    if (touchedObject.transform.eulerAngles.z > 50)
+                    if (touchedObject.transform.localEulerAngles.z > 50)
                     {
-                        if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                        if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                        else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        touchedObject = null;
                     }
                 }
                 break;
@@ -124,12 +147,12 @@ public class CubeRotateControl : MonoBehaviour
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    if (touchedObject.transform.eulerAngles.z > 50)
+                    if (touchedObject.transform.localEulerAngles.z > 50)
                     {
-                        if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
+                        if (touchedObject.transform.root.tag == "cube_wrong") touchedObject.transform.root.GetComponent<WrongCubeSnap>().increaseSnapNum();
+                        else if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                         snapObject(touchedObject, touchedObject.transform.eulerAngles.x, touchedObject.transform.eulerAngles.y, 90);
                         touchedObject.transform.GetComponent<BoxCollider>().enabled = false;
-                        touchedObject = null;
                     }
                 }
                 break;
@@ -186,11 +209,13 @@ public class CubeRotateControl : MonoBehaviour
 
     private void snapObject(GameObject touchedObject, float x, float y, float z)
     {
+        gameController.touchEnabled = false;
+        Debug.Log("snapping : " + touchedObject.name);
         if (!touchedObject.transform.GetComponent<BoxCollider>().enabled) return;
         Vector3 newAngle = new Vector3(x, y, z);
         Debug.Log("newAngle: " + newAngle);
-        touchedObject.transform.transform.eulerAngles = newAngle;
-        Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
+        touchedObject.transform.eulerAngles = newAngle;
+        //Debug.Log("snapped object is: " + touchedObject.name + " with local angle: " + touchedObject.transform.eulerAngles + " and parent angle: " + touchedObject.transform.parent.transform.eulerAngles);
         if (curCubeSnappedSides == 5)
         {
             soundManager.PlaySuccessSound();
@@ -200,7 +225,7 @@ public class CubeRotateControl : MonoBehaviour
             {
                 // start of phase 2
                 duration = gameController.StartCompleteCubeSubtitleWithAudio();
-                gameController.SetGamePhaseWithDelay("phase2", 10f);
+                gameController.SetGamePhaseWithDelay("phase2", 8f);
                 isPhase2 = true;
             }
             else
@@ -232,18 +257,13 @@ public class CubeRotateControl : MonoBehaviour
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
         Vector3 pos1 = placementPose.position;
-        Vector3 pos2 = placementPose.position + new Vector3(1f, 0, 0);
-        Vector3 pos3 = placementPose.position + new Vector3(-1f, 0, 0);
-        Vector3 pos4 = placementPose.position + new Vector3(0, 0, 1f);
-        Vector3 pos5 = placementPose.position + new Vector3(0, 0, -0.6f);
+        Vector3 pos2 = placementPose.position + new Vector3(0f, 0f, 0.8f);
+        Vector3 pos3 = placementPose.position + new Vector3(0f, 0f, -0.8f);
 
 
-        cubeHard = utils.PlaceObjectInSky(cubeHard, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeMed = utils.PlaceObjectInSky(cubeMed, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
         cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeWrong1 = utils.PlaceObjectInSky(cubeWrong1, pos4, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeWrong2 = utils.PlaceObjectInSky(cubeWrong2, pos5, Quaternion.Euler(rot), startAudioLen, 0.5f);
-
 
         //StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));
     }

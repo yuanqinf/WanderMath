@@ -158,10 +158,11 @@ public class SoundManager : MonoBehaviour
     //    audioSource.PlayOneShot(phase2StartSound);
     //}
 
-    public void PlayPhase2WrongCube()
+    public float PlayPhase2WrongCube()
     {
         audioSource.Stop();
         audioSource.PlayOneShot(phase2WrongCube);
+        return phase2WrongCube.length;
     }
 
     public float PlayPhase2EndAudio()

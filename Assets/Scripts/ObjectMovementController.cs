@@ -41,6 +41,11 @@ public class ObjectMovementController : MonoBehaviour
     {
         //if (isObjectMovementEnabled && Input.touchCount > 0)
 
+        if (!gameController.touchEnabled) {
+            gameController.touchEnabled = true;
+            return;
+        }
+
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -86,8 +91,8 @@ public class ObjectMovementController : MonoBehaviour
                                 cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
                             case "cube_wrong":
-                                cubeControl.selectWrongCube();
-                                touchedObject = null;
+                                cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                //cubeControl.selectWrongCube();
                                 break;
                             case "cube_main":
                                 cubeControl.selectCorrectCube(touchedObject);

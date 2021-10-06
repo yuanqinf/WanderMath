@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     private UiController uiController;
     private string gamePhase = "setup";
 
+    public bool touchEnabled = true;
+
     private void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
