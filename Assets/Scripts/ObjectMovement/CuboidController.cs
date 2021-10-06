@@ -46,9 +46,10 @@ public class CuboidController : GenericClass
                     SnapDetection(touchedObject);
                 }
                 break;
+            // special one as a child
             case "cuboid5":
                 Debug.Log("5: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z || newRealWorldPosition.y < initialRealWorldPosition.y)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject, true);

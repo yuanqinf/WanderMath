@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1645,6 +1645,8 @@ GameObject:
   - component: {fileID: 1558233067}
   - component: {fileID: 1558233071}
   - component: {fileID: 1558233070}
+  - component: {fileID: 1558233072}
+  - component: {fileID: 1558233073}
   m_Layer: 0
   m_Name: ObjectScripts
   m_TagString: Untagged
@@ -1737,6 +1739,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hexagonThresholdDegree: 55
+--- !u!114 &1558233072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708102e59e8cd47dea18b799da266c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cuboid: {fileID: 3162858599689526101, guid: e77d0b9a379e8496583587cd0633d31d, type: 3}
+  pyramid: {fileID: 502086179156964665, guid: 5aa79bbed7a8e44909f1d6e0bfac2f23, type: 3}
+  hexagon: {fileID: 5466555711222127835, guid: 1ea0327fea2eb4cdca1c19d839e85e17, type: 3}
+--- !u!114 &1558233073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558233065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34aea99e97bd7421c8d34eaf270b2038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cuboidThresholdDegree: 50
 --- !u!1 &1602182253
 GameObject:
   m_ObjectHideFlags: 0

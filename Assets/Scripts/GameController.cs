@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     private PlacementIndicatorController placementController;
     private BirthdayCardController birthdayCardController;
     private CubeRotateControl cubeController;
+    private ShapesController shapesController;
     private SoundManager soundManager;
     private UiController uiController;
     private string gamePhase = "setup";
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
         cubeController = FindObjectOfType<CubeRotateControl>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
+        shapesController = FindObjectOfType<ShapesController>();
         soundManager = FindObjectOfType<SoundManager>();
         uiController = FindObjectOfType<UiController>();
 
@@ -78,6 +80,8 @@ public class GameController : MonoBehaviour
                 gamePhase = "waiting";
                 break;
             case "phase3":
+                shapesController.StartPhase3(placementPose);
+                gamePhase = "waiting";
                 break;
             default:
                 break;

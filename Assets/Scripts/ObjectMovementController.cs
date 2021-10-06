@@ -79,13 +79,12 @@ public class ObjectMovementController : MonoBehaviour
                     {
                         //Debug.Log("this is touched object name: " + touchedObject.name);
 
-                        Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
-                        Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
+                        //Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
+                        //Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
                         switch (touchedObject.tag)
                         {
                             case "birthdaycard":
                                 birthdayCardController.UpdateCardMovement(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                this.touchedObject = null;
                                 break;
                             case "cube_easy":
                                 cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
@@ -96,19 +95,15 @@ public class ObjectMovementController : MonoBehaviour
                                 break;
                             case "cube_main":
                                 cubeControl.selectCorrectCube(touchedObject);
-                                touchedObject = null;
                                 break;
                             case "pyramid":
                                 pyramidController.UpdatePyramidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                this.touchedObject = null;
                                 break;
                             case "hexagon":
                                 hexagonController.UpdateHexRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                this.touchedObject = null;
                                 break;
                             case "cuboid":
                                 cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                this.touchedObject = null;
                                 break;
                             default:
                                 //Debug.Log("objectname: " + touchedObject.name);
