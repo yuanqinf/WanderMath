@@ -13,6 +13,9 @@ public static class Constants
         public const string HEXAGON = "HEXAGON";
         public const string PYRAMID = "PYRAMID";
         public const string CUBE_EASY = "CUBE_EASY";
+        public const string CUBE_MED = "CUBE_MED";
+        public const string CUBE_MED2 = "CUBE_MED2";
+        public const string CUBE_WRONG = "CUBE_WRONG";
 
     }
 }

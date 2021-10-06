@@ -82,6 +82,6 @@ public class CubeEasy : GenericClass
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        //utils.HandlePhase3SnapEffect(Constants.ShapeNames.PYRAMID, numSnapped);
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_EASY, numSnapped);
     }
 }

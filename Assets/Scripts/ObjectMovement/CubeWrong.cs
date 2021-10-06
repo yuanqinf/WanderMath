@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeMedTwo : GenericClass
+public class CubeWrong : GenericClass
 {
     private int numSnapped = 0;
 
-    public void RotateMedTwoFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
+    public void RotateWrongFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
         //handleOutline(touchedObject);
         switch (touchedObject.name)
@@ -62,7 +63,7 @@ public class CubeMedTwo : GenericClass
         numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 90);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_WRONG, numSnapped);
     }
 
     private void SnapDetection(GameObject gameObject)
@@ -78,6 +79,6 @@ public class CubeMedTwo : GenericClass
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
-        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_WRONG, numSnapped);
     }
 }

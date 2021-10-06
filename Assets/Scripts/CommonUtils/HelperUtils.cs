@@ -56,6 +56,19 @@ public class HelperUtils : GenericClass
     {
         switch (objectName)
         {
+            case Constants.ShapeNames.CUBE_WRONG:
+                if (numSnapped == 5)
+                {
+                    soundManager.PlayPhase2WrongCube();
+                }
+                else
+                {
+                    soundManager.PlaySnapSound();
+                }
+                break;
+            case Constants.ShapeNames.CUBE_EASY:
+            case Constants.ShapeNames.CUBE_MED:
+            case Constants.ShapeNames.CUBE_MED2:
             case Constants.ShapeNames.CUBOID:
                 if (numSnapped == 5)
                 {

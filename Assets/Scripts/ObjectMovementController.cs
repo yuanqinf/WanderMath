@@ -22,6 +22,7 @@ public class ObjectMovementController : MonoBehaviour
     private CubeEasy cubeEasy;
     private CubeMed cubeMed;
     private CubeMedTwo cubeMedTwo;
+    private CubeWrong cubeWrong;
     private PyramidController pyramidController;
     private HexagonController hexagonController;
     private CuboidController cuboidController;
@@ -40,6 +41,7 @@ public class ObjectMovementController : MonoBehaviour
         cubeEasy = FindObjectOfType<CubeEasy>();
         cubeMed = FindObjectOfType<CubeMed>();
         cubeMedTwo = FindObjectOfType<CubeMedTwo>();
+        cubeWrong = FindObjectOfType<CubeWrong>();
     }
 
     // Update is called once per frame
@@ -95,12 +97,14 @@ public class ObjectMovementController : MonoBehaviour
                             case "cube_easy":
                                 cubeEasy.RotateEasyFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
-                            case "cube_wrong":
-                                cubeControl.rotateFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-                                //cubeControl.selectWrongCube();
+                            case "cube_med":
+                                cubeMed.RotateMedFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
-                            case "cube_main":
-                                cubeControl.selectCorrectCube(touchedObject);
+                            case "cube_med2":
+                                cubeMedTwo.RotateMedTwoFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+                                break;
+                            case "cube_wrong":
+                                cubeWrong.RotateWrongFace(touchedObject, newRealWorldPosition, initialRealWorldPosition);
                                 break;
                             case "pyramid":
                                 pyramidController.UpdatePyramidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);

@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 4381089768950831244}
   m_Layer: 0
   m_Name: NetFace_4
-  m_TagString: cube_easy
+  m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 54245315321382579}
   m_Layer: 0
   m_Name: NetFace_base
-  m_TagString: cube_easy
+  m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 8404432701036830769}
   m_Layer: 0
   m_Name: NetFace_3
-  m_TagString: cube_easy
+  m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 4686616783166906868}
   m_Layer: 0
   m_Name: NetFace_1
-  m_TagString: cube_easy
+  m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 9013788422144983864}
   m_Layer: 0
   m_Name: NetFace_5
-  m_TagString: cube_easy
+  m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

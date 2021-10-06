@@ -10,11 +10,13 @@ TagManager:
   - birthdaycard
   - cube_easy
   - character
-  - cube_main
   - cube_wrong
   - hexagon
   - pyramid
   - cuboid
+  - cube_med
+  - cube_med2
+  - cube_main
   layers:
   - Default
   - TransparentFX
