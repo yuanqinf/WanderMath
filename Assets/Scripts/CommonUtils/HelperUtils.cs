@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HelperUtils : MonoBehaviour
+public class HelperUtils : GenericClass
 {
     /// <summary>
     /// Initialize object based on duration & distance it'll float from.
@@ -43,6 +44,48 @@ public class HelperUtils : MonoBehaviour
             timeElapsed += Time.deltaTime;
 
             yield return null;
+        }
+    }
+
+    /// <summary>
+    /// Handle snapping for phase 3 objects and play audio, subtitle & animation accordingly.
+    /// </summary>
+    /// <param name="objectName"></param>
+    /// <param name="numSnapped"></param>
+    internal void HandlePhase3SnapEffect(string objectName, int numSnapped)
+    {
+        switch (objectName)
+        {
+            case Constants.ShapeNames.CUBOID:
+                if (numSnapped == 5)
+                {
+                    soundManager.PlayCompleteSnapAudio();
+                }
+                else
+                {
+                    soundManager.PlaySnapSound();
+                }
+                break;
+            case Constants.ShapeNames.HEXAGON:
+                if (numSnapped == 6)
+                {
+                    soundManager.PlayCompleteSnapAudio();
+                }
+                else
+                {
+                    soundManager.PlaySnapSound();
+                }
+                break;
+            case Constants.ShapeNames.PYRAMID:
+                if (numSnapped == 4)
+                {
+                    soundManager.PlayCompleteSnapAudio();
+                }
+                else
+                {
+                    soundManager.PlaySnapSound();
+                }
+                break;
         }
     }
 }

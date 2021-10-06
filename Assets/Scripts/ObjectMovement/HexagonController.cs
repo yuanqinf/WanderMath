@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexagonController : MonoBehaviour
+public class HexagonController : GenericClass
 {
     [SerializeField]
     private float hexagonThresholdDegree = 55f;
     private float hexSetDegree = 90f;
+    private int numSnapped = 0;
 
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
@@ -66,15 +67,16 @@ public class HexagonController : MonoBehaviour
     {
         if (gameObject.transform.localEulerAngles.x > hexagonThresholdDegree)
         {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
             SnapHexagonObject(gameObject);
         }
     }
 
     private void SnapHexagonObject(GameObject gameObject)
     {
+        numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(hexSetDegree, gameObject.transform.localEulerAngles.y, gameObject.transform.localEulerAngles.z);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.HEXAGON, numSnapped);
     }
 
     /// <summary>
@@ -85,14 +87,15 @@ public class HexagonController : MonoBehaviour
     {
         if (gameObject.transform.eulerAngles.z > hexagonThresholdDegree)
         {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
             SnapHexObject(gameObject);
         }
     }
 
     private void SnapHexObject(GameObject gameObject)
     {
+        numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, hexSetDegree);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.HEXAGON, numSnapped);
     }
 }

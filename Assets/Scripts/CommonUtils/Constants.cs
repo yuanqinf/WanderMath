@@ -5,4 +5,11 @@ public static class Constants
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
     }
+
+    public struct ShapeNames
+    {
+        public const string CUBOID = "CUBOID";
+        public const string HEXAGON = "HEXAGON";
+        public const string PYRAMID = "PYRAMID";
+    }
 }

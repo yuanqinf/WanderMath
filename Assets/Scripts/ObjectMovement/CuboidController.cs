@@ -8,6 +8,7 @@ public class CuboidController : GenericClass
     [SerializeField]
     private float cuboidThresholdDegree = 50f;
     private float cuboidSetDegree = 90f;
+    private int numSnapped = 0;
 
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
@@ -62,7 +63,6 @@ public class CuboidController : GenericClass
         {
             if (gameObject.transform.localEulerAngles.z > cuboidThresholdDegree)
             {
-                //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
                 SnapObject(gameObject, true);
             }
         }
@@ -78,15 +78,16 @@ public class CuboidController : GenericClass
 
     private void SnapObject(GameObject gameObject, bool isSecondLevel = false)
     {
+        numSnapped++;
+
         if (isSecondLevel)
         {
-            Debug.Log("last cuboid is made");
             gameObject.transform.localEulerAngles = new Vector3(0, 0, cuboidSetDegree);
         } else
         {
             gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, cuboidSetDegree);
         }
-        
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBOID, numSnapped);
     }
 }

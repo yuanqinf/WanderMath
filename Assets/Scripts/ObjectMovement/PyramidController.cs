@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PyramidController : MonoBehaviour
+public class PyramidController : GenericClass
 {
     [SerializeField]
     private float pyramidThresholdDegree = 75f;
     private float pyramidSetDegree = 116f;
+    private int numSnapped = 0;
 
     public void UpdatePyramidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
@@ -51,15 +52,15 @@ public class PyramidController : MonoBehaviour
     {
         if (gameObject.transform.eulerAngles.z > pyramidThresholdDegree)
         {
-            //if (touchedObject.transform.GetComponent<BoxCollider>().enabled) curCubeSnappedSides++;
             SnapObject(gameObject);
-            gameObject.transform.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
     private void SnapObject(GameObject gameObject)
     {
+        numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(pyramidSetDegree, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
+        utils.HandlePhase3SnapEffect(Constants.ShapeNames.PYRAMID, numSnapped);
     }
 }
