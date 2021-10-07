@@ -56,6 +56,8 @@ public class CubeEasy : GenericClass
         {
             Debug.Log("numSnapped = " + numSnapped);
             var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            soundManager.PlaySuccessSound();
+            gameController.playSuccessEffect(touchedObject);
             gameController.SetGamePhaseWithDelay("phase2", 8.0f);
             numSnapped++;
         }

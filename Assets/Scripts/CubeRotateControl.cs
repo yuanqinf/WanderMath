@@ -36,6 +36,7 @@ public class CubeRotateControl : MonoBehaviour
         soundManager = FindObjectOfType<SoundManager>();
         uiController = FindObjectOfType<UiController>();
         gameController = FindObjectOfType<GameController>();
+
     }
 
 
@@ -169,12 +170,12 @@ public class CubeRotateControl : MonoBehaviour
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
         Vector3 pos1 = placementPose.position;
-        Vector3 pos2 = placementPose.position + new Vector3(0f, 0f, 0.8f);
-        Vector3 pos3 = placementPose.position + new Vector3(0f, 0f, -0.8f);
+        Vector3 pos2 = placementPose.position + new Vector3(-0.6f, 0f, 0.6f);
+        Vector3 pos3 = placementPose.position + new Vector3(-0.8f, 0f, -0.7f);
 
 
-        cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
+        cubeMed = utils.PlaceObjectInSky(cubeMed, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
         cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
 
         //StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));

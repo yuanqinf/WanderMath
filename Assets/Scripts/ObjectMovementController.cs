@@ -48,12 +48,6 @@ public class ObjectMovementController : MonoBehaviour
     void Update()
     {
         //if (isObjectMovementEnabled && Input.touchCount > 0)
-
-        if (!gameController.touchEnabled) {
-            gameController.touchEnabled = true;
-            return;
-        }
-
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);

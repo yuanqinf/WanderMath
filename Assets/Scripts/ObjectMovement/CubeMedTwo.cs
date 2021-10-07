@@ -8,7 +8,7 @@ public class CubeMedTwo : GenericClass
 
     public void RotateMedTwoFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //handleOutline(touchedObject);
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":
@@ -50,6 +50,8 @@ public class CubeMedTwo : GenericClass
                 if (numSnapped == 5)
         {
             var duration = soundManager.PlayPhase2EndAudio();
+            soundManager.PlaySuccessSound();
+            gameController.playSuccessEffect(touchedObject);
             gameController.SetGamePhaseWithDelay("phase3", 8.0f);
             numSnapped++;
         }
@@ -68,7 +70,7 @@ public class CubeMedTwo : GenericClass
         numSnapped++;
         gameObject.transform.localEulerAngles = new Vector3(gameObject.transform.localEulerAngles.x, gameObject.transform.localEulerAngles.y, 90);
         objectMovementController.ResetGameObject();
-        utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
+        //utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_MED2, numSnapped);
     }
 
     private void SnapDetection(GameObject gameObject)

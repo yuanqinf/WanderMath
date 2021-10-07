@@ -54,6 +54,8 @@ public class HelperUtils : GenericClass
     /// <param name="numSnapped"></param>
     internal void HandlePhase3SnapEffect(string objectName, int numSnapped)
     {
+        Debug.Log("start handle phase 3");
+
         switch (objectName)
         {
             case Constants.ShapeNames.CUBE_WRONG:

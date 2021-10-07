@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     private Camera arCamera;
     [SerializeField]
     private float cubeUpDistance = 0.8f;
+    [SerializeField]
+    private GameObject successEffect;
 
     private ARPlacement arPlacement;
     private CharacterController characterController;
@@ -22,7 +24,7 @@ public class GameController : MonoBehaviour
     private UiController uiController;
     private string gamePhase = "setup";
 
-    public bool touchEnabled = true;
+    private GameObject lastSelectedShape = null;
 
     private void Start()
     {
@@ -141,7 +143,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(true);
         uiController.SetCompleteCubeSubtitles();
-        soundManager.PlayCompleteCubeACubeAudio();
+        // already played once in "HelperUtils"
+        //soundManager.PlayCompleteCubeACubeAudio();
         yield return new WaitForSeconds(duration);
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(false);
@@ -195,5 +198,28 @@ public class GameController : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(false);
+    }
+
+    // handle cube selection outline
+    public void handleOutline(GameObject touchedObject)
+    {
+        // handle outline here
+        if (this.lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+        {
+            Debug.Log("outing is being deactivated");
+            this.lastSelectedShape.GetComponent<Outline>().enabled = false;
+        }
+        if (touchedObject.transform.root.GetComponent<Outline>() != null)
+        {
+            Debug.Log("outing is being activated");
+            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+        }
+        this.lastSelectedShape = touchedObject.transform.root.gameObject;
+    }
+
+    public void playSuccessEffect(GameObject shape)
+    {
+        var particleEffect = Instantiate(successEffect, shape.transform.root.transform);
+        Destroy(particleEffect, 2f);
     }
 }
