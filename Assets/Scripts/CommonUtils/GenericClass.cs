@@ -10,6 +10,7 @@ public class GenericClass : MonoBehaviour
     internal TimelineController timelineController;
     internal GameController gameController;
     internal ObjectMovementController objectMovementController;
+    internal CubeRotateControl cubeRotateControl;
 
     private void Start()
     {
@@ -19,5 +20,6 @@ public class GenericClass : MonoBehaviour
         timelineController = FindObjectOfType<TimelineController>();
         gameController = FindObjectOfType<GameController>();
         objectMovementController = FindObjectOfType<ObjectMovementController>();
+        cubeRotateControl = FindObjectOfType<CubeRotateControl>();
     }
 }

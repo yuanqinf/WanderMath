@@ -249,7 +249,7 @@ public class ARPlacement : MonoBehaviour
         if (snappedSides == 5)
         {
             // play audio & subtitle
-            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
+            var duration = 5f;
             uiController.SetCursorActive(false);
             // move cube to character
             StartCoroutine(utils.LerpMovement(arCubeToSpawn.transform.position, arCharacter.transform.position, duration, arCubeToSpawn));

@@ -6,11 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField]
     private AudioClip[] startingSubtitleClips;
-    [SerializeField]
-    private AudioClip[] completeClips;
     // cube making
-    [SerializeField]
-    private AudioClip[] setupCubeClipIntro;
     [SerializeField]
     private AudioClip selectACubeClip;
     [SerializeField]
@@ -19,15 +15,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioClip characterInitClip;
 
-// birthday audio
     [SerializeField]
-    private AudioClip birthdayCardPreClip;
-    [SerializeField]
-    private AudioClip birthdayCardInitClip;
-    [SerializeField]
-    private AudioClip birthdayCardCompleteClip;
+    private AudioClip[] birthdayCardClips;
 
-// sound effects
+    [SerializeField]
+    private AudioClip[] phase1CubeEasyClips;
+    // sound effects
     [SerializeField]
     private AudioClip[] soundEffects;
     private AudioSource audioSource;
@@ -42,41 +35,49 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioClip phase2EndSound;
 
-
-
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
 // cube setup audio
-    public float PlaySetubCubeSubtitleAudio(int num)
+    public float PlaySetupCubeSubtitleAudio(int num)
     {
-        audioSource.PlayOneShot(setupCubeClipIntro[num]);
-        return setupCubeClipIntro[num].length;
+        audioSource.PlayOneShot(phase1CubeEasyClips[num]);
+        return phase1CubeEasyClips[num].length;
+    }
+
+    public float GetPlayCubeEasySubtitleAudio()
+    {
+        return phase1CubeEasyClips[3].length + phase1CubeEasyClips[4].length;
+    }
+
+    public float GetCompleteCubeEasySubtitleAudio()
+    {
+        return phase1CubeEasyClips[5].length + phase1CubeEasyClips[6].length;
     }
 
     // Birthday card
     public float PlayBirthdayCardPreClip()
     {
-        audioSource.PlayOneShot(birthdayCardPreClip);
-        return birthdayCardPreClip.length;
+        audioSource.PlayOneShot(birthdayCardClips[0]);
+        return birthdayCardClips[0].length;
     }
 
     public float GetBirthdayCardInitClip()
     {
-        return birthdayCardInitClip.length;
+        return birthdayCardClips[1].length;
     }
 
     public void PlayBirthdayCardInitClip()
     {
-        audioSource.PlayOneShot(birthdayCardInitClip);
+        audioSource.PlayOneShot(birthdayCardClips[1]);
     }
 
     public float PlayBirthdayCardCompleteClip()
     {
-        audioSource.PlayOneShot(birthdayCardCompleteClip);
-        return birthdayCardCompleteClip.length;
+        audioSource.PlayOneShot(birthdayCardClips[2]);
+        return birthdayCardClips[2].length;
     }
 
 // Sound effects
@@ -98,10 +99,6 @@ public class SoundManager : MonoBehaviour
     }
 
     #region part 3: complete cube audio
-    public float GetCompleteCubeSubtitleAudioDuration()
-    {
-        return completeCubeClip.length;
-    }
 
     public void PlayCompleteCubeACubeAudio()
     {

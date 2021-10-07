@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour
                     {
                         var audioDuration = PlaceObjectAndAudio();
                         SetGamePhaseWithDelay("phase0", audioDuration);
+                        // TODO: change this back to phase0
                     }
                 }
                 break;
@@ -98,11 +99,12 @@ public class GameController : MonoBehaviour
     /// </summary>
     private float PlaceObjectAndAudio()
     {
-        float duration = characterController.InitCharacterFirst(placementPose, placementController.GetPlacementIndicatorLocation());
+        float duration = characterController.InitCharacterAndAudio(placementPose, placementController.GetPlacementIndicatorLocation());
         placementController.TurnOffPlacementAndText();
         return duration;
     }
 
+    #region setting game phases
     /// <summary>
     /// Sets the gamephase with a delay duration.
     /// </summary>
@@ -124,6 +126,7 @@ public class GameController : MonoBehaviour
     {
         gamePhase = phaseName;
     }
+    #endregion
 
     public Vector3 GetArCharacterPosition()
     {
