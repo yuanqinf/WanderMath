@@ -55,6 +55,8 @@ public class CubeEasy : GenericClass
         if (numSnapped == 5)
         {
             cubeRotateControl.EndPhase1();
+            soundManager.PlaySuccessSound();
+            gameController.playSuccessEffect(touchedObject);
             numSnapped++;
         }
     }

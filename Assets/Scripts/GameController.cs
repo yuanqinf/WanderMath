@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private Camera arCamera;
+    [SerializeField]
+    private GameObject successEffect;
 
     private CharacterController characterController;
     private PlacementIndicatorController placementController;
@@ -17,6 +19,7 @@ public class GameController : MonoBehaviour
     private ShapesController shapesController;
     private UiController uiController;
     private string gamePhase = "setup";
+    private GameObject lastSelectedShape = null;
 
     public bool touchEnabled = true;
 
@@ -140,5 +143,28 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(duration);
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(false);
+    }
+
+    // handle cube selection outline
+    public void handleOutline(GameObject touchedObject)
+    {
+        // handle outline here
+        if (this.lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+        {
+            Debug.Log("outing is being deactivated");
+            this.lastSelectedShape.GetComponent<Outline>().enabled = false;
+        }
+        if (touchedObject.transform.root.GetComponent<Outline>() != null)
+        {
+            Debug.Log("outing is being activated");
+            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+        }
+        this.lastSelectedShape = touchedObject.transform.root.gameObject;
+    }
+
+    public void playSuccessEffect(GameObject shape)
+    {
+        var particleEffect = Instantiate(successEffect, shape.transform.root.transform);
+        Destroy(particleEffect, 2f);
     }
 }

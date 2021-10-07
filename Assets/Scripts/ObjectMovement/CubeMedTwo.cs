@@ -8,7 +8,7 @@ public class CubeMedTwo : GenericClass
 
     public void RotateMedTwoFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //handleOutline(touchedObject);
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":
@@ -50,6 +50,7 @@ public class CubeMedTwo : GenericClass
         if (numSnapped == 5)
         {
             cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED2);
+            gameController.playSuccessEffect(touchedObject);
             numSnapped++;
         }
     }
