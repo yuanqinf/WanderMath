@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
                     if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         var audioDuration = PlaceObjectAndAudio();
-                        SetGamePhaseWithDelay("phase2", audioDuration);
+                        SetGamePhaseWithDelay("phase0", audioDuration);
                         // TODO: change this back to phase0
                     }
                 }
