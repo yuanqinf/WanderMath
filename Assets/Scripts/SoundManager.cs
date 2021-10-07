@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip[] startingSubtitleClips;
-    // cube making
-    [SerializeField]
-    private AudioClip selectACubeClip;
-    [SerializeField]
-    private AudioClip completeCubeClip;
     // starting line
     [SerializeField]
     private AudioClip characterInitClip;
@@ -27,20 +20,21 @@ public class SoundManager : MonoBehaviour
 
     // phase 2 sound effects
     [SerializeField]
-    private AudioClip phase2WrongCube;
+    private AudioClip[] phase2InitClips;
     [SerializeField]
-    private AudioClip phase2PreStartSound;
+    private AudioClip[] phase2CompleteClips;
     [SerializeField]
-    private AudioClip phase2StartSound;
+    private AudioClip[] phase2WrongCubeClips;
+
     [SerializeField]
-    private AudioClip phase2EndSound;
+    private AudioClip[] phase3Clips;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-// cube setup audio
+// phase 1 cube setup audio
     public float PlaySetupCubeSubtitleAudio(int num)
     {
         audioSource.PlayOneShot(phase1CubeEasyClips[num]);
@@ -55,6 +49,47 @@ public class SoundManager : MonoBehaviour
     public float GetCompleteCubeEasySubtitleAudio()
     {
         return phase1CubeEasyClips[5].length + phase1CubeEasyClips[6].length;
+    }
+
+// phase 2 cube setup audio
+    public float PlayInitCubesSubtitleAudio(int num)
+    {
+        audioSource.PlayOneShot(phase2InitClips[num]);
+        return phase2InitClips[num].length;
+    }
+
+    public float PlayCompleteCubesSubtitleAudio(int num)
+    {
+        audioSource.PlayOneShot(phase2CompleteClips[num]);
+        return phase2CompleteClips[num].length;
+    }
+
+    public float PlayWrongCubesSubtitleAudio(int num)
+    {
+        audioSource.PlayOneShot(phase2WrongCubeClips[num]);
+        return phase2WrongCubeClips[num].length;
+    }
+
+    public float GetInitPlayCubesSubtitleAudio()
+    {
+        return phase2InitClips[0].length + phase2InitClips[1].length;
+    }
+
+    public float GetCompletePlayCubesSubtitleAudio()
+    {
+        return phase2CompleteClips[0].length + phase2CompleteClips[1].length;
+    }
+
+    // phase 3 audio
+    public float PlayPhase3InitShapesSubtitleAudio(int num)
+    {
+        audioSource.PlayOneShot(phase3Clips[num]);
+        return phase3Clips[num].length;
+    }
+
+    public float GetPhase3InitShapes(int num)
+    {
+        return phase3Clips[num].length;
     }
 
     // Birthday card
@@ -96,77 +131,5 @@ public class SoundManager : MonoBehaviour
     {
         audioSource.PlayOneShot(characterInitClip);
         return characterInitClip.length;
-    }
-
-    #region part 3: complete cube audio
-
-    public void PlayCompleteCubeACubeAudio()
-    {
-        audioSource.PlayOneShot(completeCubeClip, 1);
-    }
-
-    public void PlayCompleteSnapAudio()
-    {
-        audioSource.PlayOneShot(completeCubeClip, 1);
-    }
-    #endregion
-
-    #region part 2: start select cube audio
-    public float GetSelectSubtitleAudioDuration()
-    {
-        return selectACubeClip.length;
-    }
-
-    public float PlaySelectACubeAudio()
-    {
-        audioSource.PlayOneShot(selectACubeClip, 1);
-        return selectACubeClip.length;
-    }
-    #endregion
-
-    #region part 1: starting initial audio
-    public int GetSubtitleAudioClipsLen()
-    {
-        return startingSubtitleClips.Length;
-    }
-
-    public float GetSubtitleAudioDuration(int num)
-    {
-        return startingSubtitleClips[num].length;
-    }
-
-    public void PlayStartingSubtitleAudio(int num)
-    {
-        audioSource.PlayOneShot(startingSubtitleClips[num], 1);
-    }
-    #endregion
-
-
-    public float PlayPhase2StartAudio()
-    {
-        audioSource.PlayOneShot(phase2PreStartSound);
-
-        //StartCoroutine(playSoundAfterTenSeconds(phase2PreStartSound.length + 1));
-
-        return phase2StartSound.length;
-    }
-
-    //IEnumerator playSoundAfterTenSeconds(float time)
-    //{
-    //    yield return new WaitForSeconds(time);
-    //    audioSource.PlayOneShot(phase2StartSound);
-    //}
-
-    public float PlayPhase2WrongCube()
-    {
-        audioSource.Stop();
-        audioSource.PlayOneShot(phase2WrongCube);
-        return phase2WrongCube.length;
-    }
-
-    public float PlayPhase2EndAudio()
-    {
-        audioSource.PlayOneShot(phase2EndSound);
-        return phase2EndSound.length;
     }
 }

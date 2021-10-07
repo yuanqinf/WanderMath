@@ -9,16 +9,12 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private Camera arCamera;
-    [SerializeField]
-    private float cubeUpDistance = 0.8f;
 
-    private ARPlacement arPlacement;
     private CharacterController characterController;
     private PlacementIndicatorController placementController;
     private BirthdayCardController birthdayCardController;
     private CubeRotateControl cubeController;
     private ShapesController shapesController;
-    private SoundManager soundManager;
     private UiController uiController;
     private string gamePhase = "setup";
 
@@ -27,13 +23,11 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        arPlacement = FindObjectOfType<ARPlacement>();
         characterController = FindObjectOfType<CharacterController>();
         cubeController = FindObjectOfType<CubeRotateControl>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         shapesController = FindObjectOfType<ShapesController>();
-        soundManager = FindObjectOfType<SoundManager>();
         uiController = FindObjectOfType<UiController>();
 
         // for testing purposes
@@ -52,7 +46,7 @@ public class GameController : MonoBehaviour
                     if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         var audioDuration = PlaceObjectAndAudio();
-                        SetGamePhaseWithDelay("phase0", audioDuration);
+                        SetGamePhaseWithDelay("phase2", audioDuration);
                         // TODO: change this back to phase0
                     }
                 }
@@ -119,7 +113,6 @@ public class GameController : MonoBehaviour
         gamePhase = phaseName;
     }
 
-
     public void SetGamePhase(string phaseName)
     {
         gamePhase = phaseName;
@@ -134,7 +127,7 @@ public class GameController : MonoBehaviour
     // part 2: selecting cube
     public float StartSelectSubtitleWithAudio()
     {
-        var duration = soundManager.GetSelectSubtitleAudioDuration();
+        var duration = 10f;
         StartCoroutine(SelectSubtitleWithAudio(duration));
         return duration;
     }
@@ -144,7 +137,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(true);
         uiController.SetNextSubtitleText();
-        soundManager.PlaySelectACubeAudio();
         yield return new WaitForSeconds(duration);
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(false);

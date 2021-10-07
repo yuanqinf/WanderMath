@@ -983,10 +983,21 @@ MonoBehaviour:
   soundEffects:
   - {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
   - {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
-  phase2WrongCube: {fileID: 8300000, guid: d7e2e0d2910b44f0caff29028745cbdf, type: 3}
-  phase2PreStartSound: {fileID: 8300000, guid: 2aeaa3a51637d474fbdef25ab6b5e3df, type: 3}
-  phase2StartSound: {fileID: 8300000, guid: 8a1e0a33292824d65bb8b4773aff99a8, type: 3}
-  phase2EndSound: {fileID: 8300000, guid: 88891157c61ec42b387f48756e6fd55c, type: 3}
+  phase2InitClips:
+  - {fileID: 8300000, guid: 8a1e0a33292824d65bb8b4773aff99a8, type: 3}
+  - {fileID: 8300000, guid: eea3a5dd6f050489ba2263039b525465, type: 3}
+  phase2CompleteClips:
+  - {fileID: 8300000, guid: c4ae1b077ed5744259ecdc4fc1c516bc, type: 3}
+  - {fileID: 8300000, guid: 7b001107c98f34455b9dd5323b99a3bf, type: 3}
+  phase2WrongCubeClips:
+  - {fileID: 8300000, guid: e8a84ecff7de946bcb02ea5267c0af5e, type: 3}
+  - {fileID: 8300000, guid: d7e2e0d2910b44f0caff29028745cbdf, type: 3}
+  phase3Clips:
+  - {fileID: 8300000, guid: dd0a9c9d260fa40c5b66004f1cea7922, type: 3}
+  - {fileID: 8300000, guid: 2f90c7fce7b874200a7c4db6fec5b070, type: 3}
+  - {fileID: 8300000, guid: c5b995f5bc9374e0a9567909a75e0210, type: 3}
+  - {fileID: 8300000, guid: 752a418fe9eab4a349cc3b209876590f, type: 3}
+  - {fileID: 8300000, guid: 96a405fe8881d40a998d95970bf7808b, type: 3}
 --- !u!4 &897245920
 Transform:
   m_ObjectHideFlags: 0

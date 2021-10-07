@@ -59,9 +59,9 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.CUBE_WRONG:
                 if (numSnapped == 5)
                 {
-                    soundManager.PlayPhase2WrongCube();
+                    StartCoroutine(cubeRotateControl.CompletePhase2WrongCubeSubtitleWithAudio());
                 }
-                else
+                else if (numSnapped < 5)
                 {
                     soundManager.PlaySnapSound();
                 }
@@ -69,7 +69,6 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.CUBE_EASY:
             case Constants.ShapeNames.CUBE_MED:
             case Constants.ShapeNames.CUBE_MED2:
-            case Constants.ShapeNames.CUBOID:
                 if (numSnapped == 5)
                 {
                     soundManager.PlaySuccessSound();
@@ -79,9 +78,21 @@ public class HelperUtils : GenericClass
                     soundManager.PlaySnapSound();
                 }
                 break;
-            case Constants.ShapeNames.HEXAGON:
-                if (numSnapped == 6)
+            case Constants.ShapeNames.CUBOID:
+                if (numSnapped == 5)
                 {
+                    soundManager.PlaySuccessSound();
+                    StartCoroutine(shapesController.PlayCuboidSubtitleWithAudio());
+                }
+                else if (numSnapped < 5)
+                {
+                    soundManager.PlaySnapSound();
+                }
+                break;
+            case Constants.ShapeNames.HEXAGON:
+                if (numSnapped == 7)
+                {
+                    StartCoroutine(shapesController.PlayHexagonSubtitleWithAudio());
                     soundManager.PlaySuccessSound();
                 }
                 else
@@ -93,6 +104,7 @@ public class HelperUtils : GenericClass
                 if (numSnapped == 4)
                 {
                     soundManager.PlaySuccessSound();
+                    StartCoroutine(shapesController.PlayPyramidSubtitleWithAudio());
                 }
                 else
                 {

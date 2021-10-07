@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class PyramidController : GenericClass
 {
-    [SerializeField]
     private float pyramidThresholdDegree = 55f;
-    private float pyramidSetDegree = 116f;
+    private float pyramidSetDegree = 90 + 26f;
     private int numSnapped = 0;
 
     public void UpdatePyramidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
@@ -50,7 +49,7 @@ public class PyramidController : GenericClass
 
     private void SnapDetection(GameObject gameObject)
     {
-        if (gameObject.transform.eulerAngles.z > pyramidThresholdDegree)
+        if (gameObject.transform.eulerAngles.x > pyramidThresholdDegree)
         {
             SnapObject(gameObject);
         }

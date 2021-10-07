@@ -11,6 +11,7 @@ public class GenericClass : MonoBehaviour
     internal GameController gameController;
     internal ObjectMovementController objectMovementController;
     internal CubeRotateControl cubeRotateControl;
+    internal ShapesController shapesController;
 
     private void Start()
     {
@@ -21,5 +22,6 @@ public class GenericClass : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
         objectMovementController = FindObjectOfType<ObjectMovementController>();
         cubeRotateControl = FindObjectOfType<CubeRotateControl>();
+        shapesController = FindObjectOfType<ShapesController>();
     }
 }

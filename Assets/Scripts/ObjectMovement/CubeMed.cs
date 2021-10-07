@@ -50,8 +50,7 @@ public class CubeMed : GenericClass
         }
         if (numSnapped == 5)
         {
-            var duration = soundManager.PlayPhase2EndAudio();
-            gameController.SetGamePhaseWithDelay("phase3", 8.0f);
+            cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED);
             numSnapped++;
         }
     }

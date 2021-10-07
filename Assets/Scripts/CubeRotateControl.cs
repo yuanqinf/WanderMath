@@ -27,6 +27,22 @@ public class CubeRotateControl : GenericClass
         "Since you're a folding master, do you want to help me wrap a few more presents?"
     };
 
+    private string[] initPhase2Subtitles =
+    {
+        "I just need one more cube to finish wrapping the presents.",
+        "Do you think that one makes a cube too?"
+    };
+    private string[] wrongPhase2Subtitles =
+    {
+        "I totally thought that would make a cube! It has six faces, but when you fold it, they overlap.",
+        "No worries, I bet I'll find something cool to make out of it. Wanna see if we can find one that makes a cube?"
+    };
+    private string[] completePhase2Subtitles =
+    {
+        "Wow, you're really good at this! I couldn't have done it without you.",
+        "If you want, we can wrap some more presents? I think we might have some funky shaped boxes..."
+    };
+
     public int curCubeSnappedSides = 0;
 
 
@@ -45,13 +61,6 @@ public class CubeRotateControl : GenericClass
     //    }
     //    lastSelectedShape = touchedObject.transform.root.gameObject;
     //}
-
-    private float PlayCubeHardWithSubtitles()
-    {
-        var duration = soundManager.PlaySelectACubeAudio();
-        uiController.PlaySubtitles(initCubeEasySubtitles[1], duration);
-        return duration;
-    }
 
     /// <summary>
     /// Instantiate cube easy for phase 1
@@ -118,14 +127,11 @@ public class CubeRotateControl : GenericClass
     /// <param name="placementPose"></param>
     public void EndPhase1()
     {
-        var duration = StartCompleteEasyCubeSubtitleWithAudio();
-        gameController.SetGamePhaseWithDelay("phase2", duration);
-    }
-
-    public float StartCompleteEasyCubeSubtitleWithAudio()
-    {
         StartCoroutine(CompleteCubeSubtitleWithAudio());
-        return soundManager.GetCompleteCubeEasySubtitleAudio();
+        //TODO: add lerpmovements
+        //utils.LerpMovement(cubeEasy)
+        var duration = soundManager.GetCompleteCubeEasySubtitleAudio();
+        gameController.SetGamePhaseWithDelay("phase2", duration);
     }
 
     IEnumerator CompleteCubeSubtitleWithAudio()
@@ -141,14 +147,14 @@ public class CubeRotateControl : GenericClass
     }
     #endregion
 
+    #region phase 2 code
     /// <summary>
     /// Play subtitles and audio for phase 2
     /// </summary>
     public void StartPhase2(Pose placementPose)
     {
-        //start phase 2 here
-        Debug.Log("phase 2 started!!!!!!!!!!!");
-        var startAudioLen = soundManager.PlayPhase2StartAudio();
+        StartCoroutine(SetupCubesSubtitleWithAudio());
+        var audioLen = soundManager.GetInitPlayCubesSubtitleAudio();
 
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
@@ -156,12 +162,54 @@ public class CubeRotateControl : GenericClass
         Vector3 pos2 = placementPose.position + new Vector3(0f, 0f, 0.8f);
         Vector3 pos3 = placementPose.position + new Vector3(0f, 0f, -0.8f);
 
-
-        cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(rot), startAudioLen, 0.5f);
-        cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), startAudioLen, 0.5f);
-
-        //StartCoroutine(SetupCubeSubtitleWithAudio(placementPose));
+        cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), audioLen, 0.5f);
+        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(rot), audioLen, 0.5f);
+        cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
     }
 
+    IEnumerator SetupCubesSubtitleWithAudio()
+    {
+        var totalLen = initPhase2Subtitles.Length;
+        for (int i = 0; i < totalLen; i++)
+        {
+            var audioDuration = soundManager.PlayInitCubesSubtitleAudio(i);
+            uiController.PlaySubtitles(initPhase2Subtitles[i], audioDuration);
+            yield return new WaitForSeconds(audioDuration);
+        }
+        uiController.SetSubtitleActive(false);
+    }
+
+    public IEnumerator CompletePhase2WrongCubeSubtitleWithAudio()
+    {
+        uiController.SetSubtitleActive(true);
+        for (int i = 0; i < wrongPhase2Subtitles.Length; i++)
+        {
+            var duration = soundManager.PlayWrongCubesSubtitleAudio(i);
+            uiController.PlaySubtitles(wrongPhase2Subtitles[i], duration);
+            yield return new WaitForSeconds(duration);
+        }
+        uiController.SetSubtitleActive(false);
+    }
+
+    public void EndPhase2(string cubeName)
+    {
+        StartCoroutine(CompletePhase2CubeSubtitleWithAudio());
+        //TODO: add lerpmovements
+        //utils.LerpMovement(cube)
+        var duration = soundManager.GetCompletePlayCubesSubtitleAudio();
+        gameController.SetGamePhaseWithDelay("phase3", duration);
+    }
+
+    IEnumerator CompletePhase2CubeSubtitleWithAudio()
+    {
+        uiController.SetSubtitleActive(true);
+        for (int i = 0; i < completePhase2Subtitles.Length; i++)
+        {
+            var duration = soundManager.PlayCompleteCubesSubtitleAudio(i);
+            uiController.PlaySubtitles(completePhase2Subtitles[i], duration);
+            yield return new WaitForSeconds(duration);
+        }
+        uiController.SetSubtitleActive(false);
+    }
+    #endregion
 }
