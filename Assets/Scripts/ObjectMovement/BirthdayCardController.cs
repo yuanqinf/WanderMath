@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BirthdayCardController : GenericClass
+public class BirthdayCardController : MonoBehaviour
 {
     #region Fields
     [SerializeField]
@@ -16,17 +16,28 @@ public class BirthdayCardController : GenericClass
 
     private GameObject spinArrow;
     private GameObject touchDrag;
+    private HelperUtils utils;
+    private ObjectMovementController objectMovementController;
+    private GameController gameController;
+    private SoundManager soundManager;
+    private UiController uiController;
 
-    private string[] birthdayCardSubtitles =
-    {
-        "Today is my friend Quinn's birthday!",
-        "I'm almost done making a birthday card. But I need to fold it!",
-        "Thanks for helping me fold the card!"
-    };
+    private string birthdayCardPre = "Today is my friend Quinn's birthday!";
+    private string birthdayCardInit = "I'm almost done making a birthday card. But I need to fold it!";
+    private string birthdayCardComplete = "Thanks for helping me fold the card!";
 
     #region Properties
     public GameObject BirthdayCard { get { return birthdayCard; } }
     #endregion
+
+    private void Start()
+    {
+        utils = FindObjectOfType<HelperUtils>();
+        soundManager = FindObjectOfType<SoundManager>();
+        uiController = FindObjectOfType<UiController>();
+        objectMovementController = FindObjectOfType<ObjectMovementController>();
+        gameController = FindObjectOfType<GameController>();
+    }
 
     /// <summary>
     /// Play subtitle and audio for pre and init birthday card
@@ -35,7 +46,7 @@ public class BirthdayCardController : GenericClass
     public float PlayBirthdayCardInitWithSubtitles()
     {
         var duration = soundManager.PlayBirthdayCardPreClip();
-        uiController.PlaySubtitles(birthdayCardSubtitles[0], duration);
+        uiController.PlaySubtitles(birthdayCardPre, duration);
         StartCoroutine(PlayBirthdayCardInitSecondWithSubtitles(duration));
         return duration + soundManager.GetBirthdayCardInitClip();
     }
@@ -44,7 +55,7 @@ public class BirthdayCardController : GenericClass
     {
         yield return new WaitForSeconds(duration);
         soundManager.PlayBirthdayCardInitClip();
-        uiController.PlaySubtitles(birthdayCardSubtitles[1], duration);
+        uiController.PlaySubtitles(birthdayCardInit, duration);
     }
     /// <summary>
     /// Play subtitle and audio for completed birthday card
@@ -53,7 +64,7 @@ public class BirthdayCardController : GenericClass
     private float PlayBirthdayCardCompleteWithSubtitles()
     {
         var duration = soundManager.PlayBirthdayCardCompleteClip();
-        uiController.PlaySubtitles(birthdayCardSubtitles[2], duration);
+        uiController.PlaySubtitles(birthdayCardComplete, duration);
         return duration;
     }
 
@@ -89,9 +100,10 @@ public class BirthdayCardController : GenericClass
             touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
             SwitchOffAnimation();
         }
+        // in charge of snapping logic
         var eulerAngle = touchedObject.transform.eulerAngles;
         //Debug.Log("touched object angle: " + eulerAngle);
-        if (eulerAngle.y > Constants.ROTATION_THRESHOLD + 90f)
+        if (eulerAngle.y > 50 + 90f)
         {
             soundManager.PlaySuccessSound();
             var duration = PlayBirthdayCardCompleteWithSubtitles();
