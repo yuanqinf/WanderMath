@@ -9,7 +9,7 @@ public class CubeWrong : GenericClass
 
     public void RotateWrongFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //handleOutline(touchedObject);
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":

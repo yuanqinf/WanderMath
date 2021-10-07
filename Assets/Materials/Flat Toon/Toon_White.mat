@@ -75,7 +75,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Offset: 0
-    - _OtlWidth: 0.2
+    - _OtlWidth: 5
     - _Parallax: 0.02
     - _Segmented: 1
     - _ShnIntense: 0

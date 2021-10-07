@@ -54,6 +54,8 @@ public class HelperUtils : GenericClass
     /// <param name="numSnapped"></param>
     internal void HandlePhase3SnapEffect(string objectName, int numSnapped)
     {
+        Debug.Log("start handle phase 3");
+
         switch (objectName)
         {
             case Constants.ShapeNames.CUBE_WRONG:
@@ -72,7 +74,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.CUBOID:
                 if (numSnapped == 5)
                 {
-                    soundManager.PlaySuccessSound();
+                    soundManager.PlayCompleteSnapAudio();
                 }
                 else if (numSnapped < 5)
                 {
@@ -82,7 +84,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.HEXAGON:
                 if (numSnapped == 6)
                 {
-                    soundManager.PlaySuccessSound();
+                    soundManager.PlayCompleteSnapAudio();
                 }
                 else
                 {
@@ -92,7 +94,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.PYRAMID:
                 if (numSnapped == 4)
                 {
-                    soundManager.PlaySuccessSound();
+                    soundManager.PlayCompleteSnapAudio();
                 }
                 else
                 {

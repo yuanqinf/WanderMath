@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     private Camera arCamera;
     [SerializeField]
     private float cubeUpDistance = 0.8f;
+    [SerializeField]
+    private GameObject successEffect;
 
     private ARPlacement arPlacement;
     private CharacterController characterController;
@@ -22,7 +24,7 @@ public class GameController : MonoBehaviour
     private UiController uiController;
     private string gamePhase = "setup";
 
-    public bool touchEnabled = true;
+    private GameObject lastSelectedShape = null;
 
     private void Start()
     {
@@ -53,7 +55,6 @@ public class GameController : MonoBehaviour
                     {
                         var audioDuration = PlaceObjectAndAudio();
                         SetGamePhaseWithDelay("phase0", audioDuration);
-                        // TODO: change this back to phase0
                     }
                 }
                 break;
@@ -97,12 +98,11 @@ public class GameController : MonoBehaviour
     /// </summary>
     private float PlaceObjectAndAudio()
     {
-        float duration = characterController.InitCharacterAndAudio(placementPose, placementController.GetPlacementIndicatorLocation());
+        float duration = characterController.InitCharacterFirst(placementPose, placementController.GetPlacementIndicatorLocation());
         placementController.TurnOffPlacementAndText();
         return duration;
     }
 
-    #region setting game phases
     /// <summary>
     /// Sets the gamephase with a delay duration.
     /// </summary>
@@ -124,11 +124,30 @@ public class GameController : MonoBehaviour
     {
         gamePhase = phaseName;
     }
-    #endregion
 
     public Vector3 GetArCharacterPosition()
     {
         return characterController.GetArCharacterPosition();
+    }
+
+    // part 3: finish building cube
+    public float StartCompleteCubeSubtitleWithAudio()
+    {
+        var duration = soundManager.GetCompleteCubeSubtitleAudioDuration();
+        StartCoroutine(CompleteCubeSubtitleWithAudio(duration));
+        return duration;
+    }
+
+    IEnumerator CompleteCubeSubtitleWithAudio(float duration)
+    {
+        yield return new WaitForSeconds(1);
+        uiController.SetSubtitleActive(true);
+        uiController.SetCompleteCubeSubtitles();
+        // already played once in "HelperUtils"
+        //soundManager.PlayCompleteCubeACubeAudio();
+        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(1);
+        uiController.SetSubtitleActive(false);
     }
 
     // part 2: selecting cube
@@ -148,5 +167,59 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(duration);
         yield return new WaitForSeconds(1);
         uiController.SetSubtitleActive(false);
+    }
+
+    // part 1: initialize cube (TODO: to be changed)
+    public void StartSubtitlesWithAudio()
+    {
+        StartCoroutine(InitialSubtitleWithAudio());
+    }
+
+    IEnumerator InitialSubtitleWithAudio()
+    {
+        var totalLen = soundManager.GetSubtitleAudioClipsLen();
+        uiController.SetSubtitleActive(true);
+        for (int i = 0; i < totalLen; i++)
+        {
+            yield return new WaitForSeconds(1);
+            uiController.SetInitialSubtitleText(i);
+            soundManager.PlayStartingSubtitleAudio(i);
+            var audioDuration = soundManager.GetSubtitleAudioDuration(i);
+
+            if (i == 3)
+            {
+                arPlacement.PlaceCubeInSky(audioDuration, cubeUpDistance);
+            }
+            if (i == 4)
+            {
+                // TODO: highlight the cube to be clicked
+            }
+            yield return new WaitForSeconds(audioDuration);
+        }
+        yield return new WaitForSeconds(1);
+        uiController.SetSubtitleActive(false);
+    }
+
+    // handle cube selection outline
+    public void handleOutline(GameObject touchedObject)
+    {
+        // handle outline here
+        if (this.lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+        {
+            Debug.Log("outing is being deactivated");
+            this.lastSelectedShape.GetComponent<Outline>().enabled = false;
+        }
+        if (touchedObject.transform.root.GetComponent<Outline>() != null)
+        {
+            Debug.Log("outing is being activated");
+            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+        }
+        this.lastSelectedShape = touchedObject.transform.root.gameObject;
+    }
+
+    public void playSuccessEffect(GameObject shape)
+    {
+        var particleEffect = Instantiate(successEffect, shape.transform.root.transform);
+        Destroy(particleEffect, 2f);
     }
 }
