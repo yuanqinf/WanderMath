@@ -72,7 +72,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.CUBOID:
                 if (numSnapped == 5)
                 {
-                    soundManager.PlayCompleteSnapAudio();
+                    soundManager.PlaySuccessSound();
                 }
                 else if (numSnapped < 5)
                 {
@@ -82,7 +82,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.HEXAGON:
                 if (numSnapped == 6)
                 {
-                    soundManager.PlayCompleteSnapAudio();
+                    soundManager.PlaySuccessSound();
                 }
                 else
                 {
@@ -92,7 +92,7 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.PYRAMID:
                 if (numSnapped == 4)
                 {
-                    soundManager.PlayCompleteSnapAudio();
+                    soundManager.PlaySuccessSound();
                 }
                 else
                 {

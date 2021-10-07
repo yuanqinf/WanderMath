@@ -2,22 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterController : GenericClass
 {
     [SerializeField]
     private GameObject arCharacterToSpawn;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
-    private SoundManager soundManager;
-    private UiController uiController;
 
-    private void Start()
-    {
-        uiController = FindObjectOfType<UiController>();
-        soundManager = FindObjectOfType<SoundManager>();
-    }
-
-    public float InitCharacterFirst(Pose placementPose, Transform placementPos)
+    public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
     {
         // to be placed at the corner
         Debug.Log("placement Pose: " + placementPose.rotation);

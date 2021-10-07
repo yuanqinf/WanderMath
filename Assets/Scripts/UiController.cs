@@ -11,12 +11,6 @@ public class UiController : MonoBehaviour
     private GameObject subtitles;
     [SerializeField]
     private GameObject mouseCursor;
-    private string[] genericSubtitles = {
-        "I was just wrapping some presents for my friends.",
-        "Well, I was trying to, anyway.",
-        "I need some boxes, but I only have these flat pieces.",
-        "Can you help me make a cube, so I can finish wrapping the presents?",
-    };
 
     private string selectCubeSubtitleLine = "Do you think you can make a cube out of that?";
     private string completeCubeSubtitleLine = "No way! That's a cube. It makes sense, see, a cube has six faces.";
@@ -56,12 +50,6 @@ public class UiController : MonoBehaviour
     public void SetNextSubtitleText()
     {
         subtitles.GetComponent<TextMeshProUGUI>().text = selectCubeSubtitleLine;
-    }
-
-    // part 1: start initial subtitles
-    public void SetInitialSubtitleText(int num)
-    {
-        subtitles.GetComponent<TextMeshProUGUI>().text = genericSubtitles[num];
     }
 
     /// <summary>

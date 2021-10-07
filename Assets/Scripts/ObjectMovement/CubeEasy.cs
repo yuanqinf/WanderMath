@@ -54,9 +54,7 @@ public class CubeEasy : GenericClass
         }
         if (numSnapped == 5)
         {
-            Debug.Log("numSnapped = " + numSnapped);
-            var duration = gameController.StartCompleteCubeSubtitleWithAudio();
-            gameController.SetGamePhaseWithDelay("phase2", 8.0f);
+            cubeRotateControl.EndPhase1();
             numSnapped++;
         }
     }
