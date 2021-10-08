@@ -10,6 +10,7 @@ public class PyramidController : GenericClass
 
     public void UpdatePyramidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "isoTriangle1":
@@ -44,6 +45,10 @@ public class PyramidController : GenericClass
                     SnapDetection(touchedObject);
                 }
                 break;
+        }
+        if (numSnapped == 4)
+        {
+            gameController.playSuccessEffect(touchedObject);
         }
     }
 

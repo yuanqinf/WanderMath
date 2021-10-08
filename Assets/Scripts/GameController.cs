@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 {
     // for debugging placement position
     public Pose placementPose;
+    public string gamePhase = "setup";
 
     [SerializeField]
     private Camera arCamera;
@@ -18,7 +19,6 @@ public class GameController : MonoBehaviour
     private CubeRotateControl cubeController;
     private ShapesController shapesController;
     private UiController uiController;
-    private string gamePhase = "setup";
     private GameObject lastSelectedShape = null;
 
     public bool touchEnabled = true;
@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour
                 // instantiate
                 DestroyImmediate(birthdayCardController.BirthdayCard, true);
                 cubeController.StartPhase1(placementPose);
+                Debug.Log("start phase 1 now!!!!!!!!!!!!");
                 gamePhase = "waiting";
                 break;
             // handles multiple cubes

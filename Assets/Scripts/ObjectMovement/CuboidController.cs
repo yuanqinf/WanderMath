@@ -10,6 +10,7 @@ public class CuboidController : GenericClass
 
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "cuboid1":
@@ -53,6 +54,10 @@ public class CuboidController : GenericClass
                     SnapDetection(touchedObject, true);
                 }
                 break;
+        }
+        if (numSnapped == 5)
+        {
+            gameController.playSuccessEffect(touchedObject);
         }
     }
 

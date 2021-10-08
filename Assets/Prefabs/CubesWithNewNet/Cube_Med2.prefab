@@ -473,7 +473,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1519837505699721845}
-  - component: {fileID: 1519837505699722185}
   - component: {fileID: 949550832}
   m_Layer: 0
   m_Name: Cube_Med2
@@ -500,19 +499,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -179.509, z: 0}
---- !u!65 &1519837505699722185
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519837505699721822}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1.3072054, y: 0.08013666, z: 1}
-  m_Center: {x: -0.16312802, y: 0.00978824, z: 0}
 --- !u!114 &949550832
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class HexagonController : GenericClass
 
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
+        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "hexSquare1":
@@ -54,6 +55,10 @@ public class HexagonController : GenericClass
                     SnapHexagonDetection(touchedObject);
                 }
                 break;
+        }
+        if (numSnapped == 7)
+        {
+            gameController.playSuccessEffect(touchedObject);
         }
     }
 
