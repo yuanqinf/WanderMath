@@ -162,13 +162,14 @@ public class CubeRotateControl : GenericClass
         characterController.PlayTalkingAnimationWithDuration(audioLen);
 
         Vector3 rot = placementPose.rotation.eulerAngles;
+        var wrongRot = new Vector3(rot.x, rot.y, rot.z);
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
         Vector3 pos1 = placementPose.position;
-        Vector3 pos2 = placementPose.position + new Vector3(0f, 0f, 0.8f);
-        Vector3 pos3 = placementPose.position + new Vector3(0f, 0f, -0.8f);
+        Vector3 pos2 = placementPose.position + new Vector3(0.5f, 0f, 0.8f);
+        Vector3 pos3 = placementPose.position + new Vector3(0.92f, 0f, 0.04f);
 
         cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), audioLen, 0.5f);
-        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(rot), audioLen, 0.5f);
+        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(wrongRot), audioLen, 0.5f);
         cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
     }
 

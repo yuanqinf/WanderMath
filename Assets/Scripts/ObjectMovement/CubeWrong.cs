@@ -9,39 +9,38 @@ public class CubeWrong : GenericClass
 
     public void RotateWrongFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        gameController.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "NetFace_2":
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     ChildSnapDetection(touchedObject);
                 }
                 break;
             case "NetFace_3":
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "NetFace_4":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "NetFace_5":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     ChildSnapDetection(touchedObject);

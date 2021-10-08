@@ -148,21 +148,21 @@ public class GameController : MonoBehaviour
     }
 
     // handle cube selection outline
-    public void handleOutline(GameObject touchedObject)
-    {
-        // handle outline here
-        if (this.lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
-        {
-            Debug.Log("outing is being deactivated");
-            this.lastSelectedShape.GetComponent<Outline>().enabled = false;
-        }
-        if (touchedObject.transform.root.GetComponent<Outline>() != null)
-        {
-            Debug.Log("outing is being activated");
-            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
-        }
-        this.lastSelectedShape = touchedObject.transform.root.gameObject;
-    }
+    //public void handleOutline(GameObject touchedObject)
+    //{
+    //    // handle outline here
+    //    if (this.lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+    //    {
+    //        Debug.Log("outing is being deactivated");
+    //        this.lastSelectedShape.GetComponent<Outline>().enabled = false;
+    //    }
+    //    if (touchedObject.transform.root.GetComponent<Outline>() != null)
+    //    {
+    //        Debug.Log("outing is being activated");
+    //        touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+    //    }
+    //    this.lastSelectedShape = touchedObject.transform.root.gameObject;
+    //}
 
     public void playSuccessEffect(GameObject shape)
     {
