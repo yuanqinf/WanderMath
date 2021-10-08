@@ -42,7 +42,7 @@ GameObject:
   m_TagString: cube_main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4427983060405228946
 Transform:
@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: cube_easy
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &1386064033718009380 stripped
@@ -300,6 +304,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
       value: cube_easy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
@@ -396,6 +404,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: cube_easy
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &4625517393932488509 stripped
@@ -490,6 +502,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
       value: cube_easy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
@@ -658,6 +674,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: cube_easy
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
 --- !u!1 &8535334911334999876 stripped
@@ -752,6 +772,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
       value: cube_easy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}

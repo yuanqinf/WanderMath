@@ -17,7 +17,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1940204795244508103
 Transform:
@@ -112,7 +112,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2189866712247956620
 Transform:
@@ -207,7 +207,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1192217015136959964
 Transform:
@@ -290,7 +290,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2891665403390303477
 Transform:
@@ -385,7 +385,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4244612841500541952
 Transform:
@@ -471,7 +471,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6532730040670685613
 Transform:
@@ -566,7 +566,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8875513118044057068
 Transform:
@@ -660,7 +660,7 @@ GameObject:
   m_TagString: cube_wrong
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6784930414360780000
 Transform:

@@ -14,9 +14,9 @@ public class ShapesController : GenericClass
 
     private string phase3Start = "Ok, these ones definitely won't make a cube. But let's see what they will make!";
     private string phase3Pyramid = "Whoa, this one's a pyramid! The bottom is a square, so it's called a square pyramid. That's such a cool gift box.";
-    private string phase3Hexagon = "How cool is that! It's closer to round than the cube box, since it has six sides.";
+    private string phase3Hexagon = "How cool is that! It's closer to round than the cube box, the base is a hexagon.";
     private string phase3Cuboid = "Oh, rad, a rectangular prism box! This would work for presents that are extra long.";
-    private string phase3Repeat = "You can keep folding more shapes, or tap on me to go on to the birthday party!";
+    private string phase3Repeat = "You can keep folding more boxes, or tap on me to go on to the birthday party!";
 
     internal void StartPhase3(Pose placementPose)
     {
