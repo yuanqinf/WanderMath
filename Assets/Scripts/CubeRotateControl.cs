@@ -84,6 +84,8 @@ public class CubeRotateControl : GenericClass
     public void StartPhase1(Pose placementPose)
     {
         StartCoroutine(PreSetupCubeEasySubtitleWithAudio(placementPose));
+        var duration = soundManager.GetStartPhase1AudioDuration();
+        characterController.PlayTalkingAnimationWithDuration(duration);
     }
 
     IEnumerator PreSetupCubeEasySubtitleWithAudio(Pose placementPose)
@@ -115,6 +117,7 @@ public class CubeRotateControl : GenericClass
         for (int i = 0; i < totalLen; i++)
         {
             var audioDuration = soundManager.PlaySetupCubeSubtitleAudio(i + 3);
+            characterController.PlayTalkingAnimationWithDuration(audioDuration);
             uiController.PlaySubtitles(initCubeEasySubtitles[i], audioDuration);
             yield return new WaitForSeconds(audioDuration);
         }
@@ -131,6 +134,7 @@ public class CubeRotateControl : GenericClass
         //TODO: add lerpmovements
         //utils.LerpMovement(cubeEasy)
         var duration = soundManager.GetCompleteCubeEasySubtitleAudio();
+        characterController.PlayTalkingAnimationWithDuration(duration);
         gameController.SetGamePhaseWithDelay("phase2", duration);
     }
 
@@ -155,6 +159,7 @@ public class CubeRotateControl : GenericClass
     {
         StartCoroutine(SetupCubesSubtitleWithAudio());
         var audioLen = soundManager.GetInitPlayCubesSubtitleAudio();
+        characterController.PlayTalkingAnimationWithDuration(audioLen);
 
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
@@ -181,10 +186,12 @@ public class CubeRotateControl : GenericClass
 
     public IEnumerator CompletePhase2WrongCubeSubtitleWithAudio()
     {
+        yield return new WaitForSeconds(Constants.BIGWIN_ANIMATION_DELAY);
         uiController.SetSubtitleActive(true);
         for (int i = 0; i < wrongPhase2Subtitles.Length; i++)
         {
             var duration = soundManager.PlayWrongCubesSubtitleAudio(i);
+            characterController.PlayTalkingAnimationWithDuration(duration);
             uiController.PlaySubtitles(wrongPhase2Subtitles[i], duration);
             yield return new WaitForSeconds(duration);
         }
@@ -197,6 +204,7 @@ public class CubeRotateControl : GenericClass
         //TODO: add lerpmovements
         //utils.LerpMovement(cube)
         var duration = soundManager.GetCompletePlayCubesSubtitleAudio();
+        characterController.PlayTalkingAnimationWithDuration(duration);
         gameController.SetGamePhaseWithDelay("phase3", duration);
     }
 

@@ -22,6 +22,7 @@ public class ShapesController : GenericClass
     {
         StartCoroutine(SetupShapesSubtitleWithAudio());
         var startAudioLen = soundManager.GetPhase3InitShapes(0);
+        characterController.PlayTalkingAnimationWithDuration(startAudioLen);
 
         Vector3 cuboidPos = placementPose.position;
         Vector3 pyramidPos = placementPose.position + new Vector3(0f, 0f, 0.8f);
@@ -45,8 +46,10 @@ public class ShapesController : GenericClass
 
     public IEnumerator PlayPyramidSubtitleWithAudio()
     {
+        yield return new WaitForSeconds(Constants.BIGWIN_ANIMATION_DELAY);
         uiController.SetSubtitleActive(true);
         var audioDuration = soundManager.PlayPhase3InitShapesSubtitleAudio(1);
+        characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Pyramid, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         uiController.SetSubtitleActive(false);
@@ -55,8 +58,10 @@ public class ShapesController : GenericClass
 
     public IEnumerator PlayHexagonSubtitleWithAudio()
     {
+        yield return new WaitForSeconds(Constants.BIGWIN_ANIMATION_DELAY);
         uiController.SetSubtitleActive(true);
         var audioDuration = soundManager.PlayPhase3InitShapesSubtitleAudio(2);
+        characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Hexagon, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
@@ -64,8 +69,10 @@ public class ShapesController : GenericClass
 
     public IEnumerator PlayCuboidSubtitleWithAudio()
     {
+        yield return new WaitForSeconds(Constants.BIGWIN_ANIMATION_DELAY);
         uiController.SetSubtitleActive(true);
         var audioDuration = soundManager.PlayPhase3InitShapesSubtitleAudio(3);
+        characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Cuboid, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
@@ -74,9 +81,9 @@ public class ShapesController : GenericClass
     public IEnumerator PlayPhase3RepeatSubtitleWithAudio()
     {
         var audioDuration = soundManager.PlayPhase3InitShapesSubtitleAudio(4);
+        characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Repeat, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         uiController.SetSubtitleActive(false);
     }
-
 }

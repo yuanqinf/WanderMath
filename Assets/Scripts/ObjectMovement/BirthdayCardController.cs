@@ -53,6 +53,7 @@ public class BirthdayCardController : GenericClass
     private float PlayBirthdayCardCompleteWithSubtitles()
     {
         var duration = soundManager.PlayBirthdayCardCompleteClip();
+        characterController.PlayTalkingAnimationWithDuration(duration);
         uiController.PlaySubtitles(birthdayCardSubtitles[2], duration);
         return duration;
     }
@@ -71,6 +72,7 @@ public class BirthdayCardController : GenericClass
         birthdayCard = utils.PlaceObjectInSky(birthdayCard, pose.position, Quaternion.Euler(newRot), duration, 0.5f);
         spinArrow = birthdayCard.transform.Find("spinArrow").gameObject;
         touchDrag = birthdayCard.transform.Find("touchDrag").gameObject;
+        // TODO: turn off collider and turn on after
         SwitchOffAnimation();
 
         StartCoroutine(ShowTutorialAnimation(duration));

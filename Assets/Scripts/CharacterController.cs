@@ -6,6 +6,7 @@ public class CharacterController : GenericClass
 {
     [SerializeField]
     private GameObject arCharacterToSpawn;
+    private Animator animator;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
 
@@ -25,12 +26,15 @@ public class CharacterController : GenericClass
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, characterRot
         );
+        animator = arCharacterToSpawn.GetComponent<Animator>();
+
         return StartFirstLine();
     }
 
     private float StartFirstLine()
     {
         var duration = soundManager.PlayCharacterInitClip();
+        PlayTalkingAnimationWithDuration(duration);
         uiController.PlaySubtitles(introLine, duration);
         return duration;
     }
@@ -38,5 +42,27 @@ public class CharacterController : GenericClass
     public Vector3 GetArCharacterPosition()
     {
         return arCharacterToSpawn.transform.position;
+    }
+
+    public void PlayTalkingAnimationWithDuration(float duration)
+    {
+        StartCoroutine(PlayTalkingAnimationWithinDuration(duration));
+    }
+
+    IEnumerator PlayTalkingAnimationWithinDuration(float duration)
+    {
+        animator.SetBool("isTalking", true);
+        yield return new WaitForSeconds(duration);
+        animator.SetBool("isTalking", false);
+    }
+
+    public void PlaySmallWin()
+    {
+        animator.SetTrigger("isSmallWin");
+    }
+
+    public void PlayBigWin()
+    {
+        animator.SetTrigger("isBigWin");
     }
 }

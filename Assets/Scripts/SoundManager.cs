@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,7 +52,17 @@ public class SoundManager : MonoBehaviour
         return phase1CubeEasyClips[5].length + phase1CubeEasyClips[6].length;
     }
 
-// phase 2 cube setup audio
+    internal float GetStartPhase1AudioDuration()
+    {
+        var duration = 0f;
+        for (int i = 0; i < 5; i++)
+        {
+            duration += phase1CubeEasyClips[i].length;
+        }
+        return duration;
+    }
+
+    // phase 2 cube setup audio
     public float PlayInitCubesSubtitleAudio(int num)
     {
         audioSource.PlayOneShot(phase2InitClips[num]);
@@ -126,7 +137,7 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(soundEffects[1]);
     }
 
-// Play character sound
+    // Play character sound
     public float PlayCharacterInitClip()
     {
         audioSource.PlayOneShot(characterInitClip);

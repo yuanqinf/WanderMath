@@ -56,8 +56,9 @@ public class GameController : MonoBehaviour
                 break;
             // birthday card stage
             case "phase0":
-                // 1. phase0 subtitle
+                // 1. phase0 subtitle, audio, animation
                 var duration = birthdayCardController.PlayBirthdayCardInitWithSubtitles();
+                characterController.PlayTalkingAnimationWithDuration(duration);
                 // 2. initialize birthday card falling with tutorial
                 birthdayCardController.InitializeBirthdayCard(placementPose, duration);
                 gamePhase = "waiting";

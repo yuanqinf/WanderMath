@@ -63,7 +63,7 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 5)
                 {
-                    soundManager.PlaySnapSound();
+                    SmallWinEffect();
                 }
                 break;
             case Constants.ShapeNames.CUBE_EASY:
@@ -71,46 +71,56 @@ public class HelperUtils : GenericClass
             case Constants.ShapeNames.CUBE_MED2:
                 if (numSnapped == 5)
                 {
+                    characterController.PlayBigWin();
                     soundManager.PlaySuccessSound();
                 }
                 else if (numSnapped < 5)
                 {
-                    soundManager.PlaySnapSound();
+                    SmallWinEffect();
                 }
                 break;
             case Constants.ShapeNames.CUBOID:
                 if (numSnapped == 5)
                 {
+                    characterController.PlayBigWin();
                     soundManager.PlaySuccessSound();
                     StartCoroutine(shapesController.PlayCuboidSubtitleWithAudio());
                 }
                 else if (numSnapped < 5)
                 {
-                    soundManager.PlaySnapSound();
+                    SmallWinEffect();
                 }
                 break;
             case Constants.ShapeNames.HEXAGON:
                 if (numSnapped == 7)
                 {
-                    StartCoroutine(shapesController.PlayHexagonSubtitleWithAudio());
+                    characterController.PlayBigWin();
                     soundManager.PlaySuccessSound();
+                    StartCoroutine(shapesController.PlayHexagonSubtitleWithAudio());
                 }
-                else
+                else if (numSnapped < 7)
                 {
-                    soundManager.PlaySnapSound();
+                    SmallWinEffect();
                 }
                 break;
             case Constants.ShapeNames.PYRAMID:
                 if (numSnapped == 4)
                 {
+                    characterController.PlayBigWin();
                     soundManager.PlaySuccessSound();
                     StartCoroutine(shapesController.PlayPyramidSubtitleWithAudio());
                 }
-                else
+                else if (numSnapped < 4)
                 {
-                    soundManager.PlaySnapSound();
+                    SmallWinEffect();
                 }
                 break;
         }
+    }
+
+    private void SmallWinEffect()
+    {
+        characterController.PlaySmallWin();
+        soundManager.PlaySnapSound();
     }
 }

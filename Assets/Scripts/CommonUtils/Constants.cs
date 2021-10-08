@@ -3,6 +3,7 @@ public static class Constants
     public const float ROTATION_DEGREE = 4.5f;
     public const float ROTATION_THRESHOLD = 20f;
     public const float GENERIC_SUBTITLE_DELAY = 1.0f;
+    public const float BIGWIN_ANIMATION_DELAY = 3.0f;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
     }
