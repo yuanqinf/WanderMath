@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PyramidController : GenericClass
 {
-    private float pyramidThresholdDegree = 55f;
+    private float pyramidThresholdDegree = Constants.ROTATION_THRESHOLD + 15f;
     private float pyramidSetDegree = 90 + 26f;
     private int numSnapped = 0;
 
