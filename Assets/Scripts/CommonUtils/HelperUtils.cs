@@ -63,7 +63,7 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 5)
                 {
-                    SmallWinEffect();
+                    SmallWinEffect(numSnapped);
                 }
                 break;
             case Constants.ShapeNames.CUBE_EASY:
@@ -76,7 +76,7 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 5)
                 {
-                    SmallWinEffect();
+                    SmallWinEffect(numSnapped);
                 }
                 break;
             case Constants.ShapeNames.CUBOID:
@@ -88,7 +88,7 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 5)
                 {
-                    SmallWinEffect();
+                    SmallWinEffect(numSnapped);
                 }
                 break;
             case Constants.ShapeNames.HEXAGON:
@@ -100,7 +100,7 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 7)
                 {
-                    SmallWinEffect();
+                    SmallWinEffect(numSnapped);
                 }
                 break;
             case Constants.ShapeNames.PYRAMID:
@@ -112,15 +112,41 @@ public class HelperUtils : GenericClass
                 }
                 else if (numSnapped < 4)
                 {
-                    SmallWinEffect();
+                    SmallWinEffect(numSnapped);
                 }
                 break;
         }
     }
 
-    private void SmallWinEffect()
+    private void SmallWinEffect(int num)
     {
         characterController.PlaySmallWin();
-        soundManager.PlaySnapSound();
+        switch(num)
+        {
+            case 1:
+                soundManager.PlaySnapSound1();
+                break;
+            case 2:
+                soundManager.PlaySnapSound2();
+                break;
+            case 3:
+                soundManager.PlaySnapSound3();
+                break;
+            case 4:
+                soundManager.PlaySnapSound4();
+                break;
+            case 5:
+                soundManager.PlaySnapSound5();
+                break;
+            case 6:
+                soundManager.PlaySnapSound6();
+                break;
+            case 7:
+                soundManager.PlaySnapSound7();
+                break;
+            case 8:
+                soundManager.PlaySnapSound8();
+                break;
+        }
     }
 }

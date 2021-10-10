@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VaseA
       objectReference: {fileID: 0}
+    - target: {fileID: 5058971889839408967, guid: 2ad000dab9a13804d93c8fcee761f739, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8672091286430663326, guid: 2ad000dab9a13804d93c8fcee761f739, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -652,7 +656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3078002143740554251, guid: 0aee4d5ad583e4aeb9664394d7a44610, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3582541848438394334, guid: 0aee4d5ad583e4aeb9664394d7a44610, type: 3}
       propertyPath: m_CastShadows

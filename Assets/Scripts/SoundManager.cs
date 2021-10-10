@@ -127,14 +127,49 @@ public class SoundManager : MonoBehaviour
     }
 
 // Sound effects
-    public void PlaySnapSound()
+    public void PlaySnapSound1()
     {
-        audioSource.PlayOneShot(soundEffects[0]);
+        audioSource.PlayOneShot(soundEffects[1]);
+    }
+
+    public void PlaySnapSound2()
+    {
+        audioSource.PlayOneShot(soundEffects[2]);
+    }
+
+    public void PlaySnapSound3()
+    {
+        audioSource.PlayOneShot(soundEffects[3]);
+    }
+
+    public void PlaySnapSound4()
+    {
+        audioSource.PlayOneShot(soundEffects[4]);
+    }
+
+    public void PlaySnapSound5()
+    {
+        audioSource.PlayOneShot(soundEffects[5]);
+    }
+
+    public void PlaySnapSound6()
+    {
+        audioSource.PlayOneShot(soundEffects[6]);
+    }
+
+    public void PlaySnapSound7()
+    {
+        audioSource.PlayOneShot(soundEffects[7]);
+    }
+
+    public void PlaySnapSound8()
+    {
+        audioSource.PlayOneShot(soundEffects[8]);
     }
 
     public void PlaySuccessSound() 
     {
-        audioSource.PlayOneShot(soundEffects[1]);
+        audioSource.PlayOneShot(soundEffects[0]);
     }
 
     // Play character sound
