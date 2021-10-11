@@ -86,7 +86,7 @@ public class BirthdayCardController : GenericClass
     /// <param name="initialRealWorldPosition"></param>
     internal void UpdateCardMovement(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        if (newRealWorldPosition.x < initialRealWorldPosition.x)
+        if (newRealWorldPosition.x > initialRealWorldPosition.x)
         {
             Debug.Log("spinArrow.name: " + spinArrow.transform.name);
             Debug.Log("touchDrag.name: " + touchDrag.transform.name);
@@ -95,7 +95,7 @@ public class BirthdayCardController : GenericClass
         var eulerAngle = touchedObject.transform.localEulerAngles;
         Debug.Log("touched object angle: " + eulerAngle);
         //snap here
-        if (touchedObject.transform.localEulerAngles.z > Constants.ROTATION_THRESHOLD + 90f)
+        if (touchedObject.transform.localEulerAngles.z > 340f)
         {
             SwitchOffAnimation();
             soundManager.PlaySuccessSound();
