@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterLookAt : MonoBehaviour
+public class NeckLookAt : MonoBehaviour
 {
     private Camera arCamera;
 
@@ -16,6 +16,6 @@ public class CharacterLookAt : MonoBehaviour
     {
         var tempTrans = arCamera.transform;
 
-        this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
+        this.transform.LookAt(tempTrans);
     }
 }
