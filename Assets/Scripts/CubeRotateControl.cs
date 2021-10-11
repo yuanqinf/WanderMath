@@ -163,7 +163,7 @@ public class CubeRotateControl : GenericClass
 
         Vector3 rot = placementPose.rotation.eulerAngles;
         var wrongRot = new Vector3(rot.x, rot.y, rot.z);
-        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+        rot = new Vector3(rot.x, rot.y + 165, rot.z);
         Vector3 pos1 = placementPose.position;
         Vector3 pos2 = placementPose.position + new Vector3(0.5f, 0f, 0.8f);
         Vector3 pos3 = placementPose.position + new Vector3(0.92f, 0f, 0.04f);
