@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -203,6 +203,8 @@ MonoBehaviour:
   gamePhase: setup
   arCamera: {fileID: 1195867877}
   successEffect: {fileID: 2276765910432098370, guid: d26540dc0d81d443b9317c17a76d11f2, type: 3}
+  wrongEffect: {fileID: 2276765910432098370, guid: d4d8bd3307fa249c59e244adbeb474f8, type: 3}
+  giftBox: {fileID: 4827887651518611813, guid: 0897fbf62d9704432b9af00951616aec, type: 3}
   touchEnabled: 1
 --- !u!4 &40919616
 Transform:
@@ -375,7 +377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &131576385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,7 +385,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131576384}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6767a180de870304caa2013b2772dd62, type: 3}
   m_Name: 
@@ -395,7 +397,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131576384}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 600c02144c4813244abd262cbcbe8825, type: 3}
   m_Name: 
@@ -1012,6 +1014,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0e080ca722aef49c2a241ccdda634e50, type: 3}
   - {fileID: 8300000, guid: 710ca4bcd226e4e00951a4d9a466e4bc, type: 3}
   - {fileID: 8300000, guid: 96127b4e541cb45b8b02487d1251a7f0, type: 3}
+  wrongCubeSoundEffect: {fileID: 8300000, guid: ef41d03e28ad04129bcc48e20763e88e, type: 3}
   phase2InitClips:
   - {fileID: 8300000, guid: 8a1e0a33292824d65bb8b4773aff99a8, type: 3}
   - {fileID: 8300000, guid: eea3a5dd6f050489ba2263039b525465, type: 3}

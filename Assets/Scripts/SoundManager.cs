@@ -19,6 +19,9 @@ public class SoundManager : MonoBehaviour
     private AudioClip[] soundEffects;
     private AudioSource audioSource;
 
+    [SerializeField]
+    private AudioClip wrongCubeSoundEffect;
+
     // phase 2 sound effects
     [SerializeField]
     private AudioClip[] phase2InitClips;
@@ -170,6 +173,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySuccessSound() 
     {
         audioSource.PlayOneShot(soundEffects[0]);
+    }
+
+    public void PlayWrongSound()
+    {
+        audioSource.PlayOneShot(wrongCubeSoundEffect);
     }
 
     // Play character sound

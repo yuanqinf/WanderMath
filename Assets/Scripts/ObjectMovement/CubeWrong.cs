@@ -47,6 +47,11 @@ public class CubeWrong : GenericClass
                 }
                 break;
         }
+        if (numSnapped == 5)
+        {
+            gameController.playWrongEffect(touchedObject);
+            soundManager.PlayWrongSound();
+        }
     }
 
     private void ChildSnapDetection(GameObject gameObject)

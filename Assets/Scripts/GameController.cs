@@ -12,6 +12,10 @@ public class GameController : MonoBehaviour
     private Camera arCamera;
     [SerializeField]
     private GameObject successEffect;
+    [SerializeField]
+    private GameObject wrongEffect;
+
+    public GameObject giftBox;
 
     private CharacterController characterController;
     private PlacementIndicatorController placementController;
@@ -19,7 +23,7 @@ public class GameController : MonoBehaviour
     private CubeRotateControl cubeController;
     private ShapesController shapesController;
     private UiController uiController;
-    private GameObject lastSelectedShape = null;
+    //private GameObject lastSelectedShape = null;
 
     public bool touchEnabled = true;
 
@@ -75,6 +79,7 @@ public class GameController : MonoBehaviour
             case "phase2":
                 // instantiate one cube and move on
                 DestroyImmediate(cubeController.cubeEasy, true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag("gift_box"));
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
                 break;
@@ -83,6 +88,7 @@ public class GameController : MonoBehaviour
                 DestroyImmediate(cubeController.cubeMed, true);
                 DestroyImmediate(cubeController.cubeMed2, true);
                 DestroyImmediate(cubeController.cubeWrong, true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag("gift_box"));
                 shapesController.StartPhase3(placementPose);
                 gamePhase = "waiting";
                 break;
@@ -168,5 +174,16 @@ public class GameController : MonoBehaviour
     {
         var particleEffect = Instantiate(successEffect, shape.transform.root.transform);
         Destroy(particleEffect, 2f);
+    }
+
+    public void playWrongEffect(GameObject shape)
+    {
+        var particleEffect = Instantiate(wrongEffect, shape.transform.root.transform);
+        Destroy(particleEffect, 2f);
+    }
+
+    public void createGiftBox(GameObject shape)
+    {
+        var box = Instantiate(giftBox, shape.transform.root.transform);
     }
 }
