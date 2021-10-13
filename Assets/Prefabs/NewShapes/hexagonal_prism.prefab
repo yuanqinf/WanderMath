@@ -738,7 +738,7 @@ PrefabInstance:
     - target: {fileID: 579664304668716081, guid: eafa0422a2fca4290b1bef832c1ad474, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c390bda13c3894ece8cb2ad5ee8e7a84, type: 2}
+      objectReference: {fileID: 2100000, guid: 711dc333ce451bc4287a05446b10d093, type: 2}
     - target: {fileID: 1372364153207852516, guid: eafa0422a2fca4290b1bef832c1ad474, type: 3}
       propertyPath: m_Name
       value: hexCylinder
