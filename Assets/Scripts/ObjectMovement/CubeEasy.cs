@@ -57,7 +57,6 @@ public class CubeEasy : GenericClass
             cubeRotateControl.EndPhase1();
             soundManager.PlaySuccessSound();
             gameController.playSuccessEffect(touchedObject);
-            Debug.Log("new gift box here!!!!");
             gameController.createGiftBox(touchedObject);
             numSnapped++;
         }

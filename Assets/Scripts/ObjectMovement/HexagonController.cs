@@ -58,6 +58,7 @@ public class HexagonController : GenericClass
         if (numSnapped == 7)
         {
             gameController.playSuccessEffect(touchedObject);
+            gameController.createHexGiftBox(touchedObject);
         }
     }
 

@@ -50,6 +50,7 @@ public class CubeMedTwo : GenericClass
         {
             cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED2);
             gameController.playSuccessEffect(touchedObject);
+            gameController.createGiftBox(touchedObject);
             numSnapped++;
         }
     }

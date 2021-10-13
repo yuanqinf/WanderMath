@@ -48,6 +48,7 @@ public class PyramidController : GenericClass
         if (numSnapped == 4)
         {
             gameController.playSuccessEffect(touchedObject);
+            gameController.createPyGiftBox(touchedObject);
         }
     }
 

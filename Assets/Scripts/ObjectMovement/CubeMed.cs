@@ -51,6 +51,7 @@ public class CubeMed : GenericClass
         {
             cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED);
             gameController.playSuccessEffect(touchedObject);
+            gameController.createGiftBox(touchedObject);
             numSnapped++;
         }
     }

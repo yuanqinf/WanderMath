@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour
     private GameObject wrongEffect;
 
     public GameObject giftBox;
+    public GameObject cuboidGiftBox;
+    public GameObject hexGiftBox;
+    public GameObject pyGiftBox;
 
     private CharacterController characterController;
     private PlacementIndicatorController placementController;
@@ -79,7 +82,6 @@ public class GameController : MonoBehaviour
             case "phase2":
                 // instantiate one cube and move on
                 DestroyImmediate(cubeController.cubeEasy, true);
-                DestroyImmediate(GameObject.FindGameObjectWithTag("gift_box"));
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
                 break;
@@ -88,7 +90,6 @@ public class GameController : MonoBehaviour
                 DestroyImmediate(cubeController.cubeMed, true);
                 DestroyImmediate(cubeController.cubeMed2, true);
                 DestroyImmediate(cubeController.cubeWrong, true);
-                DestroyImmediate(GameObject.FindGameObjectWithTag("gift_box"));
                 shapesController.StartPhase3(placementPose);
                 gamePhase = "waiting";
                 break;
@@ -184,6 +185,21 @@ public class GameController : MonoBehaviour
 
     public void createGiftBox(GameObject shape)
     {
-        var box = Instantiate(giftBox, shape.transform.root.transform);
+        Instantiate(giftBox, shape.transform.root.transform);
+    }
+
+    public void createCuboidGiftBox(GameObject shape)
+    {
+        Instantiate(cuboidGiftBox, shape.transform.root.transform);
+    }
+
+    public void createHexGiftBox(GameObject shape)
+    {
+        Instantiate(hexGiftBox, shape.transform.root.transform);
+    }
+
+    public void createPyGiftBox(GameObject shape)
+    {
+        Instantiate(pyGiftBox, shape.transform.root.transform);
     }
 }

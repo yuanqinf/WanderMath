@@ -205,6 +205,9 @@ MonoBehaviour:
   successEffect: {fileID: 2276765910432098370, guid: d26540dc0d81d443b9317c17a76d11f2, type: 3}
   wrongEffect: {fileID: 2276765910432098370, guid: d4d8bd3307fa249c59e244adbeb474f8, type: 3}
   giftBox: {fileID: 4827887651518611813, guid: 0897fbf62d9704432b9af00951616aec, type: 3}
+  cuboidGiftBox: {fileID: 2803464363514403246, guid: 81f748c6eb5df44018597b24540d674d, type: 3}
+  hexGiftBox: {fileID: 1941626588521571179, guid: 73b00818c83fb4b938516317bce6b62c, type: 3}
+  pyGiftBox: {fileID: 7540825146934856601, guid: ba9088d94dbf54fa9a9f516b99ce9b4b, type: 3}
   touchEnabled: 1
 --- !u!4 &40919616
 Transform:

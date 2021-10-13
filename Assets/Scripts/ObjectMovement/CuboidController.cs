@@ -57,6 +57,7 @@ public class CuboidController : GenericClass
         if (numSnapped == 5)
         {
             gameController.playSuccessEffect(touchedObject);
+            gameController.createCuboidGiftBox(touchedObject);
         }
     }
 
