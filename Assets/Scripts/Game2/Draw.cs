@@ -9,6 +9,10 @@ public class Draw : MonoBehaviour
 
     public GameObject stroke;
     public bool mouseLookTesting;
+
+    [HideInInspector]
+    public Transform penPoint;
+
     public static bool drawing = false;
 
     private float pitch = 0;
@@ -32,11 +36,15 @@ public class Draw : MonoBehaviour
 
         if (PenManager.drawingOnSurface)
         {
+            penPoint = surfacePenPoint.transform;
+
             spacePenPoint.GetComponent<MeshRenderer>().enabled = false;
             surfacePenPoint.GetComponent<MeshRenderer>().enabled = true;
         }
         else
         {
+            penPoint = spacePenPoint.transform;
+
             surfacePenPoint.GetComponent<MeshRenderer>().enabled = false;
             spacePenPoint.GetComponent<MeshRenderer>().enabled = true;
         }

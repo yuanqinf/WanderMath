@@ -205,7 +205,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89683542}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
   m_Name: 
@@ -458,6 +458,7 @@ GameObject:
   - component: {fileID: 346317189}
   - component: {fileID: 346317188}
   - component: {fileID: 346317187}
+  - component: {fileID: 346317190}
   m_Layer: 0
   m_Name: SurfacePenPoint
   m_TagString: Untagged
@@ -541,6 +542,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346317185}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &346317190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346317185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10af40d4ec9ae48a5ae3486d4bf0c1c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceToDetect: 15
+  arCamera: {fileID: 922230702}
 --- !u!1 &540170500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,7 +1127,8 @@ MonoBehaviour:
   spacePenPoint: {fileID: 1987238651}
   surfacePenPoint: {fileID: 346317185}
   stroke: {fileID: 8910850724170533129, guid: 7bdaa80861e8f4347b5ac974bc06dbd2, type: 3}
-  mouseLookTesting: 0
+  mouseLookTesting: 1
+  penPoint: {fileID: 0}
 --- !u!114 &797905100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1394,7 +1410,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1647,6 +1663,7 @@ MonoBehaviour:
   soundEffects:
   - {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
   - {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
+  wrongCubeSoundEffect: {fileID: 0}
   phase2InitClips: []
   phase2CompleteClips: []
   phase2WrongCubeClips: []

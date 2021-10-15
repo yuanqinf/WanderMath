@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Stroke : MonoBehaviour
 {
-    private GameObject penPoint;
+    private Transform penPoint;
     // Start is called before the first frame update
     void Start()
     {
-        penPoint = GameObject.Find("SpacePenPoint");
+        penPoint = GameObject.FindObjectOfType<Draw>().penPoint;
     }
 
     // Update is called once per frame
     void Update()
     {
+        penPoint = GameObject.FindObjectOfType<Draw>().penPoint;
+
         if (Draw.drawing)
         {
             this.transform.position = penPoint.transform.position;
