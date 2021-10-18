@@ -12,11 +12,19 @@ public class LineRenderControl : MonoBehaviour
     private Camera cam;
     private LineRenderer lr;
 
+    public GameObject lineObjPrefab;
+    public GameObject lineObj;
+
+    private bool isDragging = false;
+    private bool isSnapping = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        startPos = startObj.transform.position;
-        lr = GetComponent<LineRenderer>();
+        if(lineObj != null)
+        {
+
+        }
         cam = Camera.main;
     }
 
@@ -24,9 +32,21 @@ public class LineRenderControl : MonoBehaviour
     void Update()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out RaycastHit raycastHit))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
             mousePos = raycastHit.point;
+            Debug.Log(raycastHit.transform.tag);
+            if(raycastHit.transform.tag == "dot")
+            {
+                if (isDragging && raycastHit.transform.name != startObj.name)
+                {
+                    Debug.Log("should snap snap now!!!");
+                    Debug.Log("raycastHit.transform.name: " + raycastHit.transform.name);
+                    Debug.Log("startObj.name: " + startObj.name);
+                    isSnapping = true;
+                }
+                startObj = raycastHit.transform.gameObject;
+            }
 
         }
         mouseDir = mousePos - gameObject.transform.position;
@@ -35,10 +55,12 @@ public class LineRenderControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            lr.enabled = true;
+            isDragging = true;
+            lineObj = Instantiate(lineObjPrefab);
+            lr = lineObj.GetComponent<LineRenderer>();
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !isSnapping)
         {
             startPos = startObj.transform.position;
             startPos.y = 0;
@@ -50,7 +72,13 @@ public class LineRenderControl : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            lr.enabled = false;
+            isDragging = false;
+            startObj = null;
+            if (!isSnapping)
+            {
+                Destroy(lineObj);
+            }
+            isSnapping = false;
         }
     }
 }

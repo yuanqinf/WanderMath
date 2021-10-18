@@ -55,7 +55,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Ints: []
     m_Floats:
     - _AmbientCol: 0
     - _BumpScale: 1
@@ -68,7 +67,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Lumin: 0.671
+    - _Lumin: 2
     - _MaxLight: 1
     - _Metallic: 0
     - _MinLight: 0.5

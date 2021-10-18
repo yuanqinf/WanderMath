@@ -19,6 +19,7 @@ TagManager:
   - cube_main
   - gift_box
   - Line
+  - dot
   layers:
   - Default
   - TransparentFX
