@@ -19,7 +19,7 @@ public class ARDebugManager : Singleton<ARDebugManager>
     void OnEnable()
     {
         debugAreaText.enabled = enableDebug;
-        //enabled = enableDebug;
+        enabled = enableDebug;
     }
 
     public void LogInfo(string message)

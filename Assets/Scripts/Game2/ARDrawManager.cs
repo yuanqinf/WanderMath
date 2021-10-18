@@ -51,8 +51,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private bool CanDraw { get; set; }
 
+    public Vector3 startPos;
+    public Vector3 endPos;
+    public Vector3 touchPosition;
+    private GameObject startObj;
+    private bool isSnapping;
+
     void Update()
     {
+        DrawOnTouch();
+
         #if !UNITY_EDITOR
         if (Input.touchCount > 0)
             DrawOnTouch();
@@ -85,31 +93,73 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     void DrawOnTouch()
     {
-        if (!CanDraw) return;
+        if (!DotsManager.Instance.isDotsPlaced || !CanDraw) return;
 
-        Touch touch = Input.GetTouch(0);
-        Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
-
-        ARDebugManager.Instance.LogInfo($"{touch.fingerId}");
-
-        if (touch.phase == TouchPhase.Began)
+        if (Input.touchCount > 0)
         {
-            OnDraw?.Invoke();
 
-            // anchor ensure position is correct in real world
-            ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
-            if (anchor == null)
-                Debug.LogError("Error creating reference point");
-            else
+            Touch touch = Input.GetTouch(0);
+            // TODO: change touchPosition to real world
+            //Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
+
+            // raycasting to hit the point
+            RaycastHit hitObject;
+            Ray ray = arCamera.ScreenPointToRay(touch.position);
+            if (Physics.Raycast(ray, out hitObject))
             {
-                anchors.Add(anchor);
-                ARDebugManager.Instance.LogInfo($"Anchor created & total of {anchors.Count} anchor(s)");
+                touchPosition = new Vector3(hitObject.point.x, 0, hitObject.point.z);
+                if (hitObject.transform.tag == "dot")
+                {
+                    startObj = hitObject.transform.gameObject;
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        OnDraw?.Invoke();
+
+                        // anchor ensure position is correct in real world
+                        ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
+                        if (anchor == null)
+                            Debug.LogError("Error creating reference point");
+                        else
+                        {
+                            anchors.Add(anchor);
+                            ARDebugManager.Instance.LogInfo($"Anchor created & total of {anchors.Count} anchor(s)");
+                        }
+                        AddNewLineRenderer(anchor, touchPosition);
+                    }
+                
+                    if (touch.phase == TouchPhase.Moved && hitObject.transform.name != startObj.name)
+                    {
+                        Debug.Log("should snap snap now!!!");
+                        Debug.Log("raycastHit.transform.name: " + hitObject.transform.name);
+                        Debug.Log("startObj.name: " + startObj.name);
+                        isSnapping = true;
+                    }
+                    startObj = hitObject.transform.gameObject;
+                }
             }
-            AddNewLineRenderer(anchor, touchPosition);
-        }
-        else
-        {
-            UpdateLine(touchPosition);
+            ARDebugManager.Instance.LogInfo($"{touch.fingerId}");
+
+            if (touch.phase == TouchPhase.Moved && !isSnapping)
+            {
+                //UpdateLine(touchPosition);
+
+                startPos = startObj.transform.position;
+                startPos.y = 0;
+                currentLineRender.SetPosition(0, startPos);
+                endPos = touchPosition;
+                endPos.y = 0;
+                currentLineRender.SetPosition(1, endPos);
+            }
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                startObj = null;
+                if (!isSnapping)
+                {
+                    Destroy(currentLineRender);
+                }
+                isSnapping = false;
+            }
         }
     }
 

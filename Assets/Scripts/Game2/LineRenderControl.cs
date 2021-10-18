@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LineRenderControl : MonoBehaviour
 {
-    public GameObject startObj;
+    private GameObject startObj;
     public Vector3 startPos;
     public Vector3 endPos;
     public Vector3 mousePos;
@@ -31,54 +31,59 @@ public class LineRenderControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit))
+        if (Input.touchCount > 0)
         {
-            mousePos = raycastHit.point;
-            Debug.Log(raycastHit.transform.tag);
-            if(raycastHit.transform.tag == "dot")
+            Touch touch = Input.GetTouch(0);
+
+            Ray ray = cam.ScreenPointToRay(touch.position);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit))
             {
-                if (isDragging && raycastHit.transform.name != startObj.name)
+                mousePos = raycastHit.point;
+                Debug.Log("raycastHit.point" + raycastHit.point);
+                if(raycastHit.transform.tag == "dot")
                 {
-                    Debug.Log("should snap snap now!!!");
-                    Debug.Log("raycastHit.transform.name: " + raycastHit.transform.name);
-                    Debug.Log("startObj.name: " + startObj.name);
-                    isSnapping = true;
+                    if (isDragging && raycastHit.transform.position != startObj.transform.position)
+                    {
+                        Debug.Log("should snap snap now!!!");
+                        Debug.Log("raycastHit.transform.name: " + raycastHit.transform.name);
+                        Debug.Log("startObj.name: " + startObj.name);
+                        isSnapping = true;
+                    }
+                    startObj = raycastHit.transform.gameObject;
                 }
-                startObj = raycastHit.transform.gameObject;
+
             }
+            mouseDir = mousePos - gameObject.transform.position;
+            mouseDir.y = 0;
+            mouseDir = mouseDir.normalized;
 
-        }
-        mouseDir = mousePos - gameObject.transform.position;
-        mouseDir.y = 0;
-        mouseDir = mouseDir.normalized;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            isDragging = true;
-            lineObj = Instantiate(lineObjPrefab);
-            lr = lineObj.GetComponent<LineRenderer>();
-        }
-
-        if (Input.GetMouseButton(0) && !isSnapping)
-        {
-            startPos = startObj.transform.position;
-            startPos.y = 0;
-            lr.SetPosition(0, startPos);
-            endPos = mousePos;
-            endPos.y = 0;
-            lr.SetPosition(1, endPos);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-            startObj = null;
-            if (!isSnapping)
+            if (touch.phase == TouchPhase.Began)
             {
-                Destroy(lineObj);
+                isDragging = true;
+                lineObj = Instantiate(lineObjPrefab);
+                lr = lineObj.GetComponent<LineRenderer>();
             }
-            isSnapping = false;
+
+            if (touch.phase == TouchPhase.Moved && !isSnapping)
+            {
+                startPos = startObj.transform.position;
+                //startPos.y = 0;
+                lr.SetPosition(0, startPos);
+                endPos = mousePos;
+                endPos.y = startPos.y;
+                lr.SetPosition(1, endPos);
+            }
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                isDragging = false;
+                startObj = null;
+                if (!isSnapping)
+                {
+                    Destroy(lineObj);
+                }
+                isSnapping = false;
+            }
         }
     }
 }
