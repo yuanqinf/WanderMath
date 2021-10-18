@@ -19,14 +19,14 @@ public class DrawOnSurface : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 centerPoint = arCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0));
-        List<ARRaycastHit> validHits = new List<ARRaycastHit>();
-        arOrigin.Raycast(centerPoint, validHits, surfaceToDetect);
+        //Vector3 centerPoint = arCamera.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0));
+        //List<ARRaycastHit> validHits = new List<ARRaycastHit>();
+        //arOrigin.Raycast(centerPoint, validHits, surfaceToDetect);
 
-        if (validHits.Count > 0)
-        {
-            gameObject.transform.position = validHits[0].pose.position;
-            gameObject.transform.rotation = validHits[0].pose.rotation;
-        }
+        //if (validHits.Count > 0)
+        //{
+        //    gameObject.transform.position = validHits[0].pose.position;
+        //    gameObject.transform.rotation = validHits[0].pose.rotation;
+        //}
     }
 }

@@ -18,6 +18,7 @@ TagManager:
   - cube_med2
   - cube_main
   - gift_box
+  - Line
   layers:
   - Default
   - TransparentFX

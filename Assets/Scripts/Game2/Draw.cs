@@ -50,12 +50,12 @@ public class Draw : MonoBehaviour
         }
     }
 
-    public void StartStroke()
-    {
-        GameObject currentStroke;
-        drawing = true;
-        currentStroke = Instantiate(stroke, spacePenPoint.transform.position, spacePenPoint.transform.rotation) as GameObject;
-    }
+    //public void StartStroke()
+    //{
+    //    GameObject currentStroke;
+    //    drawing = true;
+    //    currentStroke = Instantiate(stroke, spacePenPoint.transform.position, spacePenPoint.transform.rotation) as GameObject;
+    //}
 
     public void EndStroke()
     {

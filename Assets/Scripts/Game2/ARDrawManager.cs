@@ -73,13 +73,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void SetLineSettings(LineRenderer currentLineRenderer)
     {
-        currentLineRender.startWidth = lineWidth;
-        currentLineRender.endWidth = lineWidth;
-        currentLineRender.numCornerVertices = cornerVertices;
-        currentLineRender.numCapVertices = endCapVeritices;
-        if (allowSimplification) currentLineRender.Simplify(tolerance);
-        currentLineRender.startColor = randomStartColor;
-        currentLineRender.endColor = randomEndColor;
+        currentLineRenderer.startWidth = lineWidth;
+        currentLineRenderer.endWidth = lineWidth;
+        currentLineRenderer.numCornerVertices = cornerVertices;
+        currentLineRenderer.numCapVertices = endCapVeritices;
+        if (allowSimplification) currentLineRenderer.Simplify(tolerance);
+        currentLineRenderer.startColor = randomStartColor;
+        currentLineRenderer.endColor = randomEndColor;
     }
 
 
