@@ -54,16 +54,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public Vector3 startPos;
     public Vector3 endPos;
     public Vector3 touchPosition;
-    private GameObject startObj;
-    private bool isSnapping;
+    private GameObject startObject;
+    private bool isSnapping = false;
+    private int numLines = 0;
 
     void Update()
     {
-        DrawOnTouch();
-
         #if !UNITY_EDITOR
-        if (Input.touchCount > 0)
-            DrawOnTouch();
+        //if (Input.touchCount > 0)
+        //    DrawOnTouch();
         #else
         if (Input.GetMouseButton(0))
             DrawOnMouse();
@@ -90,107 +89,75 @@ public class ARDrawManager : Singleton<ARDrawManager>
         currentLineRenderer.endColor = randomEndColor;
     }
 
-
-    void DrawOnTouch()
+    public void DrawOnTouch()
     {
         if (!DotsManager.Instance.isDotsPlaced || !CanDraw) return;
 
         if (Input.touchCount > 0)
         {
-
             Touch touch = Input.GetTouch(0);
-            // TODO: change touchPosition to real world
-            //Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
+            Vector3 diff = new Vector3(0, 0, 0);
 
             // raycasting to hit the point
-            RaycastHit hitObject;
             Ray ray = arCamera.ScreenPointToRay(touch.position);
-            if (Physics.Raycast(ray, out hitObject))
+            if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                touchPosition = new Vector3(hitObject.point.x, 0, hitObject.point.z);
+                touchPosition = hitObject.point;
                 if (hitObject.transform.tag == "dot")
                 {
-                    startObj = hitObject.transform.gameObject;
-                    if (touch.phase == TouchPhase.Began)
+                    // line created, instantiate line renderer
+                    if (currentLineRender == null)
                     {
-                        OnDraw?.Invoke();
-
-                        // anchor ensure position is correct in real world
-                        ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
-                        if (anchor == null)
-                            Debug.LogError("Error creating reference point");
-                        else
-                        {
-                            anchors.Add(anchor);
-                            ARDebugManager.Instance.LogInfo($"Anchor created & total of {anchors.Count} anchor(s)");
-                        }
-                        AddNewLineRenderer(anchor, touchPosition);
+                        ARDebugManager.Instance.LogInfo("instantiate line");
+                        startObject = hitObject.transform.gameObject;
+                        AddNewLineRenderer(touchPosition);
                     }
-                
-                    if (touch.phase == TouchPhase.Moved && hitObject.transform.name != startObj.name)
+                    else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position)
                     {
-                        Debug.Log("should snap snap now!!!");
-                        Debug.Log("raycastHit.transform.name: " + hitObject.transform.name);
-                        Debug.Log("startObj.name: " + startObj.name);
+                        ARDebugManager.Instance.LogInfo("snap now!!!");
                         isSnapping = true;
                     }
-                    startObj = hitObject.transform.gameObject;
                 }
             }
-            ARDebugManager.Instance.LogInfo($"{touch.fingerId}");
 
-            if (touch.phase == TouchPhase.Moved && !isSnapping)
+            if (touch.phase == TouchPhase.Moved && currentLineRender != null && !isSnapping)
             {
-                //UpdateLine(touchPosition);
-
-                startPos = startObj.transform.position;
-                startPos.y = 0;
+                startPos = startObject.transform.position;
                 currentLineRender.SetPosition(0, startPos);
                 endPos = touchPosition;
-                endPos.y = 0;
+                endPos.y = startPos.y;
                 currentLineRender.SetPosition(1, endPos);
             }
 
-            if (touch.phase == TouchPhase.Ended)
+            if (touch.phase == TouchPhase.Ended && currentLineRender != null)
             {
-                startObj = null;
                 if (!isSnapping)
                 {
+                    numLines++;
+                    ARDebugManager.Instance.LogInfo("line created: " + numLines);
                     Destroy(currentLineRender);
                 }
+                if (numLines == 2)
+                {
+                    // do sth in phase0
+                }
+                if (numLines == 4)
+                {
+                    // do sth in phase1
+                }
+                prevLineRender = currentLineRender;
+                currentLineRender = null;
+                startObject = null;
                 isSnapping = false;
             }
         }
     }
 
-    private void UpdateLine(Vector3 touchPosition)
-    {
-        if (prevPointDistance == null) prevPointDistance = touchPosition;
-        // create new point if above threshold of minDistance
-        if (prevPointDistance != null && Mathf.Abs(Vector3.Distance(prevPointDistance, touchPosition)) >= minDistanceBeforeNewPoint)
-        {
-            prevPointDistance = touchPosition;
-            AddPoint(prevPointDistance);
-        }
-    }
-
-    private void AddPoint(Vector3 position)
-    {
-        positionCount++;
-        currentLineRender.positionCount = positionCount;
-        // iundex 0 positionCount must be -1
-        currentLineRender.SetPosition(positionCount - 1, position);
-        if (currentLineRender.positionCount % applySimplifyAfterPoints == 0 && allowSimplification)
-        {
-            currentLineRender.Simplify(tolerance);
-        }
-    }
-
-    private void AddNewLineRenderer(ARAnchor anchor, Vector3 touchPosition)
+    private void AddNewLineRenderer(Vector3 touchPosition)
     {
         positionCount = 2;
         GameObject go = new GameObject($"LineRenderer_{lines.Count}");
-        go.transform.parent = anchor?.transform ?? transform; // use anchor transform instead of transform itself
+        go.AddComponent<ARAnchor>();
         go.transform.position = touchPosition;
         go.tag = "Line";
         LineRenderer goLineRenderer = go.AddComponent<LineRenderer>();
@@ -224,7 +191,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             if (prevLineRender == null)
             {
-                AddNewLineRenderer(null, mousePosition);
+                AddNewLineRenderer(mousePosition);
             }
             else
             {
@@ -248,4 +215,36 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
+    #region unused methods in ar
+    // TODO in the future: convert to touch position to raycast position
+    // Tried to minus the diff between raycast and the conversion but it is not accurate.
+    //arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
+
+    /// <summary>
+    /// Helpful method used to draw freehand.
+    /// </summary>
+    /// <param name="touchPosition"></param>
+    private void UpdateLine(Vector3 touchPosition)
+    {
+        if (prevPointDistance == null) prevPointDistance = touchPosition;
+        // create new point if above threshold of minDistance
+        if (prevPointDistance != null && Mathf.Abs(Vector3.Distance(prevPointDistance, touchPosition)) >= minDistanceBeforeNewPoint)
+        {
+            prevPointDistance = touchPosition;
+            AddPoint(prevPointDistance);
+        }
+    }
+
+    private void AddPoint(Vector3 position)
+    {
+        positionCount++;
+        currentLineRender.positionCount = positionCount;
+        // iundex 0 positionCount must be -1
+        currentLineRender.SetPosition(positionCount - 1, position);
+        if (currentLineRender.positionCount % applySimplifyAfterPoints == 0 && allowSimplification)
+        {
+            currentLineRender.Simplify(tolerance);
+        }
+    }
+    #endregion
 }

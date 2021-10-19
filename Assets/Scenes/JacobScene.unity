@@ -222,7 +222,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89683542}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
   m_Name: 
@@ -253,7 +253,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2077043774}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89683542}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 028b38c9fee6d470e8a146f729673479, type: 3}
   m_Name: 
@@ -617,7 +617,6 @@ GameObject:
   - component: {fileID: 797905098}
   - component: {fileID: 797905097}
   - component: {fileID: 797905099}
-  - component: {fileID: 797905100}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -672,24 +671,7 @@ MonoBehaviour:
   placementPose:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &797905100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797905096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed925cc6ba430432ba2772eafd431c49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPos: {x: 0, y: 0, z: 0}
-  endPos: {x: 0, y: 0, z: 0}
-  mousePos: {x: 0, y: 0, z: 0}
-  mouseDir: {x: 0, y: 0, z: 0}
-  lineObjPrefab: {fileID: 5696342084605538350, guid: 136e77aeddffc4f51815eacf93eefad4, type: 3}
-  lineObj: {fileID: 0}
+  dots: []
 --- !u!1 &922230701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,6 +1577,18 @@ MonoBehaviour:
       - m_Target: {fileID: 89683549}
         m_TargetAssemblyTypeName: ARExperienceManager, Assembly-CSharp
         m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 797905099}
+        m_TargetAssemblyTypeName: DotsManager, Assembly-CSharp
+        m_MethodName: ClearDots
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
