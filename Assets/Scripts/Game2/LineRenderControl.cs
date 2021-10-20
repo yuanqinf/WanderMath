@@ -18,20 +18,23 @@ public class LineRenderControl : MonoBehaviour
     private bool isDragging = false;
     private bool isSnapping = false;
 
+    public int curedgeCount = 0;
+    private int squareEdgeCount = 4;
+
+    public HashSet<GameObject> connectedDots;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(lineObj != null)
-        {
-
-        }
         cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
+        Debug.Log("this is connectedDots: " + connectedDots);
+
+        if (Input.touchCount > 0 && curedgeCount < squareEdgeCount)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -39,15 +42,14 @@ public class LineRenderControl : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit raycastHit))
             {
                 mousePos = raycastHit.point;
-                Debug.Log("raycastHit.point" + raycastHit.point);
                 if(raycastHit.transform.tag == "dot")
                 {
                     if (isDragging && raycastHit.transform.position != startObj.transform.position)
                     {
-                        Debug.Log("should snap snap now!!!");
-                        Debug.Log("raycastHit.transform.name: " + raycastHit.transform.name);
-                        Debug.Log("startObj.name: " + startObj.name);
+                        connectedDots.Add(startObj);
+                        connectedDots.Add(raycastHit.transform.gameObject);
                         isSnapping = true;
+                        curedgeCount += 1;
                     }
                     startObj = raycastHit.transform.gameObject;
                 }
@@ -67,7 +69,6 @@ public class LineRenderControl : MonoBehaviour
             if (touch.phase == TouchPhase.Moved && !isSnapping)
             {
                 startPos = startObj.transform.position;
-                //startPos.y = 0;
                 lr.SetPosition(0, startPos);
                 endPos = mousePos;
                 endPos.y = startPos.y;

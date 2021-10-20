@@ -20,6 +20,7 @@ TagManager:
   - gift_box
   - Line
   - dot
+  - liftable_shape
   layers:
   - Default
   - TransparentFX

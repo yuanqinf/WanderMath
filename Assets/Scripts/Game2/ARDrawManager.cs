@@ -57,6 +57,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject startObject;
     private bool isSnapping = false;
     private int numLines = 0;
+    private Vector3 initialRealWorldPosition;
+    public List<GameObject> curConnectedDots;
+
 
     void Update()
     {
@@ -71,6 +74,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             prevLineRender = null;
         }
         #endif
+
     }
 
     public void AllowDraw(bool isAllow)
@@ -115,9 +119,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position)
                     {
                         ARDebugManager.Instance.LogInfo("snap now!!!");
+                        if (!curConnectedDots.Contains(startObject)) curConnectedDots.Add(startObject);
+                        if (!curConnectedDots.Contains(hitObject.transform.gameObject)) curConnectedDots.Add(hitObject.transform.gameObject);
                         isSnapping = true;
                     }
                 }
+
             }
 
             if (touch.phase == TouchPhase.Moved && currentLineRender != null && !isSnapping)
@@ -129,13 +136,40 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 currentLineRender.SetPosition(1, endPos);
             }
 
+            if(touch.phase == TouchPhase.Began)
+            {
+                initialRealWorldPosition = hitObject.point;
+            }
+
+            if(touch.phase == TouchPhase.Moved)
+            {
+                Debug.Log("this is the tag of touched object: " + hitObject.transform.tag);
+
+                // lifting to 3d shape
+                if (hitObject.transform.tag == "liftable_shape")
+                {
+                    Debug.Log("find the object!!!!!!!");
+                    RaycastHit rayLocation;
+                    if (Physics.Raycast(ray, out rayLocation))
+                    {
+                        Vector3 newRealWorldPosition = rayLocation.point;
+                        Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
+                        if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                        {
+                            Debug.Log("lifting it now!!!");
+                            hitObject.transform.root.localScale += new Vector3(0, 0.05f, 0);
+                        }
+                    }
+                }
+            }
+
             if (touch.phase == TouchPhase.Ended && currentLineRender != null)
             {
                 if (!isSnapping)
                 {
                     numLines++;
                     ARDebugManager.Instance.LogInfo("line created: " + numLines);
-                    Destroy(currentLineRender);
+                    Destroy(currentLineRender.gameObject);
                 }
                 if (numLines == 2)
                 {
