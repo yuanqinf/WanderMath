@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class Game2Manager : Singleton<Game2Manager>
         dotsManager = FindObjectOfType<DotsManager>();
     }
 
-    public void ActivatePhase0()
+    public void EndPhase0()
     {
         // replace points of dots with prefab
         Vector3 midPoint = new Vector3(0, 0, 0);
@@ -26,5 +27,11 @@ public class Game2Manager : Singleton<Game2Manager>
         Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
         
         dotsManager.ClearDots();
+        ActivatePhse1();
+    }
+
+    private void ActivatePhse1()
+    {
+        Debug.Log("phase 1 activated");
     }
 }

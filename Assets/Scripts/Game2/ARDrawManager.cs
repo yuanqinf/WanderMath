@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(ARAnchorManager))]
 public class ARDrawManager : Singleton<ARDrawManager>
@@ -59,9 +60,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private bool isSnapping = false;
     private int numLines = 0;
 
+    public Vector3 initialRealWorldPosition;
+
+    public Vector3 newRealWorldPosition;
+
+    private UINumberControl uINumberControl;
+
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
+        uINumberControl = FindObjectOfType<UINumberControl>();
     }
 
     void Update()
@@ -109,6 +117,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
                 touchPosition = hitObject.point;
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    initialRealWorldPosition = hitObject.point;
+                }
+
                 if (hitObject.transform.tag == "dot")
                 {
                     // line created, instantiate line renderer
@@ -126,15 +140,52 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
             }
 
-            if (touch.phase == TouchPhase.Moved && currentLineRender != null && !isSnapping)
+            if (touch.phase == TouchPhase.Moved)
             {
-                startPos = startObject.transform.position;
-                currentLineRender.SetPosition(0, startPos);
-                endPos = touchPosition;
-                endPos.y = startPos.y;
-                currentLineRender.SetPosition(1, endPos);
+                // drawing line
+                if (currentLineRender != null && !isSnapping)
+                {
+                    startPos = startObject.transform.position;
+                    currentLineRender.SetPosition(0, startPos);
+                    endPos = touchPosition;
+                    endPos.y = startPos.y;
+                    currentLineRender.SetPosition(1, endPos);
+                }
+                // lifting detection begin
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    // lifting to 3d shape
+                    if (hitObject.transform.tag == "liftable_shape")
+                    {
+                        Debug.Log("find the object!!!!!!!");
+                        RaycastHit rayLocation;
+                        if (Physics.Raycast(ray, out rayLocation))
+                        {
+                            newRealWorldPosition = rayLocation.point;
+                            uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).GetComponentInChildren<Text>();
+                            Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
+                            Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
+                            if (newRealWorldPosition.z > initialRealWorldPosition.z + 0.05)
+                            {
+                                Debug.Log("lifting it now---------------------------------------");
+                                uINumberControl.SetVolDisplay(66666);
+                                hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                                hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
+                            }
+
+                            if (newRealWorldPosition.z < initialRealWorldPosition.z - 0.05 && hitObject.transform.root.localScale.y >= 0)
+                            {
+                                Debug.Log("drag it down---------------------------------------");
+                                uINumberControl.SetVolDisplay(11111);
+                                hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
+                                hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
+                            }
+                        }
+                    }
+                }
             }
 
+            // remove line logic
             if (touch.phase == TouchPhase.Ended && currentLineRender != null)
             {
                 if (!isSnapping)
@@ -147,16 +198,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 startObject = null;
                 isSnapping = false;
             }
+
+            // create line and handle logic
             if (isSnapping)
             {
                 numLines++;
                 ARDebugManager.Instance.LogInfo("line created: " + numLines);
                 if (GamePhase == Constants.GamePhase.PHASE0 && numLines == 1)
                 {
-                    game2Manager.ActivatePhase0();
+                    game2Manager.EndPhase0();
                     numLines = 0;
                 }
-                if (numLines == 4)
+                if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
                 {
                     // do sth in phase1
                 }

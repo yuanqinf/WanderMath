@@ -17,6 +17,8 @@ public class DotsManager : Singleton<DotsManager>
     public List<GameObject> dots = new List<GameObject>();
     public string gamePhase = "waiting";
 
+    public GameObject flatRectangle;
+
     private void Start()
     {
         placementController = FindObjectOfType<PlacementIndicatorController>();
@@ -32,7 +34,7 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                gamePhase = Constants.GamePhase.PHASE0;
+                gamePhase = Constants.GamePhase.PHASE1;
                 arDrawManager.GamePhase = gamePhase;
             }
         }
@@ -87,6 +89,8 @@ public class DotsManager : Singleton<DotsManager>
         InstantiateWithAnchor(dot, cornerPos3, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos4, placementPose.rotation);
         placementController.TurnOffPlacementAndText();
+
+        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
     }
 
     public void ClearDots()

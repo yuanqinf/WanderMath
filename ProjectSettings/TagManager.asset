@@ -21,6 +21,7 @@ TagManager:
   - Line
   - dot
   - liftable_shape
+  - vol_display
   layers:
   - Default
   - TransparentFX
