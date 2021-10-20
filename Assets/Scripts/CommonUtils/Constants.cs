@@ -4,8 +4,17 @@ public static class Constants
     public const float ROTATION_THRESHOLD = 20f;
     public const float GENERIC_SUBTITLE_DELAY = 1.0f;
     public const float BIGWIN_ANIMATION_DELAY = 3.0f;
+    public const float ONE_FEET = 0.3048f;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
+    }
+
+    public struct GamePhase
+    {
+        public const string PHASE0 = "phase0";
+        public const string PHASE1 = "phase1";
+        public const string PHASE2 = "phase2";
+        public const string PHASE3 = "phase3";
     }
 
     public struct ShapeNames
@@ -17,6 +26,5 @@ public static class Constants
         public const string CUBE_MED = "CUBE_MED";
         public const string CUBE_MED2 = "CUBE_MED2";
         public const string CUBE_WRONG = "CUBE_WRONG";
-
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.XR.ARFoundation;
 
 public class DotsManager : Singleton<DotsManager>
 {
-    public bool isDotsPlaced = false;
+    public bool isDotsPlaced { get; set; }
     public GameObject dot;
     public GameObject plane;
     [SerializeField]
@@ -16,8 +16,6 @@ public class DotsManager : Singleton<DotsManager>
     public Pose placementPose;
     public List<GameObject> dots = new List<GameObject>();
     public string gamePhase = "waiting";
-
-    public GameObject flatRectangle;
 
     private void Start()
     {
@@ -34,7 +32,8 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                gamePhase = "phase1";
+                gamePhase = Constants.GamePhase.PHASE0;
+                arDrawManager.GamePhase = gamePhase;
             }
         }
         else
@@ -42,18 +41,18 @@ public class DotsManager : Singleton<DotsManager>
             arDrawManager.DrawOnTouch();
             switch (gamePhase)
             {
-                case "phase0":
+                case Constants.GamePhase.PHASE0:
                     InstantiatePhase0Dots();
                     gamePhase = "waiting";
                     break;
-                case "phase1":
+                case Constants.GamePhase.PHASE1:
                     InstantiatePhase1Dots();
                     gamePhase = "waiting";
                     break;
-                case "phase2":
+                case Constants.GamePhase.PHASE2:
                     gamePhase = "waiting";
                     break;
-                case "phase3":
+                case Constants.GamePhase.PHASE3:
                     gamePhase = "waiting";
                     break;
                 default:
@@ -64,11 +63,9 @@ public class DotsManager : Singleton<DotsManager>
 
     private void InstantiatePhase0Dots()
     {
-        Vector3 cornerPos1 = placementPose.position
-            + (placementPose.forward * 0.3f) + (placementPose.right * 0.3f);
-        Vector3 cornerPos2 = placementPose.position
-            + (placementPose.forward * 0.3f) + (placementPose.right * -0.3f);
-        InstantiateWithAnchor(plane, placementPose.position, placementPose.rotation);
+        Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.ONE_FEET);
+        Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.ONE_FEET);
+        Instantiate(plane, placementPose.position, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos2, placementPose.rotation);
         placementController.TurnOffPlacementAndText();
@@ -77,27 +74,23 @@ public class DotsManager : Singleton<DotsManager>
     private void InstantiatePhase1Dots()
     {
         Vector3 cornerPos1 = placementPose.position
-            + (placementPose.forward * 0.3f) + (placementPose.right * 0.3f);
+            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
         Vector3 cornerPos2 = placementPose.position
-            + (placementPose.forward * 0.3f) + (placementPose.right * -0.3f);
+            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
         Vector3 cornerPos3 = placementPose.position
-            + (placementPose.forward * -0.3f) + (placementPose.right * 0.3f);
+            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
         Vector3 cornerPos4 = placementPose.position
-            + (placementPose.forward * -0.3f) + (placementPose.right * -0.3f);
-        InstantiateWithAnchor(plane, placementPose.position, placementPose.rotation);
+            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
+        //Instantiate(plane, placementPose.position, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos2, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos3, placementPose.rotation);
         InstantiateWithAnchor(dot, cornerPos4, placementPose.rotation);
         placementController.TurnOffPlacementAndText();
-
-        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
     }
 
     public void ClearDots()
     {
-        isDotsPlaced = false;
-        placementController.SetLayoutPlaced(false);
         foreach (GameObject dot in dots)
         {
             Destroy(dot);
@@ -112,10 +105,5 @@ public class DotsManager : Singleton<DotsManager>
             instance.AddComponent<ARAnchor>();
         }
         dots.Add(instance);
-    }
-
-    public void CreateRectangle(HashSet<GameObject> connectedDots)
-    {
-
     }
 }
