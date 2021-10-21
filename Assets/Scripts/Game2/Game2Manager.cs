@@ -27,6 +27,7 @@ public class Game2Manager : Singleton<Game2Manager>
         Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
         
         dotsManager.ClearDots();
+        // TODO: add animation & sound effect
         ActivatePhase1();
     }
 

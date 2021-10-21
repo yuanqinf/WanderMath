@@ -15,6 +15,7 @@ public class DotsManager : Singleton<DotsManager>
     private ARDrawManager arDrawManager;
     public Pose placementPose;
     public List<GameObject> dots = new List<GameObject>();
+    public List<GameObject> others = new List<GameObject>();
     public string gamePhase = "waiting";
 
     public GameObject flatRectangle;
@@ -36,6 +37,8 @@ public class DotsManager : Singleton<DotsManager>
                 // change this to determine which phase to go to
                 gamePhase = Constants.GamePhase.PHASE1;
                 arDrawManager.GamePhase = gamePhase;
+                InstantiateOthersWithAnchor(plane, placementPose.position, placementPose.rotation);
+                placementController.TurnOffPlacementAndText();
             }
         }
         else
@@ -67,10 +70,8 @@ public class DotsManager : Singleton<DotsManager>
     {
         Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.ONE_FEET);
         Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.ONE_FEET);
-        Instantiate(plane, placementPose.position, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos2, placementPose.rotation);
-        placementController.TurnOffPlacementAndText();
+        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
     }
 
     private void InstantiatePhase1Dots()
@@ -83,14 +84,29 @@ public class DotsManager : Singleton<DotsManager>
             + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
         Vector3 cornerPos4 = placementPose.position
             + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
-        //Instantiate(plane, placementPose.position, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos2, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos3, placementPose.rotation);
-        InstantiateWithAnchor(dot, cornerPos4, placementPose.rotation);
-        placementController.TurnOffPlacementAndText();
+        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
 
+        //ActivatePhase1Cube();
+    }
+
+    private void ActivatePhase1Cube()
+    {
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
+    }
+
+
+    #region Deleting objects
+    public void ClearAllObjects()
+    {
+        ClearDots();
+        arDrawManager.ClearLines();
+        foreach(GameObject other in others)
+        {
+            Destroy(other);
+        }
     }
 
     public void ClearDots()
@@ -100,14 +116,26 @@ public class DotsManager : Singleton<DotsManager>
             Destroy(dot);
         }
     }
+    #endregion
 
-    private void InstantiateWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
+    #region Instantiate objects
+    private void InstantiateOthersWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
+    {
+        others.Add(InstantiateWithAnchor(prefab, pos, rotation));
+    }
+
+    private void InstantiateDotsWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
+    {
+        dots.Add(InstantiateWithAnchor(prefab, pos, rotation));
+    }
+    private GameObject InstantiateWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
     {
         var instance = Instantiate(prefab, pos, rotation);
         if (instance.GetComponent<ARAnchor>() == null)
         {
             instance.AddComponent<ARAnchor>();
         }
-        dots.Add(instance);
+        return instance;
     }
+    #endregion
 }

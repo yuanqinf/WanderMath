@@ -22,6 +22,7 @@ public class ARExperienceManager : MonoBehaviour
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arPlaneManager.planesChanged += PlanesChanged;
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         #if UNITY_EDITOR
             OnInitialized?.Invoke();
