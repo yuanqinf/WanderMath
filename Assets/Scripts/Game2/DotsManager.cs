@@ -34,7 +34,7 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                gamePhase = Constants.GamePhase.PHASE1;
+                gamePhase = Constants.GamePhase.PHASE0;
                 arDrawManager.GamePhase = gamePhase;
             }
         }

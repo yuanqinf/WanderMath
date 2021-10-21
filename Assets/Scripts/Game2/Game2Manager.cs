@@ -27,11 +27,12 @@ public class Game2Manager : Singleton<Game2Manager>
         Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
         
         dotsManager.ClearDots();
-        ActivatePhse1();
+        ActivatePhase1();
     }
 
-    private void ActivatePhse1()
+    private void ActivatePhase1()
     {
+
         Debug.Log("phase 1 activated");
     }
 }

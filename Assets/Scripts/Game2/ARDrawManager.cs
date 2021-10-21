@@ -110,7 +110,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector3 diff = new Vector3(0, 0, 0);
 
             // raycasting to hit the point
             Ray ray = arCamera.ScreenPointToRay(touch.position);
