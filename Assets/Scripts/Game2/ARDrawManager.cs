@@ -184,6 +184,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         currentLineRender.SetPosition(1, endPos);
                         var lineMagnitude = (endPos - startPos).magnitude;
                         ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
+                        var lineController = currentLineGameObject.GetComponent<LineController>();
+                        lineController.SetDistance(lineMagnitude);
+                        lineController.SetPosition(endPos);
                     }
                     else
                     {
@@ -223,6 +226,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // do sth in phase1
         }
         isSnapping = false;
+        currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);
         currentLineRender = null;
     }
 
