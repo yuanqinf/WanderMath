@@ -22,6 +22,7 @@ TagManager:
   - dot
   - liftable_shape
   - vol_display
+  - ramp
   layers:
   - Default
   - TransparentFX

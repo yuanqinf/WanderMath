@@ -124,6 +124,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // line created, instantiate line renderer
                     if (currentLineRender == null)
                     {
+                        // TODO: instead of using rough points, fix the points at each dot!
                         ARDebugManager.Instance.LogInfo("instantiate line");
                         startObject = hitObject.transform.gameObject;
                         AddNewLineRenderer(movingTouchPosition);
