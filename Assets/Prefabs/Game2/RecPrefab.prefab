@@ -210,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Vol: 5 Cu. Ft'
+  m_Text: 'Vol: 0 Cu. Ft'
 --- !u!1 &8324094575266963216
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +236,7 @@ Transform:
   m_GameObject: {fileID: 8324094575266963216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.000915885, z: 0}
-  m_LocalScale: {x: 1.1971587, y: 0.01, z: 1.1971587}
+  m_LocalScale: {x: 1.1971587, y: 0.001, z: 1.1971587}
   m_Children:
   - {fileID: 8324094576075558880}
   m_Father: {fileID: 4279442061343261113}

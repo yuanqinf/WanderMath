@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -346,8 +346,6 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   endPos: {x: 0, y: 0, z: 0}
   touchPosition: {x: 0, y: 0, z: 0}
-  initialRealWorldPosition: {x: 0, y: 0, z: 0}
-  newRealWorldPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &89683551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,7 +479,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volDisplay: {fileID: 0}
-  volUICanvas: {fileID: 0}
 --- !u!1 &590574695
 GameObject:
   m_ObjectHideFlags: 0

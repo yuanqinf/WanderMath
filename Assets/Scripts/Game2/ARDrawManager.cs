@@ -61,7 +61,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private int numLines = 0;
 
     public Vector3 initialRealWorldPosition;
-
     public Vector3 newRealWorldPosition;
 
     private UINumberControl uINumberControl;
@@ -156,26 +155,29 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // lifting to 3d shape
                     if (hitObject.transform.tag == "liftable_shape")
                     {
-                        Debug.Log("find the object!!!!!!!");
                         RaycastHit rayLocation;
                         if (Physics.Raycast(ray, out rayLocation))
                         {
+                            Debug.Log("find the object!!!!!!!");
                             newRealWorldPosition = rayLocation.point;
-                            uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).GetComponentInChildren<Text>();
-                            Debug.Log("initialRealWorldPosition: " + initialRealWorldPosition);
-                            Debug.Log("newRealWorldPosition: " + newRealWorldPosition);
-                            if (newRealWorldPosition.z > initialRealWorldPosition.z + 0.05)
+                            uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).gameObject;
+
+                            int curVolNum = (int) (hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
+                                                   hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
+                                                   hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084);
+
+                            if (newRealWorldPosition.z > initialRealWorldPosition.z + 0.05 || newRealWorldPosition.y > initialRealWorldPosition.y + 0.05)
                             {
                                 Debug.Log("lifting it now---------------------------------------");
-                                uINumberControl.SetVolDisplay(66666);
+                                uINumberControl.SetVolDisplay(curVolNum);
                                 hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
                                 hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
                             }
 
-                            if (newRealWorldPosition.z < initialRealWorldPosition.z - 0.05 && hitObject.transform.root.localScale.y >= 0)
+                            if ((newRealWorldPosition.z < initialRealWorldPosition.z - 0.05 || newRealWorldPosition.y < initialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
                             {
                                 Debug.Log("drag it down---------------------------------------");
-                                uINumberControl.SetVolDisplay(11111);
+                                uINumberControl.SetVolDisplay(curVolNum);
                                 hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
                                 hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
                             }
