@@ -68,10 +68,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private UINumberControl uINumberControl;
 
+    private Game2SoundManager g2SoundManager;
+
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         uINumberControl = FindObjectOfType<UINumberControl>();
+        g2SoundManager = FindObjectOfType<Game2SoundManager>();
     }
 
     void Update()
@@ -131,9 +134,48 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position)
                     {
-                        isSnapping = true;
-                        numLines++;
-                        ARDebugManager.Instance.LogInfo("snapped. line created: " + numLines);
+                        int[] startDotMatPos = new int[2];
+                        int[] endDotMatPos = new int[2];
+                        for (int r = 0; r < 2; r++)
+                        {
+                            for(int c = 0; c < 2; c++)
+                            {
+                                float startNum = (startObject.transform.position.x + startObject.transform.position.y + startObject.transform.position.z);
+                                float endNum = (hitObject.transform.position.x + hitObject.transform.position.y + hitObject.transform.position.z);
+                                float curMatrixPointNum = (DotsManager.Instance.phase1DotsMatrix[r, c].x + DotsManager.Instance.phase1DotsMatrix[r, c].y + DotsManager.Instance.phase1DotsMatrix[r, c].z);
+
+                                if(startNum >= curMatrixPointNum - 0.02f && startNum <= curMatrixPointNum + 0.02f)
+                                {
+                                    Debug.Log("matched start");
+                                    startDotMatPos[0] = r;
+                                    startDotMatPos[1] = c;
+                                }
+                                if (endNum >= curMatrixPointNum - 0.02f && endNum <= curMatrixPointNum + 0.02f)
+                                {
+                                    Debug.Log("matched end");
+                                    endDotMatPos[0] = r;
+                                    endDotMatPos[1] = c;
+                                }
+                            }
+                        }
+
+                        if (startDotMatPos[0] == endDotMatPos[0] || startDotMatPos[1] == endDotMatPos[1])
+                        {
+                            numLines++;
+                            isSnapping = true;
+                            g2SoundManager.PlayGoodSoundEffect();
+                            ARDebugManager.Instance.LogInfo("snapped. line created: " + numLines);
+                            if(numLines == 4)
+                            {
+                                g2SoundManager.playFinishDrawing();
+                                DotsManager.Instance.ClearDots();
+                                DotsManager.Instance.ActivatePhase1Cube();
+                            }
+                        }
+                        else
+                        {
+                            //g2SoundManager.playWrongDrawing();
+                        }
                     }
                 }
                 if (hitObject.transform.tag == "liftable_shape")

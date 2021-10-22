@@ -8,11 +8,16 @@ public class DotsManager : Singleton<DotsManager>
 {
     public bool isDotsPlaced { get; set; }
     public GameObject dot;
+    public GameObject dot2;
+    public GameObject dot3;
+    public GameObject dot4;
     public GameObject plane;
     [SerializeField]
     private Camera arCamera;
     private PlacementIndicatorController placementController;
     private ARDrawManager arDrawManager;
+    private Game2SoundManager g2SoundManager;
+
     public Pose placementPose;
     public List<GameObject> dots = new List<GameObject>();
     public List<GameObject> others = new List<GameObject>();
@@ -20,10 +25,13 @@ public class DotsManager : Singleton<DotsManager>
 
     public GameObject flatRectangle;
 
+    public Vector3[,] phase1DotsMatrix;
+
     private void Start()
     {
         placementController = FindObjectOfType<PlacementIndicatorController>();
         arDrawManager = FindObjectOfType<ARDrawManager>();
+        g2SoundManager = FindObjectOfType<Game2SoundManager>();
     }
 
     private void Update()
@@ -76,23 +84,34 @@ public class DotsManager : Singleton<DotsManager>
 
     private void InstantiatePhase1Dots()
     {
-        Vector3 cornerPos1 = placementPose.position
-            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
-        Vector3 cornerPos2 = placementPose.position
-            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
-        Vector3 cornerPos3 = placementPose.position
-            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
-        Vector3 cornerPos4 = placementPose.position
-            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
-        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
-
+        StartCoroutine(g2SoundManager.PlayPhase1StartAudio());
+        StartCoroutine(SetGamePhase1());
         //ActivatePhase1Cube();
     }
 
-    private void ActivatePhase1Cube()
+    IEnumerator SetGamePhase1()
+    {
+        yield return new WaitForSeconds(7f);
+        // top left
+        Vector3 cornerPos2 = placementPose.position
+            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
+        // top right
+        Vector3 cornerPos1 = placementPose.position
+            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
+        // bot left
+        Vector3 cornerPos4 = placementPose.position
+            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
+        // bot right
+        Vector3 cornerPos3 = placementPose.position
+            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
+        phase1DotsMatrix = new Vector3[,] { { cornerPos2, cornerPos1 }, { cornerPos4, cornerPos3} };
+        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot2, cornerPos2, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot3, cornerPos3, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot4, cornerPos4, placementPose.rotation);
+    }
+
+    public void ActivatePhase1Cube()
     {
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
     }
