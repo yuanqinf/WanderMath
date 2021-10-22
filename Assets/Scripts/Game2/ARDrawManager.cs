@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.UI;
 
@@ -191,15 +192,30 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         boxNewRealWorldPosition = hitObject.point;
                         uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).gameObject;
 
-                        int curVolNum = (int)(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
-                                                hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
-                                                hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084);
+                        double curVolNum = Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
+                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
+                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084, 2);
+
+                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.x: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.x);
+                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
+                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.z: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.z);
+
+                        if (curVolNum > 0.9 && curVolNum < 1.1)
+                        {
+                            hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
+                        }
+                        else
+                        {
+                            hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
+                        }
 
                         if (boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05)
                         {
                             Debug.Log("lifting it now---------------------------------------");
                             uINumberControl.SetVolDisplay(curVolNum);
+                            // 3d shape lift
                             hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                            // 3d ui lift
                             hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
                         }
                         else if ((boxNewRealWorldPosition.z < boxInitialRealWorldPosition.z - 0.05 || boxNewRealWorldPosition.y < boxInitialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
@@ -209,6 +225,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
                             hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
                         }
+
                     }
                 }
             }
@@ -252,6 +269,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 currentLineRender = null;
                 startObject = null;
                 isSnapping = false;
+                hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
             }
         }
     }

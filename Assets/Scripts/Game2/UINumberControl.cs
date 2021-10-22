@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class UINumberControl : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class UINumberControl : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void SetVolDisplay(int num)
+    public void SetVolDisplay(double num)
     {
         string formattedDisplayStr = "Vol: " + num + " Cu.Ft";
 
