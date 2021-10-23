@@ -8,9 +8,6 @@ public class DotsManager : Singleton<DotsManager>
 {
     public bool isDotsPlaced { get; set; }
     public GameObject dot;
-    public GameObject dot2;
-    public GameObject dot3;
-    public GameObject dot4;
     public GameObject plane;
     [SerializeField]
     private Camera arCamera;
@@ -106,14 +103,24 @@ public class DotsManager : Singleton<DotsManager>
             + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
         phase1DotsMatrix = new Vector3[,] { { cornerPos2, cornerPos1 }, { cornerPos4, cornerPos3} };
         InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot2, cornerPos2, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot3, cornerPos3, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot4, cornerPos4, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
+        InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
     }
 
     public void ActivatePhase1Cube()
     {
+        ClearDots();
+        //arDrawManager.ClearLines();
+        g2SoundManager.playFinishDrawingAudio();
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
+
+        StartCoroutine(g2SoundManager.PlayPhase1MidAudio());
+    }
+
+    public void finishGame2Phase1()
+    {
+        StartCoroutine(g2SoundManager.PlayPhase1EndAudio());
     }
 
 
@@ -130,9 +137,14 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ClearDots()
     {
-        foreach (GameObject dot in dots)
+        //foreach (GameObject dot in dots)
+        //{
+        //    Destroy(dot);
+        //}
+        GameObject[] dotObjects = GameObject.FindGameObjectsWithTag("dot");
+        foreach (GameObject dotObj in dotObjects)
         {
-            Destroy(dot);
+            Destroy(dotObj);
         }
     }
     #endregion
@@ -157,4 +169,5 @@ public class DotsManager : Singleton<DotsManager>
         return instance;
     }
     #endregion
+
 }

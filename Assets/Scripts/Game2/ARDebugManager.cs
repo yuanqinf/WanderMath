@@ -25,7 +25,7 @@ public class ARDebugManager : Singleton<ARDebugManager>
     public void LogInfo(string message)
     {
         ClearLines();
-        Debug.Log(message);
+        //Debug.Log(message);
         debugAreaText.text += $"{DateTime.Now.ToString("yyyy-dd-M HH:mm:ss")}: <color=\"white\">{message}</color>\n";
     }
 

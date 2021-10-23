@@ -71,6 +71,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private Game2SoundManager g2SoundManager;
 
+    public int[] startDotMatPos = new int[2];
+    public int[] endDotMatPos = new int[2];
+
+    private Boolean isPlayingWrongDraw = false;
+
+
+    private Boolean startLiftCube = false;
+    private Boolean canCubeLiftingSnap = false;
+
+    private GameObject liftableCube;
+
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
@@ -135,17 +146,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position)
                     {
-                        int[] startDotMatPos = new int[2];
-                        int[] endDotMatPos = new int[2];
                         for (int r = 0; r < 2; r++)
                         {
                             for(int c = 0; c < 2; c++)
                             {
+
                                 float startNum = (startObject.transform.position.x + startObject.transform.position.y + startObject.transform.position.z);
                                 float endNum = (hitObject.transform.position.x + hitObject.transform.position.y + hitObject.transform.position.z);
                                 float curMatrixPointNum = (DotsManager.Instance.phase1DotsMatrix[r, c].x + DotsManager.Instance.phase1DotsMatrix[r, c].y + DotsManager.Instance.phase1DotsMatrix[r, c].z);
 
-                                if(startNum >= curMatrixPointNum - 0.02f && startNum <= curMatrixPointNum + 0.02f)
+                                if (startNum >= curMatrixPointNum - 0.02f && startNum <= curMatrixPointNum + 0.02f)
                                 {
                                     Debug.Log("matched start");
                                     startDotMatPos[0] = r;
@@ -160,27 +170,37 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             }
                         }
 
-                        if (startDotMatPos[0] == endDotMatPos[0] || startDotMatPos[1] == endDotMatPos[1])
+                        if ((startDotMatPos[0] == endDotMatPos[0] || startDotMatPos[1] == endDotMatPos[1]) && isSnapping == false)
                         {
                             numLines++;
                             isSnapping = true;
                             g2SoundManager.PlayGoodSoundEffect();
+                            currentLineRender.SetPosition(1, hitObject.transform.position);
                             ARDebugManager.Instance.LogInfo("snapped. line created: " + numLines);
                             if(numLines == 4)
                             {
                                 g2SoundManager.playFinishDrawing();
-                                DotsManager.Instance.ClearDots();
                                 DotsManager.Instance.ActivatePhase1Cube();
                             }
                         }
                         else
                         {
-                            //g2SoundManager.playWrongDrawing();
+                            if(isPlayingWrongDraw == false)
+                            {
+                                isPlayingWrongDraw = true;
+                                g2SoundManager.playWrongDrawing();
+                            }
                         }
+                        startDotMatPos[0] = 0;
+                        startDotMatPos[1] = 0;
+                        endDotMatPos[0] = 0;
+                        endDotMatPos[1] = 0;
                     }
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
+                    liftableCube = hitObject.transform.gameObject;
+
                     if (touch.phase == TouchPhase.Began)
                     {
                         boxInitialRealWorldPosition = hitObject.point;
@@ -200,13 +220,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.z: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.z);
 
-                        if (curVolNum > 0.9 && curVolNum < 1.1)
+                        if (curVolNum > 9.8 && curVolNum < 10.2)
                         {
                             hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
+                            canCubeLiftingSnap = true;
                         }
                         else
                         {
                             hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
+                            canCubeLiftingSnap = false;
                         }
 
                         if (boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05)
@@ -251,25 +273,45 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else
                     {
                         // create line and handle logic
-                        currentLineRender.SetPosition(1, movingTouchPosition);
+                        //currentLineRender.SetPosition(1, movingTouchPosition);
                         HandleSnapObject();
                     }
                 }
             }
 
             // remove line logic
-            if (touch.phase == TouchPhase.Ended && currentLineRender != null)
+            if (touch.phase == TouchPhase.Ended)
             {
-                if (!isSnapping)
+                isPlayingWrongDraw = false;
+
+                if(currentLineRender != null)
                 {
-                    Destroy(currentLineGameObject);
+                    if (!isSnapping)
+                    {
+                        Destroy(currentLineGameObject);
+                    }
+                    Debug.Log("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
+                    prevLineRender = currentLineRender;
+                    currentLineRender = null;
+                    startObject = null;
+                    isSnapping = false;
                 }
-                Debug.Log("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
-                prevLineRender = currentLineRender;
-                currentLineRender = null;
-                startObject = null;
-                isSnapping = false;
-                hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
+
+                if (canCubeLiftingSnap == true && startLiftCube)
+                {
+                    g2SoundManager.PlayGoodSoundEffect();
+                    DotsManager.Instance.finishGame2Phase1();
+                    liftableCube.GetComponent<BoxCollider>().enabled = false;
+                }
+                else if (canCubeLiftingSnap == false && startLiftCube)
+                {
+                    //g2SoundManager.playWrongCubeLiftAudio();
+                }
+
+                if(numLines == 4)
+                {
+                    startLiftCube = true;
+                }
             }
         }
     }
@@ -344,11 +386,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public void ClearLines()
     {
-        GameObject[] lines = GetAllLinesInScene();
-        foreach (GameObject currentLine in lines)
+        //GameObject[] lines = GetAllLinesInScene();
+        //foreach (GameObject currentLine in lines)
+        //{
+        //    LineRenderer line = currentLine.GetComponent<LineRenderer>();
+        //    Destroy(currentLine);
+        //}
+
+        GameObject[] lineObjects = GameObject.FindGameObjectsWithTag("Line");
+        foreach (GameObject lineObj in lineObjects)
         {
-            LineRenderer line = currentLine.GetComponent<LineRenderer>();
-            Destroy(currentLine);
+            Destroy(lineObj);
         }
     }
 
