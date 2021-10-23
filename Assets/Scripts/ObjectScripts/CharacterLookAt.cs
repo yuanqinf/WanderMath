@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterLookAt : MonoBehaviour
 {
     private Camera arCamera;
+    public bool isSkating = false;
 
     void Start()
     {
@@ -15,7 +16,14 @@ public class CharacterLookAt : MonoBehaviour
     void Update()
     {
         var tempTrans = arCamera.transform;
-
-        this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
+        if (isSkating)
+        {
+            this.transform.LookAt(new Vector3(tempTrans.transform.position.x, this.transform.position.y, tempTrans.position.z));
+            this.transform.rotation = Quaternion.LookRotation(Camera.main.transform.right * -180f);
+        }
+        else
+        {
+            this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
+        }
     }
 }

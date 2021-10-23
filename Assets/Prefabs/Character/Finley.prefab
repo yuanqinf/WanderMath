@@ -1147,7 +1147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2065348676016424816}
   - component: {fileID: 1955458137955049625}
-  - component: {fileID: 8048609787661069310}
   m_Layer: 0
   m_Name: Finley
   m_TagString: Untagged
@@ -1190,19 +1189,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8048609787661069310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1721016077262527946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb89df2804a4645e79fbbafc1b4ae344, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isSkating: 0
 --- !u!1 &1975234791992746680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,6 +1686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd481b55ab3446f793776051edfc254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSkating: 0
 --- !u!1 &2714953651905130892
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class CharacterController : GenericClass
 {
     [SerializeField]
     private GameObject arCharacterToSpawn;
+    public Animation skatingAnimation;
     private Animator animator;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
@@ -55,25 +56,9 @@ public class CharacterController : GenericClass
             arCharacterToSpawn));
         Debug.Log("new pos: " + arCharacterToSpawn.transform.position);
         PlaySkating(duration);
-        //arCharacterToSpawn.GetComponent<CharacterSkating>().isSkating = true;
         uiController.PlaySubtitles(activity2IntroLine, duration);
 
         return 1.0f;
-    }
-
-    public void TurnFinley(string direction, float duration)
-    {
-        var startTime = 0f;
-        while (startTime < duration) { 
-            switch(direction)
-            {
-                case "right":
-                    arCharacterToSpawn.transform.rotation = Quaternion.LookRotation(Camera.main.transform.right);
-                    Debug.Log("ar character rotation: " + arCharacterToSpawn.transform.rotation);
-                    break;
-            }
-            startTime += Time.deltaTime;
-        }
     }
 
     public void PlaySkating(float duration)
@@ -82,9 +67,12 @@ public class CharacterController : GenericClass
     }
     IEnumerator SkatingDuration(float duration)
     {
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
         StartSkating();
         yield return new WaitForSeconds(duration);
         StopSkating();
+        yield return new WaitForSeconds(3.0f);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
     }
     public void StartSkating()
     {
