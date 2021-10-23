@@ -15,7 +15,6 @@ public class Game2SoundManager : MonoBehaviour
     private string[] phase0EndSubtitles =
     {
         "Right on! Let's test it!",
-        "Okay, I'll save it for later."
     };
 
     public AudioClip[] phase1Start;
@@ -29,15 +28,16 @@ public class Game2SoundManager : MonoBehaviour
     };
     private string[] phase1MidSubtitles =
     {
-        "Right on! Let's test it!",
-        "Okay, I'll save it for later."
+        "To build the ledge, I have 1 cubic foot of concrete.",
+        "Tap on the middle of the square, then drag up to give it some height!"
     };
     private string[] phase1EndSubtitles =
     {
-        "Right on! Let's test it!",
-        "Okay, I'll save it for later."
+        "Rad! It's 1 foot long times 1 foot wide times 1 foot high- 1 cubic foot!",
+        "Okay, time to ollie. (skating sound) It's perfect! I'll save it for later."
     };
 
+    public AudioClip skatingSoundEffect;
     public AudioClip goodSoundEffect;
     public AudioClip finishDrawingEffect;
     public AudioClip WrongDrawingAudio;
@@ -98,6 +98,17 @@ public class Game2SoundManager : MonoBehaviour
             }
             //5. Go back to #2 and play the next audio in the adClips array
         }
+    }
+
+    public void PlaySkatingSoundForTime(float time)
+    {
+        audioSource.clip = skatingSoundEffect;
+        audioSource.Play();
+        Invoke("StopAudio", time);
+    }
+    private void StopAudio()
+    {
+        GetComponent<AudioSource>().Stop();
     }
 
     public void PlayGoodSoundEffect()

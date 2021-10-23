@@ -73,8 +73,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public int[] endDotMatPos = new int[2];
 
     private Boolean isPlayingWrongDraw = false;
-
-
     private Boolean startLiftCube = false;
     private Boolean canCubeLiftingSnap = false;
 
@@ -142,17 +140,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         startObject = hitObject.transform.gameObject;
                         AddNewLineRenderer(movingTouchPosition);
                     }
-                    else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position)
+                    else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position && !isSnapping)
                     {
                         if (GamePhase == Constants.GamePhase.PHASE0)
                         {
                             numLines++;
                             isSnapping = true;
-                            Debug.Log("touched object to snap");
-                            currentLineRender.SetPosition(1, hitObject.transform.position);
+                            ARDebugManager.Instance.LogInfo("touched object to snap");
                         }
                         else if (GamePhase == Constants.GamePhase.PHASE1)
                         {
+                            // initialize array
                             for (int r = 0; r < 2; r++)
                             {
                                 for (int c = 0; c < 2; c++)
@@ -177,6 +175,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                                 }
                             }
 
+                            // checking snapping
                             if ((startDotMatPos[0] == endDotMatPos[0] || startDotMatPos[1] == endDotMatPos[1]) && isSnapping == false)
                             {
                                 numLines++;
@@ -281,7 +280,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else
                     {
                         // create line and handle logic
-                        //currentLineRender.SetPosition(1, movingTouchPosition);
+                        movingTouchPosition.y = startPos.y;
+                        currentLineRender.SetPosition(1, movingTouchPosition);
                         HandleSnapObject();
                     }
                 }
@@ -298,7 +298,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         Destroy(currentLineGameObject);
                     }
-                    Debug.Log("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
+                    ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
                     prevLineRender = currentLineRender;
                     currentLineRender = null;
                     startObject = null;
@@ -308,7 +308,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (canCubeLiftingSnap == true && startLiftCube)
                 {
                     g2SoundManager.PlayGoodSoundEffect();
-                    DotsManager.Instance.finishGame2Phase1();
+                    DotsManager.Instance.FinishGame2Phase1();
                     liftableCube.GetComponent<BoxCollider>().enabled = false;
                 }
                 else if (canCubeLiftingSnap == false && startLiftCube)

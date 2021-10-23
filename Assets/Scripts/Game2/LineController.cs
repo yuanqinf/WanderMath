@@ -13,12 +13,14 @@ public class LineController : MonoBehaviour
 
     public void SetDistance(float distance)
     {
-        distanceText.text = distance.ToString("F2");
+        var newRatio = distance / Constants.ONE_FEET;
+        distanceText.text = newRatio.ToString("F2") + " ft";
     }
 
     public void SetPosition(Vector3 pos)
     {
         var newPos = Camera.main.WorldToScreenPoint(pos);
         distanceText.transform.position = newPos;
+        measuringTape.transform.position = pos; // + new Vector3(0.1f, 0.0f, 0.0f);
     }
 }

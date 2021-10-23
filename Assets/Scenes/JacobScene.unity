@@ -1663,6 +1663,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 279d9640dd68743d39955646b48e0567, type: 3}
   - {fileID: 8300000, guid: 77d1c48f6aa464a48bc9cb59daf7b9c3, type: 3}
   audioSource: {fileID: 797905101}
+  skatingSoundEffect: {fileID: 8300000, guid: 009c408f9241b46f48df768e96950c91, type: 3}
   goodSoundEffect: {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
   WrongDrawingAudio: {fileID: 8300000, guid: da783829a1d434880b2654c96537ea42, type: 3}

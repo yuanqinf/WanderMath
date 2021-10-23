@@ -13,6 +13,9 @@ public class Game2Manager : Singleton<Game2Manager>
     private CharacterController characterController;
     private ARDrawManager arDrawManager;
     private Game2SoundManager g2SoundManager;
+
+    public Dictionary<string, Vector3> objectLocations = new Dictionary<string, Vector3>();
+
     private string gamePhase = "waiting";
 
     private void Start()
@@ -32,8 +35,8 @@ public class Game2Manager : Singleton<Game2Manager>
                 gamePhase = "waiting";
                 break;
             case Constants.GamePhase.PHASE1:
-                gamePhase = "waiting";
                 StartPhase1();
+                gamePhase = "waiting";
                 break;
             case Constants.GamePhase.PHASE2:
                 gamePhase = "waiting";
@@ -64,27 +67,52 @@ public class Game2Manager : Singleton<Game2Manager>
         dotsManager.InstantiatePhase0Dots();
     }
 
+    /// <summary>
+    /// Code to end phase 0;
+    /// </summary>
     public void EndPhase0()
     {
         g2SoundManager.PlayGoodSoundEffect();
 
+        ARDebugManager.Instance.LogInfo("Endphase0 is called");
         // replace points of dots with prefab
         Vector3 midPoint = new Vector3(0, 0, 0);
         foreach(GameObject dot in dotsManager.dots) {
             midPoint += dot.transform.position;
         }
-        midPoint /= dotsManager.dots.Count;
-        Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
-        
+        midPoint /= 2.0f;
+        Debug.Log("first point: " + dotsManager.dots[0].transform.position);
+        Debug.Log("second point: " + dotsManager.dots[1].transform.position);
+        Debug.Log("mid point: " + midPoint);
+
+        phase0Object = Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
+
+        objectLocations.Add(Constants.Objects.RailingStartPoint, dotsManager.dots[1].transform.position);
+        objectLocations.Add(Constants.Objects.RailingEndPoint, dotsManager.dots[0].transform.position);
         dotsManager.ClearDots();
+
         // TODO: add animation & play sound effect
         //g2SoundManager.PlayGoodSoundEffect();
 
-        gamePhase = Constants.GamePhase.PHASE1;
+        StartCoroutine(PlayPhase0EndAnimationAndAudio());
+    }
+
+    IEnumerator PlayPhase0EndAnimationAndAudio()
+    {
+        yield return new WaitForSeconds(1.0f); // wait for good effect sound
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0End); // play right on
+        yield return new WaitForSeconds(2.0f);
+        // animate towards railing
+        characterController.SkateOnRailing(objectLocations[Constants.Objects.RailingStartPoint], objectLocations[Constants.Objects.RailingEndPoint]);
+        g2SoundManager.PlaySkatingSoundForTime(10.5f);
+        yield return new WaitForSeconds(10.5f);
+        Destroy(phase0Object);
+        SetGamePhase(Constants.GamePhase.PHASE1);
     }
 
     private void StartPhase1()
     {
         dotsManager.InstantiatePhase1Dots();
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
     }
 }

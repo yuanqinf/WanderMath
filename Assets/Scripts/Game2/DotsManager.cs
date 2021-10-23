@@ -54,15 +54,14 @@ public class DotsManager : Singleton<DotsManager>
 
     public void InstantiatePhase0Dots()
     {
-        Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.ONE_FEET);
-        Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.ONE_FEET);
+        Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.HALF_FEET);
+        Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.HALF_FEET);
         InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
     }
 
     public void InstantiatePhase1Dots()
     {
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
         StartCoroutine(SetGamePhase1());
         //ActivatePhase1Cube();
     }
@@ -72,16 +71,16 @@ public class DotsManager : Singleton<DotsManager>
         yield return new WaitForSeconds(7f);
         // top left
         Vector3 cornerPos2 = placementPose.position
-            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
+            + (placementPose.forward * Constants.HALF_FEET) + (placementPose.right * -Constants.HALF_FEET);
         // top right
         Vector3 cornerPos1 = placementPose.position
-            + (placementPose.forward * Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
+            + (placementPose.forward * Constants.HALF_FEET) + (placementPose.right * Constants.HALF_FEET);
         // bot left
         Vector3 cornerPos4 = placementPose.position
-            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * -Constants.ONE_FEET);
+            + (placementPose.forward * -Constants.HALF_FEET) + (placementPose.right * -Constants.HALF_FEET);
         // bot right
         Vector3 cornerPos3 = placementPose.position
-            + (placementPose.forward * -Constants.ONE_FEET) + (placementPose.right * Constants.ONE_FEET);
+            + (placementPose.forward * -Constants.HALF_FEET) + (placementPose.right * Constants.HALF_FEET);
         phase1DotsMatrix = new Vector3[,] { { cornerPos2, cornerPos1 }, { cornerPos4, cornerPos3} };
         InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
@@ -99,7 +98,7 @@ public class DotsManager : Singleton<DotsManager>
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
     }
 
-    public void finishGame2Phase1()
+    public void FinishGame2Phase1()
     {
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End);
     }

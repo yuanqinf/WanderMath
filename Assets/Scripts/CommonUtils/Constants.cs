@@ -4,9 +4,16 @@ public static class Constants
     public const float ROTATION_THRESHOLD = 20f;
     public const float GENERIC_SUBTITLE_DELAY = 1.0f;
     public const float BIGWIN_ANIMATION_DELAY = 3.0f;
+    public const float HALF_FEET = 0.1524f;
     public const float ONE_FEET = 0.3048f;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
+    }
+
+    public struct Objects
+    {
+        public const string RailingStartPoint = "RailingStartPoint";
+        public const string RailingEndPoint = "RailingEndPoint";
     }
 
     public struct VoiceOvers

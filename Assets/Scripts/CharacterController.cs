@@ -9,9 +9,10 @@ public class CharacterController : GenericClass
     public Animation skatingAnimation;
     private Animator animator;
     private float stopSkatingAnimationLen = 2.7f;
+    private float skateJumpAnimationLen = 1.3f;
+    private float idleToSkateAnimationLen = 1.4f;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
-    private string activity2IntroLine = "Hey there! I'm gonna build Finley Park, my own personal skate park!";
 
     public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
     {
@@ -52,7 +53,8 @@ public class CharacterController : GenericClass
         StartCoroutine(utils.LerpMovement(characterPos, endPos, phase0AudioLen - stopSkatingAnimationLen, arCharacterToSpawn));
         PlaySkating(phase0AudioLen);
         g2soundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
-        StartCoroutine(WaitBeforeTalking(phase0AudioLen, 7.0f));
+        var talkingDuration = 7.0f;
+        StartCoroutine(WaitBeforeTalking(phase0AudioLen, talkingDuration));
 
         return phase0AudioLen + 3.5f;
     }
@@ -63,19 +65,61 @@ public class CharacterController : GenericClass
         PlayTalkingAnimationWithDuration(talkingDuration);
     }
 
+    public void SkateOnRailing(Vector3 pointToJumpUp, Vector3 pointToJumpDown)
+    {
+        StartCoroutine(SkatingOnRailingMove(pointToJumpUp, pointToJumpDown));
+    }
+    IEnumerator SkatingOnRailingMove(Vector3 pointToJumpUp, Vector3 pointToJumpDown)
+    {
+        var initialPos = arCharacterToSpawn.transform.position;
+        var railingHeight = new Vector3(0, 0.1f, 0);
+        // 1. start skating & wait for idle to skate
+        StartSkating();
+        yield return new WaitForSeconds(idleToSkateAnimationLen);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
+        // move to start position
+        var skateToRailingDuration = 2.0f;
+        StartCoroutine(utils.LerpMovement(initialPos, pointToJumpUp, skateToRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRailingDuration);
+        // jump up
+        SkateJump();
+        StartCoroutine(utils.LerpMovement(pointToJumpUp, pointToJumpUp + railingHeight, skateJumpAnimationLen, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateJumpAnimationLen);
+        // skate on railing
+        var skateOnRailingDuration = 2.5f;
+        StartCoroutine(utils.LerpMovement(pointToJumpUp + railingHeight, pointToJumpDown + railingHeight, skateOnRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateOnRailingDuration);
+        // jump down
+        SkateJump();
+        StartCoroutine(utils.LerpMovement(pointToJumpDown + railingHeight, pointToJumpDown, skateJumpAnimationLen, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateJumpAnimationLen);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
+
+        // skate back to position
+        StartCoroutine(utils.LerpMovement(pointToJumpDown, initialPos, skateToRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRailingDuration);
+        StopSkating();
+    }
+
     #region skating animation
     public void PlaySkating(float duration)
     {
         StartCoroutine(SkatingDuration(duration));
     }
-    IEnumerator SkatingDuration(float duration)
+    IEnumerator SkatingDuration(float duration, bool isForward = true)
     {
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
+        if (isForward)
+        {
+            arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
+        }
         StartSkating();
         yield return new WaitForSeconds(duration - stopSkatingAnimationLen);
         StopSkating();
+        if (isForward)
+        {
+            arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
+        }
         yield return new WaitForSeconds(stopSkatingAnimationLen);
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
     }
     public void StartSkating()
     {
