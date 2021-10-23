@@ -8,6 +8,7 @@ public class CharacterController : GenericClass
     private GameObject arCharacterToSpawn;
     public Animation skatingAnimation;
     private Animator animator;
+    private float stopSkatingAnimationLen = 2.7f;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
     private string activity2IntroLine = "Hey there! I'm gonna build Finley Park, my own personal skate park!";
@@ -35,7 +36,6 @@ public class CharacterController : GenericClass
 
     public float InitCharacterSkatingAndAudio(Pose placementPose)
     {
-        Debug.Log(placementPose.position);
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
@@ -47,20 +47,23 @@ public class CharacterController : GenericClass
         );
         animator = arCharacterToSpawn.GetComponent<Animator>();
         Vector3 endPos = characterPos - placementPose.forward * 1.5f;
-        Debug.Log(endPos);
-        Debug.Log("char pos: " + arCharacterToSpawn.transform.position);
-        var duration = 5.0f;
-        StartCoroutine(utils.LerpMovement(characterPos,
-            endPos,
-            duration,
-            arCharacterToSpawn));
-        Debug.Log("new pos: " + arCharacterToSpawn.transform.position);
-        PlaySkating(duration);
-        uiController.PlaySubtitles(activity2IntroLine, duration);
+        // audio & animation
+        var phase0AudioLen = 6.0f;
+        StartCoroutine(utils.LerpMovement(characterPos, endPos, phase0AudioLen - stopSkatingAnimationLen, arCharacterToSpawn));
+        PlaySkating(phase0AudioLen);
+        g2soundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
+        StartCoroutine(WaitBeforeTalking(phase0AudioLen, 7.0f));
 
         return 1.0f;
     }
 
+    IEnumerator WaitBeforeTalking(float waitDuration, float talkingDuration)
+    {
+        yield return new WaitForSeconds(waitDuration);
+        PlayTalkingAnimationWithDuration(talkingDuration);
+    }
+
+    #region skating animation
     public void PlaySkating(float duration)
     {
         StartCoroutine(SkatingDuration(duration));
@@ -69,9 +72,9 @@ public class CharacterController : GenericClass
     {
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
         StartSkating();
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration - stopSkatingAnimationLen);
         StopSkating();
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(stopSkatingAnimationLen);
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
     }
     public void StartSkating()
@@ -86,6 +89,7 @@ public class CharacterController : GenericClass
     {
         animator.SetTrigger("jump");
     }
+    #endregion
 
     private float StartFirstLine()
     {
@@ -100,6 +104,7 @@ public class CharacterController : GenericClass
         return arCharacterToSpawn.transform.position;
     }
 
+    #region talking
     public void PlayTalkingAnimationWithDuration(float duration)
     {
         StartCoroutine(PlayTalkingAnimationWithinDuration(duration));
@@ -111,6 +116,7 @@ public class CharacterController : GenericClass
         yield return new WaitForSeconds(duration);
         animator.SetBool("isTalking", false);
     }
+    #endregion
 
     public void PlaySmallWin()
     {

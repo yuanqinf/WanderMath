@@ -64,7 +64,7 @@ public class DotsManager : Singleton<DotsManager>
 
     public void InstantiatePhase1Dots()
     {
-        StartCoroutine(g2SoundManager.PlayPhase1StartAudio());
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
         StartCoroutine(SetGamePhase1());
         //ActivatePhase1Cube();
     }
@@ -98,12 +98,12 @@ public class DotsManager : Singleton<DotsManager>
         g2SoundManager.playFinishDrawingAudio();
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
 
-        StartCoroutine(g2SoundManager.PlayPhase1MidAudio());
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
     }
 
     public void finishGame2Phase1()
     {
-        StartCoroutine(g2SoundManager.PlayPhase1EndAudio());
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End);
     }
 
 

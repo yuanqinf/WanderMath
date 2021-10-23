@@ -18,7 +18,6 @@ public class CharacterLookAt : MonoBehaviour
         var tempTrans = arCamera.transform;
         if (isSkating)
         {
-            this.transform.LookAt(new Vector3(tempTrans.transform.position.x, this.transform.position.y, tempTrans.position.z));
             this.transform.rotation = Quaternion.LookRotation(Camera.main.transform.right * -180f);
         }
         else

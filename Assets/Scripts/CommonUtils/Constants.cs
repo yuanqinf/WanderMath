@@ -9,6 +9,15 @@ public static class Constants
         public const string CUBE_EASY = "CUBE_EASY";
     }
 
+    public struct VoiceOvers
+    {
+        public const string PHASE0Start = "phase0Start";
+        public const string PHASE0End = "phase0End";
+        public const string PHASE1Start = "phase1Start";
+        public const string PHASE1Mid = "phase1Mid";
+        public const string PHASE1End = "phase1End";
+    }
+
     public struct GamePhase
     {
         public const string PHASE0 = "phase0";
