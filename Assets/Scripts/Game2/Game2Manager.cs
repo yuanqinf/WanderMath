@@ -10,10 +10,47 @@ public class Game2Manager : Singleton<Game2Manager>
     [SerializeField]
     private GameObject phase1Object;
     private DotsManager dotsManager;
+    private CharacterController characterController;
+    private string gamePhase = "waiting";
 
     private void Start()
     {
         dotsManager = FindObjectOfType<DotsManager>();
+        characterController = FindObjectOfType<CharacterController>();
+    }
+
+    private void Update()
+    {
+        switch (gamePhase)
+        {
+            case Constants.GamePhase.PHASE0:
+                StartPhase0();
+                gamePhase = "waiting";
+                break;
+            case Constants.GamePhase.PHASE1:
+                gamePhase = "waiting";
+                StartPhase1();
+                break;
+            case Constants.GamePhase.PHASE2:
+                gamePhase = "waiting";
+                break;
+            case Constants.GamePhase.PHASE3:
+                gamePhase = "waiting";
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetGamePhase(string gamePhase)
+    {
+        this.gamePhase = gamePhase;
+    }
+
+    private void StartPhase0()
+    {
+        characterController.InitCharacterSkatingAndAudio(dotsManager.placementPose);
+        dotsManager.InstantiatePhase0Dots();
     }
 
     public void EndPhase0()
@@ -28,12 +65,11 @@ public class Game2Manager : Singleton<Game2Manager>
         
         dotsManager.ClearDots();
         // TODO: add animation & sound effect
-        ActivatePhase1();
+        gamePhase = Constants.GamePhase.PHASE1;
     }
 
-    private void ActivatePhase1()
+    private void StartPhase1()
     {
-
-        Debug.Log("phase 1 activated");
+        dotsManager.InstantiatePhase1Dots();
     }
 }

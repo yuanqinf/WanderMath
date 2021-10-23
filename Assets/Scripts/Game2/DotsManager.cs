@@ -14,11 +14,11 @@ public class DotsManager : Singleton<DotsManager>
     private PlacementIndicatorController placementController;
     private ARDrawManager arDrawManager;
     private Game2SoundManager g2SoundManager;
+    private Game2Manager g2Manager;
 
     public Pose placementPose;
     public List<GameObject> dots = new List<GameObject>();
     public List<GameObject> others = new List<GameObject>();
-    public string gamePhase = "waiting";
 
     public GameObject flatRectangle;
 
@@ -29,6 +29,7 @@ public class DotsManager : Singleton<DotsManager>
         placementController = FindObjectOfType<PlacementIndicatorController>();
         arDrawManager = FindObjectOfType<ARDrawManager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
+        g2Manager = FindObjectOfType<Game2Manager>();
     }
 
     private void Update()
@@ -40,8 +41,9 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                gamePhase = Constants.GamePhase.PHASE1;
-                arDrawManager.GamePhase = gamePhase;
+                var tempPhase = Constants.GamePhase.PHASE0;
+                g2Manager.SetGamePhase(tempPhase);
+                arDrawManager.GamePhase = tempPhase;
                 InstantiateOthersWithAnchor(plane, placementPose.position, placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }
@@ -49,29 +51,10 @@ public class DotsManager : Singleton<DotsManager>
         else
         {
             arDrawManager.DrawOnTouch();
-            switch (gamePhase)
-            {
-                case Constants.GamePhase.PHASE0:
-                    InstantiatePhase0Dots();
-                    gamePhase = "waiting";
-                    break;
-                case Constants.GamePhase.PHASE1:
-                    InstantiatePhase1Dots();
-                    gamePhase = "waiting";
-                    break;
-                case Constants.GamePhase.PHASE2:
-                    gamePhase = "waiting";
-                    break;
-                case Constants.GamePhase.PHASE3:
-                    gamePhase = "waiting";
-                    break;
-                default:
-                    break;
-            }
         }
     }
 
-    private void InstantiatePhase0Dots()
+    public void InstantiatePhase0Dots()
     {
         Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.ONE_FEET);
         Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.ONE_FEET);
@@ -79,7 +62,7 @@ public class DotsManager : Singleton<DotsManager>
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
     }
 
-    private void InstantiatePhase1Dots()
+    public void InstantiatePhase1Dots()
     {
         StartCoroutine(g2SoundManager.PlayPhase1StartAudio());
         StartCoroutine(SetGamePhase1());
