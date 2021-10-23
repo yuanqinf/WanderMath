@@ -11,12 +11,16 @@ public class Game2Manager : Singleton<Game2Manager>
     private GameObject phase1Object;
     private DotsManager dotsManager;
     private CharacterController characterController;
+    private ARDrawManager arDrawManager;
+    private Game2SoundManager g2SoundManager;
     private string gamePhase = "waiting";
 
     private void Start()
     {
         dotsManager = FindObjectOfType<DotsManager>();
+        arDrawManager = FindObjectOfType<ARDrawManager>();
         characterController = FindObjectOfType<CharacterController>();
+        g2SoundManager = FindObjectOfType<Game2SoundManager>();
     }
 
     private void Update()
@@ -45,16 +49,25 @@ public class Game2Manager : Singleton<Game2Manager>
     public void SetGamePhase(string gamePhase)
     {
         this.gamePhase = gamePhase;
+        arDrawManager.GamePhase = gamePhase;
     }
 
     private void StartPhase0()
     {
-        characterController.InitCharacterSkatingAndAudio(dotsManager.placementPose);
+        var duration = characterController.InitCharacterSkatingAndAudio(dotsManager.placementPose);
+        StartCoroutine(WaitBeforePhase0Dots(duration));
+    }
+
+    IEnumerator WaitBeforePhase0Dots(float duration)
+    {
+        yield return new WaitForSeconds(duration);
         dotsManager.InstantiatePhase0Dots();
     }
 
     public void EndPhase0()
     {
+        g2SoundManager.PlayGoodSoundEffect();
+
         // replace points of dots with prefab
         Vector3 midPoint = new Vector3(0, 0, 0);
         foreach(GameObject dot in dotsManager.dots) {
@@ -64,7 +77,9 @@ public class Game2Manager : Singleton<Game2Manager>
         Instantiate(phase0Object, midPoint, dotsManager.dots[0].transform.rotation);
         
         dotsManager.ClearDots();
-        // TODO: add animation & sound effect
+        // TODO: add animation & play sound effect
+        //g2SoundManager.PlayGoodSoundEffect();
+
         gamePhase = Constants.GamePhase.PHASE1;
     }
 

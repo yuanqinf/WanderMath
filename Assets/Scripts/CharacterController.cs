@@ -54,7 +54,7 @@ public class CharacterController : GenericClass
         g2soundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
         StartCoroutine(WaitBeforeTalking(phase0AudioLen, 7.0f));
 
-        return 1.0f;
+        return phase0AudioLen + 3.5f;
     }
 
     IEnumerator WaitBeforeTalking(float waitDuration, float talkingDuration)
