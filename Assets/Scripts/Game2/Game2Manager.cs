@@ -101,6 +101,7 @@ public class Game2Manager : Singleton<Game2Manager>
     {
         yield return new WaitForSeconds(1.0f); // wait for good effect sound
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0End); // play right on
+        characterController.PlayTalkingAnimationWithDuration(2.0f);
         yield return new WaitForSeconds(2.0f);
         // animate towards railing
         characterController.SkateOnRailing(objectLocations[Constants.Objects.RailingStartPoint], objectLocations[Constants.Objects.RailingEndPoint]);
