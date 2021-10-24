@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
@@ -46,8 +47,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private LineRenderer currentLineRender = null;
     private GameObject currentLineGameObject = null;
 
+    private List<GameObject> linesGameObject = new List<GameObject>();
     private List<ARAnchor> anchors = new List<ARAnchor>();
     private List<LineRenderer> lines = new List<LineRenderer>();
+    private List<Vector3> phase2DrawnPos = new List<Vector3>();
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
@@ -59,6 +62,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public Vector3 endPos;
     public Vector3 movingTouchPosition;
     private GameObject startObject;
+    private GameObject endObject;
     private bool isSnapping = false;
     private int numLines = 0;
 
@@ -76,6 +80,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private Boolean startLiftCube = false;
     private Boolean canCubeLiftingSnap = false;
 
+
     private GameObject liftableCube;
 
     private HashSet<String> visitedDots;
@@ -86,21 +91,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         uINumberControl = FindObjectOfType<UINumberControl>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
         visitedDots = new HashSet<String>();
-    }
-
-    void Update()
-    {
-        #if !UNITY_EDITOR
-        //if (Input.touchCount > 0)
-        //    DrawOnTouch();
-        #else
-        //if (Input.GetMouseButton(0))
-        //    DrawOnMouse();
-        //else
-        //{
-        //    prevLineRender = null;
-        //}
-        #endif
     }
 
     public void AllowDraw(bool isAllow)
@@ -206,6 +196,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             endDotMatPos[0] = 0;
                             endDotMatPos[1] = 0;
                         }
+                        else if (GamePhase == Constants.GamePhase.PHASE2)
+                        {
+                            var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
+
+                            ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
+                            if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1))
+                            {
+                                numLines++;
+                                isSnapping = true;
+                            }
+                        }
                     }
                 }
                 if (hitObject.transform.tag == "liftable_shape")
@@ -265,7 +266,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 if (currentLineRender != null)
                 {
-                    // drawing line
+                    // drawing line while not snap to any object
                     if (!isSnapping)
                     {
                         startPos = startObject.transform.position;
@@ -274,7 +275,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         endPos.y = startPos.y;
                         currentLineRender.SetPosition(1, endPos);
                         var lineMagnitude = (endPos - startPos).magnitude;
-                        ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
+                        //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
                         var lineController = currentLineGameObject.GetComponent<LineController>();
                         lineController.SetDistance(lineMagnitude);
                         lineController.SetPosition(endPos);
@@ -283,17 +284,28 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         // create line and handle logic
                         //movingTouchPosition.y = startPos.y;
-
-                        String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
-                        String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
-                        if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
+                        if (GamePhase == Constants.GamePhase.PHASE2)
                         {
-                            endPos = hitObject.transform.position;
-                            endPos.y = startPos.y;
+                            endPos = hitObject.transform.gameObject.transform.position;
                             currentLineRender.SetPosition(1, endPos);
+                            ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
+                            phase2DrawnPos.Add(startPos);
+                            phase2DrawnPos.Add(endPos);
                             HandleSnapObject();
-                            visitedDots.Add(startMatPos);
-                            visitedDots.Add(endMatPos);
+                        }
+                        else
+                        {
+                            String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
+                            String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
+                            if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
+                            {
+                                endPos = hitObject.transform.position;
+                                endPos.y = startPos.y;
+                                currentLineRender.SetPosition(1, endPos);
+                                HandleSnapObject();
+                                visitedDots.Add(startMatPos);
+                                visitedDots.Add(endMatPos);
+                            }
                         }
                     }
                 }
@@ -345,9 +357,22 @@ public class ARDrawManager : Singleton<ARDrawManager>
             numLines = 0;
             Destroy(currentLineGameObject);
         }
-        if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
+        if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            //numLines = 0;
+            // TODO: check if its square or rectangle based on the snapped dots
+            phase2DrawnPos.ForEach(i => Debug.Log("positions: " + i));
+            Vector3 minVector = Vector3.positiveInfinity;
+            Vector3 maxVector = Vector3.zero;
+            foreach (Vector3 pos in phase2DrawnPos)
+            {
+                minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
+                maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
+            }
+            Debug.Log("minVector positions: " + minVector);
+            Debug.Log("maxVector positions: " + maxVector);
+            numLines = 0;
+
+            // TODO: create object
         }
         isSnapping = false;
         currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);

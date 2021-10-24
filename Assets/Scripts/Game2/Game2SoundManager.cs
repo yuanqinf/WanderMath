@@ -37,6 +37,25 @@ public class Game2SoundManager : MonoBehaviour
         "Okay, time to ollie. (skating sound) It's perfect! I'll save it for later."
     };
 
+    public AudioClip[] phase2Start;
+    public AudioClip[] phase2Mid;
+    public AudioClip[] phase2End;
+    private string[] phase2StartSubtitles =
+    {
+        "Placeholder 1",
+        "Placeholder 2"
+    };
+    private string[] phase2MidSubtitles =
+    {
+        "Placeholder 1",
+        "Placeholder 2"
+    };
+    private string[] phase2EndSubtitles =
+    {
+        "Placeholder 1",
+        "Placeholder 2"
+    };
+
     public AudioClip skatingSoundEffect;
     public AudioClip goodSoundEffect;
     public AudioClip finishDrawingEffect;
@@ -70,6 +89,9 @@ public class Game2SoundManager : MonoBehaviour
                 break;
             case Constants.VoiceOvers.PHASE1End:
                 StartCoroutine(PlayVoiceover(phase1End, phase1EndSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE2Start:
+                StartCoroutine(PlayVoiceover(phase2Start, phase2StartSubtitles));
                 break;
             default:
                 break;

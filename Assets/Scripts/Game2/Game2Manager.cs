@@ -42,6 +42,7 @@ public class Game2Manager : Singleton<Game2Manager>
                 gamePhase = "waiting";
                 break;
             case Constants.GamePhase.PHASE2:
+                StartPhase2();
                 gamePhase = "waiting";
                 break;
             case Constants.GamePhase.PHASE3:
@@ -58,6 +59,7 @@ public class Game2Manager : Singleton<Game2Manager>
         arDrawManager.GamePhase = gamePhase;
     }
 
+    #region phase0 related
     private void StartPhase0()
     {
         var duration = characterController.InitCharacterSkatingAndAudio(dotsManager.placementPose);
@@ -113,9 +115,9 @@ public class Game2Manager : Singleton<Game2Manager>
         Destroy(phase0Object);
         SetGamePhase(Constants.GamePhase.PHASE1);
     }
+    #endregion
 
-    // phase 1 ending
-
+    #region phase1 related
     public void EndPhase1()
     {
         g2SoundManager.PlayGoodSoundEffect();
@@ -143,4 +145,15 @@ public class Game2Manager : Singleton<Game2Manager>
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
         characterController.PlayTalkingAnimationWithDuration(7f);
     }
+    #endregion
+
+    #region phase2 related
+    private void StartPhase2()
+    {
+        dotsManager.InstantiatePhase2Dots();
+        // TODO: edit sound and animation duration
+        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
+        //characterController.PlayTalkingAnimationWithDuration(7f);
+    }
+    #endregion
 }

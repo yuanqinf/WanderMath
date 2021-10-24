@@ -321,8 +321,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quadMaterial: {fileID: 2100000, guid: f2e1bfe7880ee1a4fa308402c0c99287, type: 2}
-  ramp: {fileID: 4438014192111400554, guid: 0ba6e8623e2034934a75f16aed9db8e7, type: 3}
-  cube: {fileID: 2454388121701374403, guid: e56d924c4b888413b918760531a24f79, type: 3}
+  dot: {fileID: 8987609362015805088, guid: 13116c00738334d16ae5c75bf7623425, type: 3}
+  ramp: {fileID: 2454388121701374403, guid: e56d924c4b888413b918760531a24f79, type: 3}
 --- !u!4 &253251604
 Transform:
   m_ObjectHideFlags: 0

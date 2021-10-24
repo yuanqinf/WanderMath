@@ -10,6 +10,8 @@ public class ProBuilderController : MonoBehaviour
 {
     [SerializeField]
     private Material quadMaterial;
+    [SerializeField]
+    public GameObject dot;
 
     private ProBuilderMesh quad;
     [SerializeField]
@@ -38,7 +40,18 @@ public class ProBuilderController : MonoBehaviour
                 }
             }
         }
-
+        var topLeft = new Vector3(0, 0, 0);
+        int rows = 2;
+        int cols = 3;
+        for (int i = 0; i < rows; i++)
+        {
+            topLeft += new Vector3(i * Constants.ONE_FEET, 0, 0);
+            for (int j = 0; j < cols; j++)
+            {
+                var newPos = topLeft + new Vector3(0, 0, j * Constants.ONE_FEET);
+                Instantiate(dot, newPos, dot.transform.rotation);
+            }
+        }
     }
 
     private void Update()

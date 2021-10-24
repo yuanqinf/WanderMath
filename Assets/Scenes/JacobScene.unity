@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -364,8 +364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAreaText: {fileID: 1479828898}
-  enableDebug: 0
-  maxLines: 8
+  enableDebug: 1
+  maxLines: 14
 --- !u!1 &99524482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,6 +1665,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 279d9640dd68743d39955646b48e0567, type: 3}
   - {fileID: 8300000, guid: 77d1c48f6aa464a48bc9cb59daf7b9c3, type: 3}
   audioSource: {fileID: 797905101}
+  phase2Start: []
+  phase2Mid: []
+  phase2End: []
   skatingSoundEffect: {fileID: 8300000, guid: 009c408f9241b46f48df768e96950c91, type: 3}
   goodSoundEffect: {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
@@ -1717,10 +1720,10 @@ RectTransform:
   m_Father: {fileID: 210633591}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -40}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: -600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479828898
 MonoBehaviour:
@@ -1769,8 +1772,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

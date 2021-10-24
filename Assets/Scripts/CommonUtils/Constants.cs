@@ -23,6 +23,9 @@ public static class Constants
         public const string PHASE1Start = "phase1Start";
         public const string PHASE1Mid = "phase1Mid";
         public const string PHASE1End = "phase1End";
+        public const string PHASE2Start = "phase2Start";
+        public const string PHASE2Mid = "phase2Mid";
+        public const string PHASE2End = "phase2End";
     }
 
     public struct GamePhase

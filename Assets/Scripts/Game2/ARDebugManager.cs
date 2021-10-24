@@ -25,22 +25,22 @@ public class ARDebugManager : Singleton<ARDebugManager>
     public void LogInfo(string message)
     {
         ClearLines();
-        //Debug.Log(message);
-        debugAreaText.text += $"{DateTime.Now.ToString("yyyy-dd-M HH:mm:ss")}: <color=\"white\">{message}</color>\n";
+        Debug.Log(message);
+        debugAreaText.text += $": <color=\"white\">{message}</color>\n";
     }
 
     public void LogError(string message)
     {
         ClearLines();
         Debug.LogError(message);
-        debugAreaText.text += $"{DateTime.Now.ToString("yyyy-dd-M HH:mm:ss")}: <color=\"red\">{message}</color>\n";
+        debugAreaText.text += $": <color=\"red\">{message}</color>\n";
     }
 
     public void LogWarning(string message)
     {
         ClearLines();
         Debug.LogWarning(message);
-        debugAreaText.text += $"{DateTime.Now.ToString("yyyy-dd-M HH:mm:ss")}: <color=\"yellow\">{message}</color>\n";
+        debugAreaText.text += $": <color=\"yellow\">{message}</color>\n";
     }
 
     private void ClearLines()

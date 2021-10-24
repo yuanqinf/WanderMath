@@ -41,7 +41,7 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE2);
                 InstantiateOthersWithAnchor(plane, placementPose.position, placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }
@@ -111,6 +111,34 @@ public class DotsManager : Singleton<DotsManager>
     //{
     //    g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End);
     //}
+
+    public void InstantiatePhase2Dots()
+    {
+        StartCoroutine(SetGamePhase2Dots());
+    }
+
+    IEnumerator SetGamePhase2Dots()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        // top left
+        Vector3 topLeft = placementPose.position
+            + (placementPose.forward * Constants.HALF_FEET) + (placementPose.right * -Constants.HALF_FEET);
+        InitializeDots(topLeft, 2, 3);
+    }
+
+    private void InitializeDots(Vector3 topLeft, int rows, int cols)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            topLeft += new Vector3(0, 0, i * Constants.ONE_FEET);
+            for (int j = 0; j < cols; j++)
+            {
+                var newPos = topLeft + new Vector3(j * Constants.ONE_FEET, 0, 0);
+                InstantiateDotsWithAnchor(dot, newPos, dot.transform.rotation);
+            }
+        }
+    }
 
 
     #region Deleting objects
