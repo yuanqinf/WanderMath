@@ -78,11 +78,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private GameObject liftableCube;
 
+    private HashSet<String> visitedDots;
+
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         uINumberControl = FindObjectOfType<UINumberControl>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
+        visitedDots = new HashSet<String>();
     }
 
     void Update()
@@ -128,6 +131,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Ray ray = arCamera.ScreenPointToRay(touch.position);
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
+                liftableCube = hitObject.transform.gameObject;
                 // constantly track movement
                 movingTouchPosition = hitObject.point;
                 if (hitObject.transform.tag == "dot")
@@ -206,8 +210,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
-                    liftableCube = hitObject.transform.gameObject;
-
                     if (touch.phase == TouchPhase.Began)
                     {
                         boxInitialRealWorldPosition = hitObject.point;
@@ -227,7 +229,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.z: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.z);
 
-                        if (curVolNum > 9.8 && curVolNum < 10.2)
+                        if (curVolNum > 0.8 && curVolNum < 1.12)
                         {
                             hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
                             canCubeLiftingSnap = true;
@@ -280,9 +282,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else
                     {
                         // create line and handle logic
-                        movingTouchPosition.y = startPos.y;
-                        currentLineRender.SetPosition(1, movingTouchPosition);
-                        HandleSnapObject();
+                        //movingTouchPosition.y = startPos.y;
+
+                        String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
+                        String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
+                        if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
+                        {
+                            endPos = hitObject.transform.position;
+                            endPos.y = startPos.y;
+                            currentLineRender.SetPosition(1, endPos);
+                            HandleSnapObject();
+                            visitedDots.Add(startMatPos);
+                            visitedDots.Add(endMatPos);
+                        }
                     }
                 }
             }
@@ -307,8 +319,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                 if (canCubeLiftingSnap == true && startLiftCube)
                 {
+                    canCubeLiftingSnap = false;
+                    game2Manager.EndPhase1();
                     g2SoundManager.PlayGoodSoundEffect();
-                    DotsManager.Instance.FinishGame2Phase1();
                     liftableCube.GetComponent<BoxCollider>().enabled = false;
                 }
                 else if (canCubeLiftingSnap == false && startLiftCube)
@@ -334,7 +347,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
-            // do sth in phase1
+            //numLines = 0;
         }
         isSnapping = false;
         currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);

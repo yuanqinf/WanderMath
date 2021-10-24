@@ -126,9 +126,10 @@ public class Game2SoundManager : MonoBehaviour
         audioSource.PlayOneShot(WrongDrawingAudio);
     }
 
-    public void playFinishDrawingAudio()
+    public float playFinishDrawingAudio()
     {
         audioSource.PlayOneShot(finishDrawingAudio);
+        return finishDrawingAudio.length;
     }
 
     public void playWrongCubeLiftAudio()

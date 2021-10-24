@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1049,6 +1049,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase0Object: {fileID: 2494528510571261929, guid: d621160b1fbbc4426992473579552da7, type: 3}
   phase1Object: {fileID: 0}
+  phase1JumpStart: {x: 0, y: 0, z: 0}
+  phase1JumpEnd: {x: 0, y: 0, z: 0}
 --- !u!114 &797905104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,7 +1214,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 922230706}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 4294967295
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0

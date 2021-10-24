@@ -90,18 +90,27 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ActivatePhase1Cube()
     {
+        g2Manager.phase1JumpStart = dots[3].transform.position;
+        g2Manager.phase1JumpEnd = dots[5].transform.position;
         ClearDots();
         //arDrawManager.ClearLines();
-        g2SoundManager.playFinishDrawingAudio();
-        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
+        float finishDrawingAudioLen = g2SoundManager.playFinishDrawingAudio();
 
+        StartCoroutine(SetGamePhase1Mid(finishDrawingAudioLen));
+    }
+
+    IEnumerator SetGamePhase1Mid(float lenToWait)
+    {
+        Debug.Log("setting game2 phase1 mid");
+        yield return new WaitForSeconds(lenToWait);
+        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
     }
 
-    public void FinishGame2Phase1()
-    {
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End);
-    }
+    //public void FinishGame2Phase1()
+    //{
+    //    g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End);
+    //}
 
 
     #region Deleting objects

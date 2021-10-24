@@ -14,6 +14,9 @@ public class Game2Manager : Singleton<Game2Manager>
     private ARDrawManager arDrawManager;
     private Game2SoundManager g2SoundManager;
 
+    public Vector3 phase1JumpStart;
+    public Vector3 phase1JumpEnd;
+
     public Dictionary<string, Vector3> objectLocations = new Dictionary<string, Vector3>();
 
     private string gamePhase = "waiting";
@@ -111,9 +114,33 @@ public class Game2Manager : Singleton<Game2Manager>
         SetGamePhase(Constants.GamePhase.PHASE1);
     }
 
+    // phase 1 ending
+
+    public void EndPhase1()
+    {
+        g2SoundManager.PlayGoodSoundEffect();
+
+        ARDebugManager.Instance.LogInfo("Endphase1 is called");
+
+        StartCoroutine(PlayPhase1EndAnimationAndAudio());
+    }
+
+    IEnumerator PlayPhase1EndAnimationAndAudio()
+    {
+        yield return new WaitForSeconds(1.0f); // wait for good effect sound
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1End); // play right on
+        characterController.PlayTalkingAnimationWithDuration(6.8f);
+        yield return new WaitForSeconds(6.8f);
+        // animate towards jumping
+        characterController.SkateOnRailing(phase1JumpStart, phase1JumpEnd);
+        g2SoundManager.PlaySkatingSoundForTime(10.5f);
+        yield return new WaitForSeconds(10.5f);
+    }
+
     private void StartPhase1()
     {
         dotsManager.InstantiatePhase1Dots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
+        characterController.PlayTalkingAnimationWithDuration(7f);
     }
 }
