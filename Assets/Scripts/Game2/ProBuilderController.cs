@@ -12,39 +12,108 @@ public class ProBuilderController : MonoBehaviour
     private Material quadMaterial;
 
     private ProBuilderMesh quad;
-    private ProBuilderMesh cube;
+    [SerializeField]
+    private ProBuilderMesh ramp;
+    private Dictionary<int, Edge> topEdges = new Dictionary<int, Edge>();
+    private int[] edgeNums = { 4, 5, 6, 7 };
 
     void Start()
     {
         //CreateSingleQuad();
-        CreateSingleCube();
+        //CreateSingleCube();
+        //ramp = Instantiate(ramp, new Vector3(0, 0, 0), Quaternion.identity);
+        // TODO: change location & size accordingly to be instantiated center
+        ramp = Instantiate(ramp, new Vector3(0, 0, 0), ramp.transform.rotation);
+        //ramp.transform.localScale += new Vector3(0, 3.5f, 0);
+        foreach (Face f in ramp.faces)
+        {
+            foreach (Edge e in f.edges)
+            {
+                foreach(int num in edgeNums)
+                {
+                    if (e.a == num)
+                    {
+                        topEdges.Add(num, e);
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit))
+            {
+                if (raycastHit.transform.tag == "ramp")
+                {
+                    MoveCubeUp(raycastHit.transform.name);
+                    raycastHit.transform.localPosition += new Vector3(0.1f, 0, 0);
+                    //if (isDragging && raycastHit.transform.position != startObj.transform.position)
+                    //{
+                    //    connectedDots.Add(startObj);
+                    //    connectedDots.Add(raycastHit.transform.gameObject);
+                    //    isSnapping = true;
+                    //    curedgeCount += 1;
+                    //}
+                    //startObj = raycastHit.transform.gameObject;
+                }
+
+            }
+        }
+    }
+
+    private void MoveCubeUp(string edge)
+    {
+        Debug.Log(edge);
+        var movingEdge = Enumerable.Repeat(topEdges[Int32.Parse(edge)], 1);
+        ramp.TranslateVertices(movingEdge, new Vector3(0.1f, 0, 0));
     }
 
     private void CreateSingleCube()
     {
 
-        cube = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(0.01f, 1, 1));
-        Debug.Log("edge count: " + cube.edgeCount);
-        Debug.Log("face count: " + cube.faceCount);
-        Debug.Log("selected edge: " + cube.selectedEdges.ToString());
-        cube.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
-        cube.transform.position = new Vector3(1.2f, 1.1f, 1.3f);
-        cube.SetMaterial(cube.faces, quadMaterial);
-        foreach (Face f in cube.faces)
+        ramp = ShapeGenerator.GenerateCube(PivotLocation.Center, new Vector3(0.1f, 1, 1));
+        Debug.Log("edge count: " + ramp.edgeCount);
+        Debug.Log("face count: " + ramp.faceCount);
+        var selectedEdges = ramp.selectedEdges;
+        foreach (Edge e in selectedEdges)
         {
-            Debug.Log(f.IsQuad());
+            Debug.Log("selected edge location: " + e.a + " " + e.b);
+
+        }
+        ramp.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
+        //cube.transform.position = new Vector3(0f, 1f, 0f);
+        ramp.SetMaterial(ramp.faces, quadMaterial);
+        Transform trs = ramp.transform;
+        int count = 1;
+        int faceCount = 1;
+        foreach (Face f in ramp.faces)
+        {
+            foreach (int i in f.distinctIndexes)
+            {
+                Debug.Log("face count: " + faceCount + " indexPt: " + trs.TransformPoint(ramp.positions[i]));
+
+            }
             foreach (Edge e in f.edges) {
-                if (e.a == 5)
+                if (e.b == 7)
                 {
                     var movingEdge = Enumerable.Repeat(e, 1);
-                    cube.TranslateVertices(movingEdge, new Vector3(1, 0, 0));
-                    //cube.TranslateVertices(f.edges, new Vector3(10, 0, 0));
+                    ramp.TranslateVertices(movingEdge, new Vector3(1, 0, 0));
                 }
-                
+
                 Debug.Log("edge location: " + e.a + " " + e.b);
+                var posA = trs.TransformPoint(ramp.positions[e.a]);
+                var posB = trs.TransformPoint(ramp.positions[e.b]);
+                Debug.Log("edge " + count + " pos: " + posA + " " + posB);
+                count++;
             }
+            faceCount++;
         }
-        var test = cube.selectedEdges;
+        var test = ramp.selectedEdges;
         quad.Refresh();
     }
 
