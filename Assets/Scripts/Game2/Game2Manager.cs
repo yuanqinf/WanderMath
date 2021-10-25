@@ -155,5 +155,10 @@ public class Game2Manager : Singleton<Game2Manager>
         //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
         //characterController.PlayTalkingAnimationWithDuration(7f);
     }
+    public void StartPhase2Mid()
+    {
+        dotsManager.ClearDots();
+        // TODO: add sound effect & animation
+    }
     #endregion
 }

@@ -43,6 +43,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     [SerializeField]
     private GameObject linePrefab;
+    [SerializeField]
+    private GameObject phase2Ramp;
     private LineRenderer prevLineRender;
     private LineRenderer currentLineRender = null;
     private GameObject currentLineGameObject = null;
@@ -288,6 +290,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         {
                             endPos = hitObject.transform.gameObject.transform.position;
                             currentLineRender.SetPosition(1, endPos);
+
+                            var lineMagnitude = (endPos - startPos).magnitude;
+                            currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
                             ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                             phase2DrawnPos.Add(startPos);
                             phase2DrawnPos.Add(endPos);
@@ -379,8 +384,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 var minMag = (minVector - pos).magnitude;
                 var maxMag = (maxVector - pos).magnitude;
                 maxValue = Mathf.Max(minMag, maxMag);
-                Debug.Log("minMag = : " + Math.Floor(minMag * 100f) + ", maxMag: " + Math.Floor(maxMag * 100f));
-                if (Math.Floor(minMag * 100f) % 3 != 0 || Math.Floor(maxMag * 100f) % 3 != 0)
+                Debug.Log("minMag = : " + Math.Floor(minMag * 10f) + ", maxMag: " + Math.Floor(maxMag * 10f));
+                if (Math.Floor(minMag * 10f) % 3 != 0 || Math.Floor(maxMag * 10f) % 3 != 0)
                 {
                     Debug.Log("it is not a square / rectangle");
                     // reset -> add animation
@@ -390,21 +395,26 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     return;
                 }
             }
-            if (Math.Floor(maxValue * 100f) / 30 == 1)
+            phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
+
+            if (Math.Floor(maxValue * 10f) / 3 == 1)
             {
                 Debug.Log("it is a square");
+                phase2Ramp.transform.localScale = new Vector3(0.5f, Constants.ONE_FEET, Constants.ONE_FEET);
             }
             else
             {
                 Debug.Log("it is rect");
+                phase2Ramp.transform.localScale = new Vector3(0.5f, 2 * Constants.ONE_FEET, Constants.ONE_FEET);
             }
-
+            game2Manager.StartPhase2Mid();
             numLines = 0;
-
-            // TODO: create object
         }
         isSnapping = false;
-        currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);
+        if (GamePhase == Constants.GamePhase.PHASE1)
+        {
+            currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);
+        }
         currentLineRender = null;
     }
 
