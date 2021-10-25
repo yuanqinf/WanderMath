@@ -6,6 +6,7 @@ public class CharacterLookAt : MonoBehaviour
 {
     private Camera arCamera;
     public bool isSkating = false;
+    public GameObject skateBoard;
 
     void Start()
     {
@@ -24,5 +25,10 @@ public class CharacterLookAt : MonoBehaviour
         {
             this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
         }
+    }
+
+    public Vector3 GetSkateBoardPos()
+    {
+        return this.skateBoard.transform.position;
     }
 }

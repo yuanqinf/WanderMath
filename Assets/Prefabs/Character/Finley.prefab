@@ -1687,6 +1687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkating: 0
+  skateBoard: {fileID: 6302599655521924141}
 --- !u!1 &2714953651905130892
 GameObject:
   m_ObjectHideFlags: 0

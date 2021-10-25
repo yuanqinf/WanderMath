@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAreaText: {fileID: 1479828898}
-  enableDebug: 1
+  enableDebug: 0
   maxLines: 14
 --- !u!1 &99524482
 GameObject:
