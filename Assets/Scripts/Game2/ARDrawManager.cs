@@ -50,7 +50,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private List<GameObject> linesGameObject = new List<GameObject>();
     private List<ARAnchor> anchors = new List<ARAnchor>();
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private List<Vector3> phase2DrawnPos = new List<Vector3>();
+    private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
@@ -360,7 +360,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
             // TODO: check if its square or rectangle based on the snapped dots
-            phase2DrawnPos.ForEach(i => Debug.Log("positions: " + i));
+            Debug.Log("totalPos: " + phase2DrawnPos.Count);
             Vector3 minVector = Vector3.positiveInfinity;
             Vector3 maxVector = Vector3.zero;
             foreach (Vector3 pos in phase2DrawnPos)
@@ -370,6 +370,35 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
             Debug.Log("minVector positions: " + minVector);
             Debug.Log("maxVector positions: " + maxVector);
+            phase2DrawnPos.Remove(minVector);
+            phase2DrawnPos.Remove(maxVector);
+            float maxValue = 0.0f;
+            foreach (Vector3 pos in phase2DrawnPos)
+            {
+                Debug.Log("leftover pos: " + pos);
+                var minMag = (minVector - pos).magnitude;
+                var maxMag = (maxVector - pos).magnitude;
+                maxValue = Mathf.Max(minMag, maxMag);
+                Debug.Log("minMag = : " + Math.Floor(minMag * 100f) + ", maxMag: " + Math.Floor(maxMag * 100f));
+                if (Math.Floor(minMag * 100f) % 3 != 0 || Math.Floor(maxMag * 100f) % 3 != 0)
+                {
+                    Debug.Log("it is not a square / rectangle");
+                    // reset -> add animation
+                    numLines = 0;
+                    ClearLines();
+                    phase2DrawnPos.Clear();
+                    return;
+                }
+            }
+            if (Math.Floor(maxValue * 100f) / 30 == 1)
+            {
+                Debug.Log("it is a square");
+            }
+            else
+            {
+                Debug.Log("it is rect");
+            }
+
             numLines = 0;
 
             // TODO: create object
