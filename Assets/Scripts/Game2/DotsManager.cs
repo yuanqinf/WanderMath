@@ -41,7 +41,7 @@ public class DotsManager : Singleton<DotsManager>
             {
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE2);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
                 InstantiateOthersWithAnchor(plane, placementPose.position, placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }

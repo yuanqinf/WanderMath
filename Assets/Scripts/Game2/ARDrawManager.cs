@@ -55,6 +55,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
 
+    public Vector2 ramp2DTouchPosition = Vector2.zero;
+    public GameObject rampEdge = null;
+    private float edgeTransformY = 0f;
+
+
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
 
@@ -212,13 +217,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                     }
                 }
-                if (hitObject.transform.tag == "ramp")
+                if (hitObject.transform.tag == "ramp" && touch.phase == TouchPhase.Began)
                 {
-                    // decided on the side to move up
-                    var edgeName = hitObject.transform.name;
-                    var movingEdge = Enumerable.Repeat(rampTopEdges[int.Parse(edgeName)], 1);
-                    phase2Ramp.TranslateVertices(movingEdge, new Vector3(0.1f, 0, 0));
-                    hitObject.transform.localPosition += new Vector3(0.1f, 0, 0);
+                    // Initiate edge to be hit
+                    rampEdge = hitObject.transform.gameObject;
+                    ramp2DTouchPosition = touch.position;
+                    Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
@@ -275,6 +279,28 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             if (touch.phase == TouchPhase.Moved)
             {
+                if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
+                {
+                    var newTouchpos = touch.position;
+                    var movingRange = new Vector3(0.01f, 0, 0);
+
+                    var edgeName = rampEdge.transform.name;
+                    var movingEdge = Enumerable.Repeat(rampTopEdges[int.Parse(edgeName)], 1);
+
+                    if (newTouchpos.y - ramp2DTouchPosition.y > 0)
+                    {
+                        Debug.Log("edge moving up");
+                        edgeTransformY += 0.01f;
+                        phase2Ramp.TranslateVertices(movingEdge, movingRange);
+                        rampEdge.transform.localPosition += movingRange;
+                    } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeTransformY > 0f)
+                    {
+                        Debug.Log("edge moving down");
+                        edgeTransformY -= 0.01f;
+                        phase2Ramp.TranslateVertices(movingEdge, -movingRange);
+                        rampEdge.transform.localPosition -= movingRange;
+                    }
+                }
                 if (currentLineRender != null)
                 {
                     // drawing line while not snap to any object
@@ -331,7 +357,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 isPlayingWrongDraw = false;
 
-                if(currentLineRender != null)
+                if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
+                {
+                    ramp2DTouchPosition = Vector2.zero;
+                    rampEdge = null;
+                }
+                if (currentLineRender != null)
                 {
                     if (!isSnapping)
                     {
