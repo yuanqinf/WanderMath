@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.XR.ARSubsystems;
+using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(ARAnchorManager))]
@@ -44,7 +44,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     [SerializeField]
     private GameObject linePrefab;
     [SerializeField]
-    private GameObject phase2Ramp;
+    private ProBuilderMesh phase2Ramp;
     private LineRenderer prevLineRender;
     private LineRenderer currentLineRender = null;
     private GameObject currentLineGameObject = null;
@@ -53,6 +53,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private List<ARAnchor> anchors = new List<ARAnchor>();
     private List<LineRenderer> lines = new List<LineRenderer>();
     private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
+    private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
@@ -211,6 +212,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                     }
                 }
+                if (hitObject.transform.tag == "ramp")
+                {
+                    // decided on the side to move up
+                    var edgeName = hitObject.transform.name;
+                    var movingEdge = Enumerable.Repeat(rampTopEdges[int.Parse(edgeName)], 1);
+                    phase2Ramp.TranslateVertices(movingEdge, new Vector3(0.1f, 0, 0));
+                    hitObject.transform.localPosition += new Vector3(0.1f, 0, 0);
+                }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
                     if (touch.phase == TouchPhase.Began)
@@ -224,7 +233,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         boxNewRealWorldPosition = hitObject.point;
                         uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).gameObject;
 
-                        double curVolNum = Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
+                        double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084, 2);
 
@@ -317,6 +326,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
 
             // remove line logic
+            // TODO: modify such that the line only snaps when it touched the point at end
             if (touch.phase == TouchPhase.Ended)
             {
                 isPlayingWrongDraw = false;
@@ -384,8 +394,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 var minMag = (minVector - pos).magnitude;
                 var maxMag = (maxVector - pos).magnitude;
                 maxValue = Mathf.Max(minMag, maxMag);
-                Debug.Log("minMag = : " + Math.Floor(minMag * 10f) + ", maxMag: " + Math.Floor(maxMag * 10f));
-                if (Math.Floor(minMag * 10f) % 3 != 0 || Math.Floor(maxMag * 10f) % 3 != 0)
+                Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+                if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
                 {
                     Debug.Log("it is not a square / rectangle");
                     // reset -> add animation
@@ -395,9 +405,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     return;
                 }
             }
-            phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
 
-            if (Math.Floor(maxValue * 10f) / 3 == 1)
+            phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
+            GetRampEdges();
+
+            if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
                 Debug.Log("it is a square");
                 phase2Ramp.transform.localScale = new Vector3(0.5f, Constants.ONE_FEET, Constants.ONE_FEET);
@@ -416,6 +428,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
             currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);
         }
         currentLineRender = null;
+    }
+
+    private void GetRampEdges()
+    {
+        int[] edgeNums = { 4, 5, 6, 7 };
+        foreach (Face f in phase2Ramp.faces)
+        {
+            foreach (Edge e in f.edges)
+            {
+                foreach (int num in edgeNums)
+                {
+                    if (e.a == num)
+                    {
+                        rampTopEdges.Add(num, e);
+                    }
+                }
+            }
+        }
     }
 
     private void AddNewLineRenderer(Vector3 touchPosition)
