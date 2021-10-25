@@ -81,8 +81,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private UINumberControl uINumberControl;
     private Game2SoundManager g2SoundManager;
 
-    public int[] startDotMatPos = new int[2];
-    public int[] endDotMatPos = new int[2];
+    //public int[] startDotMatPos = new int[2];
+    //public int[] endDotMatPos = new int[2];
 
     private Boolean isPlayingWrongDraw = false;
     private Boolean startLiftCube = false;
@@ -150,61 +150,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             isSnapping = true;
                             ARDebugManager.Instance.LogInfo("touched object to snap");
                         }
-                        else if (GamePhase == Constants.GamePhase.PHASE1)
-                        {
-                            // initialize array
-                            for (int r = 0; r < 2; r++)
-                            {
-                                for (int c = 0; c < 2; c++)
-                                {
-
-                                    float startNum = (startObject.transform.position.x + startObject.transform.position.y + startObject.transform.position.z);
-                                    float endNum = (hitObject.transform.position.x + hitObject.transform.position.y + hitObject.transform.position.z);
-                                    float curMatrixPointNum = (DotsManager.Instance.phase1DotsMatrix[r, c].x + DotsManager.Instance.phase1DotsMatrix[r, c].y + DotsManager.Instance.phase1DotsMatrix[r, c].z);
-
-                                    if (startNum >= curMatrixPointNum - 0.02f && startNum <= curMatrixPointNum + 0.02f)
-                                    {
-                                        Debug.Log("matched start");
-                                        startDotMatPos[0] = r;
-                                        startDotMatPos[1] = c;
-                                    }
-                                    if (endNum >= curMatrixPointNum - 0.02f && endNum <= curMatrixPointNum + 0.02f)
-                                    {
-                                        Debug.Log("matched end");
-                                        endDotMatPos[0] = r;
-                                        endDotMatPos[1] = c;
-                                    }
-                                }
-                            }
-
-                            // checking snapping
-                            if ((startDotMatPos[0] == endDotMatPos[0] || startDotMatPos[1] == endDotMatPos[1]) && isSnapping == false)
-                            {
-                                numLines++;
-                                isSnapping = true;
-                                g2SoundManager.PlayGoodSoundEffect();
-                                currentLineRender.SetPosition(1, hitObject.transform.position);
-                                ARDebugManager.Instance.LogInfo("snapped. line created: " + numLines);
-                                if (numLines == 4)
-                                {
-                                    g2SoundManager.playFinishDrawing();
-                                    DotsManager.Instance.ActivatePhase1Cube();
-                                }
-                            }
-                            else
-                            {
-                                if (isPlayingWrongDraw == false)
-                                {
-                                    isPlayingWrongDraw = true;
-                                    g2SoundManager.playWrongDrawing();
-                                }
-                            }
-                            startDotMatPos[0] = 0;
-                            startDotMatPos[1] = 0;
-                            endDotMatPos[0] = 0;
-                            endDotMatPos[1] = 0;
-                        }
-                        else if (GamePhase == Constants.GamePhase.PHASE2)
+                        else if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE1)
                         {
                             var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
 
@@ -321,7 +267,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         // create line and handle logic
                         //movingTouchPosition.y = startPos.y;
-                        if (GamePhase == Constants.GamePhase.PHASE2)
+                        if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE1 || GamePhase == Constants.GamePhase.PHASE0)
                         {
                             endPos = hitObject.transform.gameObject.transform.position;
                             currentLineRender.SetPosition(1, endPos);
@@ -333,20 +279,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             phase2DrawnPos.Add(endPos);
                             HandleSnapObject();
                         }
-                        else
-                        {
-                            String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
-                            String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
-                            if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
-                            {
-                                endPos = hitObject.transform.position;
-                                endPos.y = startPos.y;
-                                currentLineRender.SetPosition(1, endPos);
-                                HandleSnapObject();
-                                visitedDots.Add(startMatPos);
-                                visitedDots.Add(endMatPos);
-                            }
-                        }
+                        //else
+                        //{
+                        //    String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
+                        //    String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
+                        //    if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
+                        //    {
+                        //        Debug.Log("snapping the dot now!!!!!!!!");
+                        //        //endPos = hitObject.transform.gameObject.transform.position;
+                        //        //endPos.y = startPos.y;
+                        //        //var lineMagnitude = (endPos - startPos).magnitude;
+                        //        //currentLineRender.SetPosition(1, endPos);
+                        //        //currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+                        //        //HandleSnapObject();
+                        //        //visitedDots.Add(startMatPos);
+                        //        //visitedDots.Add(endMatPos);
+                        //    }
+                        //}
                     }
                 }
             }
@@ -456,9 +405,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
             numLines = 0;
         }
         isSnapping = false;
-        if (GamePhase == Constants.GamePhase.PHASE1)
+        if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
-            currentLineGameObject.GetComponent<LineController>().SetDistance(Constants.ONE_FEET);
+            Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
+            DotsManager.Instance.ActivatePhase1Cube();
         }
         currentLineRender = null;
     }
