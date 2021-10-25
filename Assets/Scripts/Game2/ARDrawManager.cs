@@ -444,11 +444,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 Debug.Log("it is a square");
                 phase2Ramp.transform.localScale = new Vector3(0.5f, Constants.ONE_FEET, Constants.ONE_FEET);
+                phase2Ramp.GetComponentInChildren<Text>().text = "Area: 1 sq ft";
             }
             else
             {
                 Debug.Log("it is rect");
                 phase2Ramp.transform.localScale = new Vector3(0.5f, 2 * Constants.ONE_FEET, Constants.ONE_FEET);
+                phase2Ramp.GetComponentInChildren<Text>().text = "Area: 2 sq ft";
             }
             game2Manager.StartPhase2Mid();
             numLines = 0;

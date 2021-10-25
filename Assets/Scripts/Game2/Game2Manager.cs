@@ -137,6 +137,7 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.SkateOnRailing(phase1JumpStart, phase1JumpEnd);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
+        SetGamePhase(Constants.GamePhase.PHASE2);
     }
 
     private void StartPhase1()
