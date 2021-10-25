@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class UINumberControl : MonoBehaviour
 {
@@ -16,9 +17,8 @@ public class UINumberControl : MonoBehaviour
 
     public void SetVolDisplay(double num)
     {
-        string formattedDisplayStr = "Vol: " + num + " Cu.Ft";
-
-        volDisplay.GetComponentInChildren<Text>().text = formattedDisplayStr;
+        string formattedDisplayStr = "Vol: " + num + " ft<sup>3</sup>";
+        volDisplay.GetComponentInChildren<TextMeshPro>().text = formattedDisplayStr;
     }
 
     private void LateUpdate()
