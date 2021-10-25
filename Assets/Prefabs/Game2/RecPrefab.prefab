@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 4279442061343261113}
   m_Layer: 0
   m_Name: RecPrefab
-  m_TagString: Untagged
+  m_TagString: phase1Rect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

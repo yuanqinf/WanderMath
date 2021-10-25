@@ -490,6 +490,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         //    LineRenderer line = currentLine.GetComponent<LineRenderer>();
         //    Destroy(currentLine);
         //}
+        numLines = 0;
 
         GameObject[] lineObjects = GameObject.FindGameObjectsWithTag("Line");
         foreach (GameObject lineObj in lineObjects)

@@ -23,6 +23,7 @@ TagManager:
   - liftable_shape
   - vol_display
   - ramp
+  - phase1Rect
   layers:
   - Default
   - TransparentFX
