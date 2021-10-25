@@ -7,8 +7,9 @@ using TMPro;
 
 public class UINumberControl : MonoBehaviour
 {
-    public GameObject volDisplay;
+    public TextMeshProUGUI volDisplay;
     private Camera cam;
+    
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class UINumberControl : MonoBehaviour
     public void SetVolDisplay(double num)
     {
         string formattedDisplayStr = "Vol: " + num + " ft<sup>3</sup>";
-        volDisplay.GetComponentInChildren<TextMeshPro>().text = formattedDisplayStr;
+        volDisplay.text = formattedDisplayStr;
     }
 
     private void LateUpdate()

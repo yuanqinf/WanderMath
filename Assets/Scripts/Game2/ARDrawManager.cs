@@ -96,7 +96,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
-        uINumberControl = FindObjectOfType<UINumberControl>();
+        //uINumberControl = FindObjectOfType<UINumberControl>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
         visitedDots = new HashSet<String>();
     }
@@ -129,7 +129,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Ray ray = arCamera.ScreenPointToRay(touch.position);
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                liftableCube = hitObject.transform.gameObject;
+                //liftableCube = hitObject.transform.gameObject;
+                Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name); ;
+
                 // constantly track movement
                 movingTouchPosition = hitObject.point;
                 if (hitObject.transform.tag == "dot")
@@ -172,6 +174,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
+                    Debug.Log("this is liftable cube tocuhed here!!!!!!!!!!~~~~~~~");
+
                     if (touch.phase == TouchPhase.Began)
                     {
                         boxInitialRealWorldPosition = hitObject.point;
@@ -181,7 +185,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         Debug.Log("find the object!!!!!!!");
                         boxNewRealWorldPosition = hitObject.point;
-                        uINumberControl.volDisplay = hitObject.transform.root.GetChild(1).gameObject;
+                        uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
 
                         double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
@@ -191,14 +195,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.z: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.z);
 
-                        if (curVolNum > 0.8 && curVolNum < 1.12)
+                        if (curVolNum > 0.9 && curVolNum < 1.1)
                         {
-                            hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
+                            //glow effect here
+                            GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
+                            //hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
                             canCubeLiftingSnap = true;
                         }
                         else
                         {
-                            hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
+                            GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
+                            //hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
                             canCubeLiftingSnap = false;
                         }
 
