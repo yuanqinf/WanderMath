@@ -157,7 +157,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             isSnapping = true;
                             ARDebugManager.Instance.LogInfo("touched object to snap");
                         }
-                        else if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE1)
+                        else
                         {
                             var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
 
@@ -281,36 +281,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else
                     {
                         // create line and handle logic
-                        //movingTouchPosition.y = startPos.y;
-                        if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE1 || GamePhase == Constants.GamePhase.PHASE0)
-                        {
-                            endPos = hitObject.transform.gameObject.transform.position;
-                            currentLineRender.SetPosition(1, endPos);
+                        endPos = hitObject.transform.gameObject.transform.position;
+                        currentLineRender.SetPosition(1, endPos);
 
-                            var lineMagnitude = (endPos - startPos).magnitude;
-                            currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                            ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
-                            phase2DrawnPos.Add(startPos);
-                            phase2DrawnPos.Add(endPos);
-                            HandleSnapObject();
-                        }
-                        //else
-                        //{
-                        //    String startMatPos = startDotMatPos[0].ToString() + startDotMatPos[1].ToString();
-                        //    String endMatPos = endDotMatPos[0].ToString() + endDotMatPos[1].ToString();
-                        //    if (!visitedDots.Contains(startMatPos) && !visitedDots.Contains(endMatPos) && hitObject.transform.tag == "dot")
-                        //    {
-                        //        Debug.Log("snapping the dot now!!!!!!!!");
-                        //        //endPos = hitObject.transform.gameObject.transform.position;
-                        //        //endPos.y = startPos.y;
-                        //        //var lineMagnitude = (endPos - startPos).magnitude;
-                        //        //currentLineRender.SetPosition(1, endPos);
-                        //        //currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                        //        //HandleSnapObject();
-                        //        //visitedDots.Add(startMatPos);
-                        //        //visitedDots.Add(endMatPos);
-                        //    }
-                        //}
+                        var lineMagnitude = (endPos - startPos).magnitude;
+                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
+                        phase2DrawnPos.Add(startPos);
+                        phase2DrawnPos.Add(endPos);
+                        HandleSnapObject();
                     }
                 }
             }
@@ -493,19 +472,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
-    GameObject[] GetAllLinesInScene()
+    public void ClearLineRenders()
     {
-        return GameObject.FindGameObjectsWithTag("Line");
+        GameObject[] lines = GameObject.FindGameObjectsWithTag("Line");
+        foreach (GameObject currentLine in lines)
+        {
+            LineRenderer line = currentLine.GetComponent<LineRenderer>();
+            Destroy(currentLine);
+        }
     }
 
     public void ClearLines()
     {
-        //GameObject[] lines = GetAllLinesInScene();
-        //foreach (GameObject currentLine in lines)
-        //{
-        //    LineRenderer line = currentLine.GetComponent<LineRenderer>();
-        //    Destroy(currentLine);
-        //}
         numLines = 0;
 
         GameObject[] lineObjects = GameObject.FindGameObjectsWithTag("Line");
