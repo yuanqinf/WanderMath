@@ -46,6 +46,7 @@ public class Game2Manager : Singleton<Game2Manager>
                 gamePhase = "waiting";
                 break;
             case Constants.GamePhase.PHASE3:
+                StartPhase3();
                 gamePhase = "waiting";
                 break;
             default:
@@ -163,6 +164,13 @@ public class Game2Manager : Singleton<Game2Manager>
     {
         dotsManager.ClearDots();
         // TODO: add sound effect & animation
+    }
+    #endregion
+
+    #region phase3 related
+    private void StartPhase3()
+    {
+        dotsManager.InstantiatePhase3Dots();
     }
     #endregion
 }

@@ -33,8 +33,8 @@ public class Game2SoundManager : MonoBehaviour
     };
     private string[] phase1EndSubtitles =
     {
-        "Rad! It's 1 foot long times 1 foot wide times 1 foot high- 1 cubic foot!",
-        "Okay, time to ollie. (skating sound) It's perfect! I'll save it for later."
+        "Rad! It's 1 foot long times 1 foot wide times 1 foot high~ 1 cubic foot!",
+        "Okay, time to ollie.",
     };
 
     public AudioClip[] phase2Start;

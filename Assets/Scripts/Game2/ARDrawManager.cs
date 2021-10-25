@@ -54,10 +54,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private List<LineRenderer> lines = new List<LineRenderer>();
     private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
+    private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
+    {
+        {4, 0},
+        {5, 0},
+        {6, 0},
+        {7, 0},
+    };
 
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
-    private float edgeTransformY = 0f;
 
 
     private int positionCount = 2;
@@ -84,7 +90,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     //public int[] startDotMatPos = new int[2];
     //public int[] endDotMatPos = new int[2];
 
-    private Boolean isPlayingWrongDraw = false;
     private Boolean startLiftCube = false;
     private Boolean canCubeLiftingSnap = false;
 
@@ -232,28 +237,31 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             if (touch.phase == TouchPhase.Moved)
             {
+                // moving ramp after phase2
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
                     var newTouchpos = touch.position;
                     var movingRange = new Vector3(0.01f, 0, 0);
 
-                    var edgeName = rampEdge.transform.name;
-                    var movingEdge = Enumerable.Repeat(rampTopEdges[int.Parse(edgeName)], 1);
+                    int edgeNum = int.Parse(rampEdge.transform.name);
+                    var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
 
                     if (newTouchpos.y - ramp2DTouchPosition.y > 0)
                     {
                         Debug.Log("edge moving up");
-                        edgeTransformY += 0.01f;
+                        edgeHeights[edgeNum] += 0.01f;
                         phase2Ramp.TranslateVertices(movingEdge, movingRange);
                         rampEdge.transform.localPosition += movingRange;
-                    } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeTransformY > 0f)
+                    } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeHeights[edgeNum] > 0f)
                     {
                         Debug.Log("edge moving down");
-                        edgeTransformY -= 0.01f;
+                        edgeHeights[edgeNum] -= 0.01f;
                         phase2Ramp.TranslateVertices(movingEdge, -movingRange);
                         rampEdge.transform.localPosition -= movingRange;
                     }
+                    // set UI height: with edgeHeights[i]
                 }
+                // drawing
                 if (currentLineRender != null)
                 {
                     // drawing line while not snap to any object
@@ -311,8 +319,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // TODO: modify such that the line only snaps when it touched the point at end
             if (touch.phase == TouchPhase.Ended)
             {
-                isPlayingWrongDraw = false;
-
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
                     ramp2DTouchPosition = Vector2.zero;
@@ -361,7 +367,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            // TODO: check if its square or rectangle based on the snapped dots
+            // check if its square or rectangle based on the snapped dots
             Debug.Log("totalPos: " + phase2DrawnPos.Count);
             Vector3 minVector = Vector3.positiveInfinity;
             Vector3 maxVector = Vector3.zero;
@@ -374,6 +380,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Debug.Log("maxVector positions: " + maxVector);
             phase2DrawnPos.Remove(minVector);
             phase2DrawnPos.Remove(maxVector);
+            // check if a square/rec is formed
             float maxValue = 0.0f;
             foreach (Vector3 pos in phase2DrawnPos)
             {
@@ -396,6 +403,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             GetRampEdges();
 
+            // TODO: change to UI controller to control area & height
             if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
                 Debug.Log("it is a square");
@@ -411,12 +419,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
             game2Manager.StartPhase2Mid();
             numLines = 0;
         }
-        isSnapping = false;
+
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
         }
+        isSnapping = false;
         currentLineRender = null;
     }
 
