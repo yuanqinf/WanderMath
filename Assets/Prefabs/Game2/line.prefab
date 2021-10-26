@@ -292,6 +292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: tapeMeasure
       objectReference: {fileID: 0}
+    - target: {fileID: 1342485373208467556, guid: d2a11d776d36a03489d79368767f8863, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1867489683665044190, guid: d2a11d776d36a03489d79368767f8863, type: 3}
       propertyPath: m_RootOrder
       value: 1

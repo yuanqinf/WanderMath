@@ -49,8 +49,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private LineRenderer currentLineRender = null;
     private GameObject currentLineGameObject = null;
 
-    private List<GameObject> linesGameObject = new List<GameObject>();
-    private List<ARAnchor> anchors = new List<ARAnchor>();
     private List<LineRenderer> lines = new List<LineRenderer>();
     private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
@@ -76,7 +74,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public Vector3 endPos;
     public Vector3 movingTouchPosition;
     private GameObject startObject;
-    private GameObject endObject;
     private bool isSnapping = false;
     private int numLines = 0;
 
@@ -96,14 +93,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private GameObject liftableCube;
 
-    private HashSet<String> visitedDots;
-
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         //uINumberControl = FindObjectOfType<UINumberControl>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
-        visitedDots = new HashSet<String>();
     }
 
     public void AllowDraw(bool isAllow)
@@ -141,32 +135,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 movingTouchPosition = hitObject.point;
                 if (hitObject.transform.tag == "dot")
                 {
-                    // line created, instantiate line renderer
+                    // line not created, instantiate line renderer
                     if (currentLineRender == null)
                     {
-                        // TODO: instead of using rough points, fix the points at each dot!
+                        // instead of using rough points, fix the points at each dot!
                         ARDebugManager.Instance.LogInfo("instantiate line");
                         startObject = hitObject.transform.gameObject;
-                        AddNewLineRenderer(movingTouchPosition);
+                        AddNewLineRenderer(startObject.transform.position);
                     }
-                    else if (currentLineRender != null && startObject.transform.position != hitObject.transform.position && !isSnapping)
+                    else if (currentLineRender != null && touch.phase == TouchPhase.Ended && !isSnapping)
                     {
-                        if (GamePhase == Constants.GamePhase.PHASE0)
+                        var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
+
+                        ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
+                        if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1))
                         {
                             numLines++;
                             isSnapping = true;
-                            ARDebugManager.Instance.LogInfo("touched object to snap");
-                        }
-                        else
-                        {
-                            var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
-
-                            ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
-                            if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1))
-                            {
-                                numLines++;
-                                isSnapping = true;
-                            }
                         }
                     }
                 }
@@ -262,35 +247,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // set UI height: with edgeHeights[i]
                 }
                 // drawing
-                if (currentLineRender != null)
+                if (currentLineRender != null && !isSnapping)
                 {
                     // drawing line while not snap to any object
-                    if (!isSnapping)
-                    {
-                        startPos = startObject.transform.position;
-                        currentLineRender.SetPosition(0, startPos);
-                        endPos = movingTouchPosition;
-                        endPos.y = startPos.y;
-                        currentLineRender.SetPosition(1, endPos);
-                        var lineMagnitude = (endPos - startPos).magnitude;
-                        //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
-                        var lineController = currentLineGameObject.GetComponent<LineController>();
-                        lineController.SetDistance(lineMagnitude);
-                        lineController.SetPosition(endPos);
-                    }
-                    else
-                    {
-                        // create line and handle logic
-                        endPos = hitObject.transform.gameObject.transform.position;
-                        currentLineRender.SetPosition(1, endPos);
-
-                        var lineMagnitude = (endPos - startPos).magnitude;
-                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
-                        phase2DrawnPos.Add(startPos);
-                        phase2DrawnPos.Add(endPos);
-                        HandleSnapObject();
-                    }
+                    startPos = startObject.transform.position;
+                    currentLineRender.SetPosition(0, startPos);
+                    endPos = movingTouchPosition;
+                    endPos.y = startPos.y;
+                    currentLineRender.SetPosition(1, endPos);
+                    var lineMagnitude = (endPos - startPos).magnitude;
+                    //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
+                    var lineController = currentLineGameObject.GetComponent<LineController>();
+                    lineController.SetDistance(lineMagnitude);
+                    lineController.SetPosition(endPos);
                 }
             }
 
@@ -308,6 +277,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     if (!isSnapping)
                     {
                         Destroy(currentLineGameObject);
+                    } else
+                    {
+                        // create line and handle logic
+                        endPos = hitObject.transform.gameObject.transform.position;
+                        currentLineRender.SetPosition(1, endPos);
+                        var lineMagnitude = (endPos - startPos).magnitude;
+                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
+                        phase2DrawnPos.Add(startPos);
+                        phase2DrawnPos.Add(endPos);
+                        HandleSnapObject();
                     }
                     ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
                     prevLineRender = currentLineRender;
@@ -432,7 +412,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         currentLineGameObject = Instantiate(linePrefab, touchPosition, Quaternion.identity);
         currentLineGameObject.name = $"LineRenderer_{lines.Count}";
         currentLineGameObject.AddComponent<ARAnchor>();
-        currentLineGameObject.transform.position = touchPosition;
         currentLineGameObject.tag = "Line";
         LineRenderer goLineRenderer = currentLineGameObject.AddComponent<LineRenderer>();
         goLineRenderer.startWidth = lineWidth;
