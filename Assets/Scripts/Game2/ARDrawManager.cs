@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
@@ -150,6 +149,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         {
                             numLines++;
                             isSnapping = true;
+                            g2SoundManager.PlayGoodSoundEffect();
+                        }
+                        else if(GamePhase == Constants.GamePhase.PHASE1)
+                        {
+                            g2SoundManager.playWrongDrawing();
                         }
                     }
                 }
@@ -189,6 +193,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
                             //hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
                             canCubeLiftingSnap = true;
+                            liftableCube = hitObject.transform.gameObject;
                         }
                         else
                         {
@@ -319,6 +324,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                 if (canCubeLiftingSnap == true && startLiftCube)
                 {
+                    GameObject.FindObjectOfType<UINumberControl>().SetVolDisplay(1);
                     canCubeLiftingSnap = false;
                     game2Manager.EndPhase1();
                     g2SoundManager.PlayGoodSoundEffect();

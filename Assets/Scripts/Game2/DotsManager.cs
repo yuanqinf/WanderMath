@@ -106,6 +106,7 @@ public class DotsManager : Singleton<DotsManager>
         yield return new WaitForSeconds(lenToWait);
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
+        arDrawManager.ClearLines();
     }
 
     public void InstantiatePhase2Dots()

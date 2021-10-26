@@ -40,9 +40,13 @@ public class UINumberControl : MonoBehaviour
 
     private void LateUpdate()
     {
+        var tempTrans = cam.transform;
+
         if (volDisplay != null)
         {
-            volDisplay.transform.LookAt(volDisplay.transform.position + cam.transform.forward);
+            //volDisplay.transform.LookAt(new Vector3(tempTrans.position.x, volDisplay.transform.position.y, tempTrans.position.z));
+
+            volDisplay.transform.parent.transform.LookAt(volDisplay.transform.position + cam.transform.forward);
         }
         if (heightDisplay != null)
         {

@@ -220,7 +220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.003, y: 0.15600014}
+  m_AnchoredPosition: {x: -0.003, y: 0.363}
   m_SizeDelta: {x: 591.8768, y: 98.1139}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1620873739387202437
@@ -296,7 +296,6 @@ GameObject:
   - component: {fileID: 4926200783972016474}
   - component: {fileID: 4926200783972016473}
   - component: {fileID: 4926200783972016472}
-  - component: {fileID: 4024105263483362959}
   m_Layer: 5
   m_Name: Cube
   m_TagString: liftable_shape
@@ -380,23 +379,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4024105263483362959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4926200783972016454}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: a2bb3ab105d4b47fb9c1a02bf1ea4eb3, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!1 &4926200784775901623
 GameObject:
   m_ObjectHideFlags: 0
