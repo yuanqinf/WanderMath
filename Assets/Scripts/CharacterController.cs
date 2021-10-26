@@ -51,7 +51,7 @@ public class CharacterController : GenericClass
         // audio & animation
         var phase0AudioLen = 6.0f;
         StartCoroutine(utils.LerpMovement(characterPos, endPos, phase0AudioLen - stopSkatingAnimationLen, arCharacterToSpawn));
-        PlaySkating(phase0AudioLen);
+        PlaySkatingForward(phase0AudioLen);
         g2soundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
         var talkingDuration = 7.0f;
         StartCoroutine(WaitBeforeTalking(phase0AudioLen, talkingDuration));
@@ -105,23 +105,18 @@ public class CharacterController : GenericClass
     }
 
     #region skating animation
-    public void PlaySkating(float duration)
+    public void PlaySkatingForward(float duration)
     {
         StartCoroutine(SkatingDuration(duration));
     }
-    IEnumerator SkatingDuration(float duration, bool isForward = true)
+    IEnumerator SkatingDuration(float duration)
     {
-        if (isForward)
-        {
-            arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
-        }
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = true;
         StartSkating();
         yield return new WaitForSeconds(duration - stopSkatingAnimationLen);
         StopSkating();
-        if (isForward)
-        {
-            arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
-        }
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().isSkating = false;
+
         yield return new WaitForSeconds(stopSkatingAnimationLen);
     }
     public void StartSkating()

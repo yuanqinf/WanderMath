@@ -15,6 +15,7 @@ public class NeckLookAt : MonoBehaviour
     void Update()
     {
         var tempTrans = arCamera.transform;
+        Debug.Log("necklookat called");
 
         this.transform.LookAt(tempTrans);
     }

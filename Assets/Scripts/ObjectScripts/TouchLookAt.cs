@@ -15,6 +15,7 @@ public class TouchLookAt : MonoBehaviour
     void Update()
     {
         var tempTrans = arCamera.transform;
+        Debug.Log("touchlookat called");
 
         this.transform.LookAt(tempTrans);
         this.transform.rotation *= Quaternion.Euler(0, -90, 0);

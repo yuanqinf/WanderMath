@@ -108,8 +108,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public void DrawOnTouch()
     {
-        if (!DotsManager.Instance.isDotsPlaced) return;
-
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
