@@ -59,7 +59,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {6, 0},
         {7, 0},
     };
-
+    private float phase2RampVolume = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
 
@@ -81,7 +81,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public Vector3 boxNewRealWorldPosition;
 
     private Game2Manager game2Manager;
-    private UINumberControl uINumberControl;
     private Game2SoundManager g2SoundManager;
 
     //public int[] startDotMatPos = new int[2];
@@ -96,7 +95,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
-        //uINumberControl = FindObjectOfType<UINumberControl>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
     }
 
@@ -175,7 +173,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         Debug.Log("find the object!!!!!!!");
                         boxNewRealWorldPosition = hitObject.point;
-                        uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
+                        var uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
 
                         double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
@@ -226,27 +224,44 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
                     var newTouchpos = touch.position;
-                    var movingRange = new Vector3(0.01f, 0, 0);
+                    var movementRange = 0.01f;
+                    var movingRange = new Vector3(movementRange, 0, 0);
 
                     int edgeNum = int.Parse(rampEdge.transform.name);
                     var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
+                    var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
                     if (newTouchpos.y - ramp2DTouchPosition.y > 0)
                     {
                         Debug.Log("edge moving up");
-                        edgeHeights[edgeNum] += 0.01f;
+                        edgeHeights[edgeNum] += movementRange;
                         phase2Ramp.TranslateVertices(movingEdge, movingRange);
                         rampEdge.transform.localPosition += movingRange;
+                        uiNumberControl.IncreaseCanvasY(movementRange / 4);
                     } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeHeights[edgeNum] > 0f)
                     {
                         Debug.Log("edge moving down");
-                        edgeHeights[edgeNum] -= 0.01f;
+                        edgeHeights[edgeNum] -= movementRange;
                         phase2Ramp.TranslateVertices(movingEdge, -movingRange);
                         rampEdge.transform.localPosition -= movingRange;
+                        uiNumberControl.IncreaseCanvasY(-movementRange / 4);
                     }
                     // set UI height: with edgeHeights[i]
+                    uiNumberControl.Height = edgeHeights[edgeNum] / Constants.ONE_FEET;
+                    phase2RampVolume = (float)(edgeHeights[edgeNum] * uiNumberControl.area / Constants.ONE_FEET);
+                    uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 2));
+
+                    var targetMat = phase2Ramp.GetComponent<Renderer>().material;
+                    // activate glowing effect
+                    if (phase2RampVolume > 1.9f && phase2RampVolume < 2.1f) {
+                        targetMat.SetFloat("_EmissIntensity", 1.2f);
+                    }
+                    else
+                    {
+                        targetMat.SetFloat("_EmissIntensity", 0.72f);
+                    }
                 }
-                // drawing
+                // drawing line logic
                 if (currentLineRender != null && !isSnapping)
                 {
                     // drawing line while not snap to any object
@@ -272,12 +287,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     ramp2DTouchPosition = Vector2.zero;
                     rampEdge = null;
                 }
+                // snaping for ramp
+                if (phase2RampVolume > 1.9f && phase2RampVolume < 2.1f)
+                {
+                    Debug.Log("completed ramp");
+                }
                 if (currentLineRender != null)
                 {
                     if (!isSnapping)
                     {
                         Destroy(currentLineGameObject);
-                    } else
+                    }
+                    else
                     {
                         // create line and handle logic
                         endPos = hitObject.transform.gameObject.transform.position;
@@ -361,20 +382,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             GetRampEdges();
-
+            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+            var volume = 0.0f;
             // TODO: change to UI controller to control area & height
             if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
                 Debug.Log("it is a square");
                 phase2Ramp.transform.localScale = new Vector3(0.5f, Constants.ONE_FEET, Constants.ONE_FEET);
-                phase2Ramp.GetComponentInChildren<Text>().text = "Area: 1 sq ft";
+                volume = 1.0f;
             }
             else
             {
                 Debug.Log("it is rect");
                 phase2Ramp.transform.localScale = new Vector3(0.5f, 2 * Constants.ONE_FEET, Constants.ONE_FEET);
-                phase2Ramp.GetComponentInChildren<Text>().text = "Area: 2 sq ft";
+                volume = 2.0f;
             }
+            // set initial volume and set up
+            uiNumberControl.SetAreaDisplay(volume);
+            uiNumberControl.Height = 0;
             game2Manager.StartPhase2Mid();
             numLines = 0;
         }

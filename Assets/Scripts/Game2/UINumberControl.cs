@@ -8,8 +8,12 @@ using TMPro;
 public class UINumberControl : MonoBehaviour
 {
     public TextMeshProUGUI volDisplay;
+    public TextMeshProUGUI heightDisplay;
+    public Canvas uiDisplay;
     private Camera cam;
-    
+    private double _height;
+    public double Height { get { return _height; } set { _height = value; heightDisplay.text = value.ToString("F2") + " ft"; } }
+    public double area;
 
     private void Start()
     {
@@ -22,11 +26,27 @@ public class UINumberControl : MonoBehaviour
         volDisplay.text = formattedDisplayStr;
     }
 
+    public void SetAreaDisplay(double num)
+    {
+        string formattedDisplayStr = "Area: " + num + " ft<sup>2</sup>";
+        this.area = num;
+        volDisplay.text = formattedDisplayStr;
+    }
+
+    public void IncreaseCanvasY(float num)
+    {
+        uiDisplay.transform.position += new Vector3(0, num, 0);
+    }
+
     private void LateUpdate()
     {
-        if(volDisplay != null)
+        if (volDisplay != null)
         {
             volDisplay.transform.LookAt(volDisplay.transform.position + cam.transform.forward);
+        }
+        if (heightDisplay != null)
+        {
+            heightDisplay.transform.LookAt(heightDisplay.transform.position + cam.transform.forward);
         }
     }
 }

@@ -180,6 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volDisplay: {fileID: 3454603413454128873}
+  heightDisplay: {fileID: 0}
+  uiDisplay: {fileID: 0}
+  area: 0
 --- !u!1 &3946915780967379642
 GameObject:
   m_ObjectHideFlags: 0
