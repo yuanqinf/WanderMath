@@ -23,6 +23,8 @@ public class Game2Manager : Singleton<Game2Manager>
 
     private void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+
         dotsManager = FindObjectOfType<DotsManager>();
         arDrawManager = FindObjectOfType<ARDrawManager>();
         characterController = FindObjectOfType<CharacterController>();

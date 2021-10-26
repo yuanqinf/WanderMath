@@ -65,8 +65,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
-
-    private bool CanDraw { get; set; }
     public string GamePhase { get; set; }
 
     public Vector3 startPos;
@@ -97,11 +95,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
     }
 
-    public void AllowDraw(bool isAllow)
-    {
-        CanDraw = isAllow;
-    }
-
     private void SetLineSettings(LineRenderer currentLineRenderer)
     {
         currentLineRenderer.startWidth = lineWidth;
@@ -115,7 +108,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public void DrawOnTouch()
     {
-        if (!DotsManager.Instance.isDotsPlaced || !CanDraw) return;
+        if (!DotsManager.Instance.isDotsPlaced) return;
 
         if (Input.touchCount > 0)
         {
@@ -468,8 +461,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     void DrawOnMouse()
     {
-        if (!CanDraw) return;
-
         Vector3 mousePosition = arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
 
         if (Input.GetMouseButton(0))
