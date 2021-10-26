@@ -258,12 +258,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                     var targetMat = phase2Ramp.GetComponent<Renderer>().material;
                     // activate glowing effect
-                    if (phase2RampVolume > 1.9f && phase2RampVolume < 2.1f) {
+                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f) {
                         targetMat.SetFloat("_EmissIntensity", 1.2f);
                     }
                     else
                     {
-                        targetMat.SetFloat("_EmissIntensity", 0.72f);
+                        targetMat.SetFloat("_EmissIntensity", 0.66f);
                     }
                 }
                 // drawing line logic
@@ -287,17 +287,20 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // TODO: modify such that the line only snaps when it touched the point at end
             if (touch.phase == TouchPhase.Ended)
             {
-                if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
+                if (GamePhase == Constants.GamePhase.PHASE2)
                 {
-                    ramp2DTouchPosition = Vector2.zero;
-                    rampEdge = null;
-                }
-                // snaping for ramp
-                if (phase2RampVolume > 1.9f && phase2RampVolume < 2.1f)
-                {
-                    Debug.Log("completed ramp");
-                    game2Manager.StartPhase2End();
-                    // TODO: disable all other controls
+                    if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
+                    {
+                        ramp2DTouchPosition = Vector2.zero;
+                        rampEdge = null;
+                    }
+                    // snaping for ramp
+                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f)
+                    {
+                        Debug.Log("completed ramp");
+                        game2Manager.StartPhase2End();
+                        // TODO: disable all other controls
+                    }
                 }
                 if (currentLineRender != null)
                 {
@@ -482,6 +485,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 UpdateLine(mousePosition);
             }
         }
+    }
+
+    public void DestoryRamp()
+    {
+        Destroy(phase2Ramp.gameObject);
     }
 
     public void ClearLineRenders()

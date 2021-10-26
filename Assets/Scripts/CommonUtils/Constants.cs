@@ -34,6 +34,7 @@ public static class Constants
         public const string PHASE1 = "phase1";
         public const string PHASE2 = "phase2";
         public const string PHASE3 = "phase3";
+        public const string WAITING = "waiting";
     }
 
     public struct ShapeNames

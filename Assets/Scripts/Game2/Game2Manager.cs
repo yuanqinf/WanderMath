@@ -35,19 +35,19 @@ public class Game2Manager : Singleton<Game2Manager>
         {
             case Constants.GamePhase.PHASE0:
                 StartPhase0();
-                gamePhase = "waiting";
+                gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
                 StartPhase1();
-                gamePhase = "waiting";
+                gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE2:
                 StartPhase2();
-                gamePhase = "waiting";
+                gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE3:
                 StartPhase3();
-                gamePhase = "waiting";
+                gamePhase = Constants.GamePhase.WAITING;
                 break;
             default:
                 break;
@@ -170,13 +170,22 @@ public class Game2Manager : Singleton<Game2Manager>
         dotsManager.ClearDots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
         characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
-        // add ending animation to next scene
+        // TODO add ending animation to next scene
+        StartCoroutine(Phase2EndingAnimation());
+    }
+    IEnumerator Phase2EndingAnimation()
+    {
+        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
+        SetGamePhase(Constants.GamePhase.PHASE3);
+        arDrawManager.ClearLines();
+        arDrawManager.DestoryRamp();
     }
     #endregion
 
     #region phase3 related
     private void StartPhase3()
     {
+        // destroy things
         dotsManager.InstantiatePhase3Dots();
     }
     #endregion

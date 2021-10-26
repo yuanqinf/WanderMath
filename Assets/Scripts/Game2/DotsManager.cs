@@ -43,7 +43,7 @@ public class DotsManager : Singleton<DotsManager>
                 // change this to determine which phase to go to
 
                 g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
-                InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.1f, 0), placementPose.rotation);
+                InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.05f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }
         }
@@ -131,7 +131,7 @@ public class DotsManager : Singleton<DotsManager>
     {
         yield return new WaitForSeconds(0.1f);
         Vector3 topLeft = placementPose.position
-            + (placementPose.forward * Constants.HALF_FEET) + (placementPose.right * 6 * -Constants.HALF_FEET);
+            + (placementPose.forward * -6 * Constants.HALF_FEET) + (placementPose.right * 6 * -Constants.HALF_FEET);
         InitializeDots(topLeft, 4, 5);
     }
 
