@@ -115,7 +115,7 @@ public class DotsManager : Singleton<DotsManager>
     }
     IEnumerator SetGamePhase2Dots()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(5.5f);
 
         // top left
         Vector3 topLeft = placementPose.position

@@ -42,18 +42,22 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip[] phase2End;
     private string[] phase2StartSubtitles =
     {
-        "Placeholder 1",
-        "Placeholder 2"
+        "Now, I definitely need a ramp for Finley Park.",
+        "First, we need to draw another rectangle. You can make it as big as you want!",
     };
     private string[] phase2MidSubtitles =
     {
-        "Placeholder 1",
-        "Placeholder 2"
+        "Cool! We have a rectangle.",
+        "Nice! That's the area, the length times the width.",
+        "I have 2 cubic feet of concrete this time. So let's see how tall it'll get!",
+        "To make a ramp, it has to have a slant. So to build it, we'll drag up on one edge."
     };
     private string[] phase2EndSubtitles =
     {
-        "Placeholder 1",
-        "Placeholder 2"
+        "Whoa, gnarly! Look how tall the ramp is! ",
+        "Since it's a triangular prism, a ramp only uses half the concrete that it would if it was a ledge this tall.",
+        "So it's length, times width, times height, times 1/2. Saves a lot of concrete for sure!",
+        "Time for testing! This is the best ramp ever! Wow!"
     };
 
     public AudioClip skatingSoundEffect;
@@ -92,6 +96,12 @@ public class Game2SoundManager : MonoBehaviour
                 break;
             case Constants.VoiceOvers.PHASE2Start:
                 StartCoroutine(PlayVoiceover(phase2Start, phase2StartSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE2Mid:
+                StartCoroutine(PlayVoiceover(phase2Mid, phase2MidSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE2End:
+                StartCoroutine(PlayVoiceover(phase2End, phase2EndSubtitles));
                 break;
             default:
                 break;

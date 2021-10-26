@@ -156,14 +156,21 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase2()
     {
         dotsManager.InstantiatePhase2Dots();
-        // TODO: edit sound and animation duration
-        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
-        //characterController.PlayTalkingAnimationWithDuration(7f);
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
+        characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
     }
     public void StartPhase2Mid()
     {
         dotsManager.ClearDots();
-        // TODO: add sound effect & animation
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
+        characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
+    }
+    public void StartPhase2End()
+    {
+        dotsManager.ClearDots();
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
+        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
+        // add ending animation to next scene
     }
     #endregion
 

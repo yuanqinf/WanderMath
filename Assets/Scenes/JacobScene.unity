@@ -1669,9 +1669,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 279d9640dd68743d39955646b48e0567, type: 3}
   - {fileID: 8300000, guid: 986077814a2a441369ee8ea7460bd176, type: 3}
   audioSource: {fileID: 797905101}
-  phase2Start: []
-  phase2Mid: []
-  phase2End: []
+  phase2Start:
+  - {fileID: 8300000, guid: 35a52230d43b44bcb997cf419f66132d, type: 3}
+  - {fileID: 8300000, guid: 9dfc670ec52e141e5b01f745ce145821, type: 3}
+  phase2Mid:
+  - {fileID: 8300000, guid: 49d20050308354a55bd231116fa9091d, type: 3}
+  - {fileID: 8300000, guid: 56d272450a87c474e8f1915dcf39eaff, type: 3}
+  - {fileID: 8300000, guid: f1cc1568dc62e4bc4b38dc1f32afdee3, type: 3}
+  - {fileID: 8300000, guid: 549bb0b6e838b48dfb2050061becc5e4, type: 3}
+  phase2End:
+  - {fileID: 8300000, guid: 4fd247be643a7487aa9837d4ad0230a5, type: 3}
+  - {fileID: 8300000, guid: d7a380d7e6efc4476956dfba50546082, type: 3}
+  - {fileID: 8300000, guid: 2624b6d235ac84f91b1727ef759e24dd, type: 3}
+  - {fileID: 8300000, guid: 2e9b50a84aba342519b864193a6be1aa, type: 3}
   skatingSoundEffect: {fileID: 8300000, guid: 009c408f9241b46f48df768e96950c91, type: 3}
   goodSoundEffect: {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}

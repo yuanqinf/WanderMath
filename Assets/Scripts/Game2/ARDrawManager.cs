@@ -296,6 +296,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (phase2RampVolume > 1.9f && phase2RampVolume < 2.1f)
                 {
                     Debug.Log("completed ramp");
+                    game2Manager.StartPhase2End();
+                    // TODO: disable all other controls
                 }
                 if (currentLineRender != null)
                 {
