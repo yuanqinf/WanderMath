@@ -313,10 +313,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f)
                     {
                         Debug.Log("completed ramp");
-                        game2Manager.rampHeight = 2.0f;
+                        game2Manager.rampHeight = phase2RampHeight;
                         // phase 2 vol number snap
                         var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
                         uiNumberControl.SetVolDisplay(2);
+                        uiNumberControl.Height = System.Math.Round(phase2RampHeight / Constants.ONE_FEET);
                         concreteUIDisplay.SetActive(false);
                         concreteUIFill.fillAmount = 0;
 
@@ -406,23 +407,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
             phase2DrawnPos.Remove(maxVector);
             // check if a square/rec is formed
             float maxValue = 0.0f;
-            foreach (Vector3 pos in phase2DrawnPos)
-            {
-                Debug.Log("leftover pos: " + pos);
-                var minMag = (minVector - pos).magnitude;
-                var maxMag = (maxVector - pos).magnitude;
-                maxValue = Mathf.Max(minMag, maxMag);
-                Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-                if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-                {
-                    Debug.Log("it is not a square / rectangle");
-                    // reset -> add animation
-                    numLines = 0;
-                    ClearLines();
-                    phase2DrawnPos.Clear();
-                    return;
-                }
-            }
+            //foreach (Vector3 pos in phase2DrawnPos)
+            //{
+            //    Debug.Log("leftover pos: " + pos);
+            //    var minMag = (minVector - pos).magnitude;
+            //    var maxMag = (maxVector - pos).magnitude;
+            //    maxValue = Mathf.Max(minMag, maxMag);
+            //    Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+            //    if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
+            //    {
+            //        Debug.Log("it is not a square / rectangle");
+            //        // reset -> add animation
+            //        numLines = 0;
+            //        ClearLines();
+            //        phase2DrawnPos.Clear();
+            //        return;
+            //    }
+            //}
 
             // initialize ramp
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
@@ -450,11 +451,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // set ramp start point & endpoint
             game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
             game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
-
-            // activate concrete text
-            concreteUIDisplay.SetActive(true);
-            concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
-            concreteUIFill.fillAmount = 0;
             numLines = 0;
         }
 

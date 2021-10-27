@@ -124,7 +124,7 @@ public class CharacterController : GenericClass
         yield return new WaitForSeconds(skateToRampDuration);
         // 2. skate to ramp endpoint with height
         var skateOnRampDuration = 2.5f;
-        var rampEndPoint = endingPoint + new Vector3(0, height / 2.0f, 0);
+        var rampEndPoint = endingPoint + new Vector3(0, height, 0);
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(rampEndPoint);
         StartCoroutine(utils.LerpMovement(startingPoint, rampEndPoint, skateOnRampDuration, arCharacterToSpawn));
         yield return new WaitForSeconds(skateOnRampDuration);

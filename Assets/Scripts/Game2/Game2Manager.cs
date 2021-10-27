@@ -161,8 +161,8 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase2()
     {
         dotsManager.InstantiatePhase2Dots();
-        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
-        //characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
+        characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
     }
     public void StartPhase2Mid()
     {
@@ -175,8 +175,11 @@ public class Game2Manager : Singleton<Game2Manager>
     IEnumerator DeletePhase2Lines()
     {
         yield return new WaitForSeconds(2.6f + 5.3f);
-
         arDrawManager.ClearLines();
+        // activate concrete text
+        arDrawManager.concreteUIDisplay.SetActive(true);
+        arDrawManager.concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
+        arDrawManager.concreteUIFill.fillAmount = 0;
     }
 
     public void StartPhase2End()
@@ -190,7 +193,7 @@ public class Game2Manager : Singleton<Game2Manager>
     {
         yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
         arDrawManager.ClearLines();
-        characterController.SkateOnRamp(rampStartPoint, rampEndPoint, rampHeight);
+        characterController.SkateOnRamp(rampStartPoint, rampEndPoint, rampHeight / 2.0f);
         Debug.Log("startPoint: " + rampStartPoint);
         Debug.Log("rampEndPoint: " + rampEndPoint);
         Debug.Log("rampHeight: " + rampHeight);
