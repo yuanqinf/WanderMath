@@ -339,8 +339,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         var lineMagnitude = (endPos - startPos).magnitude;
                         currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
                         ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
-                        phase2DrawnPos.Add(startPos);
-                        phase2DrawnPos.Add(endPos);
+                        if (GamePhase == Constants.GamePhase.PHASE2)
+                        {
+                            phase2DrawnPos.Add(startPos);
+                            phase2DrawnPos.Add(endPos);
+                        }
                         HandleSnapObject();
                     }
                     ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
