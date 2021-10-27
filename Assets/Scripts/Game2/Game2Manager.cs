@@ -127,7 +127,6 @@ public class Game2Manager : Singleton<Game2Manager>
     public void EndPhase1()
     {
         g2SoundManager.PlayGoodSoundEffect();
-
         ARDebugManager.Instance.LogInfo("Endphase1 is called");
 
         StartCoroutine(PlayPhase1EndAnimationAndAudio());
@@ -140,7 +139,8 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.PlayTalkingAnimationWithDuration(6.8f);
         yield return new WaitForSeconds(6.8f);
         // animate towards jumping
-        characterController.SkateOnRailing(phase1JumpStart, phase1JumpEnd);
+        characterController.SkateOnCube(GameObject.FindObjectOfType<ShapeAnimationHelper>().shapeDots[1],
+                                        GameObject.FindObjectOfType<ShapeAnimationHelper>().shapeDots[2]);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
         var phase1Rect = GameObject.FindGameObjectWithTag("phase1Rect");

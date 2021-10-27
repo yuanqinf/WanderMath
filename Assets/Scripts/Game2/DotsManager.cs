@@ -94,8 +94,12 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ActivatePhase1Cube()
     {
-        g2Manager.phase1JumpStart = dots[3].transform.position;
-        g2Manager.phase1JumpEnd = dots[5].transform.position;
+        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         ClearDots();
         //arDrawManager.ClearLines();
         float finishDrawingAudioLen = g2SoundManager.playFinishDrawingAudio();
@@ -107,8 +111,7 @@ public class DotsManager : Singleton<DotsManager>
     {
         Debug.Log("setting game2 phase1 mid");
         yield return new WaitForSeconds(lenToWait);
-        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
+
         arDrawManager.ClearLines();
     }
 

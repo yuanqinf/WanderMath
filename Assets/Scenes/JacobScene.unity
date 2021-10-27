@@ -1179,6 +1179,9 @@ MonoBehaviour:
   phase1Object: {fileID: 0}
   phase1JumpStart: {x: 0, y: 0, z: 0}
   phase1JumpEnd: {x: 0, y: 0, z: 0}
+  rampStartPoint: {x: 0, y: 0, z: 0}
+  rampEndPoint: {x: 0, y: 0, z: 0}
+  rampHeight: 0
 --- !u!114 &797905104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,7 +1814,7 @@ MonoBehaviour:
   phase3End: []
   phase3Additional: []
   skatingSoundEffect: {fileID: 8300000, guid: 009c408f9241b46f48df768e96950c91, type: 3}
-  goodSoundEffect: {fileID: 8300000, guid: 7667bddf4965846109d36ad035e0e1c1, type: 3}
+  goodSoundEffect: {fileID: 8300000, guid: 16a6bbba3fd3547479b80dfcaab6cd3c, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
   WrongDrawingAudio: {fileID: 8300000, guid: da783829a1d434880b2654c96537ea42, type: 3}
   finishDrawingAudio: {fileID: 8300000, guid: a85cdfa6d389948c197e2fca1e28b36c, type: 3}

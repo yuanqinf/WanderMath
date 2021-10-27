@@ -121,7 +121,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Ray ray = arCamera.ScreenPointToRay(touch.position);
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                //liftableCube = hitObject.transform.gameObject;
+                liftableCube = hitObject.transform.gameObject;
                 Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name); ;
 
                 // constantly track movement
