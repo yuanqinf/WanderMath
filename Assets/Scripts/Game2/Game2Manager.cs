@@ -169,7 +169,16 @@ public class Game2Manager : Singleton<Game2Manager>
         dotsManager.ClearDots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
         characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
+        StartCoroutine(DeletePhase2Lines());
     }
+
+    IEnumerator DeletePhase2Lines()
+    {
+        yield return new WaitForSeconds(2.6f + 5.3f);
+
+        arDrawManager.ClearLines();
+    }
+
     public void StartPhase2End()
     {
         dotsManager.ClearDots();

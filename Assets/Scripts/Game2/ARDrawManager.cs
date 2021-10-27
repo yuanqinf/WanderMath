@@ -59,6 +59,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {6, 0},
         {7, 0},
     };
+    private Dictionary<int, GameObject> rampEdgeObjects = new Dictionary<int, GameObject>();
     private float phase2RampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
@@ -156,6 +157,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 {
                     // Initiate edge to be hit
                     rampEdge = hitObject.transform.gameObject;
+                    // deactivate other edges
+                    int edgeNum = int.Parse(rampEdge.name);
+                    foreach(var gameObject in rampEdgeObjects) {
+                        if (gameObject.Key != edgeNum)
+                        {
+                            gameObject.Value.SetActive(false);
+                        }
+                    }
+                    // set ramp edge touch positions in 2D
                     ramp2DTouchPosition = touch.position;
                     Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
                 }
@@ -260,15 +270,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     // set UI height: with edgeHeights[i]
                     phase2RampHeight = edgeHeights[edgeNum];
-                    uiNumberControl.Height = edgeHeights[edgeNum] / Constants.ONE_FEET;
-                    phase2RampVolume = (float)(edgeHeights[edgeNum] * uiNumberControl.area / Constants.ONE_FEET);
+                    uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
+                    phase2RampVolume = (float)(phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET);
                     uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 2));
-
+                    // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 2) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = (float)phase2RampVolume / 2;
 
-                    var targetMat = phase2Ramp.GetComponent<Renderer>().material;
                     // activate glowing effect
+                    var targetMat = phase2Ramp.GetComponent<Renderer>().material;
                     if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
                         targetMat.SetFloat("_EmissIntensity", 1.2f);
                     }
@@ -280,22 +290,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
                 {
-                    // drawing line while not snap to any object
-                    startPos = startObject.transform.position;
-                    currentLineRender.SetPosition(0, startPos);
-                    endPos = movingTouchPosition;
-                    endPos.y = startPos.y;
-                    currentLineRender.SetPosition(1, endPos);
-                    var lineMagnitude = (endPos - startPos).magnitude;
-                    //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
-                    var lineController = currentLineGameObject.GetComponent<LineController>();
-                    lineController.SetDistance(lineMagnitude);
-
-                    Vector3 midPointOfTwoPos = new Vector3();
-                    midPointOfTwoPos.x = startPos.x + (endPos.x - startPos.x) / 2;
-                    midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2 + 0.1f;
-                    midPointOfTwoPos.z = startPos.z + (endPos.z - startPos.z) / 2;
-                    lineController.SetPosition(midPointOfTwoPos);
+                    DrawLineWithoutSnapping();
                 }
             }
 
@@ -304,8 +299,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 if (GamePhase == Constants.GamePhase.PHASE2)
                 {
+                    // reset ramp positions and height
                     if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                     {
+                        if (phase2RampHeight <= 0)
+                        {
+                            SetRampEdgeCollider(true);
+                        }
                         ramp2DTouchPosition = Vector2.zero;
                         rampEdge = null;
                     }
@@ -321,7 +321,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         concreteUIFill.fillAmount = 0;
 
                         game2Manager.StartPhase2End();
-                        // TODO: disable all other controls
+                        SetRampEdgeCollider(false);
                     }
                 }
                 if (currentLineRender != null)
@@ -359,10 +359,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     g2SoundManager.PlayGoodSoundEffect();
                     liftableCube.GetComponent<BoxCollider>().enabled = false;
                 }
-                else if (canCubeLiftingSnap == false && startLiftCube)
-                {
-                    //g2SoundManager.playWrongCubeLiftAudio();
-                }
 
                 if(numLines == 4)
                 {
@@ -379,8 +375,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
         }
     }
-
-
 
     private void HandleSnapObject()
     {
@@ -430,9 +424,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
             }
 
+            // initialize ramp
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             DotsManager.Instance.ClearDots();
-            GetRampEdges();
+            InitializeRampEdges();
+            InitializeRampEdgeObjects();
             var volume = 0.0f;
             if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
@@ -455,7 +451,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
             game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
             game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
 
+            // activate concrete text
             concreteUIDisplay.SetActive(true);
+            concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
             concreteUIFill.fillAmount = 0;
             numLines = 0;
         }
@@ -470,7 +468,45 @@ public class ARDrawManager : Singleton<ARDrawManager>
         currentLineRender = null;
     }
 
-    private void GetRampEdges()
+    private void DrawLineWithoutSnapping()
+    {
+        // drawing line while not snap to any object
+        startPos = startObject.transform.position;
+        currentLineRender.SetPosition(0, startPos);
+        endPos = movingTouchPosition;
+        endPos.y = startPos.y;
+        currentLineRender.SetPosition(1, endPos);
+        var lineMagnitude = (endPos - startPos).magnitude;
+        //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
+        var lineController = currentLineGameObject.GetComponent<LineController>();
+        lineController.SetDistance(lineMagnitude);
+
+        Vector3 midPointOfTwoPos = Vector3.zero;
+        midPointOfTwoPos.x = startPos.x + (endPos.x - startPos.x) / 2;
+        midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2 + 0.1f;
+        midPointOfTwoPos.z = startPos.z + (endPos.z - startPos.z) / 2;
+        lineController.SetPosition(midPointOfTwoPos);
+    }
+
+    private void SetRampEdgeCollider(bool isActive)
+    {
+        // activate all colliders when height is 0
+        foreach (var gameObject in rampEdgeObjects)
+        {
+            gameObject.Value.SetActive(isActive);
+        }
+    }
+
+    private void InitializeRampEdgeObjects()
+    {
+        GameObject[] edgeObjects = GameObject.FindGameObjectsWithTag("rampEdge");
+        foreach(GameObject edge in edgeObjects)
+        {
+            Debug.Log("edge object found: " + edge.gameObject.name);
+            rampEdgeObjects.Add(int.Parse(edge.gameObject.name), edge);
+        }
+    }
+    private void InitializeRampEdges()
     {
         int[] edgeNums = { 4, 5, 6, 7 };
         foreach (Face f in phase2Ramp.faces)
