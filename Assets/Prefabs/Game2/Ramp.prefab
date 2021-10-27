@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5173064515494449745}
   m_Layer: 0
   m_Name: 4
-  m_TagString: ramp
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 5445909703886172393}
   m_Layer: 0
   m_Name: 6
-  m_TagString: ramp
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 5612919814011513098}
   m_Layer: 0
   m_Name: 7
-  m_TagString: ramp
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,8 +776,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294941958
-  m_fontColor: {r: 0.023584902, g: 0.61451906, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 3747462039894405895}
   m_Layer: 0
   m_Name: 5
-  m_TagString: ramp
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

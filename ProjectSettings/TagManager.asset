@@ -26,6 +26,7 @@ TagManager:
   - phase1Rect
   - ForceField
   - phase3Ramp
+  - rampEdge
   layers:
   - Default
   - TransparentFX

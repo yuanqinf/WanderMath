@@ -60,6 +60,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {7, 0},
     };
     private float phase2RampVolume = 0.0f;
+    private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
 
@@ -145,13 +146,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             isSnapping = true;
                             g2SoundManager.PlayGoodSoundEffect();
                         }
-                        else if(GamePhase == Constants.GamePhase.PHASE1)
+                        else
                         {
                             g2SoundManager.playWrongDrawing();
                         }
                     }
                 }
-                if (hitObject.transform.tag == "ramp" && touch.phase == TouchPhase.Began)
+                if (hitObject.transform.tag == "rampEdge" && touch.phase == TouchPhase.Began)
                 {
                     // Initiate edge to be hit
                     rampEdge = hitObject.transform.gameObject;
@@ -258,6 +259,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         uiNumberControl.IncreaseCanvasY(-movementRange / 4);
                     }
                     // set UI height: with edgeHeights[i]
+                    phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = edgeHeights[edgeNum] / Constants.ONE_FEET;
                     phase2RampVolume = (float)(edgeHeights[edgeNum] * uiNumberControl.area / Constants.ONE_FEET);
                     uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 2));
@@ -295,7 +297,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
 
             // remove line logic
-            // TODO: modify such that the line only snaps when it touched the point at end
             if (touch.phase == TouchPhase.Ended)
             {
                 if (GamePhase == Constants.GamePhase.PHASE2)
@@ -309,6 +310,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f)
                     {
                         Debug.Log("completed ramp");
+                        game2Manager.rampHeight = phase2RampHeight;
                         game2Manager.StartPhase2End();
                         // TODO: disable all other controls
                     }
@@ -387,6 +389,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Vector3 maxVector = Vector3.zero;
             foreach (Vector3 pos in phase2DrawnPos)
             {
+                //    minVector = Vector3.Min(pos, minVector);
+                //    maxVector = Vector3.Max(pos, maxVector);
                 minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
                 maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
             }
@@ -416,9 +420,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             GetRampEdges();
-            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             var volume = 0.0f;
-            // TODO: change to UI controller to control area & height
             if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
                 Debug.Log("it is a square");
@@ -432,9 +434,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 volume = 2.0f;
             }
             // set initial volume and set up
+            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(volume);
             uiNumberControl.Height = 0;
             game2Manager.StartPhase2Mid();
+            // set ramp start point & endpoint
+            game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
+            game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
             numLines = 0;
         }
 

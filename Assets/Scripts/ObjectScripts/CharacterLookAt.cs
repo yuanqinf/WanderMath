@@ -25,7 +25,6 @@ public class CharacterLookAt : MonoBehaviour
         }
         else
         {
-            Debug.Log("looking at camera");
             this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
         }
     }

@@ -15,6 +15,7 @@ public class DotsManager : Singleton<DotsManager>
     private ARDrawManager arDrawManager;
     private Game2SoundManager g2SoundManager;
     private Game2Manager g2Manager;
+    private CharacterController characterController;
 
     public Pose placementPose;
     public List<GameObject> dots = new List<GameObject>();
@@ -30,6 +31,7 @@ public class DotsManager : Singleton<DotsManager>
         arDrawManager = FindObjectOfType<ARDrawManager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
         g2Manager = FindObjectOfType<Game2Manager>();
+        characterController = FindObjectOfType<CharacterController>();
     }
 
     private void Update()
@@ -42,7 +44,8 @@ public class DotsManager : Singleton<DotsManager>
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
 
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE2);
+                characterController.InitCharacterSkatingAndAudio(placementPose);
                 InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.05f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }

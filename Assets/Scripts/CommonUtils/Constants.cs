@@ -14,6 +14,8 @@ public static class Constants
     {
         public const string RailingStartPoint = "RailingStartPoint";
         public const string RailingEndPoint = "RailingEndPoint";
+        public const string RampStartPoint = "RampStartPoint";
+        public const string RampEndPoint = "RampEndPoint";
     }
 
     public struct VoiceOvers

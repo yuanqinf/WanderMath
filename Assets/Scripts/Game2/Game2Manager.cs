@@ -17,6 +17,10 @@ public class Game2Manager : Singleton<Game2Manager>
     public Vector3 phase1JumpStart;
     public Vector3 phase1JumpEnd;
 
+    public Vector3 rampStartPoint;
+    public Vector3 rampEndPoint;
+    public float rampHeight;
+
     public Dictionary<string, Vector3> objectLocations = new Dictionary<string, Vector3>();
 
     private string gamePhase = "waiting";
@@ -65,8 +69,7 @@ public class Game2Manager : Singleton<Game2Manager>
     #region phase0 related
     private void StartPhase0()
     {
-        var duration = characterController.InitCharacterSkatingAndAudio(dotsManager.placementPose);
-        StartCoroutine(WaitBeforePhase0Dots(duration));
+        StartCoroutine(WaitBeforePhase0Dots(9.5f));
     }
 
     IEnumerator WaitBeforePhase0Dots(float duration)
@@ -158,28 +161,32 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase2()
     {
         dotsManager.InstantiatePhase2Dots();
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
-        characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
+        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
+        //characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
     }
     public void StartPhase2Mid()
     {
         dotsManager.ClearDots();
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
-        characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
+        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
+        //characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
     }
     public void StartPhase2End()
     {
         dotsManager.ClearDots();
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
-        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
-        // TODO add ending animation to next scene
+        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
+        //characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
         StartCoroutine(Phase2EndingAnimation());
     }
     IEnumerator Phase2EndingAnimation()
     {
-        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
-        SetGamePhase(Constants.GamePhase.PHASE3);
+        //yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
         arDrawManager.ClearLines();
+        characterController.SkateOnRamp(rampStartPoint, rampEndPoint, rampHeight);
+        Debug.Log("startPoint: " + rampStartPoint);
+        Debug.Log("rampEndPoint: " + rampEndPoint);
+        Debug.Log("rampHeight: " + rampHeight);
+        yield return new WaitForSeconds(10f);
+        SetGamePhase(Constants.GamePhase.PHASE3);
         arDrawManager.DestoryRamp();
     }
     #endregion

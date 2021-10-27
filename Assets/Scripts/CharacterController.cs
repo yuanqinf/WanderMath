@@ -78,7 +78,7 @@ public class CharacterController : GenericClass
         yield return new WaitForSeconds(idleToSkateAnimationLen);
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(Camera.main.transform.position);
         // move to start position
-        yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
+        //yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
         var skateToRailingDuration = 2.0f;
         //var skateboardPosTemp = arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().GetSkateBoardPos() - arCharacterToSpawn.transform.position;
         //var skateboardPosDiff = new Vector3(skateboardPosTemp.x, 0, skateboardPosTemp.z);
@@ -107,10 +107,38 @@ public class CharacterController : GenericClass
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
 
-    // TODO add this animation
-    public void SkateOnRamp(Vector3 startingPoint, Vector3 endingPoint)
+    public void SkateOnRamp(Vector3 startingPoint, Vector3 endingPoint, float height)
     {
+        StartCoroutine(SkatingOnRamp(startingPoint, endingPoint, height));
+    }
 
+    IEnumerator SkatingOnRamp(Vector3 startingPoint, Vector3 endingPoint, float height)
+    {
+        var initialPos = arCharacterToSpawn.transform.position;
+        // 1. start skating to ramp starting
+        StartSkating();
+        yield return new WaitForSeconds(idleToSkateAnimationLen);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(Camera.main.transform.position);
+        var skateToRampDuration = 2.0f;
+        StartCoroutine(utils.LerpMovement(initialPos, startingPoint, skateToRampDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRampDuration);
+        // 2. skate to ramp endpoint with height
+        var skateOnRampDuration = 2.5f;
+        var rampEndPoint = endingPoint + new Vector3(0, height, 0);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(rampEndPoint);
+        StartCoroutine(utils.LerpMovement(startingPoint, rampEndPoint, skateOnRampDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateOnRampDuration);
+        // 3. jump down to ramp lowest point
+        SkateJump();
+        StartCoroutine(utils.LerpMovement(rampEndPoint, endingPoint, skateJumpAnimationLen, arCharacterToSpawn));
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
+        yield return new WaitForSeconds(skateJumpAnimationLen);
+        // 4. skate back to initialPos
+        StartCoroutine(utils.LerpMovement(endingPoint, initialPos, skateToRampDuration, arCharacterToSpawn));
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
+        yield return new WaitForSeconds(skateToRampDuration);
+        StopSkating();
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
     #region skating animation
     public void PlaySkatingForward(float duration)
