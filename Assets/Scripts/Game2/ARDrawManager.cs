@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.ProBuilder;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(ARAnchorManager))]
 public class ARDrawManager : Singleton<ARDrawManager>
@@ -89,6 +90,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public GameObject concreteUIDisplay;
     public Image concreteUIFill;
+    public TextMeshProUGUI concreteVolDisplay;
 
     private void Start()
     {
@@ -178,10 +180,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         // update concrete UI fill display
                         if((float)curVolNum / 1 > 1)
                         {
+                            concreteVolDisplay.text = "Vol: " + (float)curVolNum + " ft<sup>3</sup>";
                             concreteUIFill.fillAmount = 1;
                         }
                         else
                         {
+                            concreteVolDisplay.text = "Vol: " + (float)curVolNum + " ft<sup>3</sup>";
                             concreteUIFill.fillAmount = (float)curVolNum / 1;
                         }
 
@@ -260,10 +264,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                     var targetMat = phase2Ramp.GetComponent<Renderer>().material;
                     // activate glowing effect
-                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f) {
+                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
                         targetMat.SetFloat("_EmissIntensity", 1.2f);
                     }
-                    else
+                    else if (targetMat.GetFloat("_EmissIntensity") != 0.66f)
                     {
                         targetMat.SetFloat("_EmissIntensity", 0.66f);
                     }
@@ -284,7 +288,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                     Vector3 midPointOfTwoPos = new Vector3();
                     midPointOfTwoPos.x = startPos.x + (endPos.x - startPos.x) / 2;
-                    midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2;
+                    midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2 + 0.1f;
                     midPointOfTwoPos.z = startPos.z + (endPos.z - startPos.z) / 2;
                     lineController.SetPosition(midPointOfTwoPos);
                 }
@@ -484,7 +488,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         positionCount = 2;
         currentLineGameObject = Instantiate(linePrefab, touchPosition, Quaternion.identity);
         currentLineGameObject.name = $"LineRenderer_{lines.Count}";
-        currentLineGameObject.AddComponent<ARAnchor>();
+        //currentLineGameObject.AddComponent<ARAnchor>();
         currentLineGameObject.tag = "Line";
         LineRenderer goLineRenderer = currentLineGameObject.AddComponent<LineRenderer>();
         goLineRenderer.startWidth = lineWidth;
