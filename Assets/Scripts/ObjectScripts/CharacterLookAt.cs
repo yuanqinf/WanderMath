@@ -5,10 +5,10 @@ using UnityEngine;
 public class CharacterLookAt : MonoBehaviour
 {
     private Camera arCamera;
-    public bool isSkating = false;
+    private bool isSkating = false;
     public GameObject skateBoard;
     public string skateDirection = "faceCamera";
-    public Vector3 targetPos = Vector3.zero;
+    public Vector3 skatePos = Vector3.zero;
 
     void Start()
     {
@@ -19,27 +19,26 @@ public class CharacterLookAt : MonoBehaviour
     void Update()
     {
         var tempTrans = arCamera.transform;
-        if (isSkating)
+        if (isSkating && skatePos != Vector3.zero)
         {
-            switch (skateDirection)
-            {
-                case "faceCamera":
-                    Debug.Log("facing  camera");
-                    rotateTowards(arCamera.transform.position);
-                    break;
-                case "facePoint":
-                    if (targetPos != Vector3.zero)
-                    {
-                        rotateTowards(targetPos);
-                    }
-                    break;
-            }
+            rotateTowards(skatePos);
         }
         else
         {
             Debug.Log("looking at camera");
             this.transform.LookAt(new Vector3(tempTrans.position.x, this.transform.position.y, tempTrans.position.z));
         }
+    }
+
+    public void SkateDirection(Vector3 pos)
+    {
+        this.skatePos = pos;
+        this.isSkating = true;
+    }
+    public void StopSkating()
+    {
+        this.isSkating = false;
+        this.skatePos = Vector3.zero;
     }
 
     private void rotateTowards(Vector3 to, float turn_speed = 0.1f)
@@ -49,11 +48,11 @@ public class CharacterLookAt : MonoBehaviour
             Quaternion.LookRotation((to - this.transform.position).normalized);
         _lookRotation *= Quaternion.Euler(0, 90, 0);
         //over time
-        transform.rotation =
-            Quaternion.Slerp(this.transform.rotation, _lookRotation, Time.deltaTime * turn_speed);
+        //transform.rotation =
+        //    Quaternion.Slerp(this.transform.rotation, _lookRotation, Time.deltaTime * turn_speed);
 
         //instant
-        //transform.rotation = _lookRotation;
+        transform.rotation = _lookRotation;
     }
 
     public Vector3 GetSkateBoardPos()
