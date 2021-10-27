@@ -62,6 +62,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
 
+    private GameObject touchedPhase3Ramp = null;
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
@@ -79,9 +80,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private Game2Manager game2Manager;
     private Game2SoundManager g2SoundManager;
-
-    //public int[] startDotMatPos = new int[2];
-    //public int[] endDotMatPos = new int[2];
 
     private Boolean startLiftCube = false;
     private Boolean canCubeLiftingSnap = false;
@@ -337,7 +335,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
             }
         }
+
+        if (GamePhase == Constants.GamePhase.PHASE3)
+        {
+            if (touchedPhase3Ramp != null && IsDoubleTap())
+            {
+                Destroy(touchedPhase3Ramp);
+            }
+        }
     }
+
+
 
     private void HandleSnapObject()
     {
@@ -431,6 +439,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
             }
         }
+    }
+
+    private bool IsDoubleTap()
+    {
+        bool result = false;
+        float MaxTimeWait = 1;
+        float VariancePosition = 1;
+
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            float DeltaTime = Input.GetTouch(0).deltaTime;
+            float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
+
+            if (DeltaTime > 0 && DeltaTime < MaxTimeWait && DeltaPositionLenght < VariancePosition)
+                result = true;
+        }
+        return result;
     }
 
     private void AddNewLineRenderer(Vector3 touchPosition)

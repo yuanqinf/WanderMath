@@ -60,6 +60,34 @@ public class Game2SoundManager : MonoBehaviour
         "Time for testing! This is the best ramp ever! Wow!"
     };
 
+    public AudioClip[] phase3Start;
+    public AudioClip[] phase3Mid;
+    public AudioClip[] phase3End;
+    public AudioClip[] phase3Additional;
+    private string[] phase3StartSubtitles =
+    {
+        "Okay, let's put it all together and build Finley Park!",
+        "You can place the ledge and the ramp wherever you want!",
+        "There's also 6 cubic feet of extra concrete to make more obstacles.",
+    };
+    private string[] phase3MidSubtitles =
+    {
+        "If you want to take something out of the park, double tap it.",
+        "Tap on me any time you want me to try something out! Or double tap me to finish the park!",
+        "Hm, I think that's too tall for me to jump. Maybe if it had a smaller base?"
+    };
+    private string[] phase3EndSubtitles =
+    {
+        "Okay, I think Finley park is complete! Thanks for helping me, and see you on the flip side!",
+    };
+    private string[] phase3AdditionalSubtitles =
+    {
+        "Woohoo! Totally rad!",
+        "Awesome! I feel like a pro skater.",
+        "Aw yeah, did you see that?",
+        "Best! Skate park! Ever!"
+    };
+
     public AudioClip skatingSoundEffect;
     public AudioClip goodSoundEffect;
     public AudioClip finishDrawingEffect;

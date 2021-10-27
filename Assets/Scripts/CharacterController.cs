@@ -107,6 +107,11 @@ public class CharacterController : GenericClass
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
 
+    // TODO add this animation
+    public void SkateOnRamp(Vector3 startingPoint, Vector3 endingPoint)
+    {
+
+    }
     #region skating animation
     public void PlaySkatingForward(float duration)
     {
