@@ -1,2 +1,4 @@
 /Users/yuanqin/Documents/GitHub/WanderMath/obj/Debug/LeanTouch.csproj.AssemblyReference.cache
 /Users/yuanqin/Documents/GitHub/WanderMath/obj/Debug/LeanTouch.csproj.CoreCompileInputs.cache
+/Users/jacli/Downloads/WanderMath/obj/Debug/LeanTouch.csprojAssemblyReference.cache
+/Users/jacli/Downloads/WanderMath/obj/Debug/LeanTouch.csproj.CoreCompileInputs.cache

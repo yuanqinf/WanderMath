@@ -246,7 +246,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
                     var newTouchpos = touch.position;
-                    var movementRange = 0.01f;
+                    var movementRange = 0.008f;
                     var movingRange = new Vector3(movementRange, 0, 0);
 
                     int edgeNum = int.Parse(rampEdge.transform.name);
@@ -407,29 +407,31 @@ public class ARDrawManager : Singleton<ARDrawManager>
             phase2DrawnPos.Remove(maxVector);
             // check if a square/rec is formed
             float maxValue = 0.0f;
-            //foreach (Vector3 pos in phase2DrawnPos)
-            //{
-            //    Debug.Log("leftover pos: " + pos);
-            //    var minMag = (minVector - pos).magnitude;
-            //    var maxMag = (maxVector - pos).magnitude;
-            //    maxValue = Mathf.Max(minMag, maxMag);
-            //    Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-            //    if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-            //    {
-            //        Debug.Log("it is not a square / rectangle");
-            //        // reset -> add animation
-            //        numLines = 0;
-            //        ClearLines();
-            //        phase2DrawnPos.Clear();
-            //        return;
-            //    }
-            //}
+            foreach (Vector3 pos in phase2DrawnPos)
+            {
+                Debug.Log("leftover pos: " + pos);
+                var minMag = (minVector - pos).magnitude;
+                var maxMag = (maxVector - pos).magnitude;
+                maxValue = Mathf.Max(minMag, maxMag);
+                Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+                if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
+                {
+                    Debug.Log("it is not a square / rectangle");
+                    // reset -> add animation
+                    numLines = 0;
+                    g2SoundManager.playWrongDrawing();
+                    ClearLines();
+                    phase2DrawnPos.Clear();
+                    return;
+                }
+            }
 
             // initialize ramp
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             DotsManager.Instance.ClearDots();
             InitializeRampEdges();
             InitializeRampEdgeObjects();
+            SetRampEdgeCollider(false);
             var volume = 0.0f;
             if (System.Math.Floor(maxValue * 10f) / 3 == 1)
             {
@@ -484,7 +486,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         lineController.SetPosition(midPointOfTwoPos);
     }
 
-    private void SetRampEdgeCollider(bool isActive)
+    public void SetRampEdgeCollider(bool isActive)
     {
         // activate all colliders when height is 0
         foreach (var gameObject in rampEdgeObjects)

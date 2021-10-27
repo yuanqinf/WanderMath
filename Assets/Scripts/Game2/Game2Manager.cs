@@ -180,6 +180,8 @@ public class Game2Manager : Singleton<Game2Manager>
         arDrawManager.concreteUIDisplay.SetActive(true);
         arDrawManager.concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
         arDrawManager.concreteUIFill.fillAmount = 0;
+        yield return new WaitForSeconds(5.3f + 7.6f);
+        arDrawManager.SetRampEdgeCollider(true);
     }
 
     public void StartPhase2End()
@@ -207,7 +209,7 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase3()
     {
         // destroy things
-        dotsManager.InstantiatePhase3Dots();
+        //dotsManager.InstantiatePhase3Dots();
     }
     #endregion
 }
