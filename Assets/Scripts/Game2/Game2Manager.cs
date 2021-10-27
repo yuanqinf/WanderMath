@@ -167,19 +167,19 @@ public class Game2Manager : Singleton<Game2Manager>
     public void StartPhase2Mid()
     {
         dotsManager.ClearDots();
-        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
-        //characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
+        characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
     }
     public void StartPhase2End()
     {
         dotsManager.ClearDots();
-        //g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
-        //characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
+        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
         StartCoroutine(Phase2EndingAnimation());
     }
     IEnumerator Phase2EndingAnimation()
     {
-        //yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
+        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
         arDrawManager.ClearLines();
         characterController.SkateOnRamp(rampStartPoint, rampEndPoint, rampHeight);
         Debug.Log("startPoint: " + rampStartPoint);

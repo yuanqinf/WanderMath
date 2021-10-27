@@ -394,6 +394,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
                 maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
             }
+            if (minVector.x > maxVector.x) {
+                (minVector, maxVector) = (maxVector, minVector);
+            }
             Debug.Log("minVector positions: " + minVector);
             Debug.Log("maxVector positions: " + maxVector);
             phase2DrawnPos.Remove(minVector);
