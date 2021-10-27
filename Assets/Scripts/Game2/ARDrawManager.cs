@@ -87,6 +87,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private GameObject liftableCube;
 
+    public GameObject concreteUIDisplay;
+    public Image concreteUIFill;
+
     private void Start()
     {
         game2Manager = FindObjectOfType<Game2Manager>();
@@ -171,6 +174,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084, 2);
+
+                        // update concrete UI fill display
+                        if((float)curVolNum / 1 > 1)
+                        {
+                            concreteUIFill.fillAmount = 1;
+                        }
+                        else
+                        {
+                            concreteUIFill.fillAmount = (float)curVolNum / 1;
+                        }
 
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.x: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.x);
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
@@ -268,7 +281,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     //ARDebugManager.Instance.LogInfo("line length: " + lineMagnitude);
                     var lineController = currentLineGameObject.GetComponent<LineController>();
                     lineController.SetDistance(lineMagnitude);
-                    lineController.SetPosition(endPos);
+
+                    Vector3 midPointOfTwoPos = new Vector3();
+                    midPointOfTwoPos.x = startPos.x + (endPos.x - startPos.x) / 2;
+                    midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2;
+                    midPointOfTwoPos.z = startPos.z + (endPos.z - startPos.z) / 2;
+                    lineController.SetPosition(midPointOfTwoPos);
                 }
             }
 
@@ -318,6 +336,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                 if (canCubeLiftingSnap == true && startLiftCube)
                 {
+                    concreteUIFill.fillAmount = 0;
+                    concreteUIDisplay.SetActive(false);
                     GameObject.FindObjectOfType<UINumberControl>().SetVolDisplay(1);
                     canCubeLiftingSnap = false;
                     game2Manager.EndPhase1();
@@ -416,6 +436,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
+            concreteUIDisplay.SetActive(true);
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
         }

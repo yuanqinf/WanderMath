@@ -21,7 +21,7 @@ public class LineController : MonoBehaviour
     public void SetPosition(Vector3 pos)
     {
         var newPos = Camera.main.WorldToScreenPoint(pos);
-        distanceText.transform.position = newPos;
+        distanceText.transform.position = pos;
         measuringTape.transform.position = pos; // + new Vector3(0.1f, 0.0f, 0.0f);
     }
 }

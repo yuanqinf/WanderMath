@@ -46,7 +46,7 @@ public class UINumberControl : MonoBehaviour
         {
             //volDisplay.transform.LookAt(new Vector3(tempTrans.position.x, volDisplay.transform.position.y, tempTrans.position.z));
 
-            volDisplay.transform.parent.transform.LookAt(volDisplay.transform.position + cam.transform.forward);
+            //volDisplay.transform.parent.transform.LookAt(volDisplay.transform.position + cam.transform.forward);
         }
         if (heightDisplay != null)
         {
