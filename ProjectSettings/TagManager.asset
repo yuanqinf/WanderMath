@@ -24,6 +24,8 @@ TagManager:
   - vol_display
   - ramp
   - phase1Rect
+  - ForceField
+  - phase3Ramp
   layers:
   - Default
   - TransparentFX
