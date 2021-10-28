@@ -50,7 +50,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject currentLineGameObject = null;
 
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private HashSet<Vector3> phase2DrawnPos = new HashSet<Vector3>();
+    private HashSet<Vector3> drawnPositions = new HashSet<Vector3>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
     private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
     {
@@ -64,8 +64,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
-    public GameObject rampTopFace = null;
-
     private GameObject touchedPhase3Ramp = null;
 
     private int positionCount = 2;
@@ -154,26 +152,29 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                     }
                 }
-                if (hitObject.transform.tag == "rampEdge" && touch.phase == TouchPhase.Began)
+                if (touch.phase == TouchPhase.Began)
                 {
-                    // Initiate edge to be hit
-                    rampEdge = hitObject.transform.gameObject;
-                    // deactivate other edges
-                    int edgeNum = int.Parse(rampEdge.name);
-                    DeactivateOtherColliders(edgeNum);
-                    // set ramp edge touch positions in 2D
-                    ramp2DTouchPosition = touch.position;
-                    Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
-                }
-                if (hitObject.transform.tag == "p3Ramp" && touch.phase == TouchPhase.Began && GamePhase == Constants.GamePhase.PHASE3)
-                {
-                    // Initiate face to be hit
-                    rampTopFace = hitObject.transform.gameObject;
-                    // deactivate other edges, only left ramp
-                    DeactivateOtherColliders(1);
-                    // set ramp edge touch positions in 2D
-                    ramp2DTouchPosition = touch.position;
-                    Debug.Log("initialize rampface " + ramp2DTouchPosition);
+                    if (hitObject.transform.tag == "rampEdge")
+                    {
+                        // Initiate edge to be hit
+                        rampEdge = hitObject.transform.gameObject;
+                        // deactivate other edges
+                        int edgeNum = int.Parse(rampEdge.name);
+                        DeactivateOtherColliders(edgeNum);
+                        // set ramp edge touch positions in 2D
+                        ramp2DTouchPosition = touch.position;
+                        Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
+                    }
+                    if (hitObject.transform.tag == "p3Ramp" && GamePhase == Constants.GamePhase.PHASE3)
+                    {
+                        // Initiate face to be hit
+                        touchedPhase3Ramp = hitObject.transform.gameObject;
+                        // deactivate other edges, only left ramp
+                        DeactivateOtherColliders(1);
+                        // set ramp edge touch positions in 2D
+                        ramp2DTouchPosition = touch.position;
+                        Debug.Log("initialize rampface " + ramp2DTouchPosition);
+                    }
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
@@ -294,12 +295,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                 }
                 // moving ramp face
-                if (ramp2DTouchPosition != Vector2.zero && rampTopFace != null)
+                if (ramp2DTouchPosition != Vector2.zero && touchedPhase3Ramp != null)
                 {
                     var newTouchpos = touch.position;
                     var movementRange = 0.008f;
                     var movingRange = new Vector3(movementRange, 0, 0);
-                    var topFace = rampTopFace.transform.root.GetComponent<ProBuilderMesh>();
+                    var topFace = touchedPhase3Ramp.transform.root.GetComponent<ProBuilderMesh>();
                     topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, new Vector3(0, 0.08f, 0));
                 }
                 // drawing line logic
@@ -312,6 +313,35 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // remove line logic
             if (touch.phase == TouchPhase.Ended)
             {
+                // draw line logic after let go for all phases
+                if (currentLineRender != null)
+                {
+                    if (!isSnapping)
+                    {
+                        Destroy(currentLineGameObject);
+                    }
+                    else
+                    {
+                        // create line and handle logic
+                        endPos = hitObject.transform.gameObject.transform.position;
+                        currentLineRender.SetPosition(1, endPos);
+                        var lineMagnitude = (endPos - startPos).magnitude;
+                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
+                        if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
+                        {
+                            drawnPositions.Add(startPos);
+                            drawnPositions.Add(endPos);
+                        }
+                        HandleSnapObject();
+                    }
+                    ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
+                    prevLineRender = currentLineRender;
+                    currentLineRender = null;
+                    startObject = null;
+                    isSnapping = false;
+                }
+                // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
                 {
                     // reset ramp positions and height
@@ -325,6 +355,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rampEdge = null;
                     }
                     // snaping for ramp
+                    // TODO: apply to all cases in ramp
                     if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f)
                     {
                         Debug.Log("completed ramp");
@@ -340,33 +371,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         SetRampEdgeCollider(false);
                     }
                 }
-                if (currentLineRender != null)
-                {
-                    if (!isSnapping)
-                    {
-                        Destroy(currentLineGameObject);
-                    }
-                    else
-                    {
-                        // create line and handle logic
-                        endPos = hitObject.transform.gameObject.transform.position;
-                        currentLineRender.SetPosition(1, endPos);
-                        var lineMagnitude = (endPos - startPos).magnitude;
-                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
-                        if (GamePhase == Constants.GamePhase.PHASE2)
-                        {
-                            phase2DrawnPos.Add(startPos);
-                            phase2DrawnPos.Add(endPos);
-                        }
-                        HandleSnapObject();
-                    }
-                    ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
-                    prevLineRender = currentLineRender;
-                    currentLineRender = null;
-                    startObject = null;
-                    isSnapping = false;
-                }
 
                 if (canCubeLiftingSnap == true && startLiftCube)
                 {
@@ -379,7 +383,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     liftableCube.GetComponent<BoxCollider>().enabled = false;
                 }
 
-                if(numLines == 4)
+                if (numLines == 4)
                 {
                     startLiftCube = true;
                 }
@@ -403,29 +407,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
             numLines = 0;
             Destroy(currentLineGameObject);
         }
+        if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
+        {
+            concreteUIDisplay.SetActive(true);
+            Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
+            DotsManager.Instance.ActivatePhase1Cube();
+        }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            // check if its square or rectangle based on the snapped dots
-            Debug.Log("totalPos: " + phase2DrawnPos.Count);
-            Vector3 minVector = Vector3.positiveInfinity;
-            Vector3 maxVector = Vector3.zero;
-            foreach (Vector3 pos in phase2DrawnPos)
-            {
-                //    minVector = Vector3.Min(pos, minVector);
-                //    maxVector = Vector3.Max(pos, maxVector);
-                minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
-                maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
-            }
-            if (minVector.x > maxVector.x) {
-                (minVector, maxVector) = (maxVector, minVector);
-            }
-            Debug.Log("minVector positions: " + minVector);
-            Debug.Log("maxVector positions: " + maxVector);
-            phase2DrawnPos.Remove(minVector);
-            phase2DrawnPos.Remove(maxVector);
+            Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
+            (var minVector, var maxVector) = GetMinMaxVector();
             // check if a square/rec is formed
             float maxValue = 0.0f;
-            foreach (Vector3 pos in phase2DrawnPos)
+            foreach (Vector3 pos in drawnPositions)
             {
                 Debug.Log("leftover pos: " + pos);
                 var minMag = (minVector - pos).magnitude;
@@ -439,7 +433,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     numLines = 0;
                     game2Manager.PlayWrongDrawingWithAnimation();
                     ClearLines();
-                    phase2DrawnPos.Clear();
+                    drawnPositions.Clear();
                     return;
                 }
             }
@@ -447,6 +441,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // initialize ramp
             phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
             DotsManager.Instance.ClearDots();
+            drawnPositions.Clear();
             InitializeRampEdges();
             InitializeRampEdgeObjects();
             SetRampEdgeCollider(false);
@@ -474,14 +469,42 @@ public class ARDrawManager : Singleton<ARDrawManager>
             numLines = 0;
         }
 
-        if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
+        if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
         {
-            concreteUIDisplay.SetActive(true);
-            Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
-            DotsManager.Instance.ActivatePhase1Cube();
+            HandleRampInitialization();
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    /// <summary>
+    /// Get min and max vectors from drawnPositions
+    /// </summary>
+    /// <returns></returns>
+    private (Vector3, Vector3) GetMinMaxVector()
+    {
+        Vector3 minVector = Vector3.positiveInfinity;
+        Vector3 maxVector = Vector3.zero;
+        foreach (Vector3 pos in drawnPositions)
+        {
+            //    minVector = Vector3.Min(pos, minVector);
+            //    maxVector = Vector3.Max(pos, maxVector);
+            minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
+            maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
+        }
+        if (minVector.x > maxVector.x)
+        {
+            (minVector, maxVector) = (maxVector, minVector);
+        }
+        Debug.Log("minVector positions: " + minVector);
+        Debug.Log("maxVector positions: " + maxVector);
+        drawnPositions.Remove(minVector);
+        drawnPositions.Remove(maxVector);
+        return (minVector, maxVector);
+    }
+
+    private void HandleRampInitialization()
+    {
     }
 
     private void DrawLineWithoutSnapping()
@@ -522,14 +545,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 gameObject.Value.SetActive(false);
             }
         }
-        if (rampTopFace != null)
+        if (touchedPhase3Ramp != null)
         {
             if (edgeNum == 1) {
-                rampTopFace.SetActive(true);
+                touchedPhase3Ramp.SetActive(true);
             }
             else
             {
-                rampTopFace.SetActive(false);
+                touchedPhase3Ramp.SetActive(false);
             }
         }
     }

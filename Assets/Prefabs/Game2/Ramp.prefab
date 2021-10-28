@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 2454388121701374429}
   - component: {fileID: 2454388121701374430}
   - component: {fileID: 651093310410300800}
+  - component: {fileID: 4571515809444802615}
   m_Layer: 0
   m_Name: Ramp
   m_TagString: Untagged
@@ -380,6 +381,19 @@ MonoBehaviour:
   heightDisplay: {fileID: 9135385970126199135}
   uiDisplay: {fileID: 8611300625424626164}
   area: 0
+--- !u!114 &4571515809444802615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2454388121701374431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee0ebbc3ce1174b52928d086411d3da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeDots: []
 --- !u!1 &2589563219616708019
 GameObject:
   m_ObjectHideFlags: 0

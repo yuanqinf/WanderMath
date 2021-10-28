@@ -5,16 +5,10 @@ using UnityEngine;
 public class ShapeAnimationHelper : MonoBehaviour
 {
     public Vector3[] shapeDots;
+    public HashSet<Vector3> dotPositions = new HashSet<Vector3>();
 
-    // Start is called before the first frame update
-    void Start()
+    public void AddShapeDots(Vector3 dot)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        dotPositions.Add(dot);
     }
 }
