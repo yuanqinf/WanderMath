@@ -137,8 +137,8 @@ public class DotsManager : Singleton<DotsManager>
     {
         yield return new WaitForSeconds(0.1f);
         Vector3 topLeft = placementPose.position
-            + (placementPose.forward * -3 * Constants.HALF_FEET) + (placementPose.right * 3 * -Constants.HALF_FEET);
-        InitializeDots(topLeft, 4, 5);
+            + (placementPose.forward * -3 * Constants.HALF_FEET) + (placementPose.right * -3 * Constants.HALF_FEET);
+        InitializeDots(topLeft, 3, 4);
     }
 
     private void InitializeDots(Vector3 topLeft, int rows, int cols)
@@ -168,10 +168,6 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ClearDots()
     {
-        //foreach (GameObject dot in dots)
-        //{
-        //    Destroy(dot);
-        //}
         Debug.Log("destory dot now!!!!!!!");
         GameObject[] dotObjects = GameObject.FindGameObjectsWithTag("dot");
         foreach (var dotObj in dotObjects)

@@ -92,6 +92,7 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip goodSoundEffect;
     public AudioClip finishDrawingEffect;
     public AudioClip WrongDrawingAudio;
+    private string wrongDrawing = "That's too small for my ledge, I need a square.";
     public AudioClip finishDrawingAudio;
 
     public AudioClip liftWrongVolAudio;
@@ -183,6 +184,7 @@ public class Game2SoundManager : MonoBehaviour
 
     public void PlayWrongDrawing()
     {
+        uiController.PlaySubtitles(wrongDrawing, WrongDrawingAudio.length);
         audioSource.PlayOneShot(WrongDrawingAudio);
     }
 

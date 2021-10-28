@@ -140,7 +140,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
 
                         ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
-                        if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1) || (ratio > 2.9 && ratio < 3.1) || (ratio > 3.9 && ratio < 4.1) || (ratio > 4.9 && ratio < 5.1))
+                        if ((ratio > 0.85 && ratio < 1.15) || (ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15))
                         {
                             numLines++;
                             isSnapping = true;
@@ -148,7 +148,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         else
                         {
-                            //game2Manager.PlayWrongDrawingWithAnimation();
+                            game2Manager.PlayWrongDrawingWithAnimation();
                         }
                     }
                 }
@@ -330,8 +330,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
-                            drawnPositions.Add(startPos);
-                            drawnPositions.Add(endPos);
+                            drawnPositions.Add(startPos.Round(2));
+                            drawnPositions.Add(endPos.Round(2));
                         }
                         HandleSnapObject();
                     }
@@ -421,7 +421,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
+            Debug.Log("total dots drawn: " + drawnPositions.Count); // should be 4
+            if (drawnPositions.Count != 4) return; // not 4 unique points
             (var minVector, var maxVector) = GetMinMaxVector();
             // check if a square/rec is formed
             (var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
@@ -513,15 +514,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {
             //    minVector = Vector3.Min(pos, minVector);
             //    maxVector = Vector3.Max(pos, maxVector);
+            Debug.Log("vector pos: " + pos.ToString("N4"));
             minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
             maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
         }
+        Debug.Log("minVector positions before: " + minVector.ToString("N4"));
+        Debug.Log("maxVector positions before: " + maxVector.ToString("N4"));
         if (minVector.x > maxVector.x)
         {
             (minVector, maxVector) = (maxVector, minVector);
         }
-        Debug.Log("minVector positions: " + minVector);
-        Debug.Log("maxVector positions: " + maxVector);
+        Debug.Log("minVector positions after: " + minVector.ToString("N4"));
+        Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
         drawnPositions.Remove(minVector);
         drawnPositions.Remove(maxVector);
         return (minVector, maxVector);
