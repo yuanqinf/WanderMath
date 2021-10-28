@@ -148,7 +148,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         else
                         {
-                            game2Manager.PlayWrongDrawingWithAnimation();
+                            //game2Manager.PlayWrongDrawingWithAnimation();
                         }
                     }
                 }
@@ -193,7 +193,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                         double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
                                                       hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
-                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084, 2);
+                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084 / 1.4, 1);
 
                         // update concrete UI fill display
                         if((float)curVolNum / 1 > 1)
@@ -204,7 +204,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         else
                         {
                             concreteVolDisplay.text = "Vol: " + (float)curVolNum + " ft<sup>3</sup>";
-                            concreteUIFill.fillAmount = (float)curVolNum / 1;
+                            concreteUIFill.fillAmount = (float)curVolNum / 2;
                         }
 
                         Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.x: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.x);
@@ -279,9 +279,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
                     phase2RampVolume = (float)(phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET);
-                    uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 2));
+                    uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 1));
                     // add concrete text
-                    concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 2) + " ft<sup>3</sup>";
+                    concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = (float)phase2RampVolume / 2;
 
                     // activate glowing effect
@@ -415,6 +415,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
             concreteUIDisplay.SetActive(true);
+            DotsManager.Instance.ClearDots();
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
         }

@@ -44,7 +44,7 @@ public class DotsManager : Singleton<DotsManager>
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
 
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE3);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
                 InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.05f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
@@ -172,10 +172,12 @@ public class DotsManager : Singleton<DotsManager>
         //{
         //    Destroy(dot);
         //}
+        Debug.Log("destory dot now!!!!!!!");
         GameObject[] dotObjects = GameObject.FindGameObjectsWithTag("dot");
-        foreach (GameObject dotObj in dotObjects)
+        foreach (var dotObj in dotObjects)
         {
-            Destroy(dotObj);
+            if(dotObj != null)
+                Destroy(dotObj);
         }
     }
     #endregion

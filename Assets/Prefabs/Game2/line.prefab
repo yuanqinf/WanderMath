@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 1231231
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 3730126579663444068}
   - component: {fileID: 6313118581359116794}
   - component: {fileID: 5877686856750680416}
+  - component: {fileID: 2582284167460070136}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -234,6 +235,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2582284167460070136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4894725489685449434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d0decd0e95d4576b2d84b0315bce2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lenDisplay: {fileID: 5627422793372593313}
 --- !u!1 &6799044895285963287
 GameObject:
   m_ObjectHideFlags: 0
