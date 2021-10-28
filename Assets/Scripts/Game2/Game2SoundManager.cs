@@ -181,7 +181,7 @@ public class Game2SoundManager : MonoBehaviour
         audioSource.PlayOneShot(finishDrawingEffect);
     }
 
-    public void playWrongDrawing()
+    public void PlayWrongDrawing()
     {
         audioSource.PlayOneShot(WrongDrawingAudio);
     }

@@ -209,7 +209,15 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase3()
     {
         // destroy things
-        //dotsManager.InstantiatePhase3Dots();
+        dotsManager.InstantiatePhase3Dots();
+    }
+    #endregion
+
+    #region helper functions
+    public void PlayWrongDrawingWithAnimation()
+    {
+        characterController.PlayTalkingAnimationWithDuration(3.4f);
+        g2SoundManager.PlayWrongDrawing();
     }
     #endregion
 }

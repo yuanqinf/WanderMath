@@ -142,7 +142,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
 
                         ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
-                        if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1))
+                        if ((ratio > 0.9 && ratio < 1.1) || (ratio > 1.9 && ratio < 2.1) || (ratio > 2.9 && ratio < 3.1) || (ratio > 3.9 && ratio < 4.1) || (ratio > 4.9 && ratio < 5.1))
                         {
                             numLines++;
                             isSnapping = true;
@@ -150,7 +150,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         else
                         {
-                            g2SoundManager.playWrongDrawing();
+                            game2Manager.PlayWrongDrawingWithAnimation();
                         }
                     }
                 }
@@ -293,6 +293,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         targetMat.SetFloat("_EmissIntensity", 0.66f);
                     }
                 }
+                // moving ramp face
+                if (ramp2DTouchPosition != Vector2.zero && rampTopFace != null)
+                {
+                    var newTouchpos = touch.position;
+                    var movementRange = 0.008f;
+                    var movingRange = new Vector3(movementRange, 0, 0);
+                    var topFace = rampTopFace.transform.root.GetComponent<ProBuilderMesh>();
+                    topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, new Vector3(0, 0.08f, 0));
+                }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
                 {
@@ -428,7 +437,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     Debug.Log("it is not a square / rectangle");
                     // reset -> add animation
                     numLines = 0;
-                    g2SoundManager.playWrongDrawing();
+                    game2Manager.PlayWrongDrawingWithAnimation();
                     ClearLines();
                     phase2DrawnPos.Clear();
                     return;
