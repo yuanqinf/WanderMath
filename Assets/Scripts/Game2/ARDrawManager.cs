@@ -64,6 +64,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
+    public GameObject rampTopFace = null;
 
     private GameObject touchedPhase3Ramp = null;
 
@@ -159,15 +160,20 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     rampEdge = hitObject.transform.gameObject;
                     // deactivate other edges
                     int edgeNum = int.Parse(rampEdge.name);
-                    foreach(var gameObject in rampEdgeObjects) {
-                        if (gameObject.Key != edgeNum)
-                        {
-                            gameObject.Value.SetActive(false);
-                        }
-                    }
+                    DeactivateOtherColliders(edgeNum);
                     // set ramp edge touch positions in 2D
                     ramp2DTouchPosition = touch.position;
                     Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
+                }
+                if (hitObject.transform.tag == "p3Ramp" && touch.phase == TouchPhase.Began && GamePhase == Constants.GamePhase.PHASE3)
+                {
+                    // Initiate face to be hit
+                    rampTopFace = hitObject.transform.gameObject;
+                    // deactivate other edges, only left ramp
+                    DeactivateOtherColliders(1);
+                    // set ramp edge touch positions in 2D
+                    ramp2DTouchPosition = touch.position;
+                    Debug.Log("initialize rampface " + ramp2DTouchPosition);
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
@@ -495,6 +501,27 @@ public class ARDrawManager : Singleton<ARDrawManager>
         foreach (var gameObject in rampEdgeObjects)
         {
             gameObject.Value.SetActive(isActive);
+        }
+    }
+
+    private void DeactivateOtherColliders(int edgeNum)
+    {
+        foreach (var gameObject in rampEdgeObjects)
+        {
+            if (gameObject.Key != edgeNum)
+            {
+                gameObject.Value.SetActive(false);
+            }
+        }
+        if (rampTopFace != null)
+        {
+            if (edgeNum == 1) {
+                rampTopFace.SetActive(true);
+            }
+            else
+            {
+                rampTopFace.SetActive(false);
+            }
         }
     }
 

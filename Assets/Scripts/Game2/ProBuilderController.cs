@@ -61,6 +61,19 @@ public class ProBuilderController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit raycastHit))
             {
+                if (raycastHit.transform.tag == "p3Ramp")
+                {
+                    foreach(Face f in raycastHit.transform.root.gameObject.GetComponent<ProBuilderMesh>().faces)
+                    {
+                        Debug.Log(f.ToString());
+                        foreach(Edge e in f.edges)
+                        {
+                            Debug.Log(e);
+                        }
+                    }
+                    //ramp.selection
+                    ramp.TranslateVertices(raycastHit.transform.root.gameObject.GetComponent<ProBuilderMesh>().faces.ElementAt(1).edges, new Vector3(0.1f, 0, 0));
+                }
                 if (raycastHit.transform.tag == "ramp")
                 {
                     MoveCubeUp(raycastHit.transform.name);
