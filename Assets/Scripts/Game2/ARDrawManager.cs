@@ -301,7 +301,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     var movementRange = 0.008f;
                     var movingRange = new Vector3(movementRange, 0, 0);
                     var topFace = touchedPhase3Ramp.transform.root.GetComponent<ProBuilderMesh>();
-                    topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, new Vector3(0, 0.08f, 0));
+                    topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, new Vector3(0.08f, 0, 0));
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -392,9 +392,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (GamePhase == Constants.GamePhase.PHASE3)
         {
-            if (touchedPhase3Ramp != null && IsDoubleTap())
+            if (IsDoubleTap())
             {
-                Destroy(touchedPhase3Ramp);
+                Debug.Log("destroy is called without ramp");
+            }
+            if (IsDoubleTapDestroy())
+            {
+                Debug.Log("destroy is called");
+                Destroy(touchedPhase3Ramp.transform.root.gameObject);
             }
         }
     }
@@ -418,46 +423,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
             (var minVector, var maxVector) = GetMinMaxVector();
             // check if a square/rec is formed
-            float maxValue = 0.0f;
-            foreach (Vector3 pos in drawnPositions)
-            {
-                Debug.Log("leftover pos: " + pos);
-                var minMag = (minVector - pos).magnitude;
-                var maxMag = (maxVector - pos).magnitude;
-                maxValue = Mathf.Max(minMag, maxMag);
-                Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-                if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-                {
-                    Debug.Log("it is not a square / rectangle");
-                    // reset -> add animation
-                    numLines = 0;
-                    game2Manager.PlayWrongDrawingWithAnimation();
-                    ClearLines();
-                    drawnPositions.Clear();
-                    return;
-                }
-            }
+            (var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
+            if (!isRect) return;
 
-            // initialize ramp
-            phase2Ramp = Instantiate(phase2Ramp, (minVector + maxVector)/2, phase2Ramp.transform.rotation);
-            DotsManager.Instance.ClearDots();
-            drawnPositions.Clear();
-            InitializeRampEdges();
-            InitializeRampEdgeObjects();
-            SetRampEdgeCollider(false);
-            var volume = 0.0f;
-            if (System.Math.Floor(maxValue * 10f) / 3 == 1)
-            {
-                Debug.Log("it is a square");
-                phase2Ramp.transform.localScale = new Vector3(0.5f, Constants.ONE_FEET, Constants.ONE_FEET);
-                volume = 1.0f;
-            }
-            else
-            {
-                Debug.Log("it is rect");
-                phase2Ramp.transform.localScale = new Vector3(0.5f, 2 * Constants.ONE_FEET, Constants.ONE_FEET);
-                volume = 2.0f;
-            }
+            InitializeRamp((minVector + maxVector) / 2);
+            float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
+            phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
+
             // set initial volume and set up
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(volume);
@@ -471,10 +443,61 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
         {
-            HandleRampInitialization();
+            Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
+            (var minVector, var maxVector) = GetMinMaxVector();
+            // check if a square/rec is formed
+            (var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
+            if (!isRect) return;
+
+            InitializeRamp((minVector + maxVector) / 2);
+            float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
+            phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    /// <summary>
+    /// Initialize ramp, edges and colliders.
+    /// </summary>
+    /// <param name="middlePos"></param>
+    private void InitializeRamp(Vector3 middlePos)
+    {
+        phase2Ramp = Instantiate(phase2Ramp, middlePos, phase2Ramp.transform.rotation);
+        DotsManager.Instance.ClearDots();
+        drawnPositions.Clear();
+        InitializeRampEdges();
+        InitializeRampEdgeObjects();
+        SetRampEdgeCollider(false);
+    }
+
+    /// <summary>
+    /// check if it is rectangle and determines maxLength of rect
+    /// </summary>
+    /// <param name="minVector"></param>
+    /// <param name="maxVector"></param>
+    /// <returns></returns>
+    private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
+    {
+        float maxValue = 0.0f;
+        foreach (Vector3 pos in drawnPositions)
+        {
+            Debug.Log("leftover pos: " + pos);
+            var minMag = (minVector - pos).magnitude;
+            var maxMag = (maxVector - pos).magnitude;
+            maxValue = Mathf.Max(minMag, maxMag);
+            Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+            if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
+            {
+                Debug.Log("it is not a square / rectangle");
+                game2Manager.PlayWrongDrawingWithAnimation();
+                numLines = 0;
+                ClearLines();
+                drawnPositions.Clear();
+                return (maxValue, false);
+            }
+        }
+        return (maxValue, true);
     }
 
     /// <summary>
@@ -501,10 +524,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         drawnPositions.Remove(minVector);
         drawnPositions.Remove(maxVector);
         return (minVector, maxVector);
-    }
-
-    private void HandleRampInitialization()
-    {
     }
 
     private void DrawLineWithoutSnapping()
@@ -584,6 +603,27 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
+    private bool IsDoubleTapDestroy()
+    {
+        bool result = false;
+        float MaxTimeWait = 1;
+        float VariancePosition = 1;
+
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            float DeltaTime = Input.GetTouch(0).deltaTime;
+            float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
+
+            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
+            if (Physics.Raycast(ray, out RaycastHit hitObject))
+            {
+                if (DeltaTime > 0 && DeltaTime < MaxTimeWait && DeltaPositionLenght < VariancePosition && hitObject.transform.tag == Constants.Tags.DestroyCollider)
+                    result = true;
+            }
+        }
+        return result;
+    }
+
     private bool IsDoubleTap()
     {
         bool result = false;
@@ -592,6 +632,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
+            
             float DeltaTime = Input.GetTouch(0).deltaTime;
             float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
 

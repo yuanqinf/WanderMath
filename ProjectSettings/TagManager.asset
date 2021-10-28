@@ -27,6 +27,7 @@ TagManager:
   - ForceField
   - rampEdge
   - p3Ramp
+  - destroyCollider
   layers:
   - Default
   - TransparentFX

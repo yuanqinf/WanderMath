@@ -8,6 +8,7 @@ public static class Constants
     public const float ONE_FEET = 0.3048f;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
+        public const string DestroyCollider = "destroyCollider";
     }
 
     public struct Objects
