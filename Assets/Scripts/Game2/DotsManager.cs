@@ -46,7 +46,7 @@ public class DotsManager : Singleton<DotsManager>
 
                 g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
-                InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.05f, 0), placementPose.rotation);
+                InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }
         }
