@@ -50,7 +50,7 @@ public class Game2SoundManager : MonoBehaviour
     {
         "Cool! We have a rectangle.",
         "Nice! That's the area, the length times the width.",
-        "I have 2 cubic feet of concrete this time. So let's see how tall it'll get!",
+        "I have 1 cubic feet of concrete this time. So let's see how tall it'll get!",
         "To make a ramp, it has to have a slant. So to build it, we'll drag up on one edge."
     };
     private string[] phase2EndSubtitles =
