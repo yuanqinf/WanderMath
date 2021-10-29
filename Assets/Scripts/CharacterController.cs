@@ -81,11 +81,13 @@ public class CharacterController : GenericClass
         //yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
         var skateToRailingDuration = 2.0f;
 
-        StartCoroutine(utils.LerpMovement(initialPos, pointToJumpUp + new Vector3(0.3f, 0, 0), skateToRailingDuration, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateToRailingDuration);
-        // mid jump point
         pointToJumpUp += new Vector3(0.8f, 0, 0);
         pointToJumpDown += new Vector3(-1f, 0, 0);
+
+        StartCoroutine(utils.LerpMovement(initialPos, pointToJumpUp, skateToRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRailingDuration);
+        // mid jump point
+
         Vector3 midPointOfTwoPos = new Vector3();
         midPointOfTwoPos.x = pointToJumpUp.x + (pointToJumpDown.x - pointToJumpUp.x) / 2;
         midPointOfTwoPos.y = pointToJumpUp.y + (pointToJumpDown.y - pointToJumpUp.y) / 2 + 0.4f;

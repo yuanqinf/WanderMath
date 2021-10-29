@@ -709,6 +709,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
         goLineRenderer.material = defaultColorMaterial;
         goLineRenderer.useWorldSpace = true;
         goLineRenderer.positionCount = positionCount;
+        goLineRenderer.SetPosition(0, currentLineGameObject.transform.position);
+        goLineRenderer.SetPosition(1, currentLineGameObject.transform.position);
         //goLineRenderer.numCapVertices = 90;
 
         SetLineSettings(goLineRenderer);
