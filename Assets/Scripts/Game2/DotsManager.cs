@@ -157,7 +157,8 @@ public class DotsManager : Singleton<DotsManager>
             for (int j = 0; j < cols; j++)
             {
                 var newPos = newLeft + new Vector3(j * Constants.ONE_FEET, 0, 0);
-                InstantiateDotsWithAnchor(dot, newPos, dot.transform.rotation);
+                var obj = InstantiateDotsWithAnchor(dot, newPos, dot.transform.rotation);
+                obj.name = $"dot_{i}_{j}";
             }
         }
     }
@@ -195,17 +196,19 @@ public class DotsManager : Singleton<DotsManager>
         others.Add(InstantiateWithAnchor(prefab, pos, rotation));
     }
 
-    private void InstantiateDotsWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
+    private GameObject InstantiateDotsWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
     {
-        dots.Add(InstantiateWithAnchor(prefab, pos, rotation));
+        var gameObject = InstantiateWithAnchor(prefab, pos, rotation);
+        dots.Add(gameObject);
+        return gameObject;
     }
     private GameObject InstantiateWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
     {
         var instance = Instantiate(prefab, pos, rotation);
-        if (instance.GetComponent<ARAnchor>() == null)
-        {
-            instance.AddComponent<ARAnchor>();
-        }
+        //if (instance.GetComponent<ARAnchor>() == null)
+        //{
+        //    instance.AddComponent<ARAnchor>();
+        //}
         return instance;
     }
     #endregion
