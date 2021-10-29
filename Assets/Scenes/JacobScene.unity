@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -253,9 +253,11 @@ MonoBehaviour:
   arCamera: {fileID: 922230702}
   lineWidth: 0.01
   linePrefab: {fileID: 6799044895285963287, guid: c2fc2852c3d0b406cadf803c1c9cce1f, type: 3}
+  genericRamp: {fileID: 2454388121701374403, guid: e56d924c4b888413b918760531a24f79, type: 3}
   phase2Ramp: {fileID: 2454388121701374403, guid: e56d924c4b888413b918760531a24f79, type: 3}
   ramp2DTouchPosition: {x: 0, y: 0}
-  rampEdge: {fileID: 0}
+  rec2DTouchPosition: {x: 0, y: 0}
+  rampEdgeCollider: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   endPos: {x: 0, y: 0, z: 0}
   movingTouchPosition: {x: 0, y: 0, z: 0}
@@ -1817,7 +1819,6 @@ MonoBehaviour:
   goodSoundEffect: {fileID: 8300000, guid: 16a6bbba3fd3547479b80dfcaab6cd3c, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
   WrongDrawingAudio: {fileID: 8300000, guid: da783829a1d434880b2654c96537ea42, type: 3}
-  finishDrawingAudio: {fileID: 8300000, guid: a85cdfa6d389948c197e2fca1e28b36c, type: 3}
   liftWrongVolAudio: {fileID: 8300000, guid: bc91f8d772fe04291a8f9162abd6e4ec, type: 3}
 --- !u!4 &1314368971
 Transform:
