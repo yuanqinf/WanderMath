@@ -286,7 +286,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("edge moving up");
                         faceHeight += Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, movingRange);
-                        rampEdgeCollider.transform.localPosition += movingRange;
+                        topFace.transform.localPosition += movingRange;
                         uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4);
                     }
                     else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && faceHeight > 0f)
@@ -294,7 +294,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("edge moving down");
                         faceHeight -= Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, -movingRange);
-                        rampEdgeCollider.transform.localPosition -= movingRange;
+                        topFace.transform.localPosition -= movingRange;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
                     // set UI height: with face height

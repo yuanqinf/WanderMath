@@ -15,7 +15,7 @@ public class LineController : MonoBehaviour
     public void SetDistance(float distance)
     {
         var newRatio = distance / Constants.ONE_FEET;
-        distanceText.text = newRatio.ToString("F2") + " ft";
+        distanceText.text = newRatio.ToString("F1") + " ft";
     }
 
     public void SetPosition(Vector3 pos)
