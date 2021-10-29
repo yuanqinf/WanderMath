@@ -609,7 +609,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         gameObjSet.Clear();
         InitializeRampEdges();
-        InitializeRampEdgeObjects();
+        InitializeRampEdgeObjects(phase2Ramp.gameObject);
         InitializeRampTopObject(phase2Ramp.gameObject);
         SetRampEdgeCollider(true); // TODO: change when audio changes
     }
@@ -624,7 +624,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         DotsManager.Instance.ClearDots();
         gameObjSet.Clear();
         InitializeRampEdges();
-        InitializeRampEdgeObjects();
+        InitializeRampEdgeObjects(phase2Ramp.gameObject);
         SetRampEdgeCollider(false);
     }
 
@@ -690,14 +690,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         rampTopObject = ramp.transform.FindChild("top").gameObject;
     }
-    private void InitializeRampEdgeObjects()
+    // only initialize when its parent
+    private void InitializeRampEdgeObjects(GameObject parent)
     {
-        // TODO: might have error here when having multiple objects
         GameObject[] edgeObjects = GameObject.FindGameObjectsWithTag("rampEdge");
         foreach(GameObject edge in edgeObjects)
         {
-            Debug.Log("edge object found: " + edge.gameObject.name);
-            rampEdgeObjects.Add(int.Parse(edge.gameObject.name), edge);
+            if (edge.transform.IsChildOf(parent.transform))
+            {
+                Debug.Log("edge object found: " + edge.gameObject.name);
+                rampEdgeObjects.Add(int.Parse(edge.gameObject.name), edge);
+            }
         }
     }
     private void InitializeRampEdges()
