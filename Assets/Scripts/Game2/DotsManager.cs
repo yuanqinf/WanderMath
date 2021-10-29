@@ -44,7 +44,7 @@ public class DotsManager : Singleton<DotsManager>
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
 
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE1);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
                 InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
@@ -95,10 +95,10 @@ public class DotsManager : Singleton<DotsManager>
     public void ActivatePhase1Cube()
     {
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
+        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
+        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
+        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
+        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         ClearDots();
         //arDrawManager.ClearLines();

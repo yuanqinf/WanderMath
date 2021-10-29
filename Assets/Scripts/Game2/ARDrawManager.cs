@@ -112,6 +112,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public void DrawOnTouch()
     {
+        var squareHeight = 0.0f;
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -191,27 +192,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         boxNewRealWorldPosition = hitObject.point;
                         var uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
 
-                        double curVolNum = System.Math.Round(hitObject.transform.GetComponent<BoxCollider>().bounds.size.x * 3.28084 *
-                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.y * 3.28084 *
-                                                      hitObject.transform.GetComponent<BoxCollider>().bounds.size.z * 3.28084 / 1.4, 1);
+                        var curVolNum = System.Math.Round((hitObject.transform.parent.transform.localScale.y / 0.57f), 1);
+                        Debug.Log("hitObject.transform.parent.transform.localScale.y: " + hitObject.transform.parent.transform.localScale.y);
+                        Debug.Log("this is curVolNum: " + curVolNum);
 
-                        // update concrete UI fill display
-                        if((float)curVolNum / 1 > 1)
-                        {
-                            concreteVolDisplay.text = "Vol: " + (float)curVolNum + " ft<sup>3</sup>";
-                            concreteUIFill.fillAmount = 1;
-                        }
-                        else
-                        {
-                            concreteVolDisplay.text = "Vol: " + (float)curVolNum + " ft<sup>3</sup>";
-                            concreteUIFill.fillAmount = (float)curVolNum / 2;
-                        }
-
-                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.x: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.x);
-                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.y: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.y);
-                        Debug.Log("this i hitObject.transform.GetComponent<BoxCollider>().bounds.size.z: " + hitObject.transform.GetComponent<BoxCollider>().bounds.size.z);
-
-                        if (curVolNum > 0.9 && curVolNum < 1.1)
+                        if (curVolNum > 0.95 && curVolNum < 1.05)
                         {
                             //glow effect here
                             GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
@@ -226,21 +211,28 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             canCubeLiftingSnap = false;
                         }
 
-                        if (boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05)
+                        if ((boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05))
                         {
                             Debug.Log("lifting it now---------------------------------------");
-                            uINumberControl.SetVolDisplay(curVolNum);
+                            if(curVolNum > 1)
+                            {
+                                uINumberControl.SetVolDisplay(1);
+                            }
+                            else
+                            {
+                                uINumberControl.SetVolDisplay(curVolNum);
+                            }
                             // 3d shape lift
                             hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
                             // 3d ui lift
-                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.005f, 0);
+                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
                         }
                         else if ((boxNewRealWorldPosition.z < boxInitialRealWorldPosition.z - 0.05 || boxNewRealWorldPosition.y < boxInitialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
                         {
                             Debug.Log("drag it down---------------------------------------");
                             uINumberControl.SetVolDisplay(curVolNum);
                             hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
-                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.005f, 0);
+                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
                         }
 
                     }
