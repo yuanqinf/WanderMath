@@ -145,7 +145,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         else
                         {
-                            game2Manager.PlayWrongDrawingWithAnimation();
+                            //game2Manager.PlayWrongDrawingWithAnimation();
+                            game2Manager.PlayWrongDiagonalWithAnimation();
                         }
                     }
                 }
@@ -447,7 +448,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             if (gameObjSet.Count != 4)
             {
                 Debug.Log("not a rectangle/square");
-                game2Manager.PlayWrongDrawingWithAnimation();
+                game2Manager.PlayWrongLinesWithAnimation();
                 numLines = 0;
                 ClearLines();
                 gameObjSet.Clear();
@@ -479,15 +480,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
         {
             // same code as above
-            if (gameObjSet.Count != 4)
-            {
-                Debug.Log("not a rectangle/square");
-                game2Manager.PlayWrongDrawingWithAnimation();
-                numLines = 0;
-                ClearLines();
-                gameObjSet.Clear();
-                return; // not 4 unique points, so not rectangle
-            }
+            if (!CheckIfRect()) return;
             var dotPoints = GetDotPoints();
             var maxLength = GetMaxPoints(dotPoints);
 
@@ -503,9 +496,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(maxLength);
             uiNumberControl.Height = 0;
+            // difference in code
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    private bool CheckIfRect()
+    {
+        if (gameObjSet.Count != 4)
+        {
+            Debug.Log("not a rectangle/square");
+            game2Manager.PlayWrongLinesWithAnimation();
+            numLines = 0;
+            ClearLines();
+            gameObjSet.Clear();
+            return false; // not 4 unique points, so not rectangle
+        }
+        return true;
     }
 
     private int GetMaxPoints(List<(int, int)> dotPoints)
@@ -547,93 +555,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         SetRampEdgeCollider(false);
     }
 
-    /// <summary>
-    /// check if it is rectangle and determines maxLength of rect
-    /// </summary>
-    /// <param name="minVector"></param>
-    /// <param name="maxVector"></param>
-    /// <returns></returns>
-    //private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
-    //{
-        //float maxValue = 0.0f;
-
-        //var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
-        //var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
-
-        //var dot1 = drawnPositions.ElementAt(0);
-        //var dot2 = drawnPositions.ElementAt(1);
-        //var dot3 = drawnPositions.ElementAt(2);
-        //var dot4 = drawnPositions.ElementAt(3);
-        //var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
-        //var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
-        //var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
-        //var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
-
-        //Debug.Log("line1: " + line1.ToString("N4"));
-        //Debug.Log("line2: " + line2.ToString("N4"));
-        //Debug.Log("line3: " + line3.ToString("N4"));
-        //Debug.Log("line4: " + line4.ToString("N4"));
-
-        //if (line1 == line2 && line1 == line3 && line1 == line4)
-        //{
-        //    Debug.Log("rect is formed");
-        //    return (maxValue, true);
-        //} else
-        //{
-        //    Debug.Log("rect is not formed");
-        //    return (maxValue, false);
-        //}
-
-        //foreach (Vector3 pos in drawnPositions)
-        //{
-        //    Debug.Log("drawnPositions: " + pos);
-
-            //var minMag = (minVector - pos).magnitude;
-            //var maxMag = (maxVector - pos).magnitude;
-            //maxValue = Mathf.Max(minMag, maxMag);
-            //Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-            //if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-            //{
-            //    Debug.Log("it is not a square / rectangle");
-            //    game2Manager.PlayWrongDrawingWithAnimation();
-            //    numLines = 0;
-            //    ClearLines();
-            //    drawnPositions.Clear();
-            //    return (maxValue, false);
-            //}
-        //}
-        //return (maxValue, true);
-    //}
-
-    /// <summary>
-    /// Get min and max vectors from drawnPositions
-    /// </summary>
-    /// <returns></returns>
-    //private (Vector3, Vector3) GetMinMaxVector()
-    //{
-    //    Vector3 minVector = Vector3.positiveInfinity;
-    //    Vector3 maxVector = Vector3.zero;
-    //    foreach (Vector3 pos in drawnPositions)
-    //    {
-    //        //    minVector = Vector3.Min(pos, minVector);
-    //        //    maxVector = Vector3.Max(pos, maxVector);
-    //        Debug.Log("vector pos: " + pos.ToString("N4"));
-    //        minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
-    //        maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
-    //    }
-    //    Debug.Log("minVector positions before: " + minVector.ToString("N4"));
-    //    Debug.Log("maxVector positions before: " + maxVector.ToString("N4"));
-    //    if (minVector.x > maxVector.x)
-    //    {
-    //        (minVector, maxVector) = (maxVector, minVector);
-    //    }
-    //    Debug.Log("minVector positions after: " + minVector.ToString("N4"));
-    //    Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
-    //    //drawnPositions.Remove(minVector);
-    //    //drawnPositions.Remove(maxVector);
-    //    return (minVector, maxVector);
-    //}
-
     private void DrawLineWithoutSnapping()
     {
         // drawing line while not snap to any object
@@ -662,7 +583,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
             gameObject.Value.SetActive(isActive);
         }
     }
-
+    /// <summary>
+    /// Activate ramp top or 1 edge.
+    /// </summary>
+    /// <param name="edgeNum"></param>
     private void DeactivateOtherColliders(int edgeNum)
     {
         foreach (var gameObject in rampEdgeObjects)
@@ -823,6 +747,93 @@ public class ARDrawManager : Singleton<ARDrawManager>
     // TODO in the future: convert to touch position to raycast position
     // Tried to minus the diff between raycast and the conversion but it is not accurate.
     //arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
+
+    /// <summary>
+    /// check if it is rectangle and determines maxLength of rect
+    /// </summary>
+    /// <param name="minVector"></param>
+    /// <param name="maxVector"></param>
+    /// <returns></returns>
+    //private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
+    //{
+    //float maxValue = 0.0f;
+
+    //var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
+    //var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
+
+    //var dot1 = drawnPositions.ElementAt(0);
+    //var dot2 = drawnPositions.ElementAt(1);
+    //var dot3 = drawnPositions.ElementAt(2);
+    //var dot4 = drawnPositions.ElementAt(3);
+    //var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
+    //var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
+    //var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
+    //var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
+
+    //Debug.Log("line1: " + line1.ToString("N4"));
+    //Debug.Log("line2: " + line2.ToString("N4"));
+    //Debug.Log("line3: " + line3.ToString("N4"));
+    //Debug.Log("line4: " + line4.ToString("N4"));
+
+    //if (line1 == line2 && line1 == line3 && line1 == line4)
+    //{
+    //    Debug.Log("rect is formed");
+    //    return (maxValue, true);
+    //} else
+    //{
+    //    Debug.Log("rect is not formed");
+    //    return (maxValue, false);
+    //}
+
+    //foreach (Vector3 pos in drawnPositions)
+    //{
+    //    Debug.Log("drawnPositions: " + pos);
+
+    //var minMag = (minVector - pos).magnitude;
+    //var maxMag = (maxVector - pos).magnitude;
+    //maxValue = Mathf.Max(minMag, maxMag);
+    //Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+    //if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
+    //{
+    //    Debug.Log("it is not a square / rectangle");
+    //    game2Manager.PlayWrongDrawingWithAnimation();
+    //    numLines = 0;
+    //    ClearLines();
+    //    drawnPositions.Clear();
+    //    return (maxValue, false);
+    //}
+    //}
+    //return (maxValue, true);
+    //}
+
+    /// <summary>
+    /// Get min and max vectors from drawnPositions
+    /// </summary>
+    /// <returns></returns>
+    //private (Vector3, Vector3) GetMinMaxVector()
+    //{
+    //    Vector3 minVector = Vector3.positiveInfinity;
+    //    Vector3 maxVector = Vector3.zero;
+    //    foreach (Vector3 pos in drawnPositions)
+    //    {
+    //        //    minVector = Vector3.Min(pos, minVector);
+    //        //    maxVector = Vector3.Max(pos, maxVector);
+    //        Debug.Log("vector pos: " + pos.ToString("N4"));
+    //        minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
+    //        maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
+    //    }
+    //    Debug.Log("minVector positions before: " + minVector.ToString("N4"));
+    //    Debug.Log("maxVector positions before: " + maxVector.ToString("N4"));
+    //    if (minVector.x > maxVector.x)
+    //    {
+    //        (minVector, maxVector) = (maxVector, minVector);
+    //    }
+    //    Debug.Log("minVector positions after: " + minVector.ToString("N4"));
+    //    Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
+    //    //drawnPositions.Remove(minVector);
+    //    //drawnPositions.Remove(maxVector);
+    //    return (minVector, maxVector);
+    //}
 
     /// <summary>
     /// Helpful method used to draw freehand.

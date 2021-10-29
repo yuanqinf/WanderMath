@@ -225,5 +225,15 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.PlayTalkingAnimationWithDuration(3.4f);
         g2SoundManager.PlayWrongDrawing();
     }
+    public void PlayWrongDiagonalWithAnimation()
+    {
+        characterController.PlayTalkingAnimationWithDuration(3f);
+        g2SoundManager.PlayWrongDiagonal();
+    }
+    public void PlayWrongLinesWithAnimation()
+    {
+        characterController.PlayTalkingAnimationWithDuration(3f);
+        g2SoundManager.PlayWrongLines();
+    }
     #endregion
 }
