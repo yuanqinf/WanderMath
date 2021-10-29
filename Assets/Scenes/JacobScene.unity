@@ -1807,7 +1807,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d7a380d7e6efc4476956dfba50546082, type: 3}
   - {fileID: 8300000, guid: 2624b6d235ac84f91b1727ef759e24dd, type: 3}
   - {fileID: 8300000, guid: cd51dfbffa95b4014b08a9f12ffcd346, type: 3}
-  phase2BestRampAudio: {fileID: 0}
+  phase2BestRampAudio: {fileID: 8300000, guid: 226d48e6104724b3b91f592dfc40ced3, type: 3}
   phase3Start: []
   phase3Mid: []
   phase3End: []
