@@ -59,12 +59,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {7, 0},
     };
     private Dictionary<int, GameObject> rampEdgeObjects = new Dictionary<int, GameObject>();
+    private GameObject rampTopObject = null;
     private float phase2RampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public Vector2 rec2DTouchPosition = Vector2.zero;
     public GameObject rampEdgeCollider = null;
     private GameObject rampTopCollider = null;
+    private float rampTopHeight = 0f;
 
     private int positionCount = 2;
     private Vector3 prevPointDistance = Vector3.zero;
@@ -83,8 +85,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private Game2Manager game2Manager;
     private Game2SoundManager g2SoundManager;
 
-    private Boolean canCubeLiftingSnap = false;
-
+    private bool canCubeLiftingSnap = false;
 
     private GameObject liftableCube;
 
@@ -292,29 +293,28 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     var newTouchpos = touch.position;
                     var movingRange = new Vector3(Constants.MOVEMENT_RANGE, 0, 0);
                     var topFace = rampTopCollider.transform.root.GetComponent<ProBuilderMesh>();
-                    var faceHeight = 0f;
 
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
-                    if (newTouchpos.y - ramp2DTouchPosition.y > 0)
+                    if (newTouchpos.y > ramp2DTouchPosition.y)
                     {
-                        Debug.Log("edge moving up");
-                        faceHeight += Constants.MOVEMENT_RANGE;
+                        Debug.Log("top moving up");
+                        rampTopHeight += Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, movingRange);
                         rampTopCollider.transform.localPosition += movingRange;
                         uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4);
                     }
-                    else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && faceHeight > 0f)
+                    else if (newTouchpos.y < ramp2DTouchPosition.y && rampTopHeight > 0f)
                     {
-                        Debug.Log("edge moving down");
-                        faceHeight -= Constants.MOVEMENT_RANGE;
+                        Debug.Log("top moving down");
+                        rampTopHeight -= Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, -movingRange);
                         rampTopCollider.transform.localPosition -= movingRange;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
                     // set UI height: with face height
-                    uiNumberControl.Height = faceHeight / Constants.ONE_FEET;
-                    phase2RampVolume = (float)(faceHeight * uiNumberControl.area / Constants.ONE_FEET);
+                    uiNumberControl.Height = rampTopHeight / Constants.ONE_FEET;
+                    phase2RampVolume = (float)(rampTopHeight * uiNumberControl.area / Constants.ONE_FEET);
                     uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 1));
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
@@ -390,7 +390,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         game2Manager.StartPhase2End(animeStartPt, animeEndPt, phase2RampHeight);
                         SetRampEdgeCollider(false);
                     }
-
+                    Debug.Log("rampheight: " + phase2RampHeight);
                     // reset ramp positions and height
                     if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                     {
@@ -400,6 +400,31 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         ramp2DTouchPosition = Vector2.zero;
                         rampEdgeCollider = null;
+                    }
+                }
+                if (GamePhase == Constants.GamePhase.PHASE3)
+                {
+                    // reset ramp edge positions and height
+                    if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
+                    {
+                        if (phase2RampHeight <= 0)
+                        {
+                            SetRampEdgeCollider(true);
+                            SetRampTopCollider(true);
+                        }
+                        ramp2DTouchPosition = Vector2.zero;
+                        rampEdgeCollider = null;
+                    }
+                    // reset ramp top 
+                    if (ramp2DTouchPosition != Vector2.zero && rampTopCollider != null)
+                    {
+                        if (rampTopHeight <= 0)
+                        {
+                            SetRampEdgeCollider(true);
+                            SetRampTopCollider(true);
+                        }
+                        ramp2DTouchPosition = Vector2.zero;
+                        rampTopCollider = null;
                     }
                 }
 
@@ -574,6 +599,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         rampEdgeObjects.Clear(); // clear previous edges
         rampTopEdges.Clear();
+        rampTopObject = null;
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         ClearLines();
         foreach(GameObject gameObject in gameObjSet)
@@ -584,6 +610,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         gameObjSet.Clear();
         InitializeRampEdges();
         InitializeRampEdgeObjects();
+        InitializeRampTopObject(phase2Ramp.gameObject);
         SetRampEdgeCollider(true); // TODO: change when audio changes
     }
 
@@ -621,6 +648,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         lineController.SetPosition(midPointOfTwoPos);
     }
 
+    private void SetRampTopCollider(bool isActive)
+    {
+        Debug.Log("rampTopObject is: " + rampTopObject.name);
+        rampTopObject.SetActive(isActive);
+    }
     public void SetRampEdgeCollider(bool isActive)
     {
         // activate all colliders when height is 0
@@ -642,20 +674,25 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 gameObject.Value.SetActive(false);
             }
         }
-        if (rampTopCollider != null)
+        if (rampTopObject != null)
         {
             if (edgeNum == 1) {
-                rampTopCollider.SetActive(true);
+                SetRampTopCollider(true);
             }
             else
             {
-                rampTopCollider.SetActive(false);
+                SetRampTopCollider(false);
             }
         }
     }
 
+    private void InitializeRampTopObject(GameObject ramp)
+    {
+        rampTopObject = ramp.transform.FindChild("top").gameObject;
+    }
     private void InitializeRampEdgeObjects()
     {
+        // TODO: might have error here when having multiple objects
         GameObject[] edgeObjects = GameObject.FindGameObjectsWithTag("rampEdge");
         foreach(GameObject edge in edgeObjects)
         {
