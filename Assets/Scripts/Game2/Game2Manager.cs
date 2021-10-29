@@ -185,22 +185,23 @@ public class Game2Manager : Singleton<Game2Manager>
         arDrawManager.concreteUIDisplay.SetActive(true);
         arDrawManager.concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
         arDrawManager.concreteUIFill.fillAmount = 0;
+        // TODO: remove height earlier and add here
         yield return new WaitForSeconds(5.3f + 7.6f);
         arDrawManager.SetRampEdgeCollider(true);
     }
 
-    public void StartPhase2End()
+    public void StartPhase2End(Vector3 startPos, Vector3 endPos, float rampHeight)
     {
         dotsManager.ClearDots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
         characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
-        StartCoroutine(Phase2EndingAnimation());
+        StartCoroutine(Phase2EndingAnimation(startPos, endPos, rampHeight));
     }
-    IEnumerator Phase2EndingAnimation()
+    IEnumerator Phase2EndingAnimation(Vector3 startPos, Vector3 endPos, float rampHeight)
     {
         yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
         arDrawManager.ClearLines();
-        characterController.SkateOnRamp(rampStartPoint, rampEndPoint, rampHeight / 2.0f);
+        characterController.SkateOnRamp(startPos, endPos, rampHeight / 2.0f);
         Debug.Log("startPoint: " + rampStartPoint);
         Debug.Log("rampEndPoint: " + rampEndPoint);
         Debug.Log("rampHeight: " + rampHeight);

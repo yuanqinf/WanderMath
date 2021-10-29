@@ -12,7 +12,7 @@ public class UINumberControl : MonoBehaviour
     public Canvas uiDisplay;
     private Camera cam;
     private double _height;
-    public double Height { get { return _height; } set { _height = value; heightDisplay.text = "H: " + value.ToString("F2") + " ft"; } }
+    public double Height { get { return _height; } set { _height = value; heightDisplay.text = "H: " + value.ToString("F1") + " ft"; } }
     public double area;
 
     private void Start()

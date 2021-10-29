@@ -64,7 +64,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
     public Vector2 rec2DTouchPosition = Vector2.zero;
-    public GameObject rampEdge = null;
+    public GameObject rampEdgeCollider = null;
     private GameObject touchedPhase3Ramp = null;
 
     private int positionCount = 2;
@@ -112,7 +112,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     public void DrawOnTouch()
     {
-        var squareHeight = 0.0f;
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -155,9 +154,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     if (hitObject.transform.tag == "rampEdge")
                     {
                         // Initiate edge to be hit
-                        rampEdge = hitObject.transform.gameObject;
+                        rampEdgeCollider = hitObject.transform.gameObject;
                         // deactivate other edges
-                        int edgeNum = int.Parse(rampEdge.name);
+                        int edgeNum = int.Parse(rampEdgeCollider.name);
                         DeactivateOtherColliders(edgeNum);
                         // set ramp edge touch positions in 2D
                         ramp2DTouchPosition = touch.position;
@@ -235,13 +234,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
 
                 // moving ramp after phase2
-                if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
+                if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                 {
                     var newTouchpos = touch.position;
                     var movementRange = 0.008f;
                     var movingRange = new Vector3(movementRange, 0, 0);
 
-                    int edgeNum = int.Parse(rampEdge.transform.name);
+                    int edgeNum = int.Parse(rampEdgeCollider.transform.name);
                     var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
@@ -250,14 +249,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("edge moving up");
                         edgeHeights[edgeNum] += movementRange;
                         phase2Ramp.TranslateVertices(movingEdge, movingRange);
-                        rampEdge.transform.localPosition += movingRange;
+                        rampEdgeCollider.transform.localPosition += movingRange;
                         uiNumberControl.IncreaseCanvasY(movementRange / 4);
                     } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeHeights[edgeNum] > 0f)
                     {
                         Debug.Log("edge moving down");
                         edgeHeights[edgeNum] -= movementRange;
                         phase2Ramp.TranslateVertices(movingEdge, -movingRange);
-                        rampEdge.transform.localPosition -= movingRange;
+                        rampEdgeCollider.transform.localPosition -= movingRange;
                         uiNumberControl.IncreaseCanvasY(-movementRange / 4);
                     }
                     // set UI height: with edgeHeights[i]
@@ -337,20 +336,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
                 {
-                    // reset ramp positions and height
-                    if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
-                    {
-                        if (phase2RampHeight <= 0)
-                        {
-                            SetRampEdgeCollider(true);
-                        }
-                        ramp2DTouchPosition = Vector2.zero;
-                        rampEdge = null;
-                    }
                     // snaping for ramp
                     // TODO: apply to all cases in ramp
                     if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f)
                     {
+                        int edgeNum = int.Parse(rampEdgeCollider.transform.name);
+
                         Debug.Log("completed ramp");
                         game2Manager.rampHeight = phase2RampHeight;
                         // phase 2 vol number snap
@@ -360,8 +351,49 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         concreteUIDisplay.SetActive(false);
                         concreteUIFill.fillAmount = 0;
 
-                        game2Manager.StartPhase2End();
+                        // settle which position to use for animation
+                        var topLeft = phase2Ramp.transform.FindChild("TopLeft").transform.position;
+                        var topRight = phase2Ramp.transform.FindChild("TopRight").transform.position;
+                        var botLeft = phase2Ramp.transform.FindChild("BotLeft").transform.position;
+                        var botRight = phase2Ramp.transform.FindChild("BotRight").transform.position;
+
+                        var animeEndPt = Vector3.zero;
+                        var animeStartPt = Vector3.zero;
+                        switch (edgeNum)
+                        {
+                            case 4:
+                                animeEndPt= (topRight + botRight) / 2;
+                                animeStartPt = (topLeft + botLeft) / 2;
+                                break;
+                            case 5:
+                                animeEndPt = (botLeft + botRight) / 2;
+                                animeStartPt = (topLeft + topRight) / 2;
+                                break;
+                            case 6:
+                                animeEndPt = (topLeft + topRight) / 2;
+                                animeStartPt = (botLeft + botRight) / 2;
+                                break;
+                            case 7:
+                                animeEndPt = (topLeft + botLeft) / 2;
+                                animeStartPt = (topRight + botRight) / 2;
+                                break;
+                        }
+                        Debug.Log("animeStartPt: " + animeStartPt);
+                        Debug.Log("animeEndPt: " + animeEndPt);
+                        Debug.Log("phase2RampHeight: " + phase2RampHeight);
+                        game2Manager.StartPhase2End(animeStartPt, animeEndPt, phase2RampHeight);
                         SetRampEdgeCollider(false);
+                    }
+
+                    // reset ramp positions and height
+                    if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
+                    {
+                        if (phase2RampHeight <= 0)
+                        {
+                            SetRampEdgeCollider(true);
+                        }
+                        ramp2DTouchPosition = Vector2.zero;
+                        rampEdgeCollider = null;
                     }
                 }
 
@@ -380,15 +412,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (GamePhase == Constants.GamePhase.PHASE3)
         {
-            if (IsDoubleTap())
-            {
-                Debug.Log("destroy is called without ramp");
-            }
-            if (IsDoubleTapDestroy())
-            {
-                Debug.Log("destroy is called");
-                Destroy(touchedPhase3Ramp.transform.root.gameObject);
-            }
+            //if (IsDoubleTap())
+            //{
+            //    Debug.Log("destroy is called without ramp");
+            //}
+            //if (IsDoubleTapDestroy())
+            //{
+            //    Debug.Log("destroy is called");
+            //    Destroy(touchedPhase3Ramp.transform.root.gameObject);
+            //}
         }
     }
 
@@ -408,7 +440,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            Debug.Log("total dots drawn: " + gameObjSet.Count); // should be 4
             foreach(GameObject game in gameObjSet)
             {
                 Debug.Log("name in set is: " + game.transform.name);
@@ -447,15 +478,31 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
         {
-            //Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
-            //(var minVector, var maxVector) = GetMinMaxVector();
-            //// check if a square/rec is formed
-            //(var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
-            //if (!isRect) return;
+            // same code as above
+            if (gameObjSet.Count != 4)
+            {
+                Debug.Log("not a rectangle/square");
+                game2Manager.PlayWrongDrawingWithAnimation();
+                numLines = 0;
+                ClearLines();
+                gameObjSet.Clear();
+                return; // not 4 unique points, so not rectangle
+            }
+            var dotPoints = GetDotPoints();
+            var maxLength = GetMaxPoints(dotPoints);
 
-            //InitializeRamp((minVector + maxVector) / 2);
-            //float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
-            //phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
+            var initializePos = Vector3.zero;
+            foreach (GameObject gameObject in gameObjSet)
+            {
+                initializePos += gameObject.transform.position;
+            }
+
+            InitializeRamp(initializePos / 4);
+            phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
+            // set initial volume and set up
+            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+            uiNumberControl.SetAreaDisplay(maxLength);
+            uiNumberControl.Height = 0;
         }
         isSnapping = false;
         currentLineRender = null;
