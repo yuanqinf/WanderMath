@@ -175,6 +175,7 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ClearDots()
     {
+        dots.Clear();
         Debug.Log("destory dot now!!!!!!!");
         GameObject[] dotObjects = GameObject.FindGameObjectsWithTag("dot");
         foreach (var dotObj in dotObjects)
