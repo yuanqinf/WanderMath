@@ -194,18 +194,22 @@ public class Game2Manager : Singleton<Game2Manager>
     {
         dotsManager.ClearDots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
-        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 6.7f);
+        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 1.7f);
         StartCoroutine(Phase2EndingAnimation(startPos, endPos, rampHeight));
     }
     IEnumerator Phase2EndingAnimation(Vector3 startPos, Vector3 endPos, float rampHeight)
     {
-        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 6.7f + 1f);
+        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 1.7f + 1f);
         arDrawManager.ClearLines();
         characterController.SkateOnRamp(startPos, endPos, rampHeight / 2.0f);
         Debug.Log("startPoint: " + rampStartPoint);
         Debug.Log("rampEndPoint: " + rampEndPoint);
         Debug.Log("rampHeight: " + rampHeight);
         yield return new WaitForSeconds(11f);
+        // play best ramp ever line after animation
+        g2SoundManager.PlayBestRampEver();
+        characterController.PlayTalkingAnimationWithDuration(3.9f);
+        yield return new WaitForSeconds(4f);
         SetGamePhase(Constants.GamePhase.PHASE3);
         arDrawManager.DestoryRampAndReferences();
     }

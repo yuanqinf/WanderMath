@@ -58,8 +58,11 @@ public class Game2SoundManager : MonoBehaviour
         "Whoa, gnarly! Look how tall the ramp is! ",
         "Since it's a triangular prism, a ramp only uses half the concrete that it would if it was a ledge this tall.",
         "So it's length, times width, times height, times 1/2. Saves a lot of concrete for sure!",
-        "Time for testing! This is the best ramp ever! Wow!"
+        "Time for testing!"
     };
+
+    public AudioClip phase2BestRampAudio;
+    private string phase2BestRampSubtitle = "This is the best ramp ever! Wow!";
 
     public AudioClip[] phase3Start;
     public AudioClip[] phase3Mid;
@@ -205,16 +208,21 @@ public class Game2SoundManager : MonoBehaviour
     }
     public void PlayWrongLines()
     {
-        Debug.Log("play wrong line is called");
         if (audioSource.clip == WrongLinesAudio && audioSource.isPlaying)
         {
             return;
         } else
         {
-            Debug.Log("play wrong line is called");
             uiController.PlaySubtitles(wrong4Lines, 4.2f);
             audioSource.PlayOneShot(WrongLinesAudio);
         }
+    }
+
+    // used to play at the end
+    public void PlayBestRampEver()
+    {
+        uiController.PlaySubtitles(phase2BestRampSubtitle, 3.9f);
+        audioSource.PlayOneShot(phase2BestRampAudio);
     }
 
     public void playWrongCubeLiftAudio()

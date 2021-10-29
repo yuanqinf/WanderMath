@@ -461,9 +461,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             uiNumberControl.SetAreaDisplay(maxLength);
             uiNumberControl.Height = 0;
             game2Manager.StartPhase2Mid();
-            // set ramp start point & endpoint
-            //game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
-            //game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
             numLines = 0;
         }
 
