@@ -94,7 +94,9 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip finishDrawingEffect;
     public AudioClip WrongDrawingAudio;
     private string wrongDrawing = "That's too small for my ledge, I need a square.";
+    public AudioClip WrongDiagonalAudio;
     private string wrongDiagonal = "That's a diagonal line, you need to draw a straight line.";
+    public AudioClip WrongLinesAudio;
     private string wrong4Lines = "You must form a square or rectangle with only 4 lines, try drawing again";
 
     public AudioClip liftWrongVolAudio;
@@ -195,11 +197,19 @@ public class Game2SoundManager : MonoBehaviour
 
     public void PlayWrongDiagonal()
     {
-        uiController.PlaySubtitles(wrongDiagonal, 3f);
+        if (!audioSource.isPlaying)
+        {
+            uiController.PlaySubtitles(wrongDiagonal, 3.3f);
+            audioSource.PlayOneShot(WrongDiagonalAudio);
+        }
     }
     public void PlayWrongLines()
     {
-        uiController.PlaySubtitles(wrong4Lines, 3f);
+        if (!audioSource.isPlaying)
+        {
+            uiController.PlaySubtitles(wrong4Lines, 4.2f);
+            audioSource.PlayOneShot(WrongLinesAudio);
+        }
     }
 
     public void playWrongCubeLiftAudio()
