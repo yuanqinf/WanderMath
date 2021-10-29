@@ -207,7 +207,7 @@ public class Game2Manager : Singleton<Game2Manager>
         Debug.Log("rampHeight: " + rampHeight);
         yield return new WaitForSeconds(11f);
         SetGamePhase(Constants.GamePhase.PHASE3);
-        arDrawManager.DestoryRamp();
+        arDrawManager.DestoryRampAndReferences();
     }
     #endregion
 

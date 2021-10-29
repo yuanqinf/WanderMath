@@ -13,8 +13,6 @@ using TMPro;
 public class ARDrawManager : Singleton<ARDrawManager>
 {
     [SerializeField]
-    private float distanceFromCamera = 0.3f; // fix 1 axis
-    [SerializeField]
     private Material defaultColorMaterial;
     [SerializeField]
     private int cornerVertices = 5;
@@ -32,8 +30,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private float minDistanceBeforeNewPoint = 0.01f;
 
     [SerializeField]
-    private UnityEvent OnDraw;
-    [SerializeField]
     private Camera arCamera;
 
     [SerializeField]
@@ -41,12 +37,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private Color randomStartColor = Color.white;
     private Color randomEndColor = Color.white;
 
+    // ramp and line related
     [SerializeField]
     private GameObject linePrefab;
     [SerializeField]
     private ProBuilderMesh genericRamp;
     private ProBuilderMesh phase2Ramp;
-    private LineRenderer prevLineRender;
     private LineRenderer currentLineRender = null;
     private GameObject currentLineGameObject = null;
 
@@ -136,6 +132,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else if (currentLineRender != null && touch.phase == TouchPhase.Ended && !isSnapping)
                     {
                         var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
+                        Debug.Log("points ratio is: " + ratio);
 
                         ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
                         if ((ratio > 0.85 && ratio < 1.15) || (ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15))
@@ -144,7 +141,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             isSnapping = true;
                             g2SoundManager.PlayGoodSoundEffect();
                         }
-                        else
+                        else if (ratio > 0.2)
                         {
                             //game2Manager.PlayWrongDrawingWithAnimation();
                             game2Manager.PlayWrongDiagonalWithAnimation();
@@ -341,7 +338,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         HandleSnapObject();
                     }
                     ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
-                    prevLineRender = currentLineRender;
                     currentLineRender = null;
                     startObject = null;
                     isSnapping = false;
@@ -721,34 +717,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
         SetLineSettings(goLineRenderer);
 
         currentLineRender = goLineRenderer;
-        prevLineRender = currentLineRender;
         lines.Add(goLineRenderer);
 
         ARDebugManager.Instance.LogInfo($"New line renderer created");
     }
 
-    void DrawOnMouse()
+    private void ClearRampRefereces()
     {
-        Vector3 mousePosition = arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
-
-        if (Input.GetMouseButton(0))
-        {
-            OnDraw?.Invoke();
-
-            if (prevLineRender == null)
-            {
-                AddNewLineRenderer(mousePosition);
-            }
-            else
-            {
-                UpdateLine(mousePosition);
-            }
-        }
+        rampTopEdges.Clear();
+        rampEdgeObjects.Clear();
+        gameObjSet.Clear();
+        edgeHeights.Keys.ToList().ForEach(k => edgeHeights[k] = 0);
     }
-
-    public void DestoryRamp()
+    // destroy ramp to calculate next ramp
+    public void DestoryRampAndReferences()
     {
         Destroy(phase2Ramp.gameObject);
+        ClearRampRefereces();
     }
 
     public void ClearLineRenders()
