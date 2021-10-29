@@ -42,8 +42,8 @@ public class DotsManager : Singleton<DotsManager>
             if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 isDotsPlaced = true;
-                // change this to determine which phase to go to
 
+                // change this to determine which phase to go to
                 g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
                 //InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);

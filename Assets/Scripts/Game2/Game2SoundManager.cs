@@ -184,8 +184,11 @@ public class Game2SoundManager : MonoBehaviour
 
     public void PlayWrongDrawing()
     {
-        uiController.PlaySubtitles(wrongDrawing, WrongDrawingAudio.length);
-        audioSource.PlayOneShot(WrongDrawingAudio);
+        if (!audioSource.isPlaying)
+        {
+            uiController.PlaySubtitles(wrongDrawing, WrongDrawingAudio.length);
+            audioSource.PlayOneShot(WrongDrawingAudio);
+        }
     }
 
     public float playFinishDrawingAudio()

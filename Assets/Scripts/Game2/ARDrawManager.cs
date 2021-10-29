@@ -414,6 +414,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
             Debug.Log("total dots drawn: " + drawnPositions.Count); // should be 4
+            foreach(Vector3 pos in drawnPositions)
+            {
+                Debug.Log(pos.ToString("N4"));
+            }
             if (drawnPositions.Count != 4) return; // not 4 unique points
             (var minVector, var maxVector) = GetMinMaxVector();
             // check if a square/rec is formed
@@ -473,24 +477,58 @@ public class ARDrawManager : Singleton<ARDrawManager>
     /// <returns></returns>
     private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
     {
-        float maxValue = 0.0f;
         foreach (Vector3 pos in drawnPositions)
         {
-            Debug.Log("leftover pos: " + pos);
-            var minMag = (minVector - pos).magnitude;
-            var maxMag = (maxVector - pos).magnitude;
-            maxValue = Mathf.Max(minMag, maxMag);
-            Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-            if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-            {
-                Debug.Log("it is not a square / rectangle");
-                game2Manager.PlayWrongDrawingWithAnimation();
-                numLines = 0;
-                ClearLines();
-                drawnPositions.Clear();
-                return (maxValue, false);
-            }
+            Debug.Log("drawnPositions: " + pos.ToString("N4"));
         }
+
+        float maxValue = 0.0f;
+
+        var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
+        var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
+
+        var dot1 = drawnPositions.ElementAt(0);
+        var dot2 = drawnPositions.ElementAt(1);
+        var dot3 = drawnPositions.ElementAt(2);
+        var dot4 = drawnPositions.ElementAt(3);
+        var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
+        var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
+        var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
+        var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
+
+        Debug.Log("line1: " + line1.ToString("N4"));
+        Debug.Log("line2: " + line2.ToString("N4"));
+        Debug.Log("line3: " + line3.ToString("N4"));
+        Debug.Log("line4: " + line4.ToString("N4"));
+
+        if (line1 == line2 && line1 == line3 && line1 == line4)
+        {
+            Debug.Log("rect is formed");
+            return (maxValue, true);
+        } else
+        {
+            Debug.Log("rect is not formed");
+            return (maxValue, false);
+        }
+
+        //foreach (Vector3 pos in drawnPositions)
+        //{
+        //    Debug.Log("drawnPositions: " + pos);
+
+            //var minMag = (minVector - pos).magnitude;
+            //var maxMag = (maxVector - pos).magnitude;
+            //maxValue = Mathf.Max(minMag, maxMag);
+            //Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
+            //if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
+            //{
+            //    Debug.Log("it is not a square / rectangle");
+            //    game2Manager.PlayWrongDrawingWithAnimation();
+            //    numLines = 0;
+            //    ClearLines();
+            //    drawnPositions.Clear();
+            //    return (maxValue, false);
+            //}
+        //}
         return (maxValue, true);
     }
 
@@ -518,8 +556,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         Debug.Log("minVector positions after: " + minVector.ToString("N4"));
         Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
-        drawnPositions.Remove(minVector);
-        drawnPositions.Remove(maxVector);
+        //drawnPositions.Remove(minVector);
+        //drawnPositions.Remove(maxVector);
         return (minVector, maxVector);
     }
 

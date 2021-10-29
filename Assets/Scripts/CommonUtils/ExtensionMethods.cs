@@ -19,7 +19,7 @@ public static class ExtensionMethods
         }
         return new Vector3(
             Mathf.Round(vector3.x * multiplier) / multiplier,
-            Mathf.Round(vector3.y * multiplier) / multiplier,
+            Mathf.Round(vector3.y * 10) / 10,
             Mathf.Round(vector3.z * multiplier) / multiplier);
     }
 }
