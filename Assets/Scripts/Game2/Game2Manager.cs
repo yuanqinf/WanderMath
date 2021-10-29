@@ -139,8 +139,13 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.PlayTalkingAnimationWithDuration(6.8f);
         yield return new WaitForSeconds(6.8f);
         // animate towards jumping
-        characterController.SkateOnCube(GameObject.FindObjectOfType<ShapeAnimationHelper>().shapeDots[1],
-                                        GameObject.FindObjectOfType<ShapeAnimationHelper>().shapeDots[2]);
+
+        var flatRectangle = GameObject.FindGameObjectWithTag("phase1Rect");
+
+        
+
+        characterController.SkateOnCube(flatRectangle.transform.FindChild("TopLeft").transform.position,
+                                        flatRectangle.transform.FindChild("BotRight").transform.position);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
         var phase1Rect = GameObject.FindGameObjectWithTag("phase1Rect");

@@ -44,7 +44,7 @@ public class DotsManager : Singleton<DotsManager>
                 isDotsPlaced = true;
 
                 // change this to determine which phase to go to
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE2);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE1);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
                 //InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
@@ -110,17 +110,16 @@ public class DotsManager : Singleton<DotsManager>
         Debug.Log(flatRectangle.transform.FindChild("BotLeft").transform.position.ToString("N4"));
         Debug.Log(flatRectangle.transform.FindChild("BotRight").transform.position.ToString("N4"));
         ClearDots();
-        float waitTime = g2SoundManager.playFinishDrawingAudio();
-        Debug.Log("init phase 1 mid now!!!!!");
-        StartCoroutine(SetGamePhase1Mid(waitTime));
+        StartCoroutine(SetGamePhase1Mid());
     }
 
-    IEnumerator SetGamePhase1Mid(float lenToWait)
+    IEnumerator SetGamePhase1Mid()
     {
         Debug.Log("setting game2 phase1 mid");
-        yield return new WaitForSeconds(lenToWait);
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
+        characterController.PlayTalkingAnimationWithDuration(7.5f + 3.8f + 5.0f);
         Debug.Log("inited phase1 now");
+        yield return new WaitForSeconds(7.5f);
         arDrawManager.ClearLines();
     }
 

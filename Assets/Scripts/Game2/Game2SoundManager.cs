@@ -28,6 +28,7 @@ public class Game2SoundManager : MonoBehaviour
     };
     private string[] phase1MidSubtitles =
     {
+        "Okay, it's 1 foot by 1 foot. So, the area is 1 square foot. Sweet!",
         "To build the ledge, I have 1 cubic foot of concrete.",
         "Tap on the middle of the square, then drag up to give it some height!"
     };
@@ -93,7 +94,6 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip finishDrawingEffect;
     public AudioClip WrongDrawingAudio;
     private string wrongDrawing = "That's too small for my ledge, I need a square.";
-    public AudioClip finishDrawingAudio;
 
     public AudioClip liftWrongVolAudio;
 
@@ -189,12 +189,6 @@ public class Game2SoundManager : MonoBehaviour
             uiController.PlaySubtitles(wrongDrawing, WrongDrawingAudio.length);
             audioSource.PlayOneShot(WrongDrawingAudio);
         }
-    }
-
-    public float playFinishDrawingAudio()
-    {
-        audioSource.PlayOneShot(finishDrawingAudio);
-        return finishDrawingAudio.length;
     }
 
     public void playWrongCubeLiftAudio()
