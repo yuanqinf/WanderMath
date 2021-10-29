@@ -28,6 +28,7 @@ TagManager:
   - rampEdge
   - p3Ramp
   - destroyCollider
+  - plane
   layers:
   - Default
   - TransparentFX

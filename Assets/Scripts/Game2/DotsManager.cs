@@ -44,9 +44,9 @@ public class DotsManager : Singleton<DotsManager>
                 isDotsPlaced = true;
                 // change this to determine which phase to go to
 
-                g2Manager.SetGamePhase(Constants.GamePhase.PHASE1);
+                g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
                 characterController.InitCharacterSkatingAndAudio(placementPose);
-                InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
+                //InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }
         }
@@ -62,6 +62,7 @@ public class DotsManager : Singleton<DotsManager>
         Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.HALF_FEET);
         InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
     }
 
     public void InstantiatePhase1Dots()
@@ -90,15 +91,17 @@ public class DotsManager : Singleton<DotsManager>
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
+        InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
+
     }
 
     public void ActivatePhase1Cube()
     {
         flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
-        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
-        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
-        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
-        //flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
+        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         ClearDots();
         //arDrawManager.ClearLines();
@@ -127,6 +130,8 @@ public class DotsManager : Singleton<DotsManager>
         Vector3 topLeft = placementPose.position
             + (placementPose.forward * Constants.HALF_FEET) + (placementPose.right * -Constants.HALF_FEET);
         InitializeDots(topLeft, 2, 3);
+        InstantiateOthersWithAnchor(plane, topLeft - new Vector3(0, 0.001f, 0), placementPose.rotation);
+
     }
 
     public void InstantiatePhase3Dots()
@@ -139,6 +144,8 @@ public class DotsManager : Singleton<DotsManager>
         Vector3 topLeft = placementPose.position
             + (placementPose.forward * -3 * Constants.HALF_FEET) + (placementPose.right * -3 * Constants.HALF_FEET);
         InitializeDots(topLeft, 3, 4);
+        InstantiateOthersWithAnchor(plane, topLeft - new Vector3(0, 0.001f, 0), placementPose.rotation);
+
     }
 
     private void InitializeDots(Vector3 topLeft, int rows, int cols)
@@ -175,6 +182,8 @@ public class DotsManager : Singleton<DotsManager>
             if(dotObj != null)
                 Destroy(dotObj);
         }
+        GameObject plane = GameObject.FindGameObjectWithTag("plane");
+        Destroy(plane);
     }
     #endregion
 
