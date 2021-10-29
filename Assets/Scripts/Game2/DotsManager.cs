@@ -102,19 +102,19 @@ public class DotsManager : Singleton<DotsManager>
         flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
         flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
         flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         ClearDots();
         //arDrawManager.ClearLines();
-        float finishDrawingAudioLen = g2SoundManager.playFinishDrawingAudio();
-
-        StartCoroutine(SetGamePhase1Mid(finishDrawingAudioLen));
+        float waitTime = g2SoundManager.playFinishDrawingAudio();
+        Debug.Log("init phase 1 mid now!!!!!");
+        StartCoroutine(SetGamePhase1Mid(waitTime));
     }
 
     IEnumerator SetGamePhase1Mid(float lenToWait)
     {
         Debug.Log("setting game2 phase1 mid");
         yield return new WaitForSeconds(lenToWait);
-
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
+        Debug.Log("inited phase1 now");
         arDrawManager.ClearLines();
     }
 
