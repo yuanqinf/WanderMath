@@ -218,8 +218,13 @@ public class Game2Manager : Singleton<Game2Manager>
     #region phase3 related
     private void StartPhase3()
     {
-        // destroy things
         dotsManager.InstantiatePhase3Dots();
+        // add animation & audio
+    }
+
+    private void StartPhase3Mid()
+    {
+
     }
     #endregion
 

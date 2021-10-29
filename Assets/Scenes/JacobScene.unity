@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultColorMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  failedColorMaterial: {fileID: 2100000, guid: e1f029f06ade74130bd9fb4636bc3130, type: 2}
   cornerVertices: 10
   endCapVeritices: 10
   allowSimplification: 0
@@ -1806,6 +1807,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d7a380d7e6efc4476956dfba50546082, type: 3}
   - {fileID: 8300000, guid: 2624b6d235ac84f91b1727ef759e24dd, type: 3}
   - {fileID: 8300000, guid: cd51dfbffa95b4014b08a9f12ffcd346, type: 3}
+  phase2BestRampAudio: {fileID: 0}
   phase3Start: []
   phase3Mid: []
   phase3End: []

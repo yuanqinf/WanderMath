@@ -15,6 +15,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     [SerializeField]
     private Material defaultColorMaterial;
     [SerializeField]
+    private Material failedColorMaterial;
+    [SerializeField]
     private int cornerVertices = 5;
     [SerializeField]
     private int endCapVeritices = 5;
@@ -477,7 +479,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 initializePos += gameObject.transform.position;
             }
 
-            InitializeRamp(initializePos / 4);
+            InitializePhase3Ramp(initializePos / 4);
             phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
             // set initial volume and set up
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
@@ -489,6 +491,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         currentLineRender = null;
     }
 
+    /// <summary>
+    /// animation points for ramp
+    /// </summary>
+    /// <param name="edgeNum"></param>
+    /// <returns></returns>
     private (Vector3, Vector3) GetRampAnimationPoints(int edgeNum)
     {
         // settle which position to use for animation
@@ -561,6 +568,23 @@ public class ARDrawManager : Singleton<ARDrawManager>
             dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
         }
         return dotPoints;
+    }
+
+    private void InitializePhase3Ramp(Vector3 middlePos)
+    {
+        rampEdgeObjects.Clear(); // clear previous edges
+        rampTopEdges.Clear();
+        phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
+        ClearLines();
+        foreach(GameObject gameObject in gameObjSet)
+        {
+            gameObject.GetComponent<MeshRenderer>().material = failedColorMaterial;
+            gameObject.GetComponent<Collider>().enabled = false;
+        }
+        gameObjSet.Clear();
+        InitializeRampEdges();
+        InitializeRampEdgeObjects();
+        SetRampEdgeCollider(true); // TODO: change when audio changes
     }
 
     /// <summary>

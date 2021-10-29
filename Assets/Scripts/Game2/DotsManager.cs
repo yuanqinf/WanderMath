@@ -118,7 +118,6 @@ public class DotsManager : Singleton<DotsManager>
         Debug.Log("setting game2 phase1 mid");
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         characterController.PlayTalkingAnimationWithDuration(7.5f + 3.8f + 5.0f);
-        Debug.Log("inited phase1 now");
         yield return new WaitForSeconds(7.5f);
         arDrawManager.ClearLines();
     }
@@ -150,7 +149,6 @@ public class DotsManager : Singleton<DotsManager>
             + (placementPose.forward * -3 * Constants.HALF_FEET) + (placementPose.right * -3 * Constants.HALF_FEET);
         InitializeDots(topLeft, 3, 4);
         InstantiateOthersWithAnchor(plane, topLeft - new Vector3(0, 0.001f, 0), placementPose.rotation);
-
     }
 
     private void InitializeDots(Vector3 topLeft, int rows, int cols)
