@@ -97,11 +97,12 @@ public class DotsManager : Singleton<DotsManager>
 
     public void ActivatePhase1Cube()
     {
-        flatRectangle = Instantiate(flatRectangle, placementPose.position, placementPose.rotation);
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[0] = dots[2].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[1] = dots[3].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[2] = dots[4].transform.position;
-        flatRectangle.GetComponent<ShapeAnimationHelper>().shapeDots[3] = dots[5].transform.position;
+        var recPos = Vector3.zero;
+        foreach(GameObject dot in dots)
+        {
+            recPos += dot.transform.position;
+        }
+        flatRectangle = Instantiate(flatRectangle, recPos / 4f, flatRectangle.transform.rotation);
         ClearDots();
         //arDrawManager.ClearLines();
         float waitTime = g2SoundManager.playFinishDrawingAudio();
