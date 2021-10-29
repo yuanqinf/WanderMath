@@ -205,8 +205,13 @@ public class Game2SoundManager : MonoBehaviour
     }
     public void PlayWrongLines()
     {
-        if (!audioSource.isPlaying)
+        Debug.Log("play wrong line is called");
+        if (audioSource.clip == WrongLinesAudio && audioSource.isPlaying)
         {
+            return;
+        } else
+        {
+            Debug.Log("play wrong line is called");
             uiController.PlaySubtitles(wrong4Lines, 4.2f);
             audioSource.PlayOneShot(WrongLinesAudio);
         }
