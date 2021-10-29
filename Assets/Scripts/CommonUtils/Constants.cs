@@ -10,6 +10,7 @@ public static class Constants
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
         public const string DestroyCollider = "destroyCollider";
+        public const string Finley = "finley";
     }
 
     public struct Objects

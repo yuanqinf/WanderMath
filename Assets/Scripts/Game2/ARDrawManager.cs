@@ -178,6 +178,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name);
                     }
                 }
+                if (GamePhase == Constants.GamePhase.PHASE3 && hitObject.transform.tag == Constants.Tags.Finley)
+                {
+                    //if (IsDoubleTap())
+                    //{
+                    //    Debug.Log("destroy is called without ramp");
+                    //}
+                    //if (IsDoubleTapDestroy())
+                    //{
+                    //    Debug.Log("destroy is called");
+                    //    Destroy(touchedPhase3Ramp.transform.root.gameObject);
+                    //}
+                    // TODO: play ending animation for all the ramps
+                }
             }
 
             if (touch.phase == TouchPhase.Moved)
@@ -286,7 +299,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("edge moving up");
                         faceHeight += Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, movingRange);
-                        topFace.transform.localPosition += movingRange;
+                        rampTopCollider.transform.localPosition += movingRange;
                         uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4);
                     }
                     else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && faceHeight > 0f)
@@ -294,7 +307,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("edge moving down");
                         faceHeight -= Constants.MOVEMENT_RANGE;
                         topFace.TranslateVertices(topFace.faces.ElementAt(1).edges, -movingRange);
-                        topFace.transform.localPosition -= movingRange;
+                        rampTopCollider.transform.localPosition -= movingRange;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
                     // set UI height: with face height
@@ -399,19 +412,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     GameObject.FindGameObjectWithTag("liftable_shape").GetComponent<BoxCollider>().enabled = false;
                 }
             }
-        }
-
-        if (GamePhase == Constants.GamePhase.PHASE3)
-        {
-            //if (IsDoubleTap())
-            //{
-            //    Debug.Log("destroy is called without ramp");
-            //}
-            //if (IsDoubleTapDestroy())
-            //{
-            //    Debug.Log("destroy is called");
-            //    Destroy(touchedPhase3Ramp.transform.root.gameObject);
-            //}
         }
     }
 
