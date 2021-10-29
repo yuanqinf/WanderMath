@@ -217,18 +217,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         canCubeLiftingSnap = false;
                     }
 
+                    if (System.Math.Round(curVolNum, 1) > 1)
+                    {
+                        concreteVolDisplay.text = "Overused";
+                        concreteUIFill.color = Color.red;
+                    }
+                    else
+                    {
+                        concreteVolDisplay.text = "Vol: " + System.Math.Round(curVolNum, 1) + " ft<sup>3</sup>";
+                        concreteUIFill.fillAmount = (float) curVolNum / 1;
+                        concreteUIFill.color = Color.white;
+                    }
+
                     var newTouchpos = touch.position;
-                    if (newTouchpos.y - rec2DTouchPosition.y > 0)
+                    if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 5)
                     {
                         Debug.Log("lifting it now---------------------------------------");
-                        if (curVolNum > 1)
-                        {
-                            uINumberControl.SetVolDisplay(1);
-                        }
-                        else
-                        {
-                            uINumberControl.SetVolDisplay(curVolNum);
-                        }
+
+                        uINumberControl.SetVolDisplay(curVolNum);
                         // 3d shape lift
                         liftableCube.transform.parent.localScale += new Vector3(0, 0.008f, 0);
                         // 3d ui lift
@@ -319,6 +325,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = phase2RampVolume / 2;
+
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -364,6 +371,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rec2DTouchPosition = Vector2.zero;
                         liftableCube = null;
                     }
+
+
                 }
                 // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
