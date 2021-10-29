@@ -407,7 +407,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
             concreteUIDisplay.SetActive(true);
-            DotsManager.Instance.ClearDots();
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
         }
