@@ -63,6 +63,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private float phase2RampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
+    public Vector2 rec2DTouchPosition = Vector2.zero;
     public GameObject rampEdge = null;
     private GameObject touchedPhase3Ramp = null;
 
@@ -121,9 +122,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Ray ray = arCamera.ScreenPointToRay(touch.position);
             if (Physics.Raycast(ray, out RaycastHit hitObject))
             {
-                liftableCube = hitObject.transform.gameObject;
-                Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name); ;
-
                 // constantly track movement
                 movingTouchPosition = hitObject.point;
                 if (hitObject.transform.tag == "dot")
@@ -176,64 +174,99 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ramp2DTouchPosition = touch.position;
                         Debug.Log("initialize rampface " + ramp2DTouchPosition);
                     }
+                    if (hitObject.transform.tag == "liftable_shape")
+                    {
+                        rec2DTouchPosition = touch.position;
+                        liftableCube = hitObject.transform.gameObject;
+                        Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name);
+                    }
                 }
                 if (hitObject.transform.tag == "liftable_shape")
                 {
-                    Debug.Log("this is liftable cube tocuhed here!!!!!!!!!!~~~~~~~");
+                    //rec2DTouchPosition = touch.position;
+                    //Debug.Log("this is liftable cube tocuhed here!!!!!!!!!!~~~~~~~");
 
-                    if (touch.phase == TouchPhase.Began)
-                    {
-                        boxInitialRealWorldPosition = hitObject.point;
-                    }
+                    //if (touch.phase == TouchPhase.Began)
+                    //{
+                    //    boxInitialRealWorldPosition = hitObject.point;
+                    //}
                     // lifting detection begin
                     if (touch.phase == TouchPhase.Moved)
                     {
-                        Debug.Log("find the object!!!!!!!");
-                        boxNewRealWorldPosition = hitObject.point;
-                        var uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
+                        //Debug.Log("find the object!!!!!!!");
+                        //boxNewRealWorldPosition = hitObject.point;
+                        //var uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
 
-                        var curVolNum = System.Math.Round((hitObject.transform.parent.transform.localScale.y / 0.57f), 1);
-                        Debug.Log("hitObject.transform.parent.transform.localScale.y: " + hitObject.transform.parent.transform.localScale.y);
-                        Debug.Log("this is curVolNum: " + curVolNum);
+                        //var curVolNum = System.Math.Round((hitObject.transform.parent.transform.localScale.y / 0.57f), 1);
+                        //Debug.Log("hitObject.transform.parent.transform.localScale.y: " + hitObject.transform.parent.transform.localScale.y);
+                        //Debug.Log("this is curVolNum: " + curVolNum);
 
-                        if (curVolNum > 0.95 && curVolNum < 1.05)
-                        {
-                            //glow effect here
-                            GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
-                            //hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
-                            canCubeLiftingSnap = true;
-                            liftableCube = hitObject.transform.gameObject;
-                        }
-                        else
-                        {
-                            GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
-                            //hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
-                            canCubeLiftingSnap = false;
-                        }
+                        //if (curVolNum > 0.95 && curVolNum < 1.05)
+                        //{
+                        //    //glow effect here
+                        //    GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
+                        //    //hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
+                        //    canCubeLiftingSnap = true;
+                        //    liftableCube = hitObject.transform.gameObject;
+                        //}
+                        //else
+                        //{
+                        //    GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
+                        //    //hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
+                        //    canCubeLiftingSnap = false;
+                        //}
 
-                        if ((boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05))
-                        {
-                            Debug.Log("lifting it now---------------------------------------");
-                            if(curVolNum > 1)
-                            {
-                                uINumberControl.SetVolDisplay(1);
-                            }
-                            else
-                            {
-                                uINumberControl.SetVolDisplay(curVolNum);
-                            }
-                            // 3d shape lift
-                            hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
-                            // 3d ui lift
-                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
-                        }
-                        else if ((boxNewRealWorldPosition.z < boxInitialRealWorldPosition.z - 0.05 || boxNewRealWorldPosition.y < boxInitialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
-                        {
-                            Debug.Log("drag it down---------------------------------------");
-                            uINumberControl.SetVolDisplay(curVolNum);
-                            hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
-                            hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
-                        }
+                        //var newTouchpos = touch.position;
+
+
+                        //if (newTouchpos.y - rec2DTouchPosition.y > 0)
+                        //{
+                        //    Debug.Log("lifting it now---------------------------------------");
+                        //    if (curVolNum > 1)
+                        //    {
+                        //        uINumberControl.SetVolDisplay(1);
+                        //    }
+                        //    else
+                        //    {
+                        //        uINumberControl.SetVolDisplay(curVolNum);
+                        //    }
+                        //    // 3d shape lift
+                        //    hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                        //    // 3d ui lift
+                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
+                        //}
+                        //else if ((newTouchpos.y - rec2DTouchPosition.y < 0) && hitObject.transform.parent.localScale.y >= 0)
+                        //{
+                        //    Debug.Log("drag it down---------------------------------------");
+                        //    uINumberControl.SetVolDisplay(curVolNum);
+                        //    hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
+                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
+
+                        //}
+
+                        //if ((boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05))
+                        //{
+                        //    Debug.Log("lifting it now---------------------------------------");
+                        //    if(curVolNum > 1)
+                        //    {
+                        //        uINumberControl.SetVolDisplay(1);
+                        //    }
+                        //    else
+                        //    {
+                        //        uINumberControl.SetVolDisplay(curVolNum);
+                        //    }
+                        //    // 3d shape lift
+                        //    hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                        //    // 3d ui lift
+                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
+                        //}
+                        //else if ((boxNewRealWorldPosition.z < boxInitialRealWorldPosition.z - 0.05 || boxNewRealWorldPosition.y < boxInitialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
+                        //{
+                        //    Debug.Log("drag it down---------------------------------------");
+                        //    uINumberControl.SetVolDisplay(curVolNum);
+                        //    hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
+                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
+                        //}
 
                     }
                 }
@@ -241,6 +274,58 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             if (touch.phase == TouchPhase.Moved)
             {
+                // moving rect after phase1
+                if (rec2DTouchPosition != Vector2.zero && liftableCube != null)
+                {
+                    var uINumberControl = liftableCube.transform.root.gameObject.GetComponent<UINumberControl>();
+                    Debug.Log("find the object!!!!!!!");
+                    var curVolNum = System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
+
+                    Debug.Log("liftableCube.transform.parent.transform.localScale.y: " + liftableCube.transform.parent.transform.localScale.y);
+                    Debug.Log("this is curVolNum: " + curVolNum);
+
+                    if (curVolNum > 0.95 && curVolNum < 1.05)
+                    {
+                        //glow effect here
+                        GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
+                        canCubeLiftingSnap = true;
+                    }
+                    else
+                    {
+                        GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
+                        canCubeLiftingSnap = false;
+                    }
+
+                    var newTouchpos = touch.position;
+
+
+                    if (newTouchpos.y - rec2DTouchPosition.y > 0)
+                    {
+                        Debug.Log("lifting it now---------------------------------------");
+                        if (curVolNum > 1)
+                        {
+                            uINumberControl.SetVolDisplay(1);
+                        }
+                        else
+                        {
+                            uINumberControl.SetVolDisplay(curVolNum);
+                        }
+                        // 3d shape lift
+                        liftableCube.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                        // 3d ui lift
+                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
+                    }
+                    else if ((newTouchpos.y - rec2DTouchPosition.y < 0) && liftableCube.transform.parent.localScale.y >= 0)
+                    {
+                        Debug.Log("drag it down---------------------------------------");
+                        uINumberControl.SetVolDisplay(curVolNum);
+                        liftableCube.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
+                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
+
+                    }
+                }
+
+                
                 // moving ramp after phase2
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
@@ -332,6 +417,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     currentLineRender = null;
                     startObject = null;
                     isSnapping = false;
+                }
+                if (GamePhase == Constants.GamePhase.PHASE1)
+                {
+                    if (rec2DTouchPosition != Vector2.zero && liftableCube != null)
+                    {
+                        rec2DTouchPosition = Vector2.zero;
+                        liftableCube = null;
+                    }
                 }
                 // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
