@@ -50,7 +50,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject currentLineGameObject = null;
 
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private HashSet<Vector3> drawnPositions = new HashSet<Vector3>();
+    private HashSet<String> drawnPositions = new HashSet<String>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
     private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
     {
@@ -322,8 +322,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
-                            drawnPositions.Add(startPos.Round(2));
-                            drawnPositions.Add(endPos.Round(2));
+                            drawnPositions.Add(startObject.gameObject.name);
+                            drawnPositions.Add(hitObject.transform.gameObject.name);
                         }
                         HandleSnapObject();
                     }
@@ -413,45 +413,69 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
             Debug.Log("total dots drawn: " + drawnPositions.Count); // should be 4
-            foreach(Vector3 pos in drawnPositions)
+            foreach(String name in drawnPositions)
             {
-                Debug.Log(pos.ToString("N4"));
+                Debug.Log("name in set is: " + name);
             }
-            if (drawnPositions.Count != 4) return; // not 4 unique points
-            (var minVector, var maxVector) = GetMinMaxVector();
+            if (drawnPositions.Count != 4) return; // not 4 unique points, so not rectangle
+            var dotPoints = GetDotPoints();
+            var maxLength = GetMaxPoints(dotPoints);
+
+
+            //(var minVector, var maxVector) = GetMinMaxVector();
             // check if a square/rec is formed
-            (var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
-            if (!isRect) return;
+            //(var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
 
-            InitializeRamp((minVector + maxVector) / 2);
-            float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
-            phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
+            //InitializeRamp((minVector + maxVector) / 2);
+            //float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
+            //phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
 
-            // set initial volume and set up
-            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-            uiNumberControl.SetAreaDisplay(volume);
-            uiNumberControl.Height = 0;
-            game2Manager.StartPhase2Mid();
-            // set ramp start point & endpoint
-            game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
-            game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
+            //// set initial volume and set up
+            //var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+            //uiNumberControl.SetAreaDisplay(volume);
+            //uiNumberControl.Height = 0;
+            //game2Manager.StartPhase2Mid();
+            //// set ramp start point & endpoint
+            //game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
+            //game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
             numLines = 0;
         }
 
         if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
         {
-            Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
-            (var minVector, var maxVector) = GetMinMaxVector();
-            // check if a square/rec is formed
-            (var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
-            if (!isRect) return;
+            //Debug.Log("totalPos: " + drawnPositions.Count); // should be 4
+            //(var minVector, var maxVector) = GetMinMaxVector();
+            //// check if a square/rec is formed
+            //(var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
+            //if (!isRect) return;
 
-            InitializeRamp((minVector + maxVector) / 2);
-            float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
-            phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
+            //InitializeRamp((minVector + maxVector) / 2);
+            //float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
+            //phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    private int GetMaxPoints(List<(int, int)> dotPoints)
+    {
+        int max = 0;
+        for(int i = 1; i < dotPoints.Count; i++)
+        {
+            max = System.Math.Max(System.Math.Abs((int)dotPoints[0].Item1 - (int)dotPoints[i].Item1), max);
+        }
+        return max;
+    }
+
+    private List<(int, int)> GetDotPoints()
+    {
+        List<(int, int)> dotPoints = new List<(int, int)>();
+        foreach(string dot in drawnPositions)
+        {
+            var res = dot.Split('_');
+            dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
+        }
+        return dotPoints;
     }
 
     /// <summary>
@@ -474,41 +498,36 @@ public class ARDrawManager : Singleton<ARDrawManager>
     /// <param name="minVector"></param>
     /// <param name="maxVector"></param>
     /// <returns></returns>
-    private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
-    {
-        foreach (Vector3 pos in drawnPositions)
-        {
-            Debug.Log("drawnPositions: " + pos.ToString("N4"));
-        }
+    //private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
+    //{
+        //float maxValue = 0.0f;
 
-        float maxValue = 0.0f;
+        //var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
+        //var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
 
-        var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
-        var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
+        //var dot1 = drawnPositions.ElementAt(0);
+        //var dot2 = drawnPositions.ElementAt(1);
+        //var dot3 = drawnPositions.ElementAt(2);
+        //var dot4 = drawnPositions.ElementAt(3);
+        //var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
+        //var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
+        //var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
+        //var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
 
-        var dot1 = drawnPositions.ElementAt(0);
-        var dot2 = drawnPositions.ElementAt(1);
-        var dot3 = drawnPositions.ElementAt(2);
-        var dot4 = drawnPositions.ElementAt(3);
-        var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
-        var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
-        var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
-        var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
+        //Debug.Log("line1: " + line1.ToString("N4"));
+        //Debug.Log("line2: " + line2.ToString("N4"));
+        //Debug.Log("line3: " + line3.ToString("N4"));
+        //Debug.Log("line4: " + line4.ToString("N4"));
 
-        Debug.Log("line1: " + line1.ToString("N4"));
-        Debug.Log("line2: " + line2.ToString("N4"));
-        Debug.Log("line3: " + line3.ToString("N4"));
-        Debug.Log("line4: " + line4.ToString("N4"));
-
-        if (line1 == line2 && line1 == line3 && line1 == line4)
-        {
-            Debug.Log("rect is formed");
-            return (maxValue, true);
-        } else
-        {
-            Debug.Log("rect is not formed");
-            return (maxValue, false);
-        }
+        //if (line1 == line2 && line1 == line3 && line1 == line4)
+        //{
+        //    Debug.Log("rect is formed");
+        //    return (maxValue, true);
+        //} else
+        //{
+        //    Debug.Log("rect is not formed");
+        //    return (maxValue, false);
+        //}
 
         //foreach (Vector3 pos in drawnPositions)
         //{
@@ -528,37 +547,37 @@ public class ARDrawManager : Singleton<ARDrawManager>
             //    return (maxValue, false);
             //}
         //}
-        return (maxValue, true);
-    }
+        //return (maxValue, true);
+    //}
 
     /// <summary>
     /// Get min and max vectors from drawnPositions
     /// </summary>
     /// <returns></returns>
-    private (Vector3, Vector3) GetMinMaxVector()
-    {
-        Vector3 minVector = Vector3.positiveInfinity;
-        Vector3 maxVector = Vector3.zero;
-        foreach (Vector3 pos in drawnPositions)
-        {
-            //    minVector = Vector3.Min(pos, minVector);
-            //    maxVector = Vector3.Max(pos, maxVector);
-            Debug.Log("vector pos: " + pos.ToString("N4"));
-            minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
-            maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
-        }
-        Debug.Log("minVector positions before: " + minVector.ToString("N4"));
-        Debug.Log("maxVector positions before: " + maxVector.ToString("N4"));
-        if (minVector.x > maxVector.x)
-        {
-            (minVector, maxVector) = (maxVector, minVector);
-        }
-        Debug.Log("minVector positions after: " + minVector.ToString("N4"));
-        Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
-        //drawnPositions.Remove(minVector);
-        //drawnPositions.Remove(maxVector);
-        return (minVector, maxVector);
-    }
+    //private (Vector3, Vector3) GetMinMaxVector()
+    //{
+    //    Vector3 minVector = Vector3.positiveInfinity;
+    //    Vector3 maxVector = Vector3.zero;
+    //    foreach (Vector3 pos in drawnPositions)
+    //    {
+    //        //    minVector = Vector3.Min(pos, minVector);
+    //        //    maxVector = Vector3.Max(pos, maxVector);
+    //        Debug.Log("vector pos: " + pos.ToString("N4"));
+    //        minVector = (pos.magnitude < minVector.magnitude) ? pos : minVector;
+    //        maxVector = (pos.magnitude > maxVector.magnitude) ? pos : maxVector;
+    //    }
+    //    Debug.Log("minVector positions before: " + minVector.ToString("N4"));
+    //    Debug.Log("maxVector positions before: " + maxVector.ToString("N4"));
+    //    if (minVector.x > maxVector.x)
+    //    {
+    //        (minVector, maxVector) = (maxVector, minVector);
+    //    }
+    //    Debug.Log("minVector positions after: " + minVector.ToString("N4"));
+    //    Debug.Log("maxVector positions after: " + maxVector.ToString("N4"));
+    //    //drawnPositions.Remove(minVector);
+    //    //drawnPositions.Remove(maxVector);
+    //    return (minVector, maxVector);
+    //}
 
     private void DrawLineWithoutSnapping()
     {
