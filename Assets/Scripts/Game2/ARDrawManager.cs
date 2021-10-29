@@ -50,7 +50,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject currentLineGameObject = null;
 
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private HashSet<String> drawnPositions = new HashSet<String>();
+    private HashSet<GameObject> gameObjSet = new HashSet<GameObject>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
     private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
     {
@@ -84,7 +84,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private Game2Manager game2Manager;
     private Game2SoundManager g2SoundManager;
 
-    private Boolean startLiftCube = false;
     private Boolean canCubeLiftingSnap = false;
 
 
@@ -181,95 +180,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name);
                     }
                 }
-                if (hitObject.transform.tag == "liftable_shape")
-                {
-                    //rec2DTouchPosition = touch.position;
-                    //Debug.Log("this is liftable cube tocuhed here!!!!!!!!!!~~~~~~~");
-
-                    //if (touch.phase == TouchPhase.Began)
-                    //{
-                    //    boxInitialRealWorldPosition = hitObject.point;
-                    //}
-                    // lifting detection begin
-                    if (touch.phase == TouchPhase.Moved)
-                    {
-                        //Debug.Log("find the object!!!!!!!");
-                        //boxNewRealWorldPosition = hitObject.point;
-                        //var uINumberControl = hitObject.transform.root.gameObject.GetComponent<UINumberControl>();
-
-                        //var curVolNum = System.Math.Round((hitObject.transform.parent.transform.localScale.y / 0.57f), 1);
-                        //Debug.Log("hitObject.transform.parent.transform.localScale.y: " + hitObject.transform.parent.transform.localScale.y);
-                        //Debug.Log("this is curVolNum: " + curVolNum);
-
-                        //if (curVolNum > 0.95 && curVolNum < 1.05)
-                        //{
-                        //    //glow effect here
-                        //    GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
-                        //    //hitObject.transform.GetComponent<PostProcessVolume>().enabled = true;
-                        //    canCubeLiftingSnap = true;
-                        //    liftableCube = hitObject.transform.gameObject;
-                        //}
-                        //else
-                        //{
-                        //    GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
-                        //    //hitObject.transform.GetComponent<PostProcessVolume>().enabled = false;
-                        //    canCubeLiftingSnap = false;
-                        //}
-
-                        //var newTouchpos = touch.position;
-
-
-                        //if (newTouchpos.y - rec2DTouchPosition.y > 0)
-                        //{
-                        //    Debug.Log("lifting it now---------------------------------------");
-                        //    if (curVolNum > 1)
-                        //    {
-                        //        uINumberControl.SetVolDisplay(1);
-                        //    }
-                        //    else
-                        //    {
-                        //        uINumberControl.SetVolDisplay(curVolNum);
-                        //    }
-                        //    // 3d shape lift
-                        //    hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
-                        //    // 3d ui lift
-                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
-                        //}
-                        //else if ((newTouchpos.y - rec2DTouchPosition.y < 0) && hitObject.transform.parent.localScale.y >= 0)
-                        //{
-                        //    Debug.Log("drag it down---------------------------------------");
-                        //    uINumberControl.SetVolDisplay(curVolNum);
-                        //    hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
-                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
-
-                        //}
-
-                        //if ((boxNewRealWorldPosition.z > boxInitialRealWorldPosition.z + 0.05 || boxNewRealWorldPosition.y > boxInitialRealWorldPosition.y + 0.05))
-                        //{
-                        //    Debug.Log("lifting it now---------------------------------------");
-                        //    if(curVolNum > 1)
-                        //    {
-                        //        uINumberControl.SetVolDisplay(1);
-                        //    }
-                        //    else
-                        //    {
-                        //        uINumberControl.SetVolDisplay(curVolNum);
-                        //    }
-                        //    // 3d shape lift
-                        //    hitObject.transform.parent.localScale += new Vector3(0, 0.008f, 0);
-                        //    // 3d ui lift
-                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
-                        //}
-                        //else if ((boxNewRealWorldPosition.z < boxInitialRealWorldPosition.z - 0.05 || boxNewRealWorldPosition.y < boxInitialRealWorldPosition.y - 0.05) && hitObject.transform.parent.localScale.y >= 0)
-                        //{
-                        //    Debug.Log("drag it down---------------------------------------");
-                        //    uINumberControl.SetVolDisplay(curVolNum);
-                        //    hitObject.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
-                        //    hitObject.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
-                        //}
-
-                    }
-                }
             }
 
             if (touch.phase == TouchPhase.Moved)
@@ -278,13 +188,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (rec2DTouchPosition != Vector2.zero && liftableCube != null)
                 {
                     var uINumberControl = liftableCube.transform.root.gameObject.GetComponent<UINumberControl>();
-                    Debug.Log("find the object!!!!!!!");
                     var curVolNum = System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
 
                     Debug.Log("liftableCube.transform.parent.transform.localScale.y: " + liftableCube.transform.parent.transform.localScale.y);
                     Debug.Log("this is curVolNum: " + curVolNum);
 
-                    if (curVolNum > 0.95 && curVolNum < 1.05)
+                    if (curVolNum > 0.85 && curVolNum < 1.15)
                     {
                         //glow effect here
                         GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
@@ -325,7 +234,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                 }
 
-                
                 // moving ramp after phase2
                 if (ramp2DTouchPosition != Vector2.zero && rampEdge != null)
                 {
@@ -407,8 +315,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
-                            drawnPositions.Add(startObject.gameObject.name);
-                            drawnPositions.Add(hitObject.transform.gameObject.name);
+                            gameObjSet.Add(startObject.gameObject);
+                            gameObjSet.Add(hitObject.transform.gameObject);
                         }
                         HandleSnapObject();
                     }
@@ -457,7 +365,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                 }
 
-                if (canCubeLiftingSnap == true && startLiftCube)
+                if (canCubeLiftingSnap == true)
                 {
                     concreteUIFill.fillAmount = 0;
                     concreteUIDisplay.SetActive(false);
@@ -465,12 +373,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     canCubeLiftingSnap = false;
                     game2Manager.EndPhase1();
                     g2SoundManager.PlayGoodSoundEffect();
-                    liftableCube.GetComponent<BoxCollider>().enabled = false;
-                }
-
-                if (numLines == 4)
-                {
-                    startLiftCube = true;
+                    GameObject.FindGameObjectWithTag("liftable_shape").GetComponent<BoxCollider>().enabled = false;
                 }
             }
         }
@@ -505,30 +408,38 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            Debug.Log("total dots drawn: " + drawnPositions.Count); // should be 4
-            foreach(String name in drawnPositions)
+            Debug.Log("total dots drawn: " + gameObjSet.Count); // should be 4
+            foreach(GameObject game in gameObjSet)
             {
-                Debug.Log("name in set is: " + name);
+                Debug.Log("name in set is: " + game.transform.name);
             }
-            if (drawnPositions.Count != 4) return; // not 4 unique points, so not rectangle
+            if (gameObjSet.Count != 4)
+            {
+                Debug.Log("not a rectangle/square");
+                game2Manager.PlayWrongDrawingWithAnimation();
+                numLines = 0;
+                ClearLines();
+                gameObjSet.Clear();
+                return; // not 4 unique points, so not rectangle
+            }
             var dotPoints = GetDotPoints();
             var maxLength = GetMaxPoints(dotPoints);
 
+            var initializePos = Vector3.zero;
+            foreach(GameObject gameObject in gameObjSet)
+            {
+                initializePos += gameObject.transform.position;
+            }
 
-            //(var minVector, var maxVector) = GetMinMaxVector();
-            // check if a square/rec is formed
-            //(var maxValue, var isRect) = CheckRectAndGetValue(minVector, maxVector);
+            InitializeRamp(initializePos / 4);
+            phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
 
-            //InitializeRamp((minVector + maxVector) / 2);
-            //float volume = (float)(System.Math.Floor(maxValue * 10f) / 3);
-            //phase2Ramp.transform.localScale = new Vector3(0.5f, volume * Constants.ONE_FEET, Constants.ONE_FEET);
-
-            //// set initial volume and set up
-            //var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-            //uiNumberControl.SetAreaDisplay(volume);
-            //uiNumberControl.Height = 0;
-            //game2Manager.StartPhase2Mid();
-            //// set ramp start point & endpoint
+            // set initial volume and set up
+            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+            uiNumberControl.SetAreaDisplay(maxLength);
+            uiNumberControl.Height = 0;
+            game2Manager.StartPhase2Mid();
+            // set ramp start point & endpoint
             //game2Manager.rampStartPoint = minVector; // - new Vector3(0, Constants.HALF_FEET, 0);
             //game2Manager.rampEndPoint = maxVector; // + new Vector3(0, Constants.HALF_FEET, 0);
             numLines = 0;
@@ -552,20 +463,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private int GetMaxPoints(List<(int, int)> dotPoints)
     {
-        int max = 0;
-        for(int i = 1; i < dotPoints.Count; i++)
+        int maxX = 0;
+        int maxY = 0;
+        for (int i = 1; i < dotPoints.Count; i++)
         {
-            max = System.Math.Max(System.Math.Abs((int)dotPoints[0].Item1 - (int)dotPoints[i].Item1), max);
+            maxX = System.Math.Max(System.Math.Abs(dotPoints[0].Item1 - dotPoints[i].Item1), maxX);
+            maxY = System.Math.Max(System.Math.Abs(dotPoints[0].Item2 - dotPoints[i].Item2), maxY);
         }
-        return max;
+        var res = System.Math.Max(maxX, maxY);
+        Debug.Log("maxLength is: " + res);
+        return res;
     }
 
     private List<(int, int)> GetDotPoints()
     {
         List<(int, int)> dotPoints = new List<(int, int)>();
-        foreach(string dot in drawnPositions)
+        foreach(GameObject game in gameObjSet)
         {
-            var res = dot.Split('_');
+            var res = game.name.Split('_');
             dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
         }
         return dotPoints;
@@ -579,7 +494,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         phase2Ramp = Instantiate(phase2Ramp, middlePos, phase2Ramp.transform.rotation);
         DotsManager.Instance.ClearDots();
-        drawnPositions.Clear();
+        gameObjSet.Clear();
         InitializeRampEdges();
         InitializeRampEdgeObjects();
         SetRampEdgeCollider(false);
