@@ -16,20 +16,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private Material defaultColorMaterial;
     [SerializeField]
     private Material failedColorMaterial;
-    [SerializeField]
-    private int cornerVertices = 5;
-    [SerializeField]
-    private int endCapVeritices = 5;
-
-    [Header("Tolerance Options")]
-    [SerializeField]
-    private bool allowSimplification = true;
-    [SerializeField]
-    private float tolerance = 0.001f;
-    [SerializeField]
-    private float applySimplifyAfterPoints = 20.0f;
-    [SerializeField, Range(0, 1.0f)]
-    private float minDistanceBeforeNewPoint = 0.01f;
 
     [SerializeField]
     private Camera arCamera;
@@ -68,8 +54,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject rampTopCollider = null;
     private float rampTopHeight = 0f;
 
-    private int positionCount = 2;
-    private Vector3 prevPointDistance = Vector3.zero;
     public string GamePhase { get; set; }
 
     public Vector3 startPos;
@@ -78,9 +62,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject startObject;
     private bool isSnapping = false;
     private int numLines = 0;
-
-    public Vector3 boxInitialRealWorldPosition;
-    public Vector3 boxNewRealWorldPosition;
 
     private Game2Manager game2Manager;
     private Game2SoundManager g2SoundManager;
@@ -103,9 +84,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         currentLineRenderer.startWidth = lineWidth;
         currentLineRenderer.endWidth = lineWidth;
-        currentLineRenderer.numCornerVertices = cornerVertices;
-        currentLineRenderer.numCapVertices = endCapVeritices;
-        if (allowSimplification) currentLineRenderer.Simplify(tolerance);
+        currentLineRenderer.numCornerVertices = 8;
+        currentLineRenderer.numCapVertices = 8;
         currentLineRenderer.startColor = randomStartColor;
         currentLineRenderer.endColor = randomEndColor;
     }
@@ -771,7 +751,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void AddNewLineRenderer(Vector3 touchPosition)
     {
-        positionCount = 2;
         currentLineGameObject = Instantiate(linePrefab, touchPosition, Quaternion.identity);
         currentLineGameObject.name = $"LineRenderer_{lines.Count}";
         //currentLineGameObject.AddComponent<ARAnchor>();
@@ -781,7 +760,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         goLineRenderer.endWidth = lineWidth;
         goLineRenderer.material = defaultColorMaterial;
         goLineRenderer.useWorldSpace = true;
-        goLineRenderer.positionCount = positionCount;
+        goLineRenderer.positionCount = 2;
         goLineRenderer.SetPosition(0, currentLineGameObject.transform.position);
         goLineRenderer.SetPosition(1, currentLineGameObject.transform.position);
         //goLineRenderer.numCapVertices = 90;
@@ -920,32 +899,5 @@ public class ARDrawManager : Singleton<ARDrawManager>
     //    //drawnPositions.Remove(maxVector);
     //    return (minVector, maxVector);
     //}
-
-    /// <summary>
-    /// Helpful method used to draw freehand.
-    /// </summary>
-    /// <param name="touchPosition"></param>
-    private void UpdateLine(Vector3 touchPosition)
-    {
-        if (prevPointDistance == null) prevPointDistance = touchPosition;
-        // create new point if above threshold of minDistance
-        if (prevPointDistance != null && Mathf.Abs(Vector3.Distance(prevPointDistance, touchPosition)) >= minDistanceBeforeNewPoint)
-        {
-            prevPointDistance = touchPosition;
-            AddPoint(prevPointDistance);
-        }
-    }
-
-    private void AddPoint(Vector3 position)
-    {
-        positionCount++;
-        currentLineRender.positionCount = positionCount;
-        // iundex 0 positionCount must be -1
-        currentLineRender.SetPosition(positionCount - 1, position);
-        if (currentLineRender.positionCount % applySimplifyAfterPoints == 0 && allowSimplification)
-        {
-            currentLineRender.Simplify(tolerance);
-        }
-    }
     #endregion
 }
