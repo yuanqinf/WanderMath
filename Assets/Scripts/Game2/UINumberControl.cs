@@ -20,7 +20,7 @@ public class UINumberControl : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void SetVolDisplay(double num)
+    public void SetVolDisplay(float num)
     {
         string formattedDisplayStr = "Vol: " + num + " ft<sup>3</sup>";
         volDisplay.text = formattedDisplayStr;

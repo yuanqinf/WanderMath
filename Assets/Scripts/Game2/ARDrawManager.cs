@@ -102,6 +102,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 // constantly track movement
                 movingTouchPosition = hitObject.point;
+                // touched dot logic
                 if (hitObject.transform.tag == "dot")
                 {
                     // line not created, instantiate line renderer
@@ -126,11 +127,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         }
                         else if (ratio > 0.2)
                         {
-                            //game2Manager.PlayWrongDrawingWithAnimation();
                             game2Manager.PlayWrongDiagonalWithAnimation();
                         }
                     }
                 }
+                // touched various objects logic
                 if (touch.phase == TouchPhase.Began)
                 {
                     if (hitObject.transform.tag == "rampEdge")
@@ -144,7 +145,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ramp2DTouchPosition = touch.position;
                         Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
                     }
-                    if (hitObject.transform.tag == "p3Ramp" && GamePhase == Constants.GamePhase.PHASE3) // only allowed to touch in phase3
+                    // only allowed to touch in phase3
+                    if (hitObject.transform.tag == "p3Ramp" && GamePhase == Constants.GamePhase.PHASE3)
                     {
                         // Initiate face to be hit
                         rampTopCollider = hitObject.transform.gameObject;
@@ -178,12 +180,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             if (touch.phase == TouchPhase.Moved)
             {
+                var newTouchpos = touch.position;
+                var movingRange = new Vector3(0, Constants.MOVEMENT_RANGE, 0);
                 // moving rect after phase1
                 if (rec2DTouchPosition != Vector2.zero && liftableCube != null)
                 {
                     var uINumberControl = liftableCube.transform.root.gameObject.GetComponent<UINumberControl>();
-                    var curVolNum = System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
-                    Debug.Log("this is curVolNum: " + curVolNum);
+                    var curVolNum = (float)System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
+                    Debug.Log("this is curVolNum: " + curVolNum.ToString("N4"));
 
                     if (curVolNum > 0.85 && curVolNum < 1.15)
                     {
@@ -196,48 +200,32 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
                         canCubeLiftingSnap = false;
                     }
+                    ShowOverusedText(curVolNum, 1);
 
-                    if (System.Math.Round(curVolNum, 1) > 1)
-                    {
-                        concreteVolDisplay.text = "Overused";
-                        concreteUIFill.color = Color.red;
-                    }
-                    else
-                    {
-                        concreteVolDisplay.text = "Vol: " + System.Math.Round(curVolNum, 1) + " ft<sup>3</sup>";
-                        concreteUIFill.fillAmount = (float) curVolNum / 1;
-                        concreteUIFill.color = Color.white;
-                    }
-
-                    var newTouchpos = touch.position;
                     if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 5)
                     {
                         Debug.Log("lifting it now---------------------------------------");
-
                         uINumberControl.SetVolDisplay(curVolNum);
                         // 3d shape lift
-                        liftableCube.transform.parent.localScale += new Vector3(0, 0.008f, 0);
+                        liftableCube.transform.parent.localScale += movingRange;
                         // 3d ui lift
-                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, 0.008f, 0);
+                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition += movingRange;
                     }
                     else if ((newTouchpos.y - rec2DTouchPosition.y < 0) && liftableCube.transform.parent.localScale.y >= 0)
                     {
                         Debug.Log("drag it down---------------------------------------");
                         uINumberControl.SetVolDisplay(curVolNum);
-                        liftableCube.transform.parent.localScale -= new Vector3(0, 0.008f, 0);
-                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition += new Vector3(0, -0.008f, 0);
+                        liftableCube.transform.parent.localScale -= movingRange;
+                        liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition -= movingRange;
                     }
                 }
 
                 // moving ramp after phase2
                 if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                 {
-                    var newTouchpos = touch.position;
-                    var movingRange = new Vector3(Constants.MOVEMENT_RANGE, 0, 0);
-
+                    var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
                     int edgeNum = int.Parse(rampEdgeCollider.transform.name);
                     var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
-                    var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
                     if (newTouchpos.y - ramp2DTouchPosition.y > 0)
                     {
@@ -258,7 +246,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
                     phase2RampVolume = (float)(phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET);
-                    uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 1));
+                    uiNumberControl.SetVolDisplay((float)System.Math.Round(phase2RampVolume, 1));
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = phase2RampVolume / 2;
@@ -276,10 +264,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // moving ramp face in phase3
                 if (ramp2DTouchPosition != Vector2.zero && rampTopCollider != null)
                 {
-                    var newTouchpos = touch.position;
-                    var movingRange = new Vector3(Constants.MOVEMENT_RANGE, 0, 0);
                     var topFace = rampTopCollider.transform.root.GetComponent<ProBuilderMesh>();
-
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
                     if (newTouchpos.y > ramp2DTouchPosition.y)
@@ -301,7 +286,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // set UI height: with face height
                     uiNumberControl.Height = rampTopHeight / Constants.ONE_FEET;
                     phase2RampVolume = (float)(rampTopHeight * uiNumberControl.area / Constants.ONE_FEET);
-                    uiNumberControl.SetVolDisplay(System.Math.Round(phase2RampVolume, 1));
+                    uiNumberControl.SetVolDisplay((float)System.Math.Round(phase2RampVolume, 1));
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = phase2RampVolume / 2;
@@ -428,6 +413,22 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     GameObject.FindGameObjectWithTag("liftable_shape").GetComponent<BoxCollider>().enabled = false;
                 }
             }
+        }
+    }
+
+
+    private void ShowOverusedText(float curVolNum, int limit)
+    {
+        Debug.Log("overused area volume is " + curVolNum);
+        if (curVolNum > limit)
+        {
+            concreteVolDisplay.text = "Overused";
+            concreteUIFill.color = Color.red;
+        }
+        else
+        {
+            concreteUIFill.fillAmount = curVolNum / 1;
+            concreteUIFill.color = Color.white;
         }
     }
 
