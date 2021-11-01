@@ -6,6 +6,7 @@ public static class Constants
     public const float BIGWIN_ANIMATION_DELAY = 3.0f;
     public const float HALF_FEET = 0.15f;
     public const float ONE_FEET = 0.30f;
+    public const float FIVE_FEET = 1.50f;
     public const float MOVEMENT_RANGE = 0.008f;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";

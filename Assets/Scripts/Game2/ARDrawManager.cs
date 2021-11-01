@@ -181,10 +181,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
             if (touch.phase == TouchPhase.Moved)
             {
                 var newTouchpos = touch.position;
-                var movingRange = new Vector3(0, Constants.MOVEMENT_RANGE, 0);
                 // moving rect after phase1
                 if (rec2DTouchPosition != Vector2.zero && liftableCube != null)
                 {
+                    var movingRange = new Vector3(0, Constants.MOVEMENT_RANGE, 0);
                     var uINumberControl = liftableCube.transform.root.gameObject.GetComponent<UINumberControl>();
                     var curVolNum = (float)System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
                     Debug.Log("this is curVolNum: " + curVolNum.ToString("N4"));
@@ -220,40 +220,42 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                 }
 
-                // moving ramp after phase2
+                // moving ramp in phase2 on edges
                 if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                 {
+                    var movingRangeX = new Vector3(Constants.MOVEMENT_RANGE, 0, 0) ;
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
                     int edgeNum = int.Parse(rampEdgeCollider.transform.name);
                     var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
 
-                    if (newTouchpos.y - ramp2DTouchPosition.y > 0)
+                    if (newTouchpos.y - ramp2DTouchPosition.y > 0 && edgeHeights[edgeNum] <= Constants.FIVE_FEET)
                     {
                         Debug.Log("edge moving up");
-                        edgeHeights[edgeNum] += Constants.MOVEMENT_RANGE;
-                        phase2Ramp.TranslateVertices(movingEdge, movingRange);
-                        rampEdgeCollider.transform.localPosition += movingRange;
-                        uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4);
+                        edgeHeights[edgeNum] += Constants.MOVEMENT_RANGE; // tracking height movement
+                        phase2Ramp.TranslateVertices(movingEdge, movingRangeX); // actual ramp moving
+                        rampEdgeCollider.transform.localScale += movingRangeX * 15; // collider scaling
+                        uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4); // moving UI element upwards
                     } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeHeights[edgeNum] > 0f)
                     {
                         Debug.Log("edge moving down");
                         edgeHeights[edgeNum] -= Constants.MOVEMENT_RANGE;
-                        phase2Ramp.TranslateVertices(movingEdge, -movingRange);
-                        rampEdgeCollider.transform.localPosition -= movingRange;
+                        phase2Ramp.TranslateVertices(movingEdge, -movingRangeX);
+                        rampEdgeCollider.transform.localScale -= movingRangeX * 15;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
                     // set UI height: with edgeHeights[i]
                     phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
-                    phase2RampVolume = (float)(phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET);
+                    // formula for ramp: 0.5 * area * height
+                    phase2RampVolume = (float)(0.5 * phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET);
                     uiNumberControl.SetVolDisplay((float)System.Math.Round(phase2RampVolume, 1));
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = phase2RampVolume / 2;
 
-                    // activate glowing effect
+                    // activate glowing effect in phase2 only
                     var targetMat = phase2Ramp.GetComponent<Renderer>().material;
-                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
+                    if (phase2RampVolume > 1.8f && phase2RampVolume < 2.2f && GamePhase == Constants.GamePhase.PHASE2 && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
                         targetMat.SetFloat("_EmissIntensity", 1.2f);
                     }
                     else if (targetMat.GetFloat("_EmissIntensity") != 0.66f)
@@ -264,10 +266,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // moving ramp face in phase3
                 if (ramp2DTouchPosition != Vector2.zero && rampTopCollider != null)
                 {
+                    var movingRange = new Vector3(Constants.MOVEMENT_RANGE, 0, 0);
                     var topFace = rampTopCollider.transform.root.GetComponent<ProBuilderMesh>();
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
 
-                    if (newTouchpos.y > ramp2DTouchPosition.y)
+                    if (newTouchpos.y > ramp2DTouchPosition.y && rampTopHeight <= 5)
                     {
                         Debug.Log("top moving up");
                         rampTopHeight += Constants.MOVEMENT_RANGE;
@@ -336,8 +339,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rec2DTouchPosition = Vector2.zero;
                         liftableCube = null;
                     }
-
-
                 }
                 // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
@@ -376,6 +377,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rampEdgeCollider = null;
                     }
                 }
+                // phase2 moving ramp & cube 
                 if (GamePhase == Constants.GamePhase.PHASE3)
                 {
                     // reset ramp edge positions and height
@@ -406,7 +408,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 {
                     concreteUIFill.fillAmount = 0;
                     concreteUIDisplay.SetActive(false);
-                    GameObject.FindObjectOfType<UINumberControl>().SetVolDisplay(1);
+                    FindObjectOfType<UINumberControl>().SetVolDisplay(1);
                     canCubeLiftingSnap = false;
                     game2Manager.EndPhase1();
                     g2SoundManager.PlayGoodSoundEffect();
