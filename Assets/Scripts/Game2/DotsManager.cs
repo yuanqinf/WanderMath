@@ -92,7 +92,6 @@ public class DotsManager : Singleton<DotsManager>
         InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
         InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
-
     }
 
     public void ActivatePhase1Cube()
@@ -105,10 +104,6 @@ public class DotsManager : Singleton<DotsManager>
         }
         Debug.Log("recPos pos: " + recPos.ToString("N4"));
         flatRectangle = Instantiate(flatRectangle, recPos / 4f, placementPose.rotation);
-        Debug.Log("topleft: " + flatRectangle.transform.FindChild("TopLeft").transform.position.ToString("N4"));
-        Debug.Log(flatRectangle.transform.FindChild("TopRight").transform.position.ToString("N4"));
-        Debug.Log(flatRectangle.transform.FindChild("BotLeft").transform.position.ToString("N4"));
-        Debug.Log(flatRectangle.transform.FindChild("BotRight").transform.position.ToString("N4"));
         ClearDots();
         StartCoroutine(SetGamePhase1Mid());
     }

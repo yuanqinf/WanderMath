@@ -243,6 +243,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rampEdgeCollider.transform.localScale -= movingRangeX * 15;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
+                    if (GamePhase == Constants.GamePhase.PHASE2)
+                    {
+                        ShowOverusedText(phase2RampHeight, 1);
+                    }
                     // set UI height: with edgeHeights[i]
                     phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
@@ -293,7 +297,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // add concrete text
                     concreteVolDisplay.text = "Vol: " + System.Math.Round(phase2RampVolume, 1) + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = phase2RampVolume / 2;
-
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -352,7 +355,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         game2Manager.rampHeight = phase2RampHeight;
                         // phase 2 vol number snap
                         var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-                        uiNumberControl.SetVolDisplay(2);
+                        uiNumberControl.SetVolDisplay(1);
                         uiNumberControl.Height = System.Math.Round(phase2RampHeight / Constants.ONE_FEET);
                         concreteUIDisplay.SetActive(false);
                         concreteUIFill.fillAmount = 0;
@@ -365,7 +368,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         game2Manager.StartPhase2End(animeStartPt, animeEndPt, phase2RampHeight);
                         SetRampEdgeCollider(false);
                     }
-                    Debug.Log("rampheight: " + phase2RampHeight);
+
                     // reset ramp positions and height
                     if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                     {
@@ -488,7 +491,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // same code as above
             if (!CheckIfRect()) return;
             var dotPoints = GetDotPoints();
-            var maxLength = GetMaxPoints(dotPoints);
+            (var maxWidth, var maxLength) = GetLenAndWidthPoints(dotPoints);
 
             var initializePos = Vector3.zero;
             foreach (GameObject gameObject in gameObjSet)
@@ -497,10 +500,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
 
             InitializePhase3Ramp(initializePos / 4);
-            phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
+            phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, maxWidth * Constants.ONE_FEET);
             // set initial volume and set up
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-            uiNumberControl.SetAreaDisplay(maxLength);
+            uiNumberControl.SetAreaDisplay(maxWidth * maxLength);
             uiNumberControl.Height = 0;
             // difference in code
         }
@@ -562,6 +565,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return true;
     }
 
+    private (int, int) GetLenAndWidthPoints(List<(int, int)> dotPoints)
+    {
+        dotPoints.Sort();
+        var width = dotPoints[2].Item1 - dotPoints[1].Item1;
+        var length = dotPoints[1].Item2 - dotPoints[0].Item2;
+
+        return (width, length);
+    }
+
     private int GetMaxPoints(List<(int, int)> dotPoints)
     {
         int maxX = 0;
@@ -589,13 +601,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void InitializePhase3Ramp(Vector3 middlePos)
     {
+        // disable colliders
+        SetRampEdgeCollider(false);
+        if (rampTopObject != null) SetRampTopCollider(false);
+        // clear colliders
         rampEdgeObjects.Clear(); // clear previous edges
-        rampTopEdges.Clear();
+        rampTopEdges.Clear(); // clear previous top
         rampTopObject = null;
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         ClearLines();
         foreach(GameObject gameObject in gameObjSet)
         {
+            // TODO: add all points in between to be 0 as well
             gameObject.GetComponent<MeshRenderer>().material = failedColorMaterial;
             gameObject.GetComponent<Collider>().enabled = false;
         }
