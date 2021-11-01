@@ -615,6 +615,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         DotsManager.Instance.ClearDots();
         gameObjSet.Clear();
+        phase2Ramp.transform.FindChild("top").gameObject.SetActive(false);
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
         SetRampEdgeCollider(false);
