@@ -11,8 +11,12 @@ public class Game3Controller : GenericClass
     public GameObject axisObj;
     public GameObject door;
 
+    private CharacterController characterController;
+
+
     void Start()
     {
+        characterController = FindObjectOfType<CharacterController>();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         placementController = FindObjectOfType<PlacementIndicatorController>();
     }
