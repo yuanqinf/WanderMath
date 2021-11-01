@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Game3Controller : GenericClass
 {
-    private string gamePhase = "setup";
+    private string gamePhase = Constants.GamePhase.SETUP;
     private PlacementIndicatorController placementController;
     public Pose placementPose;
     public GameObject balloonObj;
@@ -23,7 +23,7 @@ public class Game3Controller : GenericClass
         switch (gamePhase)
         {
             // setting up stage
-            case "setup":
+            case Constants.GamePhase.SETUP:
                 if (!placementController.GetIsLayoutPlaced())
                 {
                     placementPose = placementController.UpdatePlacementAndPose(Camera.main, placementPose);
@@ -32,15 +32,16 @@ public class Game3Controller : GenericClass
                         //var audioDuration = PlaceObjectAndAudio();
                         //SetGamePhaseWithDelay("phase0", audioDuration);
                         // TODO: change this back to phase0
-                        balloonObj.SetActive(true);
-                        axisObj.SetActive(true);
                         placementController.TurnOffPlacementAndText();
                         Instantiate(door, placementPose.position + (placementPose.forward * 1), placementPose.rotation);
-                    }
+                        gamePhase = Constants.GamePhase.PHASE0;
+                    }   
                 }
                 break;
-            case "phase0":
-                // TODO
+            case Constants.GamePhase.PHASE0:
+                balloonObj.SetActive(true);
+                axisObj.SetActive(true);
+                gamePhase = Constants.GamePhase.WAITING;
                 break;
 
         }

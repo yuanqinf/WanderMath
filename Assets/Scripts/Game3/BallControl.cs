@@ -18,13 +18,12 @@ public class BallControl : MonoBehaviour
 
     //The following variables contain the state of the current throw
     private Vector3 startPosition;
+    private Vector3 endPosition;
     private Vector3 direction;
     private float startTime;
     private float endTime;
     private float duration;
     private bool directionChosen = false;
-    private bool throwStarted = false;
-    private bool hitCub = false;
 
 
     [SerializeField]
@@ -54,41 +53,39 @@ public class BallControl : MonoBehaviour
         // TODO: add collider endpoint to hit door to show collider effect
         // TODO: art: door, balloon, particle effect， prizes, x-axis & y-axis
 
-        if(Input.touchCount > 0){
-            if(Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                Debug.Log("pressing!");
-                startPosition = Input.mousePosition;
-                startTime = Time.time;
-                throwStarted = true;
-                directionChosen = false;
-            } else if(Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                Debug.Log("shoot!");
-                endTime = Time.time;
-                duration = endTime - startTime;
-                direction = Input.mousePosition - startPosition;
-                directionChosen = true;
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            if (Physics.Raycast(ray, out RaycastHit hitObject)) {
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    if (hitObject.transform.tag == "balloon")
+                    {
+                        hitObject.transform.position = new Vector3(hitObject.point.x, transform.position.y, hitObject.point.z);
+                    }
+                }
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Debug.Log("pressing!");
+                    startPosition = touch.position;
+                    startTime = Time.time;
+                    directionChosen = false;
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    Debug.Log("shoot!");
+                    endTime = Time.time;
+                    duration = endTime - startTime;
+                    direction = hitObject.transform.position - startPosition;
+                    directionChosen = true;
+                }
             }
         }
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Debug.Log("pressing!");
-        //    startPosition = Input.mousePosition;
-        //    startTime = Time.time;
-        //    throwStarted = true;
-        //    directionChosen = false;
-        //}
-        //else if (Input.GetMouseButtonUp(0))
-        //{
-        //    endTime = Time.time;
-        //    duration = endTime - startTime;
-        //    direction = Input.mousePosition - startPosition;
-        //    directionChosen = true;
-        //}
-
-        if (directionChosen)
+        Debug.Log("duration is: " + duration.ToString("N3"));
+        if (directionChosen && duration < 2.0f)
         {
             rb.mass = 1;
             rb.useGravity = false;
@@ -104,17 +101,16 @@ public class BallControl : MonoBehaviour
             startPosition = new Vector3(0, 0, 0);
             direction = new Vector3(0, 0, 0);
 
-            throwStarted = false;
             directionChosen = false;
         }
 
-        if(Time.time - endTime >= 5 && Time.time - endTime <= 6)
+        if (Time.time - endTime >= 3 && Time.time - endTime <= 4)
         {
             ResetBall();
         }
     }
 
-    public void ResetBall()
+    private void ResetBall()
     {
         rb.mass = 0;
         rb.useGravity = false;

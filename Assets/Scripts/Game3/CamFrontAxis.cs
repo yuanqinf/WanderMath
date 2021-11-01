@@ -24,7 +24,6 @@ public class CamFrontAxis : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-
     public void SetAxis()
     {
         Vector3 axiusPos = ARCam.transform.position + ARCam.transform.forward * m_BallCameraOffset.z + ARCam.transform.up * m_BallCameraOffset.y;
