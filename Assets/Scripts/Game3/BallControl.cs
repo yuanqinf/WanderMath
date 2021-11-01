@@ -14,7 +14,7 @@ public class BallControl : MonoBehaviour
     public float m_ThrowDirectionY = 0.0f;
 
     //Offset of the ball's position in relation to camera's position
-    public Vector3 m_BallCameraOffset = new Vector3(0f, -0.4f, 1f);
+    private Vector3 m_BallCameraOffset = new Vector3(0f, -0.15f, 1f);
 
     //The following variables contain the state of the current throw
     private Vector3 startPosition;
@@ -43,6 +43,7 @@ public class BallControl : MonoBehaviour
         ARCam = m_SessionOrigin.transform.Find("AR Camera").gameObject;
         transform.parent = ARCam.transform;
         ResetBall();
+        this.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -52,20 +53,40 @@ public class BallControl : MonoBehaviour
         // TODO: 3D moving object with x and y axis
         // TODO: add collider endpoint to hit door to show collider effect
         // TODO: art: door, balloon, particle effect， prizes, x-axis & y-axis
-        if (Input.GetMouseButtonDown(0))
-        {
-            startPosition = Input.mousePosition;
-            startTime = Time.time;
-            throwStarted = true;
-            directionChosen = false;
+
+        if(Input.touchCount > 0){
+            if(Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                Debug.Log("pressing!");
+                startPosition = Input.mousePosition;
+                startTime = Time.time;
+                throwStarted = true;
+                directionChosen = false;
+            } else if(Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                Debug.Log("shoot!");
+                endTime = Time.time;
+                duration = endTime - startTime;
+                direction = Input.mousePosition - startPosition;
+                directionChosen = true;
+            }
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            endTime = Time.time;
-            duration = endTime - startTime;
-            direction = Input.mousePosition - startPosition;
-            directionChosen = true;
-        }
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log("pressing!");
+        //    startPosition = Input.mousePosition;
+        //    startTime = Time.time;
+        //    throwStarted = true;
+        //    directionChosen = false;
+        //}
+        //else if (Input.GetMouseButtonUp(0))
+        //{
+        //    endTime = Time.time;
+        //    duration = endTime - startTime;
+        //    direction = Input.mousePosition - startPosition;
+        //    directionChosen = true;
+        //}
 
         if (directionChosen)
         {

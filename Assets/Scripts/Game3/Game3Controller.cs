@@ -7,6 +7,9 @@ public class Game3Controller : GenericClass
     private string gamePhase = "setup";
     private PlacementIndicatorController placementController;
     public Pose placementPose;
+    public GameObject balloonObj;
+    public GameObject axisObj;
+    public GameObject door;
 
     void Start()
     {
@@ -29,9 +32,17 @@ public class Game3Controller : GenericClass
                         //var audioDuration = PlaceObjectAndAudio();
                         //SetGamePhaseWithDelay("phase0", audioDuration);
                         // TODO: change this back to phase0
+                        balloonObj.SetActive(true);
+                        axisObj.SetActive(true);
+                        placementController.TurnOffPlacementAndText();
+                        Instantiate(door, placementPose.position + (placementPose.forward * 1), placementPose.rotation);
                     }
                 }
                 break;
+            case "phase0":
+                // TODO
+                break;
+
         }
     }
 }

@@ -29,6 +29,8 @@ TagManager:
   - p3Ramp
   - destroyCollider
   - plane
+  - finley
+  - balloon
   layers:
   - Default
   - TransparentFX
