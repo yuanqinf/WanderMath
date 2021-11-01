@@ -39,6 +39,7 @@ public class Game3Controller : GenericClass
                         placementController.TurnOffPlacementAndText();
                         Instantiate(door, placementPose.position + (placementPose.forward * 1), placementPose.rotation);
                         gamePhase = Constants.GamePhase.PHASE0;
+                        characterController.InitCharacterAndAudio(placementPose, placementController.GetPlacementIndicatorLocation());
                     }   
                 }
                 break;

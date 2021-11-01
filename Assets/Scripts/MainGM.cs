@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 public class MainGM : MonoBehaviour
 {
     // Start is called before the first frame update
+    private void Start()
+    {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
 
     private string activity1SceneName = "Activity1";
     private string activity2SceneName = "Activity2";

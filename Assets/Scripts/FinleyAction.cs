@@ -28,9 +28,12 @@ public class FinleyAction : MonoBehaviour
                 // touched dot logic
                 if (hitObject.transform.tag == "finley")
                 {
-                    if (IsDoubleTap())
+                    foreach (var tap in Input.touches)
                     {
-                        SceneManager.LoadScene("main");
+                        if (tap.tapCount == 2)
+                        {
+                            SceneManager.LoadScene("main");
+                        }
                     }
                 }
             }
