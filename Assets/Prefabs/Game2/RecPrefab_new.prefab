@@ -847,6 +847,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6149414496661672657, guid: 76162f7b4c0d844d19c9bbd2660e8717, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149414496661672657, guid: 76162f7b4c0d844d19c9bbd2660e8717, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7064277298192994272, guid: 76162f7b4c0d844d19c9bbd2660e8717, type: 3}
       propertyPath: m_Name
       value: Shader_Effect
