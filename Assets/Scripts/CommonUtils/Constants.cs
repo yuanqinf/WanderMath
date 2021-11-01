@@ -8,6 +8,8 @@ public static class Constants
     public const float ONE_FEET = 0.30f;
     public const float FIVE_FEET = 1.50f;
     public const float MOVEMENT_RANGE = 0.008f;
+    public const float FillAmountVolFor2 = 2;
+    public const float FillAmountVolFor4 = 4;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
         public const string DestroyCollider = "destroyCollider";
