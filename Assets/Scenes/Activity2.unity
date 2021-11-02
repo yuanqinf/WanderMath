@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -241,12 +241,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultColorMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   failedColorMaterial: {fileID: 2100000, guid: e1f029f06ade74130bd9fb4636bc3130, type: 2}
-  cornerVertices: 10
-  endCapVeritices: 10
-  allowSimplification: 0
-  tolerance: 0.001
-  applySimplifyAfterPoints: 20
-  minDistanceBeforeNewPoint: 0.001
   arCamera: {fileID: 922230702}
   lineWidth: 0.01
   linePrefab: {fileID: 6799044895285963287, guid: c2fc2852c3d0b406cadf803c1c9cce1f, type: 3}
@@ -257,8 +251,6 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   endPos: {x: 0, y: 0, z: 0}
   movingTouchPosition: {x: 0, y: 0, z: 0}
-  boxInitialRealWorldPosition: {x: 0, y: 0, z: 0}
-  boxNewRealWorldPosition: {x: 0, y: 0, z: 0}
   concreteUIDisplay: {fileID: 747538288}
   concreteUIFill: {fileID: 1666370773}
   concreteVolDisplay: {fileID: 517984524}
@@ -1789,7 +1781,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 78a1106c6793e45f1bedfd9b478ceab3, type: 3}
   phase1Mid:
   - {fileID: 8300000, guid: 15c02f362ad98427c994a2c7e4508164, type: 3}
-  - {fileID: 8300000, guid: 845733c8940fb4a2190a82be381555f7, type: 3}
+  - {fileID: 8300000, guid: 2a6310e0f0dc74b328ebdad703d830ba, type: 3}
   phase1End:
   - {fileID: 8300000, guid: 279d9640dd68743d39955646b48e0567, type: 3}
   - {fileID: 8300000, guid: 986077814a2a441369ee8ea7460bd176, type: 3}
@@ -1816,8 +1808,9 @@ MonoBehaviour:
   goodSoundEffect: {fileID: 8300000, guid: 16a6bbba3fd3547479b80dfcaab6cd3c, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
   WrongDrawingAudio: {fileID: 8300000, guid: da783829a1d434880b2654c96537ea42, type: 3}
-  WrongDiagonalAudio: {fileID: 8300000, guid: 5ca81b99485da4ef7b29b986a930be17, type: 3}
-  WrongLinesAudio: {fileID: 8300000, guid: f1f1dfb5e60ef4365a845723d7016251, type: 3}
+  WrongDiagonalAudio: {fileID: 8300000, guid: a3ac036b606f54b928507ea56908681a, type: 3}
+  WrongLinesAudio: {fileID: 8300000, guid: 9dafb04a662f545328b8ef3738a8ee5c, type: 3}
+  phase1PerfectAudio: {fileID: 8300000, guid: 4b1639e27a0284490ad80a186b0da5b0, type: 3}
   liftWrongVolAudio: {fileID: 8300000, guid: bc91f8d772fe04291a8f9162abd6e4ec, type: 3}
 --- !u!4 &1314368971
 Transform:

@@ -101,6 +101,8 @@ public class Game2SoundManager : MonoBehaviour
     private string wrongDiagonal = "That's a diagonal line, you need to draw a straight line.";
     public AudioClip WrongLinesAudio;
     private string wrong4Lines = "You must form a square or rectangle with only 4 lines, try drawing again";
+    public AudioClip phase1PerfectAudio;
+    private string phase1PerfectLine = "It's perfect. I'll save it for later.";
 
     public AudioClip liftWrongVolAudio;
 
@@ -202,7 +204,7 @@ public class Game2SoundManager : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            uiController.PlaySubtitles(wrongDiagonal, 3.3f);
+            uiController.PlaySubtitles(wrongDiagonal, 5.5f);
             audioSource.PlayOneShot(WrongDiagonalAudio);
         }
     }
@@ -225,7 +227,13 @@ public class Game2SoundManager : MonoBehaviour
         audioSource.PlayOneShot(phase2BestRampAudio);
     }
 
-    public void playWrongCubeLiftAudio()
+    public void PlayPhase1Perfect()
+    {
+        uiController.PlaySubtitles(phase1PerfectLine, 3f);
+        audioSource.PlayOneShot(phase1PerfectAudio);
+    }
+
+    public void PlayWrongCubeLiftAudio()
     {
         audioSource.PlayOneShot(liftWrongVolAudio);
     }
