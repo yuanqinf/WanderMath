@@ -567,7 +567,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         switch (edgeNum)
         {
             case 4:
-                animeEndPt = (topRight + botRight) / 2 + new Vector3(0.08f, 0, 0); // change x to prevent hitting the ramp when jump down
+                animeEndPt = (topRight + botRight) / 2; // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topLeft + botLeft) / 2;
                 break;
             case 5:
@@ -579,7 +579,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 animeStartPt = (botLeft + botRight) / 2;
                 break;
             case 7:
-                animeEndPt = (topLeft + botLeft) / 2 - new Vector3(0.08f, 0, 0); // change x to prevent hitting the ramp when jump down
+                animeEndPt = (topLeft + botLeft) / 2; // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topRight + botRight) / 2;
                 break;
             case 1:

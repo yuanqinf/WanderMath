@@ -215,16 +215,20 @@ public class Game2Manager : Singleton<Game2Manager>
     private void StartPhase3()
     {
         dotsManager.InstantiatePhase3Dots();
-        // add animation & audio
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Start);
+        characterController.PlayTalkingAnimationWithDuration(4.6f + 3.5f + 4.9f + 8f);
     }
 
     public void StartPhase3End(List<AnimationPoint> animationPoints)
     {
         StartCoroutine(Phase3EndingAnimation(animationPoints));
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3End);
+        characterController.PlayTalkingAnimationWithDuration(6.4f);
     }
     IEnumerator Phase3EndingAnimation(List<AnimationPoint> animationPoints)
     {
-        for(int i = 0; i < animationPoints.Count; i++)
+        yield return new WaitForSeconds(6.4f);
+        for (int i = 0; i < animationPoints.Count; i++)
         {
             var point = animationPoints[i];
             if (i == 0)
@@ -257,7 +261,9 @@ public class Game2Manager : Singleton<Game2Manager>
                 }
             }
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Additional);
+        characterController.PlayTalkingAnimationWithDuration(3.8f + 4.5f);
     }
 
 

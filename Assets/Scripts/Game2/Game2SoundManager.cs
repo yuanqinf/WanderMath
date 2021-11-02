@@ -50,7 +50,7 @@ public class Game2SoundManager : MonoBehaviour
     {
         "Cool! We have a rectangle.",
         "Nice! That's the area, the length times the width.",
-        "I have 1 cubic feet of concrete this time. So let's see how tall it'll get!",
+        "I have 1 cubic foot of concrete this time. So let's see how tall it'll get!",
         "To make a ramp, it has to have a slant. So to build it, we'll drag up on one edge."
     };
     private string[] phase2EndSubtitles =
@@ -65,20 +65,14 @@ public class Game2SoundManager : MonoBehaviour
     private string phase2BestRampSubtitle = "This is the best ramp ever! Wow!";
 
     public AudioClip[] phase3Start;
-    public AudioClip[] phase3Mid;
     public AudioClip[] phase3End;
     public AudioClip[] phase3Additional;
     private string[] phase3StartSubtitles =
     {
         "Okay, let's put it all together and build Finley Park!",
         "You can place the ledge and the ramp wherever you want!",
-        "There's also 6 cubic feet of extra concrete to make more obstacles.",
-    };
-    private string[] phase3MidSubtitles =
-    {
-        "If you want to take something out of the park, double tap it.",
-        "Tap on me any time you want me to try something out! Or double tap me to finish the park!",
-        "Hm, I think that's too tall for me to jump. Maybe if it had a smaller base?"
+        "There's also 2 cubic feet of extra concrete to make more obstacles.",
+        "Connect dots to make rectangles. Then, drag up the middle to make a ledge, or the edge to make a ramp!"
     };
     private string[] phase3EndSubtitles =
     {
@@ -86,9 +80,7 @@ public class Game2SoundManager : MonoBehaviour
     };
     private string[] phase3AdditionalSubtitles =
     {
-        "Woohoo! Totally rad!",
         "Awesome! I feel like a pro skater.",
-        "Aw yeah, did you see that?",
         "Best! Skate park! Ever!"
     };
 
@@ -98,9 +90,9 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip WrongDrawingAudio;
     private string wrongDrawing = "That's too small for my ledge, I need a square.";
     public AudioClip WrongDiagonalAudio;
-    private string wrongDiagonal = "That's a diagonal line, you need to draw a straight line.";
+    private string wrongDiagonal = "That's a diagonal line! We don't need a diagonal line to draw a rectangle.";
     public AudioClip WrongLinesAudio;
-    private string wrong4Lines = "You must form a square or rectangle with only 4 lines, try drawing again";
+    private string wrong4Lines = "Make sure to draw your rectangle with four lines! Let's try again.";
     public AudioClip phase1PerfectAudio;
     private string phase1PerfectLine = "It's perfect. I'll save it for later.";
 
@@ -140,6 +132,15 @@ public class Game2SoundManager : MonoBehaviour
                 break;
             case Constants.VoiceOvers.PHASE2End:
                 StartCoroutine(PlayVoiceover(phase2End, phase2EndSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE3Start:
+                StartCoroutine(PlayVoiceover(phase3Start, phase3StartSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE3End:
+                StartCoroutine(PlayVoiceover(phase3End, phase3EndSubtitles));
+                break;
+            case Constants.VoiceOvers.PHASE3Additional:
+                StartCoroutine(PlayVoiceover(phase3Additional, phase3AdditionalSubtitles));
                 break;
             default:
                 break;
