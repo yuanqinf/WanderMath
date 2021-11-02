@@ -14,7 +14,7 @@ public class CharacterController : GenericClass
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
 
-    public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
+    public void InitCharacter(Pose placementPose, Transform placementPos)
     {
         // to be placed at the corner
         Debug.Log("placement Pose: " + placementPose.rotation);
@@ -31,7 +31,11 @@ public class CharacterController : GenericClass
             arCharacterToSpawn, characterPos, characterRot
         );
         animator = arCharacterToSpawn.GetComponent<Animator>();
+    }
 
+    public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
+    {
+        InitCharacter(placementPose, placementPos);
         return StartFirstLine();
     }
 
