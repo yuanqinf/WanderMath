@@ -6,11 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Activity1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/JacobScene.unity
+  - enabled: 0
+    path: Assets/Scenes/Activity2.unity
     guid: c2d74b0f2ed1b46dfbf567395c6fbeb8
+  - enabled: 1
+    path: Assets/Scenes/Activity3.unity
+    guid: 9bce9ab1278df4e06adfc2bafdd050a6
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: c2b9272bdcccf4b7faeb23335a24bd1c, type: 2}
     AR Foundation RemoteARFoundationRemoteSessionRecordsData: {fileID: 11400000, guid: 0162d3775e5bb4367b75abc94225628e, type: 2}
