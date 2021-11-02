@@ -9,6 +9,22 @@ using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 using TMPro;
 
+public struct AnimationPoint
+{
+    public Vector3 startPos;
+    public Vector3 endPos;
+    public float height;
+    public bool isJump;
+
+    public AnimationPoint(Vector3 start, Vector3 end, float height, bool isJump)
+    {
+        this.startPos = start;
+        this.endPos = end;
+        this.height = height;
+        this.isJump = isJump;
+    }
+};
+
 [RequireComponent(typeof(ARAnchorManager))]
 public class ARDrawManager : Singleton<ARDrawManager>
 {
@@ -54,6 +70,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     public GameObject rampEdgeCollider = null;
     private GameObject rampTopCollider = null;
     private float rampTopHeight = 0f;
+    private List<AnimationPoint> phase3AnimationPoints = new List<AnimationPoint>();
 
     public string GamePhase { get; set; }
 
@@ -70,7 +87,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private bool canCubeLiftingSnap = false;
 
     private GameObject liftableCube;
-
+    // ui texts
     public GameObject concreteUIDisplay;
     public Image concreteUIFill;
     public TextMeshProUGUI concreteVolDisplay;
@@ -329,7 +346,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         currentLineRender.SetPosition(1, endPos);
                         var lineMagnitude = (endPos - startPos).magnitude;
                         currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                        ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
                             dotsGameObjSet.Add(startObject.gameObject);
@@ -391,6 +407,26 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // phase2 moving ramp & cube 
                 if (GamePhase == Constants.GamePhase.PHASE3)
                 {
+                    var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
+                    Debug.Log("totalVol is: " + totalVol);
+                    if (totalVol > 1.8f && totalVol < 2.2f && (rampEdgeCollider != null || rampTopCollider != null))
+                    {
+                        Debug.Log("phase3 snap is called");
+                        // phase 2 vol number snap
+                        var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+                        var leftoverVol = (float)System.Math.Round(2 - prevVolume, 1);
+                        uiNumberControl.SetVolDisplay(leftoverVol);
+                        uiNumberControl.Height = System.Math.Round(leftoverVol / Constants.ONE_FEET);
+                        concreteUIDisplay.SetActive(false);
+                        concreteVolDisplay.text = "Vol: 2 ft<sup>3</sup>";
+                        concreteUIFill.fillAmount = 0;
+                        AddPhase3AnimationPoint();
+                        // play phase 3 animations
+                        game2Manager.StartPhase3End(phase3AnimationPoints);
+                        // disable colliders
+                        SetRampEdgeCollider(false);
+                        SetRampTopCollider(false);
+                    }
                     // reset ramp edge positions and height
                     if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                     {
@@ -459,10 +495,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            foreach(GameObject game in dotsGameObjSet)
-            {
-                Debug.Log("name in set is: " + game.transform.name);
-            }
             if (dotsGameObjSet.Count != 4)
             {
                 Debug.Log("not a rectangle/square");
@@ -535,7 +567,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         switch (edgeNum)
         {
             case 4:
-                animeEndPt = (topRight + botRight) / 2;
+                animeEndPt = (topRight + botRight) / 2 + new Vector3(0.08f, 0, 0); // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topLeft + botLeft) / 2;
                 break;
             case 5:
@@ -547,11 +579,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 animeStartPt = (botLeft + botRight) / 2;
                 break;
             case 7:
-                animeEndPt = (topLeft + botLeft) / 2;
+                animeEndPt = (topLeft + botLeft) / 2 - new Vector3(0.08f, 0, 0); // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topRight + botRight) / 2;
                 break;
             case 1:
-                // TODO: handle jump over animation
+                animeEndPt = (topLeft + botLeft) / 2;
+                animeStartPt = (topRight + botRight) / 2;
                 break;
         }
         return (animeStartPt, animeEndPt);
@@ -571,6 +604,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return true;
     }
 
+    /// <summary>
+    /// Get length and width of the rect drawn.
+    /// </summary>
+    /// <param name="dotPoints"></param>
+    /// <returns></returns>
     private (int, int) GetLenAndWidthPoints(List<(int, int)> dotPoints)
     {
         var width = dotPoints[2].Item1 - dotPoints[1].Item1;
@@ -579,6 +617,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return (width, length);
     }
 
+    /// <summary>
+    /// get the max length of the drawn rect.
+    /// </summary>
+    /// <param name="dotPoints"></param>
+    /// <returns></returns>
     private int GetMaxPoints(List<(int, int)> dotPoints)
     {
         int maxX = 0;
@@ -589,11 +632,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
             maxY = System.Math.Max(System.Math.Abs(dotPoints[0].Item2 - dotPoints[i].Item2), maxY);
         }
         var res = System.Math.Max(maxX, maxY);
-        Debug.Log("maxLength is: " + res);
         return res;
     }
 
-
+    /// <summary>
+    /// Get the list of drawn sorted dot points in tuple.
+    /// </summary>
+    /// <returns></returns>
     private List<(int, int)> GetSortedDotPoints()
     {
         List<(int, int)> dotPoints = new List<(int, int)>();
@@ -608,19 +653,21 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void InitializePhase3Ramp(Vector3 middlePos)
     {
+        // get points based on rectangle or ramp
+        if (phase2Ramp != null)
+        {
+            AddPhase3AnimationPoint();
+        }
+
         // re-initalize references
         if (prevVolume == 0.0f) prevVolume = phase2RampVolume;
-        rampTopHeight = 0.0f;
         // disable colliders
         SetRampEdgeCollider(false);
-        if (rampTopObject != null) SetRampTopCollider(false);
-        // clear colliders
-        rampEdgeObjects.Clear(); // clear previous edges
-        rampTopEdges.Clear(); // clear previous top
-        rampTopObject = null;
-
         DeactivateSelectedDots();
         dotsGameObjSet.Clear();
+
+        if (rampTopObject != null) SetRampTopCollider(false);
+        ClearRampRefereces();
 
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
@@ -630,6 +677,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
         InitializeRampTopObject(phase2Ramp.gameObject);
         SetRampEdgeCollider(true); // TODO: change when audio changes
     }
+    private void AddPhase3AnimationPoint()
+    {
+        // find edge/top
+        (var rampPoint, var rampHeight) = FindSelectedEdgeOrTop();
+        // get ramp animation endpoints
+        (var startPoint, var endPoint) = GetRampAnimationPoints(rampPoint);
+        var isJump = (rampPoint == 1) ? true : false;
+        phase3AnimationPoints.Add(new AnimationPoint(startPoint, endPoint, rampHeight, isJump));
+    }
 
     /// <summary>
     /// Deactivate dots interactions.
@@ -637,11 +693,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void DeactivateSelectedDots()
     {
         var dotNameSet = new HashSet<string>();
-        foreach(var point in GetSortedDotPoints())
+        var sortedDots = GetSortedDotPoints();
+        for (int d = 1; d < sortedDots.Count; d++)
         {
-            for (int i = 0; i <= point.Item1; i++)
+            for (int i = sortedDots[0].Item1; i <= sortedDots[d].Item1; i++)
             {
-                for (int j = 0; j <= point.Item2; j++)
+                for (int j = sortedDots[0].Item2; j <= sortedDots[d].Item2; j++)
                 {
                     dotNameSet.Add($"dot_{i}_{j}");
                 }
@@ -691,6 +748,27 @@ public class ARDrawManager : Singleton<ARDrawManager>
         midPointOfTwoPos.y = startPos.y + (endPos.y - startPos.y) / 2 + 0.1f;
         midPointOfTwoPos.z = startPos.z + (endPos.z - startPos.z) / 2;
         lineController.SetPosition(midPointOfTwoPos);
+    }
+
+    private (int, float) FindSelectedEdgeOrTop()
+    {
+        var heightNum = 0;
+        var height = 0f;
+
+        if (rampTopHeight > 0)
+        {
+            heightNum = 1;
+            height = rampTopHeight;
+        }
+        foreach(var item in edgeHeights)
+        {
+            if (item.Value > 0)
+            {
+                heightNum = item.Key;
+                height = item.Value;
+            }
+        }
+        return (heightNum, height);
     }
 
     private void SetRampTopCollider(bool isActive)
@@ -766,27 +844,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
-    private bool IsDoubleTapDestroy()
-    {
-        bool result = false;
-        float MaxTimeWait = 1;
-        float VariancePosition = 1;
-
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            float DeltaTime = Input.GetTouch(0).deltaTime;
-            float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
-
-            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
-            if (Physics.Raycast(ray, out RaycastHit hitObject))
-            {
-                if (DeltaTime > 0 && DeltaTime < MaxTimeWait && DeltaPositionLenght < VariancePosition && hitObject.transform.tag == Constants.Tags.DestroyCollider)
-                    result = true;
-            }
-        }
-        return result;
-    }
-
     private bool IsDoubleTap()
     {
         bool result = false;
@@ -835,11 +892,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
         rampEdgeObjects.Clear();
         dotsGameObjSet.Clear();
         edgeHeights.Keys.ToList().ForEach(k => edgeHeights[k] = 0);
+        rampTopObject = null;
+        rampTopHeight = 0.0f;
     }
     // destroy ramp to calculate next ramp
     public void DestoryRampAndReferences()
     {
         Destroy(phase2Ramp.gameObject);
+        phase2Ramp = null;
         ClearRampRefereces();
     }
 

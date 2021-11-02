@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Game2Manager : Singleton<Game2Manager>
 {
     [SerializeField]
     private GameObject phase0Object;
-    [SerializeField]
-    private GameObject phase1Object;
     private DotsManager dotsManager;
     private CharacterController characterController;
     private ARDrawManager arDrawManager;
@@ -201,9 +200,7 @@ public class Game2Manager : Singleton<Game2Manager>
         yield return new WaitForSeconds(4.4f + 8.2f + 8f + 1.7f + 1f);
         arDrawManager.ClearLines();
         characterController.SkateOnRamp(startPos, endPos, rampHeight / 2.0f);
-        Debug.Log("startPoint: " + rampStartPoint);
-        Debug.Log("rampEndPoint: " + rampEndPoint);
-        Debug.Log("rampHeight: " + rampHeight);
+        g2SoundManager.PlaySkatingSoundForTime(11f);
         yield return new WaitForSeconds(11f);
         // play best ramp ever line after animation
         g2SoundManager.PlayBestRampEver();
@@ -221,10 +218,49 @@ public class Game2Manager : Singleton<Game2Manager>
         // add animation & audio
     }
 
-    private void StartPhase3Mid()
+    public void StartPhase3End(List<AnimationPoint> animationPoints)
     {
-
+        StartCoroutine(Phase3EndingAnimation(animationPoints));
     }
+    IEnumerator Phase3EndingAnimation(List<AnimationPoint> animationPoints)
+    {
+        for(int i = 0; i < animationPoints.Count; i++)
+        {
+            var point = animationPoints[i];
+            if (i == 0)
+            {
+                characterController.StartSkating();
+                yield return new WaitForSeconds(1.4f);
+            }
+            if (point.isJump)
+            {
+                Debug.Log($"play jumping animation. {point.height}");
+                characterController.SkateOnCube(point.startPos, point.endPos, point.height, true);
+                g2SoundManager.PlaySkatingSoundForTime(5.6f);
+                yield return new WaitForSeconds(5.6f);
+                if (i == animationPoints.Count - 1)
+                {
+                    characterController.StopSkating();
+                    yield return new WaitForSeconds(2.7f);
+                }
+            }
+            else
+            {
+                Debug.Log($"play ramp animation: {point.height}");
+                characterController.SkateOnRamp(point.startPos, point.endPos, point.height / 2.0f, true);
+                g2SoundManager.PlaySkatingSoundForTime(7.1f);
+                yield return new WaitForSeconds(7.1f);
+                if (i == animationPoints.Count - 1)
+                {
+                    characterController.StopSkating();
+                    yield return new WaitForSeconds(2.7f);
+                }
+            }
+        }
+        yield return new WaitForSeconds(1f);
+    }
+
+
     #endregion
 
     #region helper functions
