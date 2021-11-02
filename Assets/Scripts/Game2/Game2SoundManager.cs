@@ -30,7 +30,7 @@ public class Game2SoundManager : MonoBehaviour
     {
         "Okay, it's 1 foot by 1 foot. So, the area is 1 square foot. Sweet!",
         "To build the ledge, I have 1 cubic foot of concrete.",
-        "Tap on the middle of the square, then drag up to give it some height!"
+        "Press on the middle of the square, then drag up to give it some height!"
     };
     private string[] phase1EndSubtitles =
     {

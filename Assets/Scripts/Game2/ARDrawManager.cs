@@ -253,7 +253,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         concreteVolDisplay.text = "Vol: " + phase2RampVolume + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = phase2RampVolume;
-                        ShowOverusedText(phase2RampHeight, 1);
+                        ShowOverusedText(phase2RampVolume, 1);
                     }
                     if (GamePhase == Constants.GamePhase.PHASE3)
                     {
