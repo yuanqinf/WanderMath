@@ -35,7 +35,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject currentLineGameObject = null;
 
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private HashSet<GameObject> gameObjSet = new HashSet<GameObject>();
+    private HashSet<GameObject> dotsGameObjSet = new HashSet<GameObject>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
     private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
     {
@@ -203,7 +203,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     uINumberControl.SetVolDisplay(curVolNum);
                     concreteVolDisplay.text = "Vol: " + curVolNum + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = curVolNum;
-                    ShowOverusedText(curVolNum, 1);
+                    ShowOverusedText(curVolNum, 1.15f);
 
                     if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 5)
                     {
@@ -253,7 +253,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         concreteVolDisplay.text = "Vol: " + phase2RampVolume + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = phase2RampVolume;
-                        ShowOverusedText(phase2RampVolume, 1);
+                        ShowOverusedText(phase2RampVolume, 1.15f);
                     }
                     if (GamePhase == Constants.GamePhase.PHASE3)
                     {
@@ -261,7 +261,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("total vol: " + totalVol);
                         concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor2;
-                        ShowOverusedText(totalVol, 2);
+                        ShowOverusedText(totalVol, 2.15f);
                     }
 
                     // activate glowing effect in phase2 only
@@ -303,7 +303,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
                     concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor2;
-                    ShowOverusedText(totalVol, 2);
+                    ShowOverusedText(totalVol, 2.15f);
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -332,8 +332,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ARDebugManager.Instance.LogInfo("endPos hit is: " + endPos);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
-                            gameObjSet.Add(startObject.gameObject);
-                            gameObjSet.Add(hitObject.transform.gameObject);
+                            dotsGameObjSet.Add(startObject.gameObject);
+                            dotsGameObjSet.Add(hitObject.transform.gameObject);
                         }
                         HandleSnapObject();
                     }
@@ -430,9 +430,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     }
 
 
-    private void ShowOverusedText(float curVolNum, int limit)
+    private void ShowOverusedText(float curVolNum, float limit)
     {
-        Debug.Log("overused area volume is " + curVolNum);
         if (curVolNum > limit)
         {
             concreteVolDisplay.text = "Overused";
@@ -460,24 +459,24 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            foreach(GameObject game in gameObjSet)
+            foreach(GameObject game in dotsGameObjSet)
             {
                 Debug.Log("name in set is: " + game.transform.name);
             }
-            if (gameObjSet.Count != 4)
+            if (dotsGameObjSet.Count != 4)
             {
                 Debug.Log("not a rectangle/square");
                 game2Manager.PlayWrongLinesWithAnimation();
                 numLines = 0;
                 ClearLines();
-                gameObjSet.Clear();
+                dotsGameObjSet.Clear();
                 return; // not 4 unique points, so not rectangle
             }
-            var dotPoints = GetDotPoints();
+            var dotPoints = GetSortedDotPoints();
             var maxLength = GetMaxPoints(dotPoints);
 
             var initializePos = Vector3.zero;
-            foreach(GameObject gameObject in gameObjSet)
+            foreach(GameObject gameObject in dotsGameObjSet)
             {
                 initializePos += gameObject.transform.position;
             }
@@ -497,11 +496,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {
             // same code as above
             if (!CheckIfRect()) return;
-            var dotPoints = GetDotPoints();
+            var dotPoints = GetSortedDotPoints();
             (var maxWidth, var maxLength) = GetLenAndWidthPoints(dotPoints);
 
             var initializePos = Vector3.zero;
-            foreach (GameObject gameObject in gameObjSet)
+            foreach (GameObject gameObject in dotsGameObjSet)
             {
                 initializePos += gameObject.transform.position;
             }
@@ -560,13 +559,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private bool CheckIfRect()
     {
-        if (gameObjSet.Count != 4)
+        if (dotsGameObjSet.Count != 4)
         {
             Debug.Log("not a rectangle/square");
             game2Manager.PlayWrongLinesWithAnimation();
             numLines = 0;
             ClearLines();
-            gameObjSet.Clear();
+            dotsGameObjSet.Clear();
             return false; // not 4 unique points, so not rectangle
         }
         return true;
@@ -574,7 +573,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private (int, int) GetLenAndWidthPoints(List<(int, int)> dotPoints)
     {
-        dotPoints.Sort();
         var width = dotPoints[2].Item1 - dotPoints[1].Item1;
         var length = dotPoints[1].Item2 - dotPoints[0].Item2;
 
@@ -595,19 +593,22 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return res;
     }
 
-    private List<(int, int)> GetDotPoints()
+
+    private List<(int, int)> GetSortedDotPoints()
     {
         List<(int, int)> dotPoints = new List<(int, int)>();
-        foreach(GameObject game in gameObjSet)
+        foreach(GameObject game in dotsGameObjSet)
         {
             var res = game.name.Split('_');
             dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
         }
+        dotPoints.Sort();
         return dotPoints;
     }
 
     private void InitializePhase3Ramp(Vector3 middlePos)
     {
+        // re-initalize references
         if (prevVolume == 0.0f) prevVolume = phase2RampVolume;
         rampTopHeight = 0.0f;
         // disable colliders
@@ -617,20 +618,44 @@ public class ARDrawManager : Singleton<ARDrawManager>
         rampEdgeObjects.Clear(); // clear previous edges
         rampTopEdges.Clear(); // clear previous top
         rampTopObject = null;
+
+        DeactivateSelectedDots();
+        dotsGameObjSet.Clear();
+
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
         ClearLines();
-        foreach(GameObject gameObject in gameObjSet)
-        {
-            // TODO: add all points in between to be 0 as well
-            gameObject.GetComponent<MeshRenderer>().material = failedColorMaterial;
-            gameObject.GetComponent<Collider>().enabled = false;
-        }
-        gameObjSet.Clear();
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
         InitializeRampTopObject(phase2Ramp.gameObject);
         SetRampEdgeCollider(true); // TODO: change when audio changes
+    }
+
+    /// <summary>
+    /// Deactivate dots interactions.
+    /// </summary>
+    private void DeactivateSelectedDots()
+    {
+        var dotNameSet = new HashSet<string>();
+        foreach(var point in GetSortedDotPoints())
+        {
+            for (int i = 0; i <= point.Item1; i++)
+            {
+                for (int j = 0; j <= point.Item2; j++)
+                {
+                    dotNameSet.Add($"dot_{i}_{j}");
+                }
+            }
+        }
+
+        var allDots = GameObject.FindGameObjectsWithTag(Constants.Tags.DOT);
+        foreach (var dotObj in allDots)
+        {
+            if (dotNameSet.Contains(dotObj.name)) {
+                dotObj.GetComponent<MeshRenderer>().material = failedColorMaterial;
+                dotObj.GetComponent<Collider>().enabled = false;
+            }
+        }
     }
 
     /// <summary>
@@ -641,7 +666,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         DotsManager.Instance.ClearDots();
-        gameObjSet.Clear();
+        dotsGameObjSet.Clear();
         phase2Ramp.transform.FindChild("top").gameObject.SetActive(false);
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
@@ -808,7 +833,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         rampTopEdges.Clear();
         rampEdgeObjects.Clear();
-        gameObjSet.Clear();
+        dotsGameObjSet.Clear();
         edgeHeights.Keys.ToList().ForEach(k => edgeHeights[k] = 0);
     }
     // destroy ramp to calculate next ramp

@@ -13,6 +13,7 @@ public static class Constants
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
         public const string DestroyCollider = "destroyCollider";
+        public const string DOT = "dot";
         public const string Finley = "finley";
     }
 
