@@ -200,12 +200,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
                         canCubeLiftingSnap = false;
                     }
+                    uINumberControl.SetVolDisplay(curVolNum);
+                    concreteVolDisplay.text = "Vol: " + curVolNum + " ft<sup>3</sup>";
+                    concreteUIFill.fillAmount = curVolNum;
                     ShowOverusedText(curVolNum, 1);
 
                     if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 5)
                     {
                         Debug.Log("lifting it now---------------------------------------");
-                        uINumberControl.SetVolDisplay(curVolNum);
                         // 3d shape lift
                         liftableCube.transform.parent.localScale += movingRange;
                         // 3d ui lift
@@ -214,7 +216,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     else if ((newTouchpos.y - rec2DTouchPosition.y < 0) && liftableCube.transform.parent.localScale.y >= 0)
                     {
                         Debug.Log("drag it down---------------------------------------");
-                        uINumberControl.SetVolDisplay(curVolNum);
                         liftableCube.transform.parent.localScale -= movingRange;
                         liftableCube.transform.root.GetComponentInChildren<RectTransform>().localPosition -= movingRange;
                     }
