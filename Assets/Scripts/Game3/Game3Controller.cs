@@ -47,9 +47,9 @@ public class Game3Controller : GenericClass
 
                         gamePhase = Constants.GamePhase.PHASE0;
                         // init slingshot
-                        slingshotObj.SetActive(true);
-                        balloonObj.SetActive(true);
-                        axisObj.SetActive(true);
+                        //slingshotObj.SetActive(true);
+                        //balloonObj.SetActive(true);
+                        //axisObj.SetActive(true);
                         characterController.InitCharacterGame3(placementPose, placementController.GetPlacementIndicatorLocation());
                     }   
                 }

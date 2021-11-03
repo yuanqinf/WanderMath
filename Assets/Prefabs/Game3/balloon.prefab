@@ -108,7 +108,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4321150034764502306}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.0076726507
   m_Height: 0.019424934
@@ -126,8 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6450f04ef171e6f43afe04dbf78a98d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ThrowForce: 100
   m_ThrowDirectionX: 0
   m_ThrowDirectionY: 0
-  ARCam: {fileID: 0}
-  m_SessionOrigin: {fileID: 0}
+  rb: {fileID: 0}

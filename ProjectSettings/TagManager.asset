@@ -33,6 +33,9 @@ TagManager:
   - balloon
   - slingshot_rubber
   - slingshot_main
+  - cannon
+  - muzzle
+  - shoot_btn
   layers:
   - Default
   - TransparentFX
