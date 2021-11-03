@@ -33,6 +33,25 @@ public class CharacterController : GenericClass
         animator = arCharacterToSpawn.GetComponent<Animator>();
     }
 
+    public void InitCharacterGame3(Pose placementPose, Transform placementPos)
+    {
+        // to be placed at the corner
+        Debug.Log("placement Pose: " + placementPose.rotation);
+
+        Vector3 rot = placementPose.rotation.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+        Vector3 characterPos = placementPose.position
+            + (placementPos.forward * 0.4f) + (placementPos.right * 0.8f);
+
+        Quaternion characterRot = Quaternion.Euler(rot);
+
+        arCharacterToSpawn = Instantiate(
+            arCharacterToSpawn, characterPos, characterRot
+        );
+        animator = arCharacterToSpawn.GetComponent<Animator>();
+    }
+
     public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
     {
         InitCharacter(placementPose, placementPos);

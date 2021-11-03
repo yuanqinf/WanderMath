@@ -32,6 +32,7 @@ TagManager:
   - finley
   - balloon
   - slingshot_rubber
+  - slingshot_main
   layers:
   - Default
   - TransparentFX

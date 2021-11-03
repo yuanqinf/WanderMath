@@ -7,14 +7,14 @@ using UnityEngine.XR.ARFoundation;
 public class BallControl : MonoBehaviour
 {
     //This is the force of the throw
-    public float m_ThrowForce = 100f;
+    private float m_ThrowForce = 500;
 
     //X and Y damping factors for the throw direction (0,0) means straight line
     public float m_ThrowDirectionX = 0.0f;
     public float m_ThrowDirectionY = 0.0f;
 
     //Offset of the ball's position in relation to camera's position
-    private Vector3 m_BallCameraOffset = new Vector3(0f, -0.15f, 1f);
+    private Vector3 m_BallCameraOffset = new Vector3(0f, -0.03f, 0.8f);
 
     //The following variables contain the state of the current throw
     private Vector3 startPosition;
@@ -40,9 +40,9 @@ public class BallControl : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         m_SessionOrigin = GameObject.Find("AR Session Origin").GetComponent<ARSessionOrigin>();
         ARCam = m_SessionOrigin.transform.Find("AR Camera").gameObject;
-        transform.parent = ARCam.transform;
+        //transform.parent = ARCam.transform;
         ResetBall();
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -60,20 +60,20 @@ public class BallControl : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hitObject)) {
                 if (touch.phase == TouchPhase.Moved)
                 {
-                    if (hitObject.transform.tag == "balloon")
-                    {
-                        hitObject.transform.position = new Vector3(hitObject.point.x, transform.position.y, hitObject.point.z);
-                    }
+                    //if (hitObject.transform.tag == "balloon")
+                    //{
+                    //    hitObject.transform.position = new Vector3(hitObject.point.x, transform.position.y, hitObject.point.z);
+                    //}
                 }
 
-                if (touch.phase == TouchPhase.Began)
+                if (touch.phase == TouchPhase.Began && hitObject.transform.tag == "slingshot_rubber")
                 {
                     Debug.Log("pressing!");
                     startPosition = touch.position;
                     startTime = Time.time;
                     directionChosen = false;
                 }
-                else if (touch.phase == TouchPhase.Ended)
+                else if (touch.phase == TouchPhase.Ended && hitObject.transform.tag == "slingshot_rubber")
                 {
                     Debug.Log("shoot!");
                     endTime = Time.time;
@@ -104,7 +104,7 @@ public class BallControl : MonoBehaviour
             directionChosen = false;
         }
 
-        if (Time.time - endTime >= 3 && Time.time - endTime <= 4)
+        if (Time.time - endTime >= 1 && Time.time - endTime <= 2)
         {
             ResetBall();
         }

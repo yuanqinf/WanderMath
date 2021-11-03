@@ -7,9 +7,15 @@ public class Game3Controller : GenericClass
     private string gamePhase = Constants.GamePhase.SETUP;
     private PlacementIndicatorController placementController;
     public Pose placementPose;
+    public GameObject slingshotObj;
+    public GameObject jointLeftCenter;
+    public GameObject jointRightCenter;
+
     public GameObject balloonObj;
     public GameObject axisObj;
     public GameObject door;
+
+    public GameObject CarnivalBooth;
 
     private CharacterController characterController;
 
@@ -37,15 +43,18 @@ public class Game3Controller : GenericClass
                         //SetGamePhaseWithDelay("phase0", audioDuration);
                         // TODO: change this back to phase0
                         placementController.TurnOffPlacementAndText();
-                        Instantiate(door, placementPose.position + (placementPose.forward * 1), placementPose.rotation);
+                        Instantiate(CarnivalBooth, placementPose.position + (placementPose.forward * 4), placementPose.rotation);
+
                         gamePhase = Constants.GamePhase.PHASE0;
-                        characterController.InitCharacter(placementPose, placementController.GetPlacementIndicatorLocation());
+                        // init slingshot
+                        slingshotObj.SetActive(true);
+                        balloonObj.SetActive(true);
+                        axisObj.SetActive(true);
+                        characterController.InitCharacterGame3(placementPose, placementController.GetPlacementIndicatorLocation());
                     }   
                 }
                 break;
             case Constants.GamePhase.PHASE0:
-                balloonObj.SetActive(true);
-                axisObj.SetActive(true);
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
 

@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ARCam: {fileID: 0}
   m_SessionOrigin: {fileID: 0}
+  rubberJointLeft: {fileID: 2581722869229277535}
+  rubberJointRight: {fileID: 7074752511705256402}
 --- !u!1 &593323858591873845
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,9 +90,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2411858796201315045}
   - component: {fileID: 770346481686559775}
+  - component: {fileID: 1638929877}
   m_Layer: 0
   m_Name: rubber
-  m_TagString: Untagged
+  m_TagString: slingshot_rubber
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,6 +168,19 @@ SkinnedMeshRenderer:
     m_Center: {x: -20.332676, y: 0.0014967918, z: 0.6381743}
     m_Extent: {x: 21.347122, y: 6.104985, z: 3.2346966}
   m_DirtyAABB: 0
+--- !u!65 &1638929877
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171785848594433518}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 133.53653, y: 1067.9229, z: 1792.128}
+  m_Center: {x: -0.8974471, y: -15.651365, z: 344.31647}
 --- !u!1 &1505566926633949737
 GameObject:
   m_ObjectHideFlags: 0
