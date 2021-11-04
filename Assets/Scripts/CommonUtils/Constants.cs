@@ -15,6 +15,16 @@ public static class Constants
         public const string DestroyCollider = "destroyCollider";
         public const string DOT = "dot";
         public const string Finley = "finley";
+        public const string Balloon = "balloon";
+    }
+
+    public struct Animation
+    {
+        public const string IsShotTrigger = "isShot";
+        public const string DestroyCollider = "destroyCollider";
+        public const string DOT = "dot";
+        public const string Finley = "finley";
+        public const string Balloon = "balloon";
     }
 
     public struct Objects

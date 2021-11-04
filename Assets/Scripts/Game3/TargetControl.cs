@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorControl : MonoBehaviour
+public class TargetControl : MonoBehaviour
 {
     public GameObject effect;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "balloon")
+        if (other.transform.tag == Constants.Tags.Balloon)
         {
+            this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
             Destroy(tempEffect, 1);
         }
-
     }
 }
