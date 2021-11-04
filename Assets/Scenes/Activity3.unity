@@ -1860,6 +1860,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a2f0698bdbf4a0eba9148924d2a4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  balloonSplash: {fileID: 8300000, guid: 9aecf6b22767b4ad9988aa28f839ca96, type: 3}
+  cannonShoot: {fileID: 8300000, guid: ea7e98b36e73c4fd6a706c9bacf5f370, type: 3}
+  cannonRaise: {fileID: 8300000, guid: 3fef5a3c22ed64c02864c0ae57e44b99, type: 3}
+  cannonLower: {fileID: 8300000, guid: 2e0894b7508e249118cb1919cdd8e8b2, type: 3}
+  cannonLeftRight: {fileID: 8300000, guid: a52c4c0794b92409eac86f866577c038, type: 3}
+  cannonCannotMove: {fileID: 8300000, guid: 01ee2883e18804d718a9003e0d2cc1da, type: 3}
+  audioSource: {fileID: 0}
 --- !u!4 &1314368971
 Transform:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ public class Game3Controller : GenericClass
 
     public GameObject carnivalBooth;
     private CharacterController characterController;
-
+    private GameObject numbers;
 
     void Start()
     {
@@ -58,14 +58,15 @@ public class Game3Controller : GenericClass
                 }
                 break;
             case Constants.GamePhase.PHASE0:
-                var numbers = carnivalBooth.transform.Find("/boothAndCannon/Phase0/numbers").gameObject;
-                numbers.SetActive(false);
+                numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
+                numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE2:
+                numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
 

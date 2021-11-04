@@ -75,7 +75,7 @@ public class BallControl : MonoBehaviour
                     {
                         Debug.Log("shoot!");
                         endTime = Time.time;
-                        cannonController.FireCannonAnimation();
+                        cannonController.FireCannon();
                         isPressed = true;
                     }
                 }
