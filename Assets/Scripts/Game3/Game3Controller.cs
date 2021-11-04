@@ -16,7 +16,6 @@ public class Game3Controller : GenericClass
     public GameObject door;
 
     public GameObject carnivalBooth;
-
     private CharacterController characterController;
 
 
@@ -47,6 +46,7 @@ public class Game3Controller : GenericClass
                         rot = new Vector3(rot.x, rot.y + 177, rot.z);
                         var newRot = Quaternion.Euler(rot);
                         carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
+                        carnivalBooth.name = "booth";
 
                         gamePhase = Constants.GamePhase.PHASE0;
                         // init slingshot
@@ -58,6 +58,14 @@ public class Game3Controller : GenericClass
                 }
                 break;
             case Constants.GamePhase.PHASE0:
+                var numbers = carnivalBooth.transform.Find("/boothAndCannon/Phase0/numbers").gameObject;
+                numbers.SetActive(false);
+                gamePhase = Constants.GamePhase.WAITING;
+                break;
+            case Constants.GamePhase.PHASE1:
+                gamePhase = Constants.GamePhase.WAITING;
+                break;
+            case Constants.GamePhase.PHASE2:
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
 

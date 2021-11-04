@@ -10,13 +10,15 @@ struct Cannon
     private GameObject muzzle;
     private float cannonMovement;
     private float muzzleAngle;
+    private Game3SoundManager soundManager;
 
-    public Cannon(int x, int y, GameObject cannonBase, GameObject muzzle)
+    public Cannon(int x, int y, GameObject cannonBase, GameObject muzzle, Game3SoundManager soundManager)
     {
         this.x = x;
         this.y = y;
         this.cannonBase = cannonBase;
         this.muzzle = muzzle;
+        this.soundManager = soundManager;
         this.muzzleAngle = 6f;
         this.cannonMovement = 10f;
     }
@@ -27,10 +29,12 @@ struct Cannon
         {
             cannonBase.transform.localPosition += (new Vector3(cannonMovement, 0f, 0f));
             x--;
+            soundManager.PlayCannonLeftRight();
         }
         else
         {
             Debug.Log("play unable to move sound effect");
+            soundManager.PlayCannonCannotMove();
         }
     }
     public void MoveXRight()
@@ -39,9 +43,12 @@ struct Cannon
         {
             cannonBase.transform.localPosition -= (new Vector3(cannonMovement, 0f, 0f));
             x++;
-        } else
+            soundManager.PlayCannonLeftRight();
+        }
+        else
         {
             Debug.Log("play unable to move sound effect");
+            soundManager.PlayCannonCannotMove();
         }
     }
     public void MoveYDown()
@@ -50,10 +57,12 @@ struct Cannon
         {
             this.muzzle.transform.Rotate(new Vector3(-muzzleAngle, 0f, 0f));
             y--;
+            soundManager.PlayCannonLower();
         }
         else
         {
             Debug.Log("play unable to move sound effect");
+            soundManager.PlayCannonCannotMove();
         }
     }
     public void MoveYUp()
@@ -62,10 +71,12 @@ struct Cannon
         {
             this.muzzle.transform.Rotate(new Vector3(muzzleAngle, 0f, 0f));
             y++;
+            soundManager.PlayCannonRaise();
         }
         else
         {
             Debug.Log("play unable to move sound effect");
+            soundManager.PlayCannonCannotMove();
         }
     }
 }
@@ -85,12 +96,14 @@ public class CannonControl : MonoBehaviour
     public GameObject muzzle;
     private Cannon cannonPosition;
     private Animator cannonAnimator;
+    private Game3SoundManager soundManager;
 
     // Start is called before the first frame update
     void Start()
     {
         arCamera = Camera.main;
-        cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle); // start x in the middle
+        soundManager = FindObjectOfType<Game3SoundManager>();
+        cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
         cannonAnimator = muzzle.GetComponent<Animator>();
     }
 
@@ -198,9 +211,10 @@ public class CannonControl : MonoBehaviour
         }
     }
 
-    public void FireCannonAnimation()
+    public void FireCannon()
     {
         Debug.Log("play cannon animation");
         cannonAnimator.SetTrigger(Constants.Animation.IsShootingTrigger);
+        soundManager.PlayCannonShoot();
     }
 }
