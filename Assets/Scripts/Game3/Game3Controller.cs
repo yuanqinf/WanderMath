@@ -22,8 +22,8 @@ public class Game3Controller : GenericClass
 
     void Start()
     {
-        characterController = FindObjectOfType<CharacterController>();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        characterController = FindObjectOfType<CharacterController>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
     }
 

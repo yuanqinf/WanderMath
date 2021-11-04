@@ -18,14 +18,14 @@ struct Cannon
         this.cannonBase = cannonBase;
         this.muzzle = muzzle;
         this.muzzleAngle = 6f;
-        this.cannonMovement = 0.11f;
+        this.cannonMovement = 10f;
     }
 
     public void MoveXLeft()
     {
         if (x > 0)
         {
-            cannonBase.transform.localPosition -= (new Vector3(cannonMovement, 0f, 0f));
+            cannonBase.transform.localPosition += (new Vector3(cannonMovement, 0f, 0f));
             x--;
         }
         else
@@ -37,7 +37,7 @@ struct Cannon
     {
         if (x < 9)
         {
-            cannonBase.transform.localPosition += (new Vector3(cannonMovement, 0f, 0f));
+            cannonBase.transform.localPosition -= (new Vector3(cannonMovement, 0f, 0f));
             x++;
         } else
         {
@@ -84,12 +84,14 @@ public class CannonControl : MonoBehaviour
     private Vector2 newTouchPosition;
     public GameObject muzzle;
     private Cannon cannonPosition;
+    private Animator cannonAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
         arCamera = Camera.main;
         cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle); // start x in the middle
+        cannonAnimator = muzzle.GetComponent<Animator>();
     }
 
     private void Update()
@@ -102,14 +104,14 @@ public class CannonControl : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out RaycastHit hitObject))
                 {
-                    if (hitObject.transform.tag == "cannon")
+                    if (hitObject.transform.tag == Constants.Tags.Cannon)
                     {
                         initialRealWorldPosition = hitObject.point;
                         isReadyToMove = true;
                         Debug.Log("move begin");
                     }
 
-                    if (hitObject.transform.tag == "muzzle")
+                    if (hitObject.transform.tag == Constants.Tags.Muzzle)
                     {
                         initialRealWorldPosition = hitObject.point;
                         isReadyToRotate = true;
@@ -194,5 +196,11 @@ public class CannonControl : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void FireCannonAnimation()
+    {
+        Debug.Log("play cannon animation");
+        cannonAnimator.SetTrigger(Constants.Animation.IsShootingTrigger);
     }
 }

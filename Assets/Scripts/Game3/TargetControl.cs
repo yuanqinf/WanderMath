@@ -8,15 +8,14 @@ public class TargetControl : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)){
-            this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
-        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == Constants.Tags.Balloon)
         {
+            Debug.Log("hit by balloon");
             this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
             Destroy(tempEffect, 1);

@@ -26,11 +26,14 @@ public class BallControl : MonoBehaviour
 
     private Rigidbody rb;
 
+    private CannonControl cannonController;
+
     // Start is called before the first frame update
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         initPosition = this.transform.position;
+        cannonController = FindObjectOfType<CannonControl>();
         //m_SessionOrigin = GameObject.Find("AR Session Origin").GetComponent<ARSessionOrigin>();
         //ARCam = m_SessionOrigin.transform.Find("AR Camera").gameObject;
         //transform.parent = ARCam.transform;
@@ -72,6 +75,7 @@ public class BallControl : MonoBehaviour
                     {
                         Debug.Log("shoot!");
                         endTime = Time.time;
+                        cannonController.FireCannonAnimation();
                         isPressed = true;
                     }
                 }
@@ -84,7 +88,7 @@ public class BallControl : MonoBehaviour
             rb.useGravity = false;
 
             rb.AddForce(-transform.forward * m_ThrowForce);
-
+            // TODO: add endposition
             startTime = 0.0f;
             startPosition = new Vector3(0, 0, 0);
             isPressed = false;
@@ -104,6 +108,6 @@ public class BallControl : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         endTime = 0.0f;
 
-        transform.position = initPosition;
+        transform.position = this.transform.parent.position;
     }
 }

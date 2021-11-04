@@ -17,11 +17,14 @@ public static class Constants
         public const string Finley = "finley";
         public const string Balloon = "balloon";
         public const string ShootBtn = "shoot_btn";
+        public const string Cannon = "cannon";
+        public const string Muzzle = "muzzle";
     }
 
     public struct Animation
     {
         public const string IsShotTrigger = "isShot";
+        public const string IsShootingTrigger = "isShooting";
         public const string DestroyCollider = "destroyCollider";
         public const string DOT = "dot";
         public const string Finley = "finley";
