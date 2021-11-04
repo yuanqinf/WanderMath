@@ -2,24 +2,92 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+struct Cannon
+{
+    public int x;
+    public int y;
+    private GameObject cannonBase;
+    private GameObject muzzle;
+    private float muzzleAngle;
+
+    public Cannon(int x, int y, GameObject cannonBase, GameObject muzzle)
+    {
+        this.x = x;
+        this.y = y;
+        this.cannonBase = cannonBase;
+        this.muzzle = muzzle;
+        this.muzzleAngle = 6f;
+    }
+
+    public void MoveXLeft()
+    {
+        if (x > 0)
+        {
+            cannonBase.transform.localPosition -= (new Vector3(0.11f, 0f, 0f));
+            x--;
+        }
+        else
+        {
+            Debug.Log("play unable to move sound effect");
+        }
+    }
+    public void MoveXRight()
+    {
+        if (x < 9)
+        {
+            cannonBase.transform.localPosition += (new Vector3(0.11f, 0f, 0f));
+            x++;
+        } else
+        {
+            Debug.Log("play unable to move sound effect");
+        }
+    }
+    public void MoveYDown()
+    {
+        if (y > 0)
+        {
+            this.muzzle.transform.Rotate(new Vector3(muzzleAngle, 0f, 0f));
+            y--;
+        }
+        else
+        {
+            Debug.Log("play unable to move sound effect");
+        }
+    }
+    public void MoveYUp()
+    {
+        if (y < 9)
+        {
+            this.muzzle.transform.Rotate(new Vector3(-muzzleAngle, 0f, 0f));
+            y++;
+        }
+        else
+        {
+            Debug.Log("play unable to move sound effect");
+        }
+    }
+}
+
 public class CannonControl : MonoBehaviour
 {
     private Camera arCamera;
     private Vector3 initialRealWorldPosition;
     private bool isReadyToMove;
     private bool isMovingRight;
+    private bool isMovingLeft;
 
     private bool isReadyToRotate;
     private bool isRotatingUp;
+    private bool isRotatingDown;
     private Vector2 newTouchPosition;
     public GameObject muzzle;
-
-    public float muzzleAngle = 8f;
+    private Cannon cannonPosition;
 
     // Start is called before the first frame update
     void Start()
     {
         arCamera = Camera.main;
+        cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle); // start x in the middle
     }
 
     private void Update()
@@ -53,15 +121,13 @@ public class CannonControl : MonoBehaviour
                 {
                     newTouchPosition = Input.GetTouch(0).position;
                     Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
-                    RaycastHit rayLocation;
-                    if (Physics.Raycast(ray, out rayLocation))
+                    if (Physics.Raycast(ray, out RaycastHit rayLocation))
                     {
                         Vector3 newRealWorldPosition = rayLocation.point;
                         if (newRealWorldPosition.x < initialRealWorldPosition.x)
                         {
                             Debug.Log("moving left");
-                            isMovingRight = false;
-
+                            isMovingLeft = true;
                         }
                         else if (newRealWorldPosition.x > initialRealWorldPosition.x)
                         {
@@ -74,19 +140,18 @@ public class CannonControl : MonoBehaviour
                 {
                     newTouchPosition = Input.GetTouch(0).position;
                     Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
-                    RaycastHit rayLocation;
-                    if (Physics.Raycast(ray, out rayLocation))
+                    if (Physics.Raycast(ray, out RaycastHit rayLocation))
                     {
                         Vector3 newRealWorldPosition = rayLocation.point;
                         if (newRealWorldPosition.y < initialRealWorldPosition.y)
                         {
-                            Debug.Log("moving down");
-                            isRotatingUp = false;
+                            Debug.Log("moving up");
+                            isRotatingUp = true;
                         }
                         else if (newRealWorldPosition.y > initialRealWorldPosition.y)
                         {
-                            Debug.Log("moving up");
-                            isRotatingUp = true;
+                            Debug.Log("moving down");
+                            isRotatingDown = true;
                         }
                     }
                 }
@@ -99,11 +164,13 @@ public class CannonControl : MonoBehaviour
                     Debug.Log("should move now");
                     if (isMovingRight)
                     {
-                        this.transform.localPosition += (new Vector3(0.11f, 0f, 0f));
+                        cannonPosition.MoveXRight();
+                        isMovingRight = false;
                     }
-                    else
+                    else if (isMovingLeft)
                     {
-                        this.transform.localPosition += (new Vector3(-0.11f, 0f, 0f));
+                        cannonPosition.MoveXLeft();
+                        isMovingLeft = false;
                     }
                     isReadyToMove = false;
                 }
@@ -113,11 +180,13 @@ public class CannonControl : MonoBehaviour
 
                     if (isRotatingUp)
                     {
-                        muzzle.transform.Rotate(new Vector3(muzzleAngle, 0f, 0f));
+                        cannonPosition.MoveYUp();
+                        isRotatingUp = false;
                     }
-                    else
+                    else if (isRotatingDown)
                     {
-                        muzzle.transform.Rotate(new Vector3(-muzzleAngle, 0f, 0f));
+                        cannonPosition.MoveYDown();
+                        isRotatingDown = false;
                     }
                     isReadyToRotate = false;
                 }
