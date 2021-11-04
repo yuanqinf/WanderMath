@@ -8,6 +8,7 @@ struct Cannon
     public int y;
     private GameObject cannonBase;
     private GameObject muzzle;
+    private float cannonMovement;
     private float muzzleAngle;
 
     public Cannon(int x, int y, GameObject cannonBase, GameObject muzzle)
@@ -17,13 +18,14 @@ struct Cannon
         this.cannonBase = cannonBase;
         this.muzzle = muzzle;
         this.muzzleAngle = 6f;
+        this.cannonMovement = 0.11f;
     }
 
     public void MoveXLeft()
     {
         if (x > 0)
         {
-            cannonBase.transform.localPosition -= (new Vector3(0.11f, 0f, 0f));
+            cannonBase.transform.localPosition -= (new Vector3(cannonMovement, 0f, 0f));
             x--;
         }
         else
@@ -35,7 +37,7 @@ struct Cannon
     {
         if (x < 9)
         {
-            cannonBase.transform.localPosition += (new Vector3(0.11f, 0f, 0f));
+            cannonBase.transform.localPosition += (new Vector3(cannonMovement, 0f, 0f));
             x++;
         } else
         {
@@ -46,7 +48,7 @@ struct Cannon
     {
         if (y > 0)
         {
-            this.muzzle.transform.Rotate(new Vector3(muzzleAngle, 0f, 0f));
+            this.muzzle.transform.Rotate(new Vector3(-muzzleAngle, 0f, 0f));
             y--;
         }
         else
@@ -58,7 +60,7 @@ struct Cannon
     {
         if (y < 9)
         {
-            this.muzzle.transform.Rotate(new Vector3(-muzzleAngle, 0f, 0f));
+            this.muzzle.transform.Rotate(new Vector3(muzzleAngle, 0f, 0f));
             y++;
         }
         else

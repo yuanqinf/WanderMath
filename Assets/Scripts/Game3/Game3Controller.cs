@@ -15,7 +15,7 @@ public class Game3Controller : GenericClass
     public GameObject axisObj;
     public GameObject door;
 
-    public GameObject CarnivalBooth;
+    public GameObject carnivalBooth;
 
     private CharacterController characterController;
 
@@ -43,7 +43,10 @@ public class Game3Controller : GenericClass
                         //SetGamePhaseWithDelay("phase0", audioDuration);
                         // TODO: change this back to phase0
                         placementController.TurnOffPlacementAndText();
-                        Instantiate(CarnivalBooth, placementPose.position + (placementPose.forward * 4), placementPose.rotation);
+                        Vector3 rot = placementPose.rotation.eulerAngles;
+                        rot = new Vector3(rot.x, rot.y + 177, rot.z);
+                        var newRot = Quaternion.Euler(rot);
+                        carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
 
                         gamePhase = Constants.GamePhase.PHASE0;
                         // init slingshot

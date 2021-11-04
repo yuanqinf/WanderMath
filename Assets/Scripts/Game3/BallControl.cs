@@ -19,18 +19,10 @@ public class BallControl : MonoBehaviour
     //The following variables contain the state of the current throw
     private Vector3 startPosition;
     private Vector3 endPosition;
-    private Vector3 direction;
+    private Vector3 initPosition;
     private float startTime;
     private float endTime;
-    private bool directionChosen = false;
-
-    public GameObject MuzPos;
-
-    [SerializeField]
-    //GameObject ARCam;
-
-    //[SerializeField]
-    //ARSessionOrigin m_SessionOrigin;
+    private bool isPressed = false;
 
     private Rigidbody rb;
 
@@ -38,6 +30,7 @@ public class BallControl : MonoBehaviour
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        initPosition = this.transform.position;
         //m_SessionOrigin = GameObject.Find("AR Session Origin").GetComponent<ARSessionOrigin>();
         //ARCam = m_SessionOrigin.transform.Find("AR Camera").gameObject;
         //transform.parent = ARCam.transform;
@@ -66,38 +59,35 @@ public class BallControl : MonoBehaviour
                     //}
                 }
 
-                if (touch.phase == TouchPhase.Began && hitObject.transform.tag == "shoot_btn")
+                if (hitObject.transform.tag == Constants.Tags.ShootBtn)
                 {
-                    Debug.Log("pressing!");
-                    startPosition = touch.position;
-                    startTime = Time.time;
-                    directionChosen = false;
-                }
-                else if (touch.phase == TouchPhase.Ended && hitObject.transform.tag == "shoot_btn")
-                {
-                    Debug.Log("shoot!");
-                    endTime = Time.time;
-                    direction = hitObject.transform.position - startPosition;
-                    directionChosen = true;
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        Debug.Log("pressing!");
+                        startPosition = touch.position;
+                        startTime = Time.time;
+                        isPressed = false;
+                    }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+                        Debug.Log("shoot!");
+                        endTime = Time.time;
+                        isPressed = true;
+                    }
                 }
             }
         }
 
-        if (directionChosen)
+        if (isPressed)
         {
             rb.mass = 1;
             rb.useGravity = false;
 
-            rb.AddForce(
-                transform.forward * m_ThrowForce +
-                transform.up * direction.y * m_ThrowDirectionY +
-                transform.right * direction.x * m_ThrowDirectionX);
+            rb.AddForce(-transform.forward * m_ThrowForce);
 
             startTime = 0.0f;
-
             startPosition = new Vector3(0, 0, 0);
-            direction = new Vector3(0, 0, 0);
-            directionChosen = false;
+            isPressed = false;
         }
 
         if (Time.time - endTime >= 2 && Time.time - endTime <= 3)
@@ -114,7 +104,6 @@ public class BallControl : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         endTime = 0.0f;
 
-        Vector3 ballPos = MuzPos.transform.position;
-        transform.position = ballPos;
+        transform.position = initPosition;
     }
 }

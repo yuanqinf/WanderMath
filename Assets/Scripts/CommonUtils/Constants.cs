@@ -16,6 +16,7 @@ public static class Constants
         public const string DOT = "dot";
         public const string Finley = "finley";
         public const string Balloon = "balloon";
+        public const string ShootBtn = "shoot_btn";
     }
 
     public struct Animation

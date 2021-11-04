@@ -42,7 +42,7 @@ public class CharacterController : GenericClass
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPos.forward * 0.4f) + (placementPos.right * 0.8f);
+            + (placementPos.forward * 2.4f) + (placementPos.right * 0.8f);
 
         Quaternion characterRot = Quaternion.Euler(rot);
 
