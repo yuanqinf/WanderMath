@@ -75,10 +75,10 @@ public class Game3Controller : GenericClass
 
     public void SetXPosition(int num)
     {
-        numbers.transform.Find("");
+        //numbers.transform.Find($"horizontal_{num}");
     }
     public void SetYPosition(int num)
     {
-
+        //numbers.transform.Find($"vertical_{num}");
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.XR.ARFoundation;
 public class BallControl : MonoBehaviour
 {
     //This is the force of the throw
-    private float m_ThrowForce = 100;
+    public float m_ThrowForce = 300;
 
     //X and Y damping factors for the throw direction (0,0) means straight line
     public float m_ThrowDirectionX = 0.0f;
@@ -94,7 +94,7 @@ public class BallControl : MonoBehaviour
             isPressed = false;
         }
 
-        if (Time.time - endTime >= 2 && Time.time - endTime <= 3)
+        if (Time.time - endTime >= 1 && Time.time - endTime <= 2)
         {
             ResetBall();
         }
