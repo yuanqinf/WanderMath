@@ -96,14 +96,17 @@ public class CannonControl : MonoBehaviour
     public GameObject muzzle;
     private Cannon cannonPosition;
     private Animator cannonAnimator;
+    private Game3Controller game3Controller;
     private Game3SoundManager soundManager;
 
     // Start is called before the first frame update
     void Start()
     {
         arCamera = Camera.main;
+        game3Controller = FindObjectOfType<Game3Controller>();
         soundManager = FindObjectOfType<Game3SoundManager>();
         cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
+        game3Controller.SetXPosition(cannonPosition.x);
         cannonAnimator = muzzle.GetComponent<Animator>();
     }
 
@@ -183,11 +186,13 @@ public class CannonControl : MonoBehaviour
                     {
                         cannonPosition.MoveXRight();
                         isMovingRight = false;
+                        game3Controller.SetXPosition(cannonPosition.x);
                     }
                     else if (isMovingLeft)
                     {
                         cannonPosition.MoveXLeft();
                         isMovingLeft = false;
+                        game3Controller.SetXPosition(cannonPosition.x);
                     }
                     isReadyToMove = false;
                 }

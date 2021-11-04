@@ -72,4 +72,13 @@ public class Game3Controller : GenericClass
 
         }
     }
+
+    public void SetXPosition(int num)
+    {
+        numbers.transform.Find("");
+    }
+    public void SetYPosition(int num)
+    {
+
+    }
 }
