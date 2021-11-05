@@ -5,10 +5,11 @@ using UnityEngine;
 public class TargetControl : MonoBehaviour
 {
     public GameObject effect;
+    private CharacterController characterController;
 
-    private void Update()
+    private void Start()
     {
-
+        characterController = FindObjectOfType<CharacterController>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +19,7 @@ public class TargetControl : MonoBehaviour
             Debug.Log("hit by balloon");
             this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
+            characterController.ShakeWater();
             Destroy(tempEffect, 1);
         }
     }

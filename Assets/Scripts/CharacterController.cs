@@ -295,4 +295,9 @@ public class CharacterController : GenericClass
     {
         animator.SetTrigger("isBigWin");
     }
+
+    public void ShakeWater()
+    {
+        animator.SetTrigger("isShakingWater");
+    }
 }

@@ -9,7 +9,7 @@ struct Cannon
     private GameObject cannonBase;
     private GameObject muzzle;
     private float cannonMovement;
-    private float muzzleAngle;
+    public float muzzleAngle;
     private Game3SoundManager soundManager;
 
     public Cannon(int x, int y, GameObject cannonBase, GameObject muzzle, Game3SoundManager soundManager)
@@ -19,8 +19,8 @@ struct Cannon
         this.cannonBase = cannonBase;
         this.muzzle = muzzle;
         this.soundManager = soundManager;
-        this.muzzleAngle = 6f;
-        this.cannonMovement = 10f;
+        this.muzzleAngle = 3.75f;
+        this.cannonMovement = 11f;
     }
 
     public void MoveXLeft()
@@ -105,7 +105,7 @@ public class CannonControl : MonoBehaviour
         arCamera = Camera.main;
         game3Controller = FindObjectOfType<Game3Controller>();
         soundManager = FindObjectOfType<Game3SoundManager>();
-        cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
+        cannonPosition = new Cannon(0, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
         cannonAnimator = muzzle.GetComponent<Animator>();
     }
 
