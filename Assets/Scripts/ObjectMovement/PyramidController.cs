@@ -10,6 +10,7 @@ public class PyramidController : GenericClass
 
     public void UpdatePyramidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
+        cubeRotateControl.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "isoTriangle1":
@@ -47,6 +48,7 @@ public class PyramidController : GenericClass
         }
         if (numSnapped == 4)
         {
+            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             gameController.playSuccessEffect(touchedObject);
             gameController.createPyGiftBox(touchedObject);
         }

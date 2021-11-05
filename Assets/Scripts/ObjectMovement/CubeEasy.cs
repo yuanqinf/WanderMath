@@ -9,7 +9,7 @@ public class CubeEasy : GenericClass
 
     public void RotateEasyFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //handleOutline(touchedObject);
+        cubeRotateControl.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":
@@ -54,6 +54,7 @@ public class CubeEasy : GenericClass
         }
         if (numSnapped == 5)
         {
+            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             cubeRotateControl.EndPhase1();
             soundManager.PlaySuccessSound();
             gameController.playSuccessEffect(touchedObject);
@@ -93,4 +94,6 @@ public class CubeEasy : GenericClass
         objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_EASY, numSnapped);
     }
+
+
 }

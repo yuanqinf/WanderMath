@@ -7,11 +7,13 @@ public class TargetControl : MonoBehaviour
     public GameObject effect;
     private CharacterController characterController;
     private Game3Controller game3Controller;
+    private Game3SoundManager game3SoundMG;
 
     private void Start()
     {
         characterController = FindObjectOfType<CharacterController>();
         game3Controller = FindObjectOfType<Game3Controller>();
+        game3SoundMG = FindObjectOfType<Game3SoundManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,6 +27,7 @@ public class TargetControl : MonoBehaviour
             Destroy(tempEffect, 1);
             this.GetComponent<Collider>().enabled = false;
             StartCoroutine(IncreaseTargetWithDelay());
+            game3SoundMG.PlayBalloonSplash();
         }
     }
     IEnumerator IncreaseTargetWithDelay()

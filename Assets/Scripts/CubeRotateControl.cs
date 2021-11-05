@@ -10,6 +10,8 @@ public class CubeRotateControl : GenericClass
     public GameObject cubeMed2;
     public GameObject cubeWrong;
 
+    public GameObject lastSelectedShape;
+
     private string[] preCubeEasySubtitles =
     {
         "I was also going to wrap the roller skates I got for Quinn!",
@@ -46,21 +48,21 @@ public class CubeRotateControl : GenericClass
     public int curCubeSnappedSides = 0;
 
 
-    //public void handleOutline(GameObject touchedObject)
-    //{
-    //    // handle outline here
-    //    if (lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
-    //    {
-    //        Debug.Log("outing is being deactivated");
-    //        lastSelectedShape.GetComponent<Outline>().enabled = false;
-    //    }
-    //    if (touchedObject.transform.root.GetComponent<Outline>() != null)
-    //    {
-    //        Debug.Log("outing is being activated");
-    //        touchedObject.transform.root.GetComponent<Outline>().enabled = true;
-    //    }
-    //    lastSelectedShape = touchedObject.transform.root.gameObject;
-    //}
+    public void handleOutline(GameObject touchedObject)
+    {
+        // handle outline here
+        if (lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
+        {
+            Debug.Log("outing is being deactivated");
+            lastSelectedShape.GetComponent<Outline>().enabled = false;
+        }
+        if (touchedObject.transform.root.GetComponent<Outline>() != null)
+        {
+            Debug.Log("outing is being activated");
+            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
+        }
+        lastSelectedShape = touchedObject.transform.root.gameObject;
+    }
 
     /// <summary>
     /// Instantiate cube easy for phase 1
