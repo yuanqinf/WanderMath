@@ -223,4 +223,17 @@ public class CannonControl : MonoBehaviour
         cannonAnimator.SetTrigger(Constants.Animation.IsShootingTrigger);
         soundManager.PlayCannonShoot();
     }
+
+    public void ResetCannonPosition()
+    {
+        for (int i = cannonPosition.x; i >=0; i-- )
+        {
+            cannonPosition.MoveXLeft();
+        }
+        for (int i = cannonPosition.y; i >= 0; i--)
+        {
+            cannonPosition.MoveYDown();
+        }
+        Debug.Log($"cannont positions {cannonPosition.x} and {cannonPosition.x}");
+    }
 }

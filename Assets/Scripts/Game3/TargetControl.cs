@@ -6,10 +6,12 @@ public class TargetControl : MonoBehaviour
 {
     public GameObject effect;
     private CharacterController characterController;
+    private Game3Controller game3Controller;
 
     private void Start()
     {
         characterController = FindObjectOfType<CharacterController>();
+        game3Controller = FindObjectOfType<Game3Controller>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,6 +23,13 @@ public class TargetControl : MonoBehaviour
             var tempEffect = Instantiate(effect, this.transform);
             characterController.ShakeWater();
             Destroy(tempEffect, 1);
+            this.GetComponent<Collider>().enabled = false;
+            StartCoroutine(IncreaseTargetWithDelay());
         }
+    }
+    IEnumerator IncreaseTargetWithDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        game3Controller.IncreaseTargetHit();
     }
 }

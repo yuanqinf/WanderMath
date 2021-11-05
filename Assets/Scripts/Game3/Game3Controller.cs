@@ -5,7 +5,9 @@ using UnityEngine;
 public class Game3Controller : GenericClass
 {
     private string gamePhase = Constants.GamePhase.SETUP;
+    private string currGamePhase = Constants.GamePhase.SETUP;
     private PlacementIndicatorController placementController;
+    private CannonControl cannonController;
     public Pose placementPose;
     public GameObject slingshotObj;
     public GameObject jointLeftCenter;
@@ -21,6 +23,7 @@ public class Game3Controller : GenericClass
     private GameObject phase0Layout;
     private GameObject phase1Layout;
     private GameObject phase2Layout;
+    private int targetHit;
     [SerializeField]
     private Material initialMat;
     [SerializeField]
@@ -55,14 +58,11 @@ public class Game3Controller : GenericClass
                         carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
                         carnivalBooth.name = "booth";
 
-                        gamePhase = Constants.GamePhase.PHASE0;
+                        SetGamePhase(Constants.GamePhase.PHASE0);
+                        cannonController = FindObjectOfType<CannonControl>();
                         phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
                         phase2Layout = carnivalBooth.transform.Find("boothAndCannon/Phase2").gameObject;
-                        // init slingshot
-                        //slingshotObj.SetActive(true);
-                        //balloonObj.SetActive(true);
-                        //axisObj.SetActive(true);
                         characterController.InitCharacterGame3(placementPose, placementController.GetPlacementIndicatorLocation());
                     }   
                 }
@@ -73,25 +73,30 @@ public class Game3Controller : GenericClass
                 SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(false);
+                targetHit = 0;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE1);
                 // reset materials
-                ResetNumbers();
-                SetXMatPosition(0, 0);
+                ResetNumbersMat();
+                cannonController.ResetCannonPosition();
+                SetYMatPosition(0, 0);
                 SetXCollider(false);
                 SetYCollider(true);
+                targetHit = 0;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE2:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE2);
-                ResetNumbers();
-                SetXMatPosition(5, 0);
+                ResetNumbersMat();
+                cannonController.ResetCannonPosition();
+                SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(true);
+                targetHit = 0;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
         }
@@ -126,7 +131,7 @@ public class Game3Controller : GenericClass
         carnivalBooth.transform.Find("boothAndCannon/cannon_GRP/cannon_base/cannon").GetComponent<BoxCollider>().enabled = isActive;
     }
 
-    private void ResetNumbers()
+    private void ResetNumbersMat()
     {
         foreach (Transform child in numbers.transform)
         {
@@ -142,5 +147,27 @@ public class Game3Controller : GenericClass
     {
         numbers.transform.Find($"vertical_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
         numbers.transform.Find($"vertical_{num}").GetComponent<MeshRenderer>().material = selectedMat;
+    }
+
+    public void IncreaseTargetHit()
+    {
+        this.targetHit++;
+        if (currGamePhase == Constants.GamePhase.PHASE0 && targetHit == 2)
+        {
+            SetGamePhase(Constants.GamePhase.PHASE1);
+        }
+        else if (currGamePhase == Constants.GamePhase.PHASE1 && targetHit == 2)
+        {
+            SetGamePhase(Constants.GamePhase.PHASE2);
+        }
+        else if (currGamePhase == Constants.GamePhase.PHASE2 && targetHit == 5)
+        {
+            SetGamePhase(Constants.GamePhase.PHASE3);
+        }
+    }
+    private void SetGamePhase(string gamePhase)
+    {
+        this.gamePhase = gamePhase;
+        this.currGamePhase = gamePhase;
     }
 }
