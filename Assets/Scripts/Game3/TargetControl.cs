@@ -21,7 +21,7 @@ public class TargetControl : MonoBehaviour
             Debug.Log("hit by balloon");
             this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
-            characterController.ShakeWater();
+            characterController.PlayShakeWater();
             Destroy(tempEffect, 1);
             this.GetComponent<Collider>().enabled = false;
             StartCoroutine(IncreaseTargetWithDelay());

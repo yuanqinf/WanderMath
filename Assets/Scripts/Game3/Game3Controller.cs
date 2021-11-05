@@ -23,6 +23,7 @@ public class Game3Controller : GenericClass
     private GameObject phase0Layout;
     private GameObject phase1Layout;
     private GameObject phase2Layout;
+    private GameObject phase3Layout;
     private int targetHit;
     [SerializeField]
     private Material initialMat;
@@ -63,6 +64,7 @@ public class Game3Controller : GenericClass
                         phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
                         phase2Layout = carnivalBooth.transform.Find("boothAndCannon/Phase2").gameObject;
+                        phase3Layout = carnivalBooth.transform.Find("boothAndCannon/Phase3").gameObject;
                         characterController.InitCharacterGame3(placementPose, placementController.GetPlacementIndicatorLocation());
                     }   
                 }
@@ -99,6 +101,17 @@ public class Game3Controller : GenericClass
                 targetHit = 0;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
+            case Constants.GamePhase.PHASE3:
+                numbers = carnivalBooth.transform.Find("boothAndCannon/Phase3/numbers").gameObject;
+                SetPhaseLayout(Constants.GamePhase.PHASE3);
+                ResetNumbersMat();
+                cannonController.ResetCannonPosition();
+                SetXMatPosition(0, 0);
+                SetXCollider(true);
+                SetYCollider(true);
+                targetHit = 0;
+                gamePhase = Constants.GamePhase.WAITING;
+                break;
         }
     }
     private void SetPhaseLayout(string phase)
@@ -109,16 +122,25 @@ public class Game3Controller : GenericClass
                 phase0Layout.SetActive(true);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
+                phase3Layout.SetActive(false);
                 break;
             case Constants.GamePhase.PHASE1:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(true);
                 phase2Layout.SetActive(false);
+                phase3Layout.SetActive(false);
                 break;
             case Constants.GamePhase.PHASE2:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(true);
+                phase3Layout.SetActive(false);
+                break;
+            case Constants.GamePhase.PHASE3:
+                phase0Layout.SetActive(false);
+                phase1Layout.SetActive(false);
+                phase2Layout.SetActive(false);
+                phase3Layout.SetActive(true);
                 break;
         }
     }
@@ -163,6 +185,10 @@ public class Game3Controller : GenericClass
         else if (currGamePhase == Constants.GamePhase.PHASE2 && targetHit == 5)
         {
             SetGamePhase(Constants.GamePhase.PHASE3);
+        }
+        else if (currGamePhase == Constants.GamePhase.PHASE3 && targetHit == 5)
+        {
+            SetGamePhase(Constants.GamePhase.ENDING);
         }
     }
     private void SetGamePhase(string gamePhase)

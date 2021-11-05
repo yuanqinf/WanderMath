@@ -42,7 +42,7 @@ public class CharacterController : GenericClass
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPos.forward * 2.4f) + (placementPos.right * 0.8f);
+            + (placementPos.forward * 3.05f) + (placementPos.right * 0.9f);
 
         Quaternion characterRot = Quaternion.Euler(rot);
 
@@ -229,6 +229,14 @@ public class CharacterController : GenericClass
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
 
+    #region activity3 animations
+    public void PlayShakeWater()
+    {
+        animator.SetTrigger("isShakingWater");
+    }
+
+    #endregion
+
     #region skating animation
     public void PlaySkatingForward(float duration)
     {
@@ -294,10 +302,5 @@ public class CharacterController : GenericClass
     public void PlayBigWin()
     {
         animator.SetTrigger("isBigWin");
-    }
-
-    public void ShakeWater()
-    {
-        animator.SetTrigger("isShakingWater");
     }
 }
