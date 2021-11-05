@@ -185,13 +185,13 @@ public class CannonControl : MonoBehaviour
                     {
                         cannonPosition.MoveXRight();
                         isMovingRight = false;
-                        game3Controller.SetXPosition(cannonPosition.x, cannonPosition.x - 1);
+                        game3Controller.SetXMatPosition(cannonPosition.x, cannonPosition.x - 1);
                     }
                     else if (isMovingLeft)
                     {
                         cannonPosition.MoveXLeft();
                         isMovingLeft = false;
-                        game3Controller.SetXPosition(cannonPosition.x, cannonPosition.x + 1);
+                        game3Controller.SetXMatPosition(cannonPosition.x, cannonPosition.x + 1);
                     }
                     isReadyToMove = false;
                 }
@@ -203,13 +203,13 @@ public class CannonControl : MonoBehaviour
                     {
                         cannonPosition.MoveYUp();
                         isRotatingUp = false;
-                        game3Controller.SetYPosition(cannonPosition.y, cannonPosition.y - 1);
+                        game3Controller.SetYMatPosition(cannonPosition.y, cannonPosition.y - 1);
                     }
                     else if (isRotatingDown)
                     {
                         cannonPosition.MoveYDown();
                         isRotatingDown = false;
-                        game3Controller.SetYPosition(cannonPosition.y, cannonPosition.y + 1);
+                        game3Controller.SetYMatPosition(cannonPosition.y, cannonPosition.y + 1);
                     }
                     isReadyToRotate = false;
                 }

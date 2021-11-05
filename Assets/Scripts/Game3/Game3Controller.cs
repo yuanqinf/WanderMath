@@ -70,7 +70,7 @@ public class Game3Controller : GenericClass
             case Constants.GamePhase.PHASE0:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE0);
-                SetXPosition(5, 0);
+                SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(false);
                 gamePhase = Constants.GamePhase.WAITING;
@@ -80,7 +80,7 @@ public class Game3Controller : GenericClass
                 SetPhaseLayout(Constants.GamePhase.PHASE1);
                 // reset materials
                 ResetNumbers();
-                SetXPosition(5, 0);
+                SetXMatPosition(0, 0);
                 SetXCollider(false);
                 SetYCollider(true);
                 gamePhase = Constants.GamePhase.WAITING;
@@ -89,7 +89,7 @@ public class Game3Controller : GenericClass
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE2);
                 ResetNumbers();
-                SetXPosition(5, 0);
+                SetXMatPosition(5, 0);
                 SetXCollider(true);
                 SetYCollider(true);
                 gamePhase = Constants.GamePhase.WAITING;
@@ -133,12 +133,12 @@ public class Game3Controller : GenericClass
             child.gameObject.GetComponent<MeshRenderer>().material = initialMat;
         }
     }
-    public void SetXPosition(int num, int prevNum)
+    public void SetXMatPosition(int num, int prevNum)
     {
         numbers.transform.Find($"horizontal_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
         numbers.transform.Find($"horizontal_{num}").GetComponent<MeshRenderer>().material = selectedMat;
     }
-    public void SetYPosition(int num, int prevNum)
+    public void SetYMatPosition(int num, int prevNum)
     {
         numbers.transform.Find($"vertical_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
         numbers.transform.Find($"vertical_{num}").GetComponent<MeshRenderer>().material = selectedMat;
