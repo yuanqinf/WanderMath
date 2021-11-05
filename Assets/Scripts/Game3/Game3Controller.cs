@@ -18,6 +18,9 @@ public class Game3Controller : GenericClass
     public GameObject carnivalBooth;
     private CharacterController characterController;
     private GameObject numbers;
+    private GameObject phase0Layout;
+    private GameObject phase1Layout;
+    private GameObject phase2Layout;
     [SerializeField]
     private Material initialMat;
     [SerializeField]
@@ -53,6 +56,9 @@ public class Game3Controller : GenericClass
                         carnivalBooth.name = "booth";
 
                         gamePhase = Constants.GamePhase.PHASE0;
+                        phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
+                        phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
+                        phase2Layout = carnivalBooth.transform.Find("boothAndCannon/Phase2").gameObject;
                         // init slingshot
                         //slingshotObj.SetActive(true);
                         //balloonObj.SetActive(true);
@@ -63,23 +69,70 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE0:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
-                // disable Y-axis collider
+                SetPhaseLayout(Constants.GamePhase.PHASE0);
                 SetXPosition(5, 0);
+                SetXCollider(true);
+                SetYCollider(false);
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
-                // reset materials
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
+                SetPhaseLayout(Constants.GamePhase.PHASE1);
+                // reset materials
+                ResetNumbers();
+                SetXPosition(5, 0);
+                SetXCollider(false);
+                SetYCollider(true);
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE2:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
+                SetPhaseLayout(Constants.GamePhase.PHASE2);
+                ResetNumbers();
+                SetXPosition(5, 0);
+                SetXCollider(true);
+                SetYCollider(true);
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
-
         }
     }
+    private void SetPhaseLayout(string phase)
+    {
+        switch(phase)
+        {
+            case Constants.GamePhase.PHASE0:
+                phase0Layout.SetActive(true);
+                phase1Layout.SetActive(false);
+                phase2Layout.SetActive(false);
+                break;
+            case Constants.GamePhase.PHASE1:
+                phase0Layout.SetActive(false);
+                phase1Layout.SetActive(true);
+                phase2Layout.SetActive(false);
+                break;
+            case Constants.GamePhase.PHASE2:
+                phase0Layout.SetActive(false);
+                phase1Layout.SetActive(false);
+                phase2Layout.SetActive(true);
+                break;
+        }
+    }
+    private void SetXCollider(bool isActive)
+    {
+        carnivalBooth.transform.Find("boothAndCannon/cannon_GRP/cannon_base").GetComponent<BoxCollider>().enabled = isActive;
+    }
+    private void SetYCollider(bool isActive)
+    {
+        carnivalBooth.transform.Find("boothAndCannon/cannon_GRP/cannon_base/cannon").GetComponent<BoxCollider>().enabled = isActive;
+    }
 
+    private void ResetNumbers()
+    {
+        foreach (Transform child in numbers.transform)
+        {
+            child.gameObject.GetComponent<MeshRenderer>().material = initialMat;
+        }
+    }
     public void SetXPosition(int num, int prevNum)
     {
         numbers.transform.Find($"horizontal_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
