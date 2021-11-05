@@ -49,6 +49,7 @@ public class CharacterController : GenericClass
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, characterRot
         );
+        arCharacterToSpawn.transform.localScale = new Vector3(2, 2, 2);
         animator = arCharacterToSpawn.GetComponent<Animator>();
     }
 

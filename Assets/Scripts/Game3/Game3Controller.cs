@@ -7,7 +7,9 @@ public class Game3Controller : GenericClass
     private string gamePhase = Constants.GamePhase.SETUP;
     private string currGamePhase = Constants.GamePhase.SETUP;
     private PlacementIndicatorController placementController;
+    private CharacterController characterController;
     private CannonControl cannonController;
+    private Game3SoundManager game3SoundManager;
     public Pose placementPose;
     public GameObject slingshotObj;
     public GameObject jointLeftCenter;
@@ -18,7 +20,6 @@ public class Game3Controller : GenericClass
     public GameObject door;
 
     public GameObject carnivalBooth;
-    private CharacterController characterController;
     private GameObject numbers;
     private GameObject phase0Layout;
     private GameObject phase1Layout;
@@ -35,6 +36,7 @@ public class Game3Controller : GenericClass
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         characterController = FindObjectOfType<CharacterController>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
+        game3SoundManager = FindObjectOfType<Game3SoundManager>();
     }
 
     // Update is called once per frame
@@ -70,6 +72,8 @@ public class Game3Controller : GenericClass
                 }
                 break;
             case Constants.GamePhase.PHASE0:
+                game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
+                characterController.PlayTalkingAnimationWithDuration(6.5f + 6.2f + 9.3f + 3.2f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE0);
                 SetXMatPosition(0, 0);
@@ -79,6 +83,8 @@ public class Game3Controller : GenericClass
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
+                game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
+                characterController.PlayTalkingAnimationWithDuration(6.4f + 4.6f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE1);
                 // reset materials
@@ -91,6 +97,8 @@ public class Game3Controller : GenericClass
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE2:
+                game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
+                characterController.PlayTalkingAnimationWithDuration(6.1f + 3.6f + 5.0f + 5.9f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE2);
                 ResetNumbersMat();
@@ -102,6 +110,8 @@ public class Game3Controller : GenericClass
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE3:
+                game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Start);
+                characterController.PlayTalkingAnimationWithDuration(7.6f + 7.9f + 2.6f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase3/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE3);
                 ResetNumbersMat();
@@ -171,24 +181,48 @@ public class Game3Controller : GenericClass
         numbers.transform.Find($"vertical_{num}").GetComponent<MeshRenderer>().material = selectedMat;
     }
 
+    private void StartPhase0End()
+    {
+        StartCoroutine(PlayPhaseEnding(Constants.GamePhase.PHASE1, Constants.VoiceOvers.PHASE0End, 2.1f));
+    }
+    private void StartPhase1End()
+    {
+        StartCoroutine(PlayPhaseEnding(Constants.GamePhase.PHASE2, Constants.VoiceOvers.PHASE1End, 3.3f));
+    }
+    private void StartPhase2End()
+    {
+        StartCoroutine(PlayPhaseEnding(Constants.GamePhase.PHASE3, Constants.VoiceOvers.PHASE2End, 2.1f));
+    }
+    private void StartPhase3End()
+    {
+        StartCoroutine(PlayPhaseEnding(Constants.GamePhase.ENDING, Constants.VoiceOvers.PHASE3End, 6.0f + 4.1f));
+    }
+    IEnumerator PlayPhaseEnding(string phase, string voiceover, float duration)
+    {
+        game3SoundManager.PlayVoiceovers(voiceover);
+        characterController.PlayTalkingAnimationWithDuration(duration);
+        yield return new WaitForSeconds(duration);
+        SetGamePhase(phase);
+    }
+
     public void IncreaseTargetHit()
     {
         this.targetHit++;
         if (currGamePhase == Constants.GamePhase.PHASE0 && targetHit == 2)
         {
-            SetGamePhase(Constants.GamePhase.PHASE1);
+            StartPhase0End();
         }
         else if (currGamePhase == Constants.GamePhase.PHASE1 && targetHit == 2)
         {
-            SetGamePhase(Constants.GamePhase.PHASE2);
+            StartPhase1End();
         }
         else if (currGamePhase == Constants.GamePhase.PHASE2 && targetHit == 5)
         {
-            SetGamePhase(Constants.GamePhase.PHASE3);
+            StartPhase2End();
         }
         else if (currGamePhase == Constants.GamePhase.PHASE3 && targetHit == 5)
         {
-            SetGamePhase(Constants.GamePhase.ENDING);
+            StartPhase3End();
         }
     }
     private void SetGamePhase(string gamePhase)

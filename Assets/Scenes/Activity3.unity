@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1630,6 +1630,33 @@ MonoBehaviour:
   cannonLower: {fileID: 8300000, guid: 2e0894b7508e249118cb1919cdd8e8b2, type: 3}
   cannonLeftRight: {fileID: 8300000, guid: a52c4c0794b92409eac86f866577c038, type: 3}
   cannonCannotMove: {fileID: 8300000, guid: 01ee2883e18804d718a9003e0d2cc1da, type: 3}
+  phase0Start:
+  - {fileID: 8300000, guid: 330c2c8a7587c4ef696bb52ff2b30c25, type: 3}
+  - {fileID: 8300000, guid: 9d527796a0a2d43cb9629d5a9cc67244, type: 3}
+  - {fileID: 8300000, guid: cdf6ed58399684af8a3f63aca08a4903, type: 3}
+  - {fileID: 8300000, guid: b4b88b574591b4057a502c3630ccfeef, type: 3}
+  phase0End:
+  - {fileID: 8300000, guid: 7249ad9525a3a497cb525ced76669871, type: 3}
+  phase1Start:
+  - {fileID: 8300000, guid: 0566b23fb618f4ddfb97508fbfea6e55, type: 3}
+  - {fileID: 8300000, guid: 58da07f10f7f84237afedc191dd045d1, type: 3}
+  phase1End:
+  - {fileID: 8300000, guid: 0b58559d3b1fc4bf0b362129d0b45989, type: 3}
+  phase2Start:
+  - {fileID: 8300000, guid: df9f9d3fc33ee48cca94119433fa0901, type: 3}
+  - {fileID: 8300000, guid: 4fd748aa5318d40658492ca6becfa50a, type: 3}
+  - {fileID: 8300000, guid: 3cffc609c0de842b1a45084cfddc80b0, type: 3}
+  - {fileID: 8300000, guid: a42897013e2fd4f9b9673dfada070a6d, type: 3}
+  - {fileID: 8300000, guid: 6d304996197a94905bed99a427de9b31, type: 3}
+  phase2End:
+  - {fileID: 8300000, guid: 16aa21faa3d3f45e198e9fd2fbfe29b7, type: 3}
+  phase3Start:
+  - {fileID: 8300000, guid: 55ee49f0c6a5d4740b90b896257622f6, type: 3}
+  - {fileID: 8300000, guid: 79c52fc106b8b4d3ba68603d1818dce9, type: 3}
+  - {fileID: 8300000, guid: a318fa55479e642afadb9814429e4f35, type: 3}
+  phase3End:
+  - {fileID: 8300000, guid: a7356423374f44af69342549fd56facf, type: 3}
+  - {fileID: 8300000, guid: 3bc1964d85cd64485b86aa002a5313a6, type: 3}
 --- !u!4 &1314368971
 Transform:
   m_ObjectHideFlags: 0
