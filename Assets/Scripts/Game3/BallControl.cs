@@ -44,11 +44,6 @@ public class BallControl : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // TODO: detect finger moving location on screen & map to 3D world space to move the ball origin location with respecct to ARCam
-        // TODO: 3D moving object with x and y axis
-        // TODO: add collider endpoint to hit door to show collider effect
-        // TODO: art: door, balloon, particle effect， prizes, x-axis & y-axis
-
         if (Input.touchCount > 0) {
             Touch touch = Input.GetTouch(0);
 
