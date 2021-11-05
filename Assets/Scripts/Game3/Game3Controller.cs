@@ -18,6 +18,10 @@ public class Game3Controller : GenericClass
     public GameObject carnivalBooth;
     private CharacterController characterController;
     private GameObject numbers;
+    [SerializeField]
+    private Material initialMat;
+    [SerializeField]
+    private Material selectedMat;
 
     void Start()
     {
@@ -59,9 +63,12 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE0:
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
+                // disable Y-axis collider
+                SetXPosition(5, 0);
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
             case Constants.GamePhase.PHASE1:
+                // reset materials
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
                 gamePhase = Constants.GamePhase.WAITING;
                 break;
@@ -73,12 +80,14 @@ public class Game3Controller : GenericClass
         }
     }
 
-    public void SetXPosition(int num)
+    public void SetXPosition(int num, int prevNum)
     {
-        //numbers.transform.Find($"horizontal_{num}");
+        numbers.transform.Find($"horizontal_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
+        numbers.transform.Find($"horizontal_{num}").GetComponent<MeshRenderer>().material = selectedMat;
     }
-    public void SetYPosition(int num)
+    public void SetYPosition(int num, int prevNum)
     {
-        //numbers.transform.Find($"vertical_{num}");
+        numbers.transform.Find($"vertical_{prevNum}").GetComponent<MeshRenderer>().material = initialMat;
+        numbers.transform.Find($"vertical_{num}").GetComponent<MeshRenderer>().material = selectedMat;
     }
 }

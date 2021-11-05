@@ -106,7 +106,6 @@ public class CannonControl : MonoBehaviour
         game3Controller = FindObjectOfType<Game3Controller>();
         soundManager = FindObjectOfType<Game3SoundManager>();
         cannonPosition = new Cannon(5, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
-        game3Controller.SetXPosition(cannonPosition.x);
         cannonAnimator = muzzle.GetComponent<Animator>();
     }
 
@@ -186,13 +185,13 @@ public class CannonControl : MonoBehaviour
                     {
                         cannonPosition.MoveXRight();
                         isMovingRight = false;
-                        game3Controller.SetXPosition(cannonPosition.x);
+                        game3Controller.SetXPosition(cannonPosition.x, cannonPosition.x - 1);
                     }
                     else if (isMovingLeft)
                     {
                         cannonPosition.MoveXLeft();
                         isMovingLeft = false;
-                        game3Controller.SetXPosition(cannonPosition.x);
+                        game3Controller.SetXPosition(cannonPosition.x, cannonPosition.x + 1);
                     }
                     isReadyToMove = false;
                 }
@@ -204,11 +203,13 @@ public class CannonControl : MonoBehaviour
                     {
                         cannonPosition.MoveYUp();
                         isRotatingUp = false;
+                        game3Controller.SetYPosition(cannonPosition.y, cannonPosition.y - 1);
                     }
                     else if (isRotatingDown)
                     {
                         cannonPosition.MoveYDown();
                         isRotatingDown = false;
+                        game3Controller.SetYPosition(cannonPosition.y, cannonPosition.y + 1);
                     }
                     isReadyToRotate = false;
                 }
