@@ -49,7 +49,7 @@ public class CubeMedTwo : GenericClass
         }
         if (numSnapped == 5)
         {
-            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED2);
             gameController.playSuccessEffect(touchedObject);
             gameController.createGiftBox(touchedObject);

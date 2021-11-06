@@ -50,7 +50,7 @@ public class CubeWrong : GenericClass
         }
         if (numSnapped == 5)
         {
-            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             gameController.playWrongEffect(touchedObject);
             soundManager.PlayWrongSound();
         }

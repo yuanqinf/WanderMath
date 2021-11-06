@@ -58,7 +58,7 @@ public class HexagonController : GenericClass
         }
         if (numSnapped == 7)
         {
-            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             gameController.playSuccessEffect(touchedObject);
             gameController.createHexGiftBox(touchedObject);
         }

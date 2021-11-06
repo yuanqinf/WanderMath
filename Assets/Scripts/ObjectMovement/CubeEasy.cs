@@ -54,7 +54,7 @@ public class CubeEasy : GenericClass
         }
         if (numSnapped == 5)
         {
-            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             cubeRotateControl.EndPhase1();
             soundManager.PlaySuccessSound();
             gameController.playSuccessEffect(touchedObject);

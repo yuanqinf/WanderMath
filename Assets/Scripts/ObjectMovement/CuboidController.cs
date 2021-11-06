@@ -57,7 +57,7 @@ public class CuboidController : GenericClass
         }
         if (numSnapped == 5)
         {
-            touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
             gameController.playSuccessEffect(touchedObject);
             gameController.createCuboidGiftBox(touchedObject);
         }
