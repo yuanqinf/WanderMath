@@ -61,7 +61,7 @@ public class Game3Controller : GenericClass
                         carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
                         carnivalBooth.name = "booth";
 
-                        SetGamePhase(Constants.GamePhase.PHASE2);
+                        SetGamePhase(Constants.GamePhase.PHASE0);
                         cannonController = FindObjectOfType<CannonControl>();
                         phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
