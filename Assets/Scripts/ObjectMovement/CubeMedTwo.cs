@@ -8,7 +8,7 @@ public class CubeMedTwo : GenericClass
 
     public void RotateMedTwoFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        cubeRotateControl.handleOutline(touchedObject);
+        //cubeRotateControl.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "NetFace_1":

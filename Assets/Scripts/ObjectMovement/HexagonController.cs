@@ -9,7 +9,7 @@ public class HexagonController : GenericClass
 
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        cubeRotateControl.handleOutline(touchedObject);
+        //cubeRotateControl.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "hexSquare1":

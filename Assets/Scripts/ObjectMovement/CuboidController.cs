@@ -10,7 +10,7 @@ public class CuboidController : GenericClass
 
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        cubeRotateControl.handleOutline(touchedObject);
+        //cubeRotateControl.handleOutline(touchedObject);
         switch (touchedObject.name)
         {
             case "cuboid1":
