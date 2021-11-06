@@ -7,7 +7,7 @@ using UnityEngine.XR.ARFoundation;
 public class BallControl : MonoBehaviour
 {
     //This is the force of the throw
-    public float m_ThrowForce = 300;
+    private float m_ThrowForce = 350;
 
     //X and Y damping factors for the throw direction (0,0) means straight line
     public float m_ThrowDirectionX = 0.0f;

@@ -42,7 +42,7 @@ public class CharacterController : GenericClass
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPos.forward * 3.05f) + (placementPos.right * 0.9f);
+            + (placementPos.forward * 4.65f) + (placementPos.right * 0.9f);
 
         Quaternion characterRot = Quaternion.Euler(rot);
 
@@ -311,8 +311,6 @@ public class CharacterController : GenericClass
         arCharacterToSpawn.GetComponent<FinleyAction>().G3Stuffs.SetActive(true);
         StartCoroutine(utils.LerpMovement(arCharacterToSpawn.transform.position, endingPos, duration, arCharacterToSpawn));
         yield return new WaitForSeconds(duration);
-        animator.SetBool("isSkatingWithGifts", false);
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
     #endregion
 
