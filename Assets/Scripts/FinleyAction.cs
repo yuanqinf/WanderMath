@@ -8,6 +8,8 @@ public class FinleyAction : MonoBehaviour
     [SerializeField]
     private Camera arCamera;
 
+    public GameObject G3Stuffs;
+
     // Start is called before the first frame update
     void Start()
     {

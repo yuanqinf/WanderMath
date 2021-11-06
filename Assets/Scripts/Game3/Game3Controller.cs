@@ -58,7 +58,7 @@ public class Game3Controller : GenericClass
                         Vector3 rot = placementPose.rotation.eulerAngles;
                         rot = new Vector3(rot.x, rot.y + 177, rot.z);
                         var newRot = Quaternion.Euler(rot);
-                        carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
+                        carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 10), newRot);
                         carnivalBooth.name = "booth";
 
                         SetGamePhase(Constants.GamePhase.PHASE0);
@@ -226,7 +226,7 @@ public class Game3Controller : GenericClass
     {
         game3SoundManager.PlayVoiceovers(voiceover);
         
-        characterController.PlaySkatingWithGiftsAnimationWithDuration(duration);
+        characterController.PlaySkatingWithGiftsAnimationWithDuration(duration, placementPose.position);
         yield return new WaitForSeconds(duration);
         SetGamePhase(phase);
     }

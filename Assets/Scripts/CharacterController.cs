@@ -297,19 +297,22 @@ public class CharacterController : GenericClass
     #endregion
 
     #region skating
-    public void PlaySkatingWithGiftsAnimationWithDuration(float duration)
+    public void PlaySkatingWithGiftsAnimationWithDuration(float duration, Vector3 endingPos)
     {
-        StartCoroutine(PlaySkatingWithGiftsAnimationWithinDuration(duration));
+        StartCoroutine(PlaySkatingWithGiftsAnimationWithinDuration(duration, endingPos));
     }
 
-    IEnumerator PlaySkatingWithGiftsAnimationWithinDuration(float duration)
+    IEnumerator PlaySkatingWithGiftsAnimationWithinDuration(float duration, Vector3 endingPos)
     {
-        arCharacterToSpawn.transform.Rotate(new Vector3(0f, 90f, 0));
         animator.SetBool("isSkatingWithGifts", true);
-        arCharacterToSpawn.transform.Rotate(new Vector3(0, 90f, 0));
-        StartCoroutine(utils.LerpMovement(arCharacterToSpawn.transform.position, Camera.main.transform.position, duration, arCharacterToSpawn));
+        yield return new WaitForSeconds(idleToSkateAnimationLen);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(Camera.main.transform.position);
+        yield return new WaitForSeconds(1.5f);
+        arCharacterToSpawn.GetComponent<FinleyAction>().G3Stuffs.SetActive(true);
+        StartCoroutine(utils.LerpMovement(arCharacterToSpawn.transform.position, endingPos, duration, arCharacterToSpawn));
         yield return new WaitForSeconds(duration);
         animator.SetBool("isSkatingWithGifts", false);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
     #endregion
 
