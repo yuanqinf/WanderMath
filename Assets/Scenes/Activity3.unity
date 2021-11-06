@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1765,7 +1765,7 @@ MonoBehaviour:
   cannonShoot: {fileID: 8300000, guid: ea7e98b36e73c4fd6a706c9bacf5f370, type: 3}
   cannonRaise: {fileID: 8300000, guid: 3fef5a3c22ed64c02864c0ae57e44b99, type: 3}
   cannonLower: {fileID: 8300000, guid: 2e0894b7508e249118cb1919cdd8e8b2, type: 3}
-  cannonLeftRight: {fileID: 8300000, guid: a52c4c0794b92409eac86f866577c038, type: 3}
+  cannonLeftRight: {fileID: 8300000, guid: 3b0e44c0dedc14fee8c9201c1fe62c18, type: 3}
   cannonCannotMove: {fileID: 8300000, guid: 01ee2883e18804d718a9003e0d2cc1da, type: 3}
   phase0Start:
   - {fileID: 8300000, guid: 330c2c8a7587c4ef696bb52ff2b30c25, type: 3}
