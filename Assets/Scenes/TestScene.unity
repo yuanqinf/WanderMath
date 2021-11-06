@@ -367,6 +367,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3291915912560277690, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3474713655831517625, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
       propertyPath: m_Name
       value: booth
@@ -414,6 +418,10 @@ PrefabInstance:
     - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444350632376546368, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
