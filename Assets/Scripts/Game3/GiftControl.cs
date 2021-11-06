@@ -14,17 +14,24 @@ public class GiftControl : MonoBehaviour
         if (other.transform.tag == Constants.Tags.Balloon)
         {
             Debug.Log("gift hit by balloon");
-            isChangeScale = true;
             StartCoroutine(WaitUntilTargetCoverOpen());
+            isChangeScale = true;
+            StartCoroutine(WaitToSetStatic());
 
         }
     }
 
     IEnumerator WaitUntilTargetCoverOpen()
     {
+        yield return new WaitForSeconds(1f);
+    }
+
+    IEnumerator WaitToSetStatic()
+    {
         yield return new WaitForSeconds(4f);
         this.transform.GetComponent<Rigidbody>().isKinematic = true;
     }
+
 
     void Update()
     {

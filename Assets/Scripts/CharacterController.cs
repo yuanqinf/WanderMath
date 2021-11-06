@@ -304,6 +304,7 @@ public class CharacterController : GenericClass
 
     IEnumerator PlaySkatingWithGiftsAnimationWithinDuration(float duration)
     {
+        arCharacterToSpawn.transform.Rotate(new Vector3(0f, 90f, 0));
         animator.SetBool("isSkatingWithGifts", true);
         arCharacterToSpawn.transform.Rotate(new Vector3(0, 90f, 0));
         StartCoroutine(utils.LerpMovement(arCharacterToSpawn.transform.position, Camera.main.transform.position, duration, arCharacterToSpawn));

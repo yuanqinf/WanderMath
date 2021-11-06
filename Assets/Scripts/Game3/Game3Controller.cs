@@ -163,6 +163,10 @@ public class Game3Controller : GenericClass
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(true);
+                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase3Gifts)
+                {
+                    gift.SetActive(true);
+                }
                 break;
         }
     }

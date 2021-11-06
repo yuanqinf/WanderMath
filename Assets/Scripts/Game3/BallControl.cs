@@ -89,7 +89,7 @@ public class BallControl : MonoBehaviour
             isPressed = false;
         }
 
-        if (Time.time - endTime >= 1 && Time.time - endTime <= 2)
+        if (Time.time - endTime >= 1.5 && Time.time - endTime <= 2)
         {
             ResetBall();
         }
