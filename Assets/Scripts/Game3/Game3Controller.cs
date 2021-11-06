@@ -61,7 +61,7 @@ public class Game3Controller : GenericClass
                         carnivalBooth = Instantiate(carnivalBooth, placementPose.position + (placementPose.forward * 8), newRot);
                         carnivalBooth.name = "booth";
 
-                        SetGamePhase(Constants.GamePhase.PHASE0);
+                        SetGamePhase(Constants.GamePhase.PHASE2);
                         cannonController = FindObjectOfType<CannonControl>();
                         phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
@@ -133,18 +133,30 @@ public class Game3Controller : GenericClass
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
+                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase0Gifts)
+                {
+                    gift.SetActive(true);
+                }
                 break;
             case Constants.GamePhase.PHASE1:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(true);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
+                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase1Gifts)
+                {
+                    gift.SetActive(true);
+                }
                 break;
             case Constants.GamePhase.PHASE2:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(true);
                 phase3Layout.SetActive(false);
+                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase2Gifts)
+                {
+                    gift.SetActive(true);
+                }
                 break;
             case Constants.GamePhase.PHASE3:
                 phase0Layout.SetActive(false);
@@ -195,12 +207,22 @@ public class Game3Controller : GenericClass
     }
     private void StartPhase3End()
     {
-        StartCoroutine(PlayPhaseEnding(Constants.GamePhase.ENDING, Constants.VoiceOvers.PHASE3End, 6.0f + 4.1f));
+        StartCoroutine(PlayPhaseFinalEnding(Constants.GamePhase.ENDING, Constants.VoiceOvers.PHASE3End, 6.0f + 4.1f));
     }
+
     IEnumerator PlayPhaseEnding(string phase, string voiceover, float duration)
     {
         game3SoundManager.PlayVoiceovers(voiceover);
         characterController.PlayTalkingAnimationWithDuration(duration);
+        yield return new WaitForSeconds(duration);
+        SetGamePhase(phase);
+    }
+
+    IEnumerator PlayPhaseFinalEnding(string phase, string voiceover, float duration)
+    {
+        game3SoundManager.PlayVoiceovers(voiceover);
+        
+        characterController.PlaySkatingWithGiftsAnimationWithDuration(duration);
         yield return new WaitForSeconds(duration);
         SetGamePhase(phase);
     }

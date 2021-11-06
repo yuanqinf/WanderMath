@@ -296,6 +296,22 @@ public class CharacterController : GenericClass
     }
     #endregion
 
+    #region skating
+    public void PlaySkatingWithGiftsAnimationWithDuration(float duration)
+    {
+        StartCoroutine(PlaySkatingWithGiftsAnimationWithinDuration(duration));
+    }
+
+    IEnumerator PlaySkatingWithGiftsAnimationWithinDuration(float duration)
+    {
+        animator.SetBool("isSkatingWithGifts", true);
+        arCharacterToSpawn.transform.Rotate(new Vector3(0, 90f, 0));
+        StartCoroutine(utils.LerpMovement(arCharacterToSpawn.transform.position, Camera.main.transform.position, duration, arCharacterToSpawn));
+        yield return new WaitForSeconds(duration);
+        animator.SetBool("isSkatingWithGifts", false);
+    }
+    #endregion
+
     public void PlaySmallWin()
     {
         animator.SetTrigger("isSmallWin");

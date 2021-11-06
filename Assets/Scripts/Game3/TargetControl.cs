@@ -21,6 +21,7 @@ public class TargetControl : MonoBehaviour
         if (other.transform.tag == Constants.Tags.Balloon)
         {
             Debug.Log("hit by balloon");
+            this.GetComponent<SphereCollider>().enabled = false;
             this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
             characterController.PlayShakeWater();
