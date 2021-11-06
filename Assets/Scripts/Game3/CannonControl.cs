@@ -106,7 +106,7 @@ public class CannonControl : MonoBehaviour
         game3Controller = FindObjectOfType<Game3Controller>();
         soundManager = FindObjectOfType<Game3SoundManager>();
         cannonPosition = new Cannon(0, 0, this.transform.gameObject, muzzle, soundManager); // start x in the middle
-        cannonAnimator = muzzle.GetComponent<Animator>();
+        cannonAnimator = muzzle.transform.parent.parent.GetComponent<Animator>();
     }
 
     private void Update()
