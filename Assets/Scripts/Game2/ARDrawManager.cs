@@ -557,10 +557,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private (Vector3, Vector3) GetRampAnimationPoints(int edgeNum)
     {
         // settle which position to use for animation
-        var topLeft = phase2Ramp.transform.FindChild("TopLeft").transform.position;
-        var topRight = phase2Ramp.transform.FindChild("TopRight").transform.position;
-        var botLeft = phase2Ramp.transform.FindChild("BotLeft").transform.position;
-        var botRight = phase2Ramp.transform.FindChild("BotRight").transform.position;
+        var topLeft = phase2Ramp.transform.Find("TopLeft").transform.position;
+        var topRight = phase2Ramp.transform.Find("TopRight").transform.position;
+        var botLeft = phase2Ramp.transform.Find("BotLeft").transform.position;
+        var botRight = phase2Ramp.transform.Find("BotRight").transform.position;
 
         var animeEndPt = Vector3.zero;
         var animeStartPt = Vector3.zero;
@@ -724,7 +724,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         DotsManager.Instance.ClearDots();
         dotsGameObjSet.Clear();
-        phase2Ramp.transform.FindChild("top").gameObject.SetActive(false);
+        phase2Ramp.transform.Find("top").gameObject.SetActive(false);
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
         SetRampEdgeCollider(false);
@@ -811,7 +811,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void InitializeRampTopObject(GameObject ramp)
     {
-        rampTopObject = ramp.transform.FindChild("top").gameObject;
+        rampTopObject = ramp.transform.Find("top").gameObject;
     }
     // only initialize when its parent
     private void InitializeRampEdgeObjects(GameObject parent)
