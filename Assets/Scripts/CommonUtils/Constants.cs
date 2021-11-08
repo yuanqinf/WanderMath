@@ -14,6 +14,10 @@ public static class Constants
         public const string CUBE_EASY = "CUBE_EASY";
         public const string DestroyCollider = "destroyCollider";
         public const string DOT = "dot";
+        public const string ForceFieldMat = "ForceField";
+        public const string LiftableShape = "liftable_shape";
+        public const string RampEdge = "rampEdge";
+        public const string P3Ramp = "p3Ramp";
         public const string Finley = "finley";
         public const string Balloon = "balloon";
         public const string ShootBtn = "shoot_btn";

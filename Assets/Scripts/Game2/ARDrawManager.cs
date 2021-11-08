@@ -51,7 +51,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private GameObject currentLineGameObject = null;
 
     private List<LineRenderer> lines = new List<LineRenderer>();
-    private HashSet<GameObject> dotsGameObjSet = new HashSet<GameObject>();
+    private Dictionary<GameObject, int> dotsGameObjDict = new Dictionary<GameObject, int>();
     private Dictionary<int, Edge> rampTopEdges = new Dictionary<int, Edge>();
     private Dictionary<int, float> edgeHeights = new Dictionary<int, float>
     {
@@ -121,7 +121,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // constantly track movement
                 movingTouchPosition = hitObject.point;
                 // touched dot logic
-                if (hitObject.transform.tag == "dot")
+                if (hitObject.transform.tag == Constants.Tags.DOT)
                 {
                     // line not created, instantiate line renderer
                     if (currentLineRender == null)
@@ -152,7 +152,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // touched various objects logic
                 if (touch.phase == TouchPhase.Began)
                 {
-                    if (hitObject.transform.tag == "rampEdge")
+                    if (hitObject.transform.tag == Constants.Tags.RampEdge)
                     {
                         // Initiate edge to be hit
                         rampEdgeCollider = hitObject.transform.gameObject;
@@ -164,7 +164,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("initialize rampEdgePos " + ramp2DTouchPosition);
                     }
                     // only allowed to touch in phase3
-                    if (hitObject.transform.tag == "p3Ramp" && GamePhase == Constants.GamePhase.PHASE3)
+                    if (hitObject.transform.tag == Constants.Tags.P3Ramp && GamePhase == Constants.GamePhase.PHASE3)
                     {
                         // Initiate face to be hit
                         rampTopCollider = hitObject.transform.gameObject;
@@ -174,25 +174,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ramp2DTouchPosition = touch.position;
                         Debug.Log("initialize rampface " + ramp2DTouchPosition);
                     }
-                    if (hitObject.transform.tag == "liftable_shape")
+                    if (hitObject.transform.tag == Constants.Tags.LiftableShape)
                     {
                         rec2DTouchPosition = touch.position;
                         liftableCube = hitObject.transform.gameObject;
                         Debug.Log("hitObject.transform.gameObject.name: " + hitObject.transform.gameObject.name);
                     }
-                }
-                if (GamePhase == Constants.GamePhase.PHASE3 && hitObject.transform.tag == Constants.Tags.Finley)
-                {
-                    //if (IsDoubleTap())
-                    //{
-                    //    Debug.Log("destroy is called without ramp");
-                    //}
-                    //if (IsDoubleTapDestroy())
-                    //{
-                    //    Debug.Log("destroy is called");
-                    //    Destroy(touchedPhase3Ramp.transform.root.gameObject);
-                    //}
-                    // TODO: play ending animation for all the ramps
                 }
             }
 
@@ -209,12 +196,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     if (curVolNum > 0.85 && curVolNum < 1.15)
                     {
                         //glow effect here
-                        GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = true;
+                        GameObject.FindGameObjectWithTag(Constants.Tags.ForceFieldMat).GetComponent<MeshRenderer>().enabled = true;
                         canCubeLiftingSnap = true;
                     }
                     else
                     {
-                        GameObject.FindGameObjectWithTag("ForceField").GetComponent<MeshRenderer>().enabled = false;
+                        GameObject.FindGameObjectWithTag(Constants.Tags.ForceFieldMat).GetComponent<MeshRenderer>().enabled = false;
                         canCubeLiftingSnap = false;
                     }
                     uINumberControl.SetVolDisplay(curVolNum);
@@ -348,8 +335,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
                         if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
                         {
-                            dotsGameObjSet.Add(startObject.gameObject);
-                            dotsGameObjSet.Add(hitObject.transform.gameObject);
+                            int currentVal;
+                            dotsGameObjDict.TryGetValue(startObject.gameObject, out currentVal);
+                            dotsGameObjDict[startObject.gameObject] = currentVal + 1;
+                            dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
+                            dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
                         }
                         HandleSnapObject();
                     }
@@ -495,22 +485,22 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
-            if (dotsGameObjSet.Count != 4)
+            if (dotsGameObjDict.Count != 4)
             {
                 Debug.Log("not a rectangle/square");
                 game2Manager.PlayWrongLinesWithAnimation();
                 numLines = 0;
                 ClearLines();
-                dotsGameObjSet.Clear();
+                dotsGameObjDict.Clear();
                 return; // not 4 unique points, so not rectangle
             }
             var dotPoints = GetSortedDotPoints();
             var maxLength = GetMaxPoints(dotPoints);
 
             var initializePos = Vector3.zero;
-            foreach(GameObject gameObject in dotsGameObjSet)
+            foreach(var item in dotsGameObjDict)
             {
-                initializePos += gameObject.transform.position;
+                initializePos += item.Key.transform.position;
             }
 
             InitializeRamp(initializePos / 4);
@@ -532,9 +522,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
             (var maxWidth, var maxLength) = GetLenAndWidthPoints(dotPoints);
 
             var initializePos = Vector3.zero;
-            foreach (GameObject gameObject in dotsGameObjSet)
+            foreach (var item in dotsGameObjDict)
             {
-                initializePos += gameObject.transform.position;
+                initializePos += item.Key.transform.position;
             }
 
             InitializePhase3Ramp(initializePos / 4);
@@ -592,13 +582,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private bool CheckIfRect()
     {
-        if (dotsGameObjSet.Count != 4)
+        if (dotsGameObjDict.Count != 4)
         {
             Debug.Log("not a rectangle/square");
             game2Manager.PlayWrongLinesWithAnimation();
             numLines = 0;
             ClearLines();
-            dotsGameObjSet.Clear();
+            dotsGameObjDict.Clear();
             return false; // not 4 unique points, so not rectangle
         }
         return true;
@@ -642,9 +632,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private List<(int, int)> GetSortedDotPoints()
     {
         List<(int, int)> dotPoints = new List<(int, int)>();
-        foreach(GameObject game in dotsGameObjSet)
+        foreach(var item in dotsGameObjDict)
         {
-            var res = game.name.Split('_');
+            var res = item.Key.name.Split('_');
             dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
         }
         dotPoints.Sort();
@@ -664,7 +654,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         // disable colliders
         SetRampEdgeCollider(false);
         DeactivateSelectedDots();
-        dotsGameObjSet.Clear();
+        dotsGameObjDict.Clear();
 
         if (rampTopObject != null) SetRampTopCollider(false);
         ClearRampRefereces();
@@ -723,7 +713,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         DotsManager.Instance.ClearDots();
-        dotsGameObjSet.Clear();
+        dotsGameObjDict.Clear();
         phase2Ramp.transform.Find("top").gameObject.SetActive(false);
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
@@ -890,7 +880,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         rampTopEdges.Clear();
         rampEdgeObjects.Clear();
-        dotsGameObjSet.Clear();
+        dotsGameObjDict.Clear();
         edgeHeights.Keys.ToList().ForEach(k => edgeHeights[k] = 0);
         rampTopObject = null;
         rampTopHeight = 0.0f;
