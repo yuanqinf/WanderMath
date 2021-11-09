@@ -19,27 +19,27 @@ public class FinleyAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
+        //if (Input.touchCount > 0)
+        //{
+        //    Touch touch = Input.GetTouch(0);
 
-            // raycasting to hit the point
-            Ray ray = arCamera.ScreenPointToRay(touch.position);
-            if (Physics.Raycast(ray, out RaycastHit hitObject))
-            {
-                // touched dot logic
-                if (hitObject.transform.tag == "finley")
-                {
-                    foreach (var tap in Input.touches)
-                    {
-                        if (tap.tapCount == 2)
-                        {
-                            SceneManager.LoadScene("main");
-                        }
-                    }
-                }
-            }
-        }
+        //    // raycasting to hit the point
+        //    Ray ray = arCamera.ScreenPointToRay(touch.position);
+        //    if (Physics.Raycast(ray, out RaycastHit hitObject))
+        //    {
+        //        // touched dot logic
+        //        if (hitObject.transform.tag == "finley")
+        //        {
+        //            foreach (var tap in Input.touches)
+        //            {
+        //                if (tap.tapCount == 2)
+        //                {
+        //                    SceneManager.LoadScene("main");
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     private bool IsDoubleTap()
