@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CubeMed : GenericClass
 {
-    private int numSnapped = 0;
+    public int numSnapped = 0;
 
     public void RotateMedFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {

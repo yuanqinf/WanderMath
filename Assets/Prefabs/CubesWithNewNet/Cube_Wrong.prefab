@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 6784930414360780000}
   m_Layer: 0
   m_Name: Cube_Wrong
-  m_TagString: cube_wrong
+  m_TagString: cube_main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

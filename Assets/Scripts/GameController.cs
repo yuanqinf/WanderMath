@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
     public Pose placementPose;
     public string gamePhase = "setup";
 
+    public string lastGamePhase = "";
+
     [SerializeField]
     private Camera arCamera;
     [SerializeField]
@@ -69,29 +71,38 @@ public class GameController : MonoBehaviour
                 // 2. initialize birthday card falling with tutorial
                 birthdayCardController.InitializeBirthdayCard(placementPose, duration);
                 gamePhase = "waiting";
+                lastGamePhase = "phase0";
                 break;
             // handles first cube
             case "phase1":
                 // instantiate
-                DestroyImmediate(birthdayCardController.BirthdayCard, true);
+                //DestroyImmediate(birthdayCardController.BirthdayCard, true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag("birthdaycard"), true);
                 cubeController.StartPhase1(placementPose);
                 Debug.Log("start phase 1 now!!!!!!!!!!!!");
                 gamePhase = "waiting";
+                lastGamePhase = "phase1";
                 break;
             // handles multiple cubes
             case "phase2":
                 // instantiate one cube and move on
-                DestroyImmediate(cubeController.cubeEasy, true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag("cube_main"), true);
                 cubeController.StartPhase2(placementPose);
                 gamePhase = "waiting";
+                lastGamePhase = "phase2";
                 break;
             // handles multiple other shapes
             case "phase3":
-                DestroyImmediate(cubeController.cubeMed, true);
-                DestroyImmediate(cubeController.cubeMed2, true);
-                DestroyImmediate(cubeController.cubeWrong, true);
+                //DestroyImmediate(cubeController.cubeMed, true);
+                //DestroyImmediate(cubeController.cubeMed2, true);
+                //DestroyImmediate(cubeController.cubeWrong, true);
+                foreach (GameObject cube in GameObject.FindGameObjectsWithTag("cube_main"))
+                {
+                    DestroyImmediate(cube, true);
+                }
                 shapesController.StartPhase3(placementPose);
                 gamePhase = "waiting";
+                lastGamePhase = "phase3";
                 break;
             default:
                 break;
@@ -201,5 +212,33 @@ public class GameController : MonoBehaviour
     public void createPyGiftBox(GameObject shape)
     {
         Instantiate(pyGiftBox, shape.transform.root.transform);
+    }
+
+    public void resetPhase()
+    {
+        if (lastGamePhase == "phase0")
+        {
+            DestroyImmediate(GameObject.FindGameObjectWithTag("birthdaycard"), true);
+        }
+        if (lastGamePhase == "phase1")
+        {
+            DestroyImmediate(GameObject.FindGameObjectWithTag("cube_main"), true);
+        }
+        if (lastGamePhase == "phase2")
+        {
+            foreach (GameObject cube in GameObject.FindGameObjectsWithTag("cube_main"))
+            {
+                DestroyImmediate(cube, true);
+            }
+        }
+        if (lastGamePhase == "phase3")
+        {
+            foreach (GameObject cube in GameObject.FindGameObjectsWithTag("cube_main"))
+            {
+                DestroyImmediate(cube, true);
+            }
+
+        }
+        gamePhase = lastGamePhase;
     }
 }

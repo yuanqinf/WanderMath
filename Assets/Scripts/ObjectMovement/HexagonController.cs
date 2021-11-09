@@ -5,7 +5,7 @@ using UnityEngine;
 public class HexagonController : GenericClass
 {
     private float hexSetDegree = 90f;
-    private int numSnapped = 0;
+    public int numSnapped = 0;
 
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 2142598454128655515}
   m_Layer: 0
   m_Name: cuboid
-  m_TagString: Untagged
+  m_TagString: cube_main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -162,6 +162,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: cuboid4
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
@@ -418,6 +422,10 @@ PrefabInstance:
       value: cuboid_base
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
       value: cuboid
       objectReference: {fileID: 0}
@@ -486,6 +494,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: cuboid3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
@@ -569,6 +581,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: cuboid1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString
@@ -717,6 +733,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_Name
       value: cuboid2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_TagString

@@ -65,7 +65,7 @@ public class CharacterController : GenericClass
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPose.forward * 2.5f) + (-placementPose.right * 0.4f);
+            + (placementPose.forward * 2.1f) + (-placementPose.right * 0.4f);
         Debug.Log(characterPos);
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, Quaternion.Euler(rot)

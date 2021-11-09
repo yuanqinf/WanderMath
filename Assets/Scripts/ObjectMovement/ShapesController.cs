@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class ShapesController : GenericClass
 {
-    [SerializeField]
-    private GameObject cuboid;
-    [SerializeField]
-    private GameObject pyramid;
-    [SerializeField]
-    private GameObject hexagon;
+    public GameObject cuboid;
+    public GameObject pyramid;
+    public GameObject hexagon;
 
     private string phase3Start = "Ok, these ones definitely won't make a cube. But let's see what they will make!";
     private string phase3Pyramid = "Whoa, this one's a pyramid! The bottom is a square, so it's called a square pyramid. That's such a cool gift box.";
@@ -24,13 +21,17 @@ public class ShapesController : GenericClass
         var startAudioLen = soundManager.GetPhase3InitShapes(0);
         characterController.PlayTalkingAnimationWithDuration(startAudioLen);
 
-        Vector3 cuboidPos = placementPose.position;
-        Vector3 pyramidPos = placementPose.position + new Vector3(0f, 0f, 0.8f);
-        Vector3 hexPos = placementPose.position + new Vector3(0.92f, 0f, 0.04f);
+        Vector3 cuboidPos = placementPose.position + new Vector3(0.3f, 0f, 0.0f); ;
+        Vector3 pyramidPos = placementPose.position + new Vector3(0.6f, 0f, 0.8f);
+        Vector3 hexPos = placementPose.position + new Vector3(1.1f, 0f, 0.0f);
 
-        cuboid = utils.PlaceObjectInSky(cuboid, cuboidPos, placementPose.rotation, startAudioLen, 0.5f);
-        pyramid = utils.PlaceObjectInSky(pyramid, pyramidPos, placementPose.rotation, startAudioLen, 0.5f);
-        hexagon = utils.PlaceObjectInSky(hexagon, hexPos, placementPose.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(cuboid, cuboidPos, placementPose.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(pyramid, pyramidPos, placementPose.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(hexagon, hexPos, placementPose.rotation, startAudioLen, 0.5f);
+
+        FindObjectOfType<CuboidController>().numSnapped = 0;
+        FindObjectOfType<PyramidController>().numSnapped = 0;
+        FindObjectOfType<HexagonController>().numSnapped = 0;
     }
 
     IEnumerator SetupShapesSubtitleWithAudio()

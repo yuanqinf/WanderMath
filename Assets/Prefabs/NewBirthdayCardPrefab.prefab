@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5749872570154142469}
   m_Layer: 0
   m_Name: NewBirthdayCardPrefab
-  m_TagString: Untagged
+  m_TagString: birthdaycard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

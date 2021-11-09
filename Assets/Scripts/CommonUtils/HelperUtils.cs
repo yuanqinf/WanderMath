@@ -22,6 +22,7 @@ public class HelperUtils : GenericClass
             startPos,
             cubeRot
         );
+        gameObject.SetActive(true);
         StartCoroutine(LerpMovement(startPos, endPos, duration, gameObject));
         return gameObject;
     }

@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 1238467571129601725}
   m_Layer: 0
   m_Name: Cube_Med
-  m_TagString: cube_med
+  m_TagString: cube_main
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

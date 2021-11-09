@@ -6,7 +6,7 @@ using UnityEngine;
 public class CuboidController : GenericClass
 {
     private float cuboidSetDegree = 90f;
-    private int numSnapped = 0;
+    public int numSnapped = 0;
 
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {

@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainGM : MonoBehaviour
 {
     public GameObject SettingPanel;
 
     public GameObject[] GameObjectsShouldHide;
+
+    public GameObject LoadCanvas;
+    public Image ProgressBar;
 
     // Start is called before the first frame update
     private void Start()
@@ -30,21 +34,21 @@ public class MainGM : MonoBehaviour
     public void loadActivity1Scene()
     {
         setGameObjectsShouldHide();
-        SceneManager.LoadScene(activity1SceneName);
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity1SceneName);
         DontDestroyOnLoad(this.gameObject);
     }
 
     public void loadActivity2Scene()
     {
         setGameObjectsShouldHide();
-        SceneManager.LoadScene(activity2SceneName);
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity2SceneName);
         DontDestroyOnLoad(this.gameObject);
     }
 
     public void loadActivity3Scene()
     {
         setGameObjectsShouldHide();
-        SceneManager.LoadScene(activity3SceneName);
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity3SceneName);
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -66,4 +70,23 @@ public class MainGM : MonoBehaviour
         }
     }
 
+    public void resetCurrentPhase()
+    {
+        if(SceneManager.GetActiveScene().name == activity1SceneName)
+        {
+            var gameController = FindObjectOfType<GameController>();
+            gameController.resetPhase();
+
+        }
+        // TODO
+        //if (SceneManager.GetActiveScene().name == activity2SceneName)
+        //{
+        //    var gameController = FindObjectOfType<Game2Manager>();
+        //}
+        //if (SceneManager.GetActiveScene().name == activity3SceneName)
+        //{
+        //    var gameController = FindObjectOfType<Game3Controller>();
+        //}
+        SettingPanel.SetActive(false);
+    }
 }

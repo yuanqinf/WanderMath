@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,6 +202,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
   gamePhase: setup
+  lastGamePhase: 
   arCamera: {fileID: 1195867877}
   successEffect: {fileID: 2276765910432098370, guid: d26540dc0d81d443b9317c17a76d11f2, type: 3}
   wrongEffect: {fileID: 2276765910432098370, guid: d4d8bd3307fa249c59e244adbeb474f8, type: 3}
@@ -683,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34aea99e97bd7421c8d34eaf270b2038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!114 &542989969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,6 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2266b0c1d29a547849c8f719a877dbc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!114 &542989971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,6 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b061865d42c454476a530c6f49eb46f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,7 +754,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1433,6 +1437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5801e5649c2446b18ec57d15b0ce365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!114 &1558233075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad88d353d16c6460a9ffa50d0dac389c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!114 &1558233076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1457,6 +1463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 391df7265a31748bb941ce2bb313c379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!114 &1558233077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1469,6 +1476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ed9a0649b7d4608a70e4f50fdbb8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numSnapped: 0
 --- !u!1 &1602182253
 GameObject:
   m_ObjectHideFlags: 0

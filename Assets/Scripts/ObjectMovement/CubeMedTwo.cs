@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeMedTwo : GenericClass
 {
-    private int numSnapped = 0;
+    public int numSnapped = 0;
 
     public void RotateMedTwoFace(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {

@@ -6,7 +6,7 @@ public class PyramidController : GenericClass
 {
     private float pyramidThresholdDegree = Constants.ROTATION_THRESHOLD + 15f;
     private float pyramidSetDegree = 90 + 26f;
-    private int numSnapped = 0;
+    public int numSnapped = 0;
 
     public void UpdatePyramidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {

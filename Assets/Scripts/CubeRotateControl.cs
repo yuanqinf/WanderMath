@@ -71,12 +71,13 @@ public class CubeRotateControl : GenericClass
     /// <param name="duration"></param>
     private void InitializeCubeEasy(Pose pose, float duration)
     {
-        Vector3 cubeEasyPos = pose.position + new Vector3(0.25f, 0f, 0.25f);
+        Vector3 cubeEasyPos = pose.position + new Vector3(0.5f, 0f, 0.5f);
 
         Vector3 rot = pose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
-        cubeEasy = utils.PlaceObjectInSky(cubeEasy, cubeEasyPos, Quaternion.Euler(rot), duration, 0.5f);
+        utils.PlaceObjectInSky(cubeEasy, cubeEasyPos, Quaternion.Euler(rot), duration, 0.5f);
+        FindObjectOfType<CubeEasy>().numSnapped = 0;
     }
 
     #region phase1 code
@@ -167,12 +168,16 @@ public class CubeRotateControl : GenericClass
         var wrongRot = new Vector3(rot.x, rot.y, rot.z);
         rot = new Vector3(rot.x, rot.y + 165, rot.z);
         Vector3 pos1 = placementPose.position;
-        Vector3 pos2 = placementPose.position + new Vector3(0.5f, 0f, 0.8f);
-        Vector3 pos3 = placementPose.position + new Vector3(0.92f, 0f, 0.04f);
+        Vector3 pos2 = placementPose.position + new Vector3(0.6f, 0f, 0.9f);
+        Vector3 pos3 = placementPose.position + new Vector3(0.95f, 0f, 0.0f);
 
-        cubeMed = utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), audioLen, 0.5f);
-        cubeWrong = utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(wrongRot), audioLen, 0.5f);
-        cubeMed2 = utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
+        utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), audioLen, 0.5f);
+        utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(wrongRot), audioLen, 0.5f);
+        utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
+
+        FindObjectOfType<CubeMed>().numSnapped = 0;
+        FindObjectOfType<CubeWrong>().numSnapped = 0;
+        FindObjectOfType<CubeMedTwo>().numSnapped = 0;
     }
 
     IEnumerator SetupCubesSubtitleWithAudio()
