@@ -264,8 +264,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
                         Debug.Log("total vol: " + totalVol);
                         concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
-                        concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor2;
-                        ShowOverusedText(totalVol, 2.15f);
+                        concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
+                        ShowOverusedText(totalVol, 6.15f);
                     }
 
                     // activate glowing effect in phase2 only
@@ -306,8 +306,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     // add concrete text
                     var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
                     concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
-                    concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor2;
-                    ShowOverusedText(totalVol, 2.15f);
+                    concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
+                    ShowOverusedText(totalVol, 6.15f);
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -399,16 +399,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 {
                     var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
                     Debug.Log("totalVol is: " + totalVol);
-                    if (totalVol > 1.8f && totalVol < 2.2f && (rampEdgeCollider != null || rampTopCollider != null))
+                    if (totalVol > 5.5f && totalVol < 6.5f && (rampEdgeCollider != null || rampTopCollider != null))
                     {
                         Debug.Log("phase3 snap is called");
                         // phase 2 vol number snap
                         var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-                        var leftoverVol = (float)System.Math.Round(2 - prevVolume, 1);
+                        var leftoverVol = (float)System.Math.Round(6 - prevVolume, 1);
                         uiNumberControl.SetVolDisplay(leftoverVol);
                         uiNumberControl.Height = System.Math.Round(leftoverVol / Constants.ONE_FEET);
                         concreteUIDisplay.SetActive(false);
-                        concreteVolDisplay.text = "Vol: 2 ft<sup>3</sup>";
+                        concreteVolDisplay.text = "Vol: 6 ft<sup>3</sup>";
                         concreteUIFill.fillAmount = 0;
                         AddPhase3AnimationPoint();
                         // play phase 3 animations
@@ -485,6 +485,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
         {
+            GetConnectedDotsInDict();
             if (dotsGameObjDict.Count != 4)
             {
                 Debug.Log("not a rectangle/square");
@@ -537,6 +538,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    private void GetConnectedDotsInDict()
+    {
+        var res = dotsGameObjDict.Where(i => i.Value == 2);
+        foreach (var item in dotsGameObjDict)
+        {
+            if (item.Value == 2)
+            {
+                //item.Key;
+            }
+        }
     }
 
     /// <summary>
