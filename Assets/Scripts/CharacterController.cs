@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class CharacterController : GenericClass
 {
@@ -59,19 +60,24 @@ public class CharacterController : GenericClass
         return StartFirstLine();
     }
 
+    /// <summary>
+    /// Finley initialization for activity2.
+    /// </summary>
+    /// <param name="placementPose"></param>
+    /// <returns></returns>
     public float InitCharacterSkatingAndAudio(Pose placementPose)
     {
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPose.forward * 2.1f) + (-placementPose.right * 0.4f);
+            + (placementPose.forward * 1.1f) + (-placementPose.right * 0.7f);
         Debug.Log(characterPos);
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, Quaternion.Euler(rot)
         );
         animator = arCharacterToSpawn.GetComponent<Animator>();
-        Vector3 endPos = characterPos - placementPose.forward * 1.5f;
+        Vector3 endPos = characterPos - placementPose.forward;
         // audio & animation
         var phase0AudioLen = 6.0f;
         StartCoroutine(utils.LerpMovement(characterPos, endPos, phase0AudioLen - stopSkatingAnimationLen, arCharacterToSpawn));

@@ -207,12 +207,11 @@ public class DotsManager : Singleton<DotsManager>
     private GameObject InstantiateWithAnchor(GameObject prefab, Vector3 pos, Quaternion rotation)
     {
         var instance = Instantiate(prefab, pos, rotation);
-        //if (instance.GetComponent<ARAnchor>() == null)
-        //{
-        //    instance.AddComponent<ARAnchor>();
-        //}
+        if (instance.GetComponent<ARAnchor>() == null)
+        {
+            instance.AddComponent<ARAnchor>();
+        }
         return instance;
     }
     #endregion
-
 }
