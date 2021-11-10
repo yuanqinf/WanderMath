@@ -474,6 +474,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1519837505699721845}
+  - component: {fileID: 204923819774439866}
   m_Layer: 0
   m_Name: Cube_Med2
   m_TagString: cube_main
@@ -499,6 +500,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -179.509, z: 0}
+--- !u!114 &204923819774439866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519837505699721822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c80b772806d940ca819b555c3c55674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1519837505699721848
 GameObject:
   m_ObjectHideFlags: 0

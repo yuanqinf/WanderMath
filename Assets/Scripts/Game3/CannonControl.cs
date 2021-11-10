@@ -19,7 +19,7 @@ struct Cannon
         this.cannonBase = cannonBase;
         this.muzzle = muzzle;
         this.soundManager = soundManager;
-        this.muzzleAngle = 3.75f;
+        this.muzzleAngle = 3.55f;
         this.cannonMovement = 11f;
     }
 

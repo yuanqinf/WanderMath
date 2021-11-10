@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4427983060405228946}
   - component: {fileID: 5676305390009045857}
+  - component: {fileID: -755132093229998692}
   m_Layer: 0
   m_Name: Cube_Easy
   m_TagString: cube_main
@@ -76,6 +77,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3072054, y: 0.08013666, z: 1}
   m_Center: {x: -0.16312802, y: 0.00978824, z: 0}
+--- !u!114 &-755132093229998692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470318635573128937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c80b772806d940ca819b555c3c55674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &2472903096391264390
 BoxCollider:
   m_ObjectHideFlags: 0

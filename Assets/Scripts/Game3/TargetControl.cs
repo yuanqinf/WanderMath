@@ -33,7 +33,7 @@ public class TargetControl : MonoBehaviour
     }
     IEnumerator IncreaseTargetWithDelay()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         game3Controller.IncreaseTargetHit();
     }
 }
