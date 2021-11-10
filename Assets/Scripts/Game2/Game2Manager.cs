@@ -24,6 +24,8 @@ public class Game2Manager : Singleton<Game2Manager>
 
     private string gamePhase = "waiting";
 
+    public string lastGamePhase = "";
+
     private void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
@@ -41,18 +43,23 @@ public class Game2Manager : Singleton<Game2Manager>
             case Constants.GamePhase.PHASE0:
                 StartPhase0();
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = "phase0";
+
                 break;
             case Constants.GamePhase.PHASE1:
                 StartPhase1();
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = "phase1";
                 break;
             case Constants.GamePhase.PHASE2:
                 StartPhase2();
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = "phase2";
                 break;
             case Constants.GamePhase.PHASE3:
                 StartPhase3();
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = "phase3";
                 break;
             default:
                 break;
@@ -286,4 +293,39 @@ public class Game2Manager : Singleton<Game2Manager>
         g2SoundManager.PlayWrongLines();
     }
     #endregion
+
+    public void resetPhase()
+    {
+        if(lastGamePhase == "phase1")
+        {
+            DestroyImmediate(GameObject.FindGameObjectWithTag("phase1Rect"), true);
+        }
+
+        if(lastGamePhase == "phase2")
+        {
+            ARDrawManager.Instance.DestoryRampAndReferences();
+        }
+
+        if(lastGamePhase == "phase3")
+        {
+            foreach (GameObject ramp in GameObject.FindGameObjectsWithTag("ramp"))
+            {
+                DestroyImmediate(ramp, true);
+            }
+            ARDrawManager.Instance.ClearRampRefereces();
+        }
+
+        foreach (GameObject dot in GameObject.FindGameObjectsWithTag("dot"))
+        {
+            DestroyImmediate(dot, true);
+        }
+
+        ARDrawManager.Instance.ClearLines();
+        dotsManager.dots.Clear();
+
+        ARDrawManager.Instance.concreteUIFill.fillAmount = 0;
+        ARDrawManager.Instance.concreteUIDisplay.SetActive(false);
+
+        SetGamePhase(lastGamePhase);
+    }
 }

@@ -78,11 +78,11 @@ public class MainGM : MonoBehaviour
             gameController.resetPhase();
 
         }
-        // TODO
-        //if (SceneManager.GetActiveScene().name == activity2SceneName)
-        //{
-        //    var gameController = FindObjectOfType<Game2Manager>();
-        //}
+        if (SceneManager.GetActiveScene().name == activity2SceneName)
+        {
+            var gameController = FindObjectOfType<Game2Manager>();
+            gameController.resetPhase();
+        }
         //if (SceneManager.GetActiveScene().name == activity3SceneName)
         //{
         //    var gameController = FindObjectOfType<Game3Controller>();

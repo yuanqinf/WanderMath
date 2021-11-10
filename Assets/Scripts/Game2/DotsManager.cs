@@ -103,7 +103,7 @@ public class DotsManager : Singleton<DotsManager>
             recPos += dot.transform.position;
         }
         Debug.Log("recPos pos: " + recPos.ToString("N4"));
-        flatRectangle = Instantiate(flatRectangle, recPos / 4f, placementPose.rotation);
+        Instantiate(flatRectangle, recPos / 4f, placementPose.rotation);
         ClearDots();
         StartCoroutine(SetGamePhase1Mid());
     }

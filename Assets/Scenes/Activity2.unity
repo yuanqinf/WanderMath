@@ -1308,6 +1308,7 @@ MonoBehaviour:
   rampStartPoint: {x: 0, y: 0, z: 0}
   rampEndPoint: {x: 0, y: 0, z: 0}
   rampHeight: 0
+  lastGamePhase: 
 --- !u!114 &797905104
 MonoBehaviour:
   m_ObjectHideFlags: 0

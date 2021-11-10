@@ -25,7 +25,7 @@ public struct AnimationPoint
     }
 };
 
-[RequireComponent(typeof(ARAnchorManager))]
+//[RequireComponent(typeof(ARAnchorManager))]
 public class ARDrawManager : Singleton<ARDrawManager>
 {
     [SerializeField]
@@ -209,7 +209,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     concreteUIFill.fillAmount = curVolNum;
                     ShowOverusedText(curVolNum, 1.15f);
 
-                    if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 5)
+                    if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 2)
                     {
                         Debug.Log("lifting it now---------------------------------------");
                         // 3d shape lift
@@ -889,7 +889,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         ARDebugManager.Instance.LogInfo($"New line renderer created");
     }
 
-    private void ClearRampRefereces()
+    public void ClearRampRefereces()
     {
         rampTopEdges.Clear();
         rampEdgeObjects.Clear();
