@@ -31,6 +31,10 @@ public class Game3Controller : GenericClass
     [SerializeField]
     private Material selectedMat;
 
+    public string lastGamePhase = "";
+    private bool isResetting = false;
+
+
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
@@ -79,8 +83,10 @@ public class Game3Controller : GenericClass
                 SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(false);
-                targetHit = 0;
+                targetHit = isResetting ? targetHit : 0;
+                isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE0;
                 break;
             case Constants.GamePhase.PHASE1:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
@@ -93,8 +99,10 @@ public class Game3Controller : GenericClass
                 SetYMatPosition(0, 0);
                 SetXCollider(false);
                 SetYCollider(true);
-                targetHit = 0;
+                targetHit = isResetting ? targetHit : 0;
+                isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE1;
                 break;
             case Constants.GamePhase.PHASE2:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
@@ -106,8 +114,10 @@ public class Game3Controller : GenericClass
                 SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(true);
-                targetHit = 0;
+                targetHit = isResetting ? targetHit : 0;
+                isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE2;
                 break;
             case Constants.GamePhase.PHASE3:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Start);
@@ -119,11 +129,49 @@ public class Game3Controller : GenericClass
                 SetXMatPosition(0, 0);
                 SetXCollider(true);
                 SetYCollider(true);
-                targetHit = 0;
+                targetHit = isResetting ? targetHit : 0;
+                isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE3;
                 break;
         }
     }
+
+    private void showGifts(string phase)
+    {
+        if(phase == Constants.GamePhase.PHASE0)
+        {
+            foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase0Gifts)
+            {
+                gift.SetActive(true);
+            }
+        }
+
+        if (phase == Constants.GamePhase.PHASE1)
+        {
+            foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase1Gifts)
+            {
+                gift.SetActive(true);
+            }
+        }
+
+        if (phase == Constants.GamePhase.PHASE2)
+        {
+            foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase2Gifts)
+            {
+                gift.SetActive(true);
+            }
+        }
+
+        if (phase == Constants.GamePhase.PHASE3)
+        {
+            foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase3Gifts)
+            {
+                gift.SetActive(true);
+            }
+        }
+    }
+
     private void SetPhaseLayout(string phase)
     {
         switch(phase)
@@ -133,40 +181,28 @@ public class Game3Controller : GenericClass
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
-                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase0Gifts)
-                {
-                    gift.SetActive(true);
-                }
+                showGifts(phase);
                 break;
             case Constants.GamePhase.PHASE1:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(true);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
-                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase1Gifts)
-                {
-                    gift.SetActive(true);
-                }
+                showGifts(phase);
                 break;
             case Constants.GamePhase.PHASE2:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(true);
                 phase3Layout.SetActive(false);
-                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase2Gifts)
-                {
-                    gift.SetActive(true);
-                }
+                showGifts(phase);
                 break;
             case Constants.GamePhase.PHASE3:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(true);
-                foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase3Gifts)
-                {
-                    gift.SetActive(true);
-                }
+                showGifts(phase);
                 break;
         }
     }
@@ -227,6 +263,7 @@ public class Game3Controller : GenericClass
         game3SoundManager.PlayVoiceovers(voiceover);
         
         characterController.PlaySkatingWithGiftsAnimationWithDuration(duration, placementPose.position);
+        hideAllGift();
         yield return new WaitForSeconds(duration);
         SetGamePhase(phase);
     }
@@ -255,5 +292,35 @@ public class Game3Controller : GenericClass
     {
         this.gamePhase = gamePhase;
         this.currGamePhase = gamePhase;
+    }
+
+    public void resetPhase()
+    {
+        SetGamePhase(lastGamePhase);
+        isResetting = true;
+    }
+
+
+    private void hideAllGift()
+    {
+        foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase0Gifts)
+        {
+            gift.SetActive(false);
+        }
+
+        foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase1Gifts)
+        {
+            gift.SetActive(false);
+        }
+
+        foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase2Gifts)
+        {
+            gift.SetActive(false);
+        }
+
+        foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase3Gifts)
+        {
+            gift.SetActive(false);
+        }
     }
 }

@@ -83,10 +83,11 @@ public class MainGM : MonoBehaviour
             var gameController = FindObjectOfType<Game2Manager>();
             gameController.resetPhase();
         }
-        //if (SceneManager.GetActiveScene().name == activity3SceneName)
-        //{
-        //    var gameController = FindObjectOfType<Game3Controller>();
-        //}
+        if (SceneManager.GetActiveScene().name == activity3SceneName)
+        {
+            var gameController = FindObjectOfType<Game3Controller>();
+            gameController.resetPhase();
+        }
         SettingPanel.SetActive(false);
     }
 }
