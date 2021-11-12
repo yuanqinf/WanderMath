@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
             case "phase1":
                 // instantiate
                 //DestroyImmediate(birthdayCardController.BirthdayCard, true);
-                DestroyImmediate(GameObject.FindGameObjectWithTag("birthdaycard"), true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard), true);
                 cubeController.StartPhase1(placementPose);
                 Debug.Log("start phase 1 now!!!!!!!!!!!!");
                 gamePhase = "waiting";
@@ -215,7 +215,7 @@ public class GameController : MonoBehaviour
     {
         if (lastGamePhase == "phase0")
         {
-            DestroyImmediate(GameObject.FindGameObjectWithTag("birthdaycard"), true);
+            DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard), true);
         }
         if (lastGamePhase == "phase1")
         {

@@ -12,6 +12,8 @@ public static class Constants
     public const float FillAmountVolFor6 = 6;
     public struct Tags {
         public const string CUBE_EASY = "CUBE_EASY";
+        public const string BirthdayCard = "birthdaycard";
+        public const string CubeMain = "cube_main";
         public const string DestroyCollider = "destroyCollider";
         public const string DOT = "dot";
         public const string ForceFieldMat = "ForceField";

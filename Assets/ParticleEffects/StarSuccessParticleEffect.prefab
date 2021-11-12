@@ -4872,7 +4872,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2276765910432098369}
   m_Layer: 0
-  m_Name: SuccessParticleEffect
+  m_Name: StarSuccessParticleEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
