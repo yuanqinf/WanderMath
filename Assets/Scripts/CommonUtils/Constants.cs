@@ -45,6 +45,12 @@ public static class Constants
         public const string RampEndPoint = "RampEndPoint";
     }
 
+    public struct Scenes
+    {
+        public const string MainMenu = "main";
+        public const string Activity1Ending = "Activity1Ending";
+    }
+
     public struct VoiceOvers
     {
         public const string PHASE0Start = "phase0Start";

@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShapesController : GenericClass
 {
     public GameObject cuboid;
     public GameObject pyramid;
     public GameObject hexagon;
+
+    private int numShapesCompleted = 0;
 
     private string phase3Start = "Ok, these ones definitely won't make a cube. But let's see what they will make!";
     private string phase3Pyramid = "Whoa, this one's a pyramid! The bottom is a square, so it's called a square pyramid. That's such a cool gift box.";
@@ -25,9 +28,9 @@ public class ShapesController : GenericClass
         Vector3 pyramidPos = placementPose.position + new Vector3(0.6f, 0f, 0.8f);
         Vector3 hexPos = placementPose.position + new Vector3(1.1f, 0f, 0.0f);
 
-        utils.PlaceObjectInSky(cuboid, cuboidPos, placementPose.rotation, startAudioLen, 0.5f);
-        utils.PlaceObjectInSky(pyramid, pyramidPos, placementPose.rotation, startAudioLen, 0.5f);
-        utils.PlaceObjectInSky(hexagon, hexPos, placementPose.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(cuboid, cuboidPos, cuboid.transform.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(pyramid, pyramidPos, pyramid.transform.rotation, startAudioLen, 0.5f);
+        utils.PlaceObjectInSky(hexagon, hexPos, hexagon.transform.rotation, startAudioLen, 0.5f);
 
         ColliderUtils.SwitchCubesCollider(false);
 
@@ -57,7 +60,7 @@ public class ShapesController : GenericClass
         uiController.PlaySubtitles(phase3Pyramid, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         uiController.SetSubtitleActive(false);
-        StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
+        CheckEndingTransition();
     }
 
     public IEnumerator PlayHexagonSubtitleWithAudio()
@@ -68,7 +71,7 @@ public class ShapesController : GenericClass
         characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Hexagon, audioDuration);
         yield return new WaitForSeconds(audioDuration);
-        StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
+        CheckEndingTransition();
     }
 
     public IEnumerator PlayCuboidSubtitleWithAudio()
@@ -79,7 +82,7 @@ public class ShapesController : GenericClass
         characterController.PlayTalkingAnimationWithDuration(audioDuration);
         uiController.PlaySubtitles(phase3Cuboid, audioDuration);
         yield return new WaitForSeconds(audioDuration);
-        StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
+        CheckEndingTransition();
     }
 
     public IEnumerator PlayPhase3RepeatSubtitleWithAudio()
@@ -89,5 +92,18 @@ public class ShapesController : GenericClass
         uiController.PlaySubtitles(phase3Repeat, audioDuration);
         yield return new WaitForSeconds(audioDuration);
         uiController.SetSubtitleActive(false);
+    }
+
+    private void CheckEndingTransition()
+    {
+        if (numShapesCompleted < 2)
+        {
+            StartCoroutine(PlayPhase3RepeatSubtitleWithAudio());
+            numShapesCompleted++;
+        }
+        else if (numShapesCompleted == 2)
+        {
+            SceneManager.LoadScene(Constants.Scenes.Activity1Ending);
+        }
     }
 }

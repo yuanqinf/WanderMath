@@ -10,11 +10,11 @@ public class HexagonController : GenericClass
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
         //cubeRotateControl.handleOutline(touchedObject);
-        Debug.Log(touchedObject.name + " : " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
+        Debug.Log(touchedObject.name + " : " + initialRealWorldPosition.ToString("N4") + " newWorld: " + newRealWorldPosition.ToString("N4"));
         switch (touchedObject.name)
         {
-            case "hexSquare1":
             case "hexSquare3":
+            case "hexSquare1":
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
@@ -44,7 +44,7 @@ public class HexagonController : GenericClass
                 }
                 break;
             case "hexCylinder":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     //touchedObject.transform.eulerAngles += new Vector3(Constants.ROTATION_DEGREE, 0, 0);

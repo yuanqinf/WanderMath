@@ -11,10 +11,10 @@ public class CuboidController : GenericClass
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
         //cubeRotateControl.handleOutline(touchedObject);
+        Debug.Log(touchedObject.name + " : " + initialRealWorldPosition.ToString("N4") + " newWorld: " + newRealWorldPosition.ToString("N4"));
         switch (touchedObject.name)
         {
             case "cuboid1":
-                Debug.Log("1: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
@@ -22,7 +22,6 @@ public class CuboidController : GenericClass
                 }
                 break;
             case "cuboid2":
-                Debug.Log("2: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
@@ -30,7 +29,6 @@ public class CuboidController : GenericClass
                 }
                 break;
             case "cuboid3":
-                Debug.Log("3: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
@@ -38,7 +36,6 @@ public class CuboidController : GenericClass
                 }
                 break;
             case "cuboid4":
-                Debug.Log("4: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
@@ -47,7 +44,6 @@ public class CuboidController : GenericClass
                 break;
             // special one as a child
             case "cuboid5":
-                Debug.Log("5: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.y < initialRealWorldPosition.y)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
