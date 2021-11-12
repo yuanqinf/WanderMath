@@ -10,12 +10,12 @@ public class HexagonController : GenericClass
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
         //cubeRotateControl.handleOutline(touchedObject);
+        Debug.Log(touchedObject.name + " : " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
         switch (touchedObject.name)
         {
             case "hexSquare1":
             case "hexSquare3":
-                Debug.Log("square1: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
@@ -23,32 +23,28 @@ public class HexagonController : GenericClass
                 break;
             case "hexSquare2":
             case "hexSquare4":
-                Debug.Log("square2: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
                 }
                 break;
             case "hexSquare5":
-                Debug.Log("square5: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
-                {
-                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
-                    SnapHexSquareDetection(touchedObject);
-                }
-                break;
-            case "hexSquare6":
-                Debug.Log("square6: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
                 if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
                 }
                 break;
+            case "hexSquare6":
+                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                {
+                    touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
+                    SnapHexSquareDetection(touchedObject);
+                }
+                break;
             case "hexCylinder":
-                Debug.Log("hexCylinder: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.y < initialRealWorldPosition.y)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     //touchedObject.transform.eulerAngles += new Vector3(Constants.ROTATION_DEGREE, 0, 0);

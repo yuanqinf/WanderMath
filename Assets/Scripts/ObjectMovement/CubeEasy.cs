@@ -94,6 +94,4 @@ public class CubeEasy : GenericClass
         objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBE_EASY, numSnapped);
     }
-
-
 }

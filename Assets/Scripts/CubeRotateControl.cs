@@ -105,7 +105,9 @@ public class CubeRotateControl : GenericClass
         }
         var duration = SetupCubeEasyWithSubtitles();
         InitializeCubeEasy(placementPose, duration);
+        ColliderUtils.SwitchCubeEasyCollider(false);
         yield return new WaitForSeconds(duration);
+        ColliderUtils.SwitchCubeEasyCollider(true);
     }
 
     private float SetupCubeEasyWithSubtitles()
@@ -175,6 +177,8 @@ public class CubeRotateControl : GenericClass
         utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(wrongRot), audioLen, 0.5f);
         utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
 
+        ColliderUtils.SwitchCubesCollider(false); // disable colliders
+
         FindObjectOfType<CubeMed>().numSnapped = 0;
         FindObjectOfType<CubeWrong>().numSnapped = 0;
         FindObjectOfType<CubeMedTwo>().numSnapped = 0;
@@ -190,6 +194,7 @@ public class CubeRotateControl : GenericClass
             yield return new WaitForSeconds(audioDuration);
         }
         uiController.SetSubtitleActive(false);
+        ColliderUtils.SwitchCubesCollider(true); // enable colliders
     }
 
     public IEnumerator CompletePhase2WrongCubeSubtitleWithAudio()
@@ -213,11 +218,12 @@ public class CubeRotateControl : GenericClass
         //utils.LerpMovement(cube)
         var duration = soundManager.GetCompletePlayCubesSubtitleAudio();
         characterController.PlayTalkingAnimationWithDuration(duration);
-        gameController.SetGamePhaseWithDelay("phase3", duration);
+        gameController.SetGamePhaseWithDelay(Constants.GamePhase.PHASE3, duration);
     }
 
     IEnumerator CompletePhase2CubeSubtitleWithAudio()
     {
+        ColliderUtils.SwitchCubesCollider(false);
         uiController.SetSubtitleActive(true);
         for (int i = 0; i < completePhase2Subtitles.Length; i++)
         {

@@ -74,7 +74,7 @@ public class BirthdayCardController : GenericClass
         touchDrag = birthdayCard.transform.Find("touchDrag").gameObject;
         // TODO: turn off collider and turn on after
         SwitchOffAnimation();
-        SwitchOffCollider();
+        ColliderUtils.SwitchBirthdayCollider(false);
 
         StartCoroutine(ShowTutorialAnimation(duration));
     }
@@ -120,17 +120,8 @@ public class BirthdayCardController : GenericClass
     {
         yield return new WaitForSeconds(duration);
         SwitchOnAnimation();
-        SwitchOnCollider();
+        ColliderUtils.SwitchBirthdayCollider(true);
         objectMovementController.SetObjectMovementEnabled(true);
-    }
-
-    private void SwitchOnCollider()
-    {
-        GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard).GetComponentInChildren<BoxCollider>().enabled = false;
-    }
-    private void SwitchOffCollider()
-    {
-        GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard).GetComponentInChildren<BoxCollider>().enabled = false;
     }
 
     private void SwitchOnAnimation()

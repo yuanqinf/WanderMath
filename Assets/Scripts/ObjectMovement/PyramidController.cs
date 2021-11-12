@@ -15,7 +15,7 @@ public class PyramidController : GenericClass
         {
             case "isoTriangle1":
                 Debug.Log("1: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
@@ -23,7 +23,7 @@ public class PyramidController : GenericClass
                 break;
             case "isoTriangle2":
                 Debug.Log("2: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
@@ -31,7 +31,7 @@ public class PyramidController : GenericClass
                 break;
             case "isoTriangle3":
                 Debug.Log("3: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
@@ -39,7 +39,7 @@ public class PyramidController : GenericClass
                 break;
             case "isoTriangle4":
                 Debug.Log("4: " + initialRealWorldPosition + " newWorld: " + newRealWorldPosition);
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);

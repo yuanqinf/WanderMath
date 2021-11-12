@@ -29,6 +29,8 @@ public class ShapesController : GenericClass
         utils.PlaceObjectInSky(pyramid, pyramidPos, placementPose.rotation, startAudioLen, 0.5f);
         utils.PlaceObjectInSky(hexagon, hexPos, placementPose.rotation, startAudioLen, 0.5f);
 
+        ColliderUtils.SwitchCubesCollider(false);
+
         FindObjectOfType<CuboidController>().numSnapped = 0;
         FindObjectOfType<PyramidController>().numSnapped = 0;
         FindObjectOfType<HexagonController>().numSnapped = 0;
@@ -42,6 +44,7 @@ public class ShapesController : GenericClass
         uiController.PlaySubtitles(phase3Start, audioDuration);
 
         yield return new WaitForSeconds(audioDuration);
+        ColliderUtils.SwitchCubesCollider(true);
         uiController.SetSubtitleActive(false);
     }
 

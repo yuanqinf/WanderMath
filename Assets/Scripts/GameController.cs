@@ -48,58 +48,55 @@ public class GameController : MonoBehaviour
         switch (gamePhase)
         {
             // setting up stage
-            case "setup":
+            case Constants.GamePhase.SETUP:
                 if (!placementController.GetIsLayoutPlaced())
                 {
                     placementPose = placementController.UpdatePlacementAndPose(arCamera, placementPose);
                     if (placementController.GetIsPlacementPoseValid() && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         var audioDuration = PlaceObjectAndAudio();
-                        SetGamePhaseWithDelay("phase0", audioDuration);
+                        SetGamePhaseWithDelay(Constants.GamePhase.PHASE3, audioDuration);
                         // TODO: change this back to phase0
                     }
                 }
                 break;
             // birthday card stage
-            case "phase0":
+            case Constants.GamePhase.PHASE0:
                 // 1. phase0 subtitle, audio, animation
                 var duration = birthdayCardController.PlayBirthdayCardInitWithSubtitles();
                 characterController.PlayTalkingAnimationWithDuration(duration);
                 // 2. initialize birthday card falling with tutorial
                 birthdayCardController.InitializeBirthdayCard(placementPose, duration);
-                gamePhase = "waiting";
-                lastGamePhase = "phase0";
+                gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE0;
                 break;
             // handles first cube
-            case "phase1":
+            case Constants.GamePhase.PHASE1:
                 // instantiate
                 //DestroyImmediate(birthdayCardController.BirthdayCard, true);
                 DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard), true);
                 cubeController.StartPhase1(placementPose);
                 Debug.Log("start phase 1 now!!!!!!!!!!!!");
-                gamePhase = "waiting";
-                lastGamePhase = "phase1";
+                gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE1;
                 break;
             // handles multiple cubes
-            case "phase2":
+            case Constants.GamePhase.PHASE2:
                 // instantiate one cube and move on
-                DestroyImmediate(GameObject.FindGameObjectWithTag("cube_main"), true);
+                DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.CubeMain), true);
                 cubeController.StartPhase2(placementPose);
-                gamePhase = "waiting";
-                lastGamePhase = "phase2";
+                gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE2;
                 break;
             // handles multiple other shapes
-            case "phase3":
-                //DestroyImmediate(cubeController.cubeMed, true);
-                //DestroyImmediate(cubeController.cubeMed2, true);
-                //DestroyImmediate(cubeController.cubeWrong, true);
-                foreach (GameObject cube in GameObject.FindGameObjectsWithTag("cube_main"))
+            case Constants.GamePhase.PHASE3:
+                foreach (GameObject cube in GameObject.FindGameObjectsWithTag(Constants.Tags.CubeMain))
                 {
                     DestroyImmediate(cube, true);
                 }
                 shapesController.StartPhase3(placementPose);
-                gamePhase = "waiting";
-                lastGamePhase = "phase3";
+                gamePhase = Constants.GamePhase.WAITING;
+                lastGamePhase = Constants.GamePhase.PHASE3;
                 break;
             default:
                 break;
