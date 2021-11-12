@@ -162,12 +162,12 @@ public class CannonControl : MonoBehaviour
                     if (Physics.Raycast(ray, out RaycastHit rayLocation))
                     {
                         Vector3 newRealWorldPosition = rayLocation.point;
-                        if (newRealWorldPosition.y < initialRealWorldPosition.y)
+                        if (newRealWorldPosition.y > initialRealWorldPosition.y)
                         {
                             Debug.Log("moving up");
                             isRotatingUp = true;
                         }
-                        else if (newRealWorldPosition.y > initialRealWorldPosition.y)
+                        else if (newRealWorldPosition.y < initialRealWorldPosition.y)
                         {
                             Debug.Log("moving down");
                             isRotatingDown = true;

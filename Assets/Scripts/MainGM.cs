@@ -86,7 +86,7 @@ public class MainGM : MonoBehaviour
         if (SceneManager.GetActiveScene().name == activity3SceneName)
         {
             var gameController = FindObjectOfType<Game3Controller>();
-            gameController.resetPhase();
+            gameController.ResetPhase();
         }
         SettingPanel.SetActive(false);
     }

@@ -20,6 +20,7 @@ public class Game3Controller : GenericClass
     public GameObject door;
 
     public GameObject carnivalBooth;
+    public GameObject starParticleEffect;
     private GameObject numbers;
     private GameObject phase0Layout;
     private GameObject phase1Layout;
@@ -137,7 +138,7 @@ public class Game3Controller : GenericClass
         }
     }
 
-    private void showGifts(string phase)
+    private void ShowGifts(string phase)
     {
         if(phase == Constants.GamePhase.PHASE0)
         {
@@ -181,28 +182,28 @@ public class Game3Controller : GenericClass
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
-                showGifts(phase);
+                ShowGifts(phase);
                 break;
             case Constants.GamePhase.PHASE1:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(true);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(false);
-                showGifts(phase);
+                ShowGifts(phase);
                 break;
             case Constants.GamePhase.PHASE2:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(true);
                 phase3Layout.SetActive(false);
-                showGifts(phase);
+                ShowGifts(phase);
                 break;
             case Constants.GamePhase.PHASE3:
                 phase0Layout.SetActive(false);
                 phase1Layout.SetActive(false);
                 phase2Layout.SetActive(false);
                 phase3Layout.SetActive(true);
-                showGifts(phase);
+                ShowGifts(phase);
                 break;
         }
     }
@@ -261,9 +262,10 @@ public class Game3Controller : GenericClass
     IEnumerator PlayPhaseFinalEnding(string phase, string voiceover, float duration)
     {
         game3SoundManager.PlayVoiceovers(voiceover);
-        
+        yield return new WaitForSeconds(1.4f);
         characterController.PlaySkatingWithGiftsAnimationWithDuration(duration, placementPose.position);
-        hideAllGift();
+        yield return new WaitForSeconds(1.4f); // wait for idle to skate animation
+        HideAllGift();
         yield return new WaitForSeconds(duration);
         SetGamePhase(phase);
     }
@@ -294,33 +296,57 @@ public class Game3Controller : GenericClass
         this.currGamePhase = gamePhase;
     }
 
-    public void resetPhase()
+    public void ResetPhase()
     {
         SetGamePhase(lastGamePhase);
         isResetting = true;
     }
 
 
-    private void hideAllGift()
+    private void HideAllGift()
     {
         foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase0Gifts)
         {
-            gift.SetActive(false);
+            if (gift.activeSelf)
+            {
+                Debug.Log("object name " + gift.name);
+                var particleEffect = Instantiate(starParticleEffect, gift.transform);
+                Destroy(particleEffect, 2f);
+                gift.SetActive(false);
+            }
         }
 
         foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase1Gifts)
         {
-            gift.SetActive(false);
+            if (gift.activeSelf)
+            {
+                Debug.Log("object name " + gift.name);
+                var particleEffect = Instantiate(starParticleEffect, gift.transform);
+                Destroy(particleEffect, 2f);
+                gift.SetActive(false);
+            }
         }
 
         foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase2Gifts)
         {
-            gift.SetActive(false);
+            if (gift.activeSelf)
+            {
+                Debug.Log("object name " + gift.name);
+                var particleEffect = Instantiate(starParticleEffect, gift.transform);
+                Destroy(particleEffect, 2f);
+                gift.SetActive(false);
+            }
         }
 
         foreach (var gift in carnivalBooth.GetComponent<BoothControl>().phase3Gifts)
         {
-            gift.SetActive(false);
+            if (gift.activeSelf)
+            {
+                Debug.Log("object name " + gift.name);
+                var particleEffect = Instantiate(starParticleEffect, gift.transform);
+                Destroy(particleEffect, 2f);
+                gift.SetActive(false);
+            }
         }
     }
 }

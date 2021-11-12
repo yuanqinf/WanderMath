@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1059,8 +1059,10 @@ MonoBehaviour:
   axisObj: {fileID: 0}
   door: {fileID: 243164271993418550, guid: 227163b347147b64197799b93ed39d60, type: 3}
   carnivalBooth: {fileID: 3474713655831517625, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
+  starParticleEffect: {fileID: 2276765910432098370, guid: d26540dc0d81d443b9317c17a76d11f2, type: 3}
   initialMat: {fileID: 2100000, guid: 9d43246f00ace48eda42d907a770e969, type: 2}
   selectedMat: {fileID: 2100000, guid: d5b357409c8f04426930571677f06a1d, type: 2}
+  lastGamePhase: 
 --- !u!114 &797905102
 MonoBehaviour:
   m_ObjectHideFlags: 0
