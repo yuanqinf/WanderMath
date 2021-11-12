@@ -41,9 +41,6 @@ public class GameController : MonoBehaviour
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         shapesController = FindObjectOfType<ShapesController>();
         uiController = FindObjectOfType<UiController>();
-
-        // for testing purposes
-        //placementController.TurnOffPlacementAndText();
     }
 
     private void Update()
