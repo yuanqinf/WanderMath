@@ -36,7 +36,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4427983060405228946}
-  - component: {fileID: 5676305390009045857}
   - component: {fileID: -755132093229998692}
   m_Layer: 0
   m_Name: Cube_Easy
@@ -64,19 +63,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5676305390009045857
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470318635573128937}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1.3072054, y: 0.08013666, z: 1}
-  m_Center: {x: -0.16312802, y: 0.00978824, z: 0}
 --- !u!114 &-755132093229998692
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,6 @@ public class BirthdayCardController : GenericClass
     [SerializeField]
     private float initialDegree = 90f;
     #endregion
-
     private GameObject spinArrow;
     private GameObject touchDrag;
 
@@ -69,11 +68,12 @@ public class BirthdayCardController : GenericClass
         Vector3 rot = pose.rotation.eulerAngles; // may not need this as log shows that it is 0,0,0
         var newRot = new Vector3(rot.x - 90, rot.y + 180, rot.z);
 
-        utils.PlaceObjectInSky(birthdayCard, pose.position, Quaternion.Euler(newRot), duration, 0.5f);
+        birthdayCard = utils.PlaceObjectInSky(birthdayCard, pose.position, Quaternion.Euler(newRot), duration, 0.5f);
         spinArrow = birthdayCard.transform.Find("spinArrow").gameObject;
         touchDrag = birthdayCard.transform.Find("touchDrag").gameObject;
+        Debug.Log("spinArrow.name: " + spinArrow.name);
         // TODO: turn off collider and turn on after
-        SwitchOffAnimation();
+        SwitchOffAnimation(spinArrow, touchDrag);
         ColliderUtils.SwitchBirthdayCollider(false);
 
         StartCoroutine(ShowTutorialAnimation(duration));
@@ -89,8 +89,6 @@ public class BirthdayCardController : GenericClass
     {
         if (newRealWorldPosition.x > initialRealWorldPosition.x)
         {
-            Debug.Log("spinArrow.name: " + spinArrow.transform.name);
-            Debug.Log("touchDrag.name: " + touchDrag.transform.name);
             touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
         }
         var eulerAngle = touchedObject.transform.localEulerAngles;
@@ -98,7 +96,7 @@ public class BirthdayCardController : GenericClass
         //snap here
         if (touchedObject.transform.localEulerAngles.z > 330f)
         {
-            SwitchOffAnimation();
+            SwitchOffAnimation(spinArrow, touchDrag);
             soundManager.PlaySuccessSound();
             var duration = PlayBirthdayCardCompleteWithSubtitles();
             //var completedBirthdayCard = birthdayCardController.GetCompletedBirthdayCard();
@@ -129,7 +127,7 @@ public class BirthdayCardController : GenericClass
         spinArrow.SetActive(true);
         touchDrag.SetActive(true);
     }
-    private void SwitchOffAnimation()
+    private void SwitchOffAnimation(GameObject spinArrow, GameObject touchDrag)
     {
         spinArrow.SetActive(false);
         touchDrag.SetActive(false);

@@ -1425,6 +1425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   birthdayCard: {fileID: 5346209985980539219, guid: eaeeeaa23e2e940ec9f04133810547c4, type: 3}
   initialDegree: 90
+  spinArrow: {fileID: 0}
+  touchDrag: {fileID: 0}
 --- !u!114 &1558233074
 MonoBehaviour:
   m_ObjectHideFlags: 0
