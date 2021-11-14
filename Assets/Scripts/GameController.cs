@@ -136,6 +136,11 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
+    public void LoadEndScene() {
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity1Ending);
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     public Vector3 GetArCharacterPosition()
     {
         return characterController.GetArCharacterPosition();
@@ -208,7 +213,7 @@ public class GameController : MonoBehaviour
         Instantiate(pyGiftBox, shape.transform.root.transform);
     }
 
-    public void resetPhase()
+    public void ResetPhase()
     {
         if (lastGamePhase == "phase0")
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ShapesController : GenericClass
 {
@@ -16,7 +15,7 @@ public class ShapesController : GenericClass
     private string phase3Pyramid = "Whoa, this one's a pyramid! The bottom is a square, so it's called a square pyramid. That's such a cool gift box.";
     private string phase3Hexagon = "How cool is that! It's closer to round than the cube box, the base is a hexagon.";
     private string phase3Cuboid = "Oh, rad, a rectangular prism box! This would work for presents that are extra long.";
-    private string phase3Repeat = "You can keep folding more boxes, or tap on me to go on to the birthday party!";
+    private string phase3Repeat = "You can keep folding more boxes!";
 
     internal void StartPhase3(Pose placementPose)
     {
@@ -103,7 +102,7 @@ public class ShapesController : GenericClass
         }
         else if (numShapesCompleted == 2)
         {
-            SceneManager.LoadScene(Constants.Scenes.Activity1Ending);
+            FindObjectOfType<GameController>().LoadEndScene();
         }
     }
 }

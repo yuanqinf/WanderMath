@@ -75,7 +75,7 @@ public class MainGM : MonoBehaviour
         if(SceneManager.GetActiveScene().name == activity1SceneName)
         {
             var gameController = FindObjectOfType<GameController>();
-            gameController.resetPhase();
+            gameController.ResetPhase();
 
         }
         if (SceneManager.GetActiveScene().name == activity2SceneName)

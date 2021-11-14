@@ -140,7 +140,6 @@ public class CubeRotateControl : GenericClass
         //utils.LerpMovement(cubeEasy)
         var duration = soundManager.GetCompleteCubeEasySubtitleAudio();
         characterController.PlayTalkingAnimationWithDuration(duration);
-        gameController.SetGamePhaseWithDelay("phase2", duration);
     }
 
     IEnumerator CompleteCubeSubtitleWithAudio()
@@ -153,6 +152,7 @@ public class CubeRotateControl : GenericClass
             yield return new WaitForSeconds(duration);
         }
         uiController.SetSubtitleActive(false);
+        gameController.SetGamePhase(Constants.GamePhase.PHASE2);
     }
     #endregion
 
@@ -218,7 +218,6 @@ public class CubeRotateControl : GenericClass
         //utils.LerpMovement(cube)
         var duration = soundManager.GetCompletePlayCubesSubtitleAudio();
         characterController.PlayTalkingAnimationWithDuration(duration);
-        gameController.SetGamePhaseWithDelay(Constants.GamePhase.PHASE3, duration);
     }
 
     IEnumerator CompletePhase2CubeSubtitleWithAudio()
@@ -232,6 +231,7 @@ public class CubeRotateControl : GenericClass
             yield return new WaitForSeconds(duration);
         }
         uiController.SetSubtitleActive(false);
+        gameController.SetGamePhase(Constants.GamePhase.PHASE3);
     }
     #endregion
 }
