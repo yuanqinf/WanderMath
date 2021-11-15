@@ -92,6 +92,8 @@ public class CannonControl : MonoBehaviour
     private bool isReadyToRotate;
     private bool isRotatingUp;
     private bool isRotatingDown;
+    private bool isFirstXMove = true;
+    private bool isFirstYMove = true;
     private Vector2 newTouchPosition;
     public GameObject muzzle;
     private Cannon cannonPosition;
@@ -188,12 +190,16 @@ public class CannonControl : MonoBehaviour
             {
                 if (isReadyToMove)
                 {
-                    Debug.Log("should move now");
                     if (isMovingRight)
                     {
                         cannonPosition.MoveXRight();
                         isMovingRight = false;
                         game3Controller.SetXMatPosition(cannonPosition.x, cannonPosition.x - 1);
+                        if (isFirstXMove)
+                        {
+                            game3Controller.SetXHand(false);
+                            isFirstXMove = false;
+                        }
                     }
                     else if (isMovingLeft)
                     {
@@ -212,6 +218,11 @@ public class CannonControl : MonoBehaviour
                         cannonPosition.MoveYUp();
                         isRotatingUp = false;
                         game3Controller.SetYMatPosition(cannonPosition.y, cannonPosition.y - 1);
+                        if (isFirstYMove)
+                        {
+                            game3Controller.SetYHand(false);
+                            isFirstYMove = false;
+                        }
                     }
                     else if (isRotatingDown)
                     {
