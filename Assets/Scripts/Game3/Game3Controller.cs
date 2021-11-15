@@ -37,7 +37,7 @@ public class Game3Controller : GenericClass
     private GameObject yHandMovement;
 
     private string[] prizes = new string[] {
-        "(2,5) - Car",
+        "(1,5) - Car",
         "(3,2) - Guitar",
         "(4,7) - Skates",
         "(6,4) - Camera",
@@ -156,6 +156,8 @@ public class Game3Controller : GenericClass
     public void UpdatePrizes(int index, string prize)
     {
         prizes[index] = prize;
+        SetPrizesText();
+        IncreaseTargetHit();
     }
     private void SetPrizesText()
     {
@@ -333,7 +335,7 @@ public class Game3Controller : GenericClass
         {
             StartPhase1End();
         }
-        else if (currGamePhase == Constants.GamePhase.PHASE2 && targetHit == 5)
+        else if (currGamePhase == Constants.GamePhase.PHASE2 && targetHit == 4)
         {
             StartPhase2End();
         }
@@ -341,6 +343,10 @@ public class Game3Controller : GenericClass
         {
             StartPhase3End();
         }
+    }
+    public string GetCurrentGamePhase()
+    {
+        return this.currGamePhase;
     }
     private void SetGamePhase(string gamePhase)
     {
