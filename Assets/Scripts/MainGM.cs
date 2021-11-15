@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
+
 
 public class MainGM : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class MainGM : MonoBehaviour
 
     public GameObject LoadCanvas;
     public Image ProgressBar;
+
+    public VideoPlayer VP;
 
     // Start is called before the first frame update
     private void Start()
@@ -45,6 +49,13 @@ public class MainGM : MonoBehaviour
     {
         SetGameObjectsShouldHide();
         FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity3);
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void LoadTestScene()
+    {
+        SetGameObjectsShouldHide();
+        SceneManager.LoadScene(5);
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -85,5 +96,22 @@ public class MainGM : MonoBehaviour
             gameController.ResetPhase();
         }
         SettingPanel.SetActive(false);
+    }
+
+    public void ShowCutscene()
+    {
+        SetGameObjectsShouldHide();
+        PlayCutScene();
+    }
+
+    private void PlayCutScene()
+    {
+        VP.enabled = true;
+        VP.loopPointReached += CheckOver;
+    }
+
+    private void CheckOver(UnityEngine.Video.VideoPlayer vp)
+    {
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 }

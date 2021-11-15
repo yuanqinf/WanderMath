@@ -8,11 +8,6 @@ public class VideoController : MonoBehaviour
 {
     private void Awake()
     {
-        this.GetComponent<VideoPlayer>().loopPointReached += CheckOver;
-    }
-
-    private void CheckOver(UnityEngine.Video.VideoPlayer vp)
-    {
-        SceneManager.LoadScene(Constants.Scenes.MainMenu);
+        this.GetComponent<VideoPlayer>().Prepare();
     }
 }
