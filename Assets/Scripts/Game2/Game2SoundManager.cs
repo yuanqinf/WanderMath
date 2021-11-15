@@ -71,7 +71,7 @@ public class Game2SoundManager : MonoBehaviour
     {
         "Okay, let's put it all together and build Finley Park!",
         "You can place the ledge and the ramp wherever you want!",
-        "There's also 2 cubic feet of extra concrete to make more obstacles.",
+        "There's also 6 cubic feet of extra concrete to make more obstacles.",
         "Connect dots to make rectangles. Then, drag up the middle to make a ledge, or the edge to make a ramp!"
     };
     private string[] phase3EndSubtitles =
