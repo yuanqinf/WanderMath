@@ -120,14 +120,16 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE2:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
-                characterController.PlayTalkingAnimationWithDuration(6.1f + 3.6f + 5.0f + 5.9f);
+                var audioDuration = 6.1f + 3.6f + 5.0f + 5.5f + 5.9f;
+                characterController.PlayTalkingAnimationWithDuration(audioDuration);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase2/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE2);
                 ResetNumbersMat();
                 cannonController.ResetCannonPosition();
                 SetXMatPosition(0, 0);
-                SetXCollider(true);
-                SetYCollider(true);
+                SetXCollider(false);
+                SetYCollider(false);
+                StartCoroutine(ActivateAllColliders(audioDuration));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
@@ -135,7 +137,8 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE3:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Start);
-                characterController.PlayTalkingAnimationWithDuration(9.2f + 4.0f + 5.2f);
+                audioDuration = 9.2f + 4.0f + 5.2f;
+                characterController.PlayTalkingAnimationWithDuration(audioDuration);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase3/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE3);
                 ResetNumbersMat();
@@ -143,8 +146,9 @@ public class Game3Controller : GenericClass
                 SetXMatPosition(0, 0);
                 SetPrizesText();
                 prizesText.SetActive(true);
-                SetXCollider(true);
-                SetYCollider(true);
+                SetXCollider(false);
+                SetYCollider(false);
+                StartCoroutine(ActivateAllColliders(audioDuration));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
@@ -189,6 +193,12 @@ public class Game3Controller : GenericClass
     {
         yield return new WaitForSeconds(duration);
         SetYHand(true);
+        SetYCollider(true);
+    }
+    private IEnumerator ActivateAllColliders(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        SetXCollider(true);
         SetYCollider(true);
     }
 
