@@ -102,8 +102,7 @@ public class ShapesController : GenericClass
         }
         else if (numShapesCompleted == 2)
         {
-            //FindObjectOfType<GameController>().LoadEndScene();
-            FindObjectOfType<MainGM>().ShowCutscene();
+            FindObjectOfType<GameController>().PlayEndingAnimation();
         }
     }
 }

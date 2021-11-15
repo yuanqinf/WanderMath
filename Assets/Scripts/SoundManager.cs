@@ -32,6 +32,8 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField]
     private AudioClip[] phase3Clips;
+    [SerializeField]
+    private AudioClip phase3Ending;
 
     void Start()
     {
@@ -100,10 +102,14 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(phase3Clips[num]);
         return phase3Clips[num].length;
     }
-
     public float GetPhase3InitShapes(int num)
     {
         return phase3Clips[num].length;
+    }
+    public float PlayPhase3Ending()
+    {
+        audioSource.PlayOneShot(phase3Ending);
+        return phase3Ending.length;
     }
 
     // Birthday card

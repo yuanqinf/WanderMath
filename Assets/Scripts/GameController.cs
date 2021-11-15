@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     private CubeRotateControl cubeController;
     private ShapesController shapesController;
     private UiController uiController;
+    private SoundManager soundManager;
     //private GameObject lastSelectedShape = null;
 
     public bool touchEnabled = true;
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
         birthdayCardController = FindObjectOfType<BirthdayCardController>();
         shapesController = FindObjectOfType<ShapesController>();
         uiController = FindObjectOfType<UiController>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void Update()
@@ -136,7 +138,19 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
-    public void LoadEndScene() {
+    public void PlayEndingAnimation()
+    {
+        StartCoroutine(EndingAnimationWithSound());
+    }
+    private IEnumerator EndingAnimationWithSound()
+    {
+        float duration = soundManager.PlayPhase3Ending();
+        uiController.PlaySubtitles("Come on, let's go to the party together", duration);
+        characterController.PlaySkatingForward(5);
+        yield return new WaitForSeconds(duration + 0.5f);
+        LoadEndScene();
+    }
+    private void LoadEndScene() {
         FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity1Ending);
         DontDestroyOnLoad(this.gameObject);
     }
