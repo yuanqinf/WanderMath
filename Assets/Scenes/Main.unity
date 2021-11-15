@@ -2329,6 +2329,7 @@ MonoBehaviour:
   LoadCanvas: {fileID: 1078360632}
   ProgressBar: {fileID: 851546328}
   VP: {fileID: 811576386}
+  animator: {fileID: 1722840335}
 --- !u!114 &1450163721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,13 +2648,14 @@ GameObject:
   - component: {fileID: 1722840332}
   - component: {fileID: 1722840334}
   - component: {fileID: 1722840333}
+  - component: {fileID: 1722840335}
   m_Layer: 5
   m_Name: SettingPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1722840332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2663,7 +2665,7 @@ RectTransform:
   m_GameObject: {fileID: 1722840331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1318015006}
   - {fileID: 1694557115}
@@ -2715,6 +2717,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722840331}
   m_CullTransparentMesh: 1
+--- !u!95 &1722840335
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722840331}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a9a44ea90681642deaf07fa74a659893, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1876222470
 GameObject:
   m_ObjectHideFlags: 0

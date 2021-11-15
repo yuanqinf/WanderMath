@@ -17,10 +17,12 @@ public class MainGM : MonoBehaviour
 
     public VideoPlayer VP;
 
+    public Animator animator;
+
     // Start is called before the first frame update
     private void Start()
     {
-        CloseSettingMenu();
+        //CloseSettingMenu();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
@@ -62,11 +64,12 @@ public class MainGM : MonoBehaviour
     public void OpenSettingMenu()
     {
         SettingPanel.SetActive(true);
+        animator.SetTrigger("pop");
     }
 
     public void CloseSettingMenu()
     {
-        SettingPanel.SetActive(false);
+        animator.SetTrigger("fold");
     }
 
     private void SetGameObjectsShouldHide()
