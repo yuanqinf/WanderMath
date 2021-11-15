@@ -119,6 +119,8 @@ public class CannonControl : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 if (Physics.Raycast(ray, out RaycastHit hitObject))
                 {
+                    Debug.Log("hit object: " + hitObject.transform.name);
+
                     if (hitObject.transform.tag == Constants.Tags.Cannon)
                     {
                         initialRealWorldPosition = hitObject.point;
@@ -143,15 +145,18 @@ public class CannonControl : MonoBehaviour
                     if (Physics.Raycast(ray, out RaycastHit rayLocation))
                     {
                         Vector3 newRealWorldPosition = rayLocation.point;
-                        if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                        if (rayLocation.transform.tag == Constants.Tags.Cannon)
                         {
-                            Debug.Log("moving left");
-                            isMovingLeft = true;
-                        }
-                        else if (newRealWorldPosition.x > initialRealWorldPosition.x)
-                        {
-                            Debug.Log("moving right");
-                            isMovingRight = true;
+                            if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                            {
+                                Debug.Log("moving left");
+                                isMovingLeft = true;
+                            }
+                            else if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                            {
+                                Debug.Log("moving right");
+                                isMovingRight = true;
+                            }
                         }
                     }
                 }
@@ -162,15 +167,18 @@ public class CannonControl : MonoBehaviour
                     if (Physics.Raycast(ray, out RaycastHit rayLocation))
                     {
                         Vector3 newRealWorldPosition = rayLocation.point;
-                        if (newRealWorldPosition.y > initialRealWorldPosition.y)
+                        if (rayLocation.transform.tag == Constants.Tags.Muzzle)
                         {
-                            Debug.Log("moving up");
-                            isRotatingUp = true;
-                        }
-                        else if (newRealWorldPosition.y < initialRealWorldPosition.y)
-                        {
-                            Debug.Log("moving down");
-                            isRotatingDown = true;
+                            if (newRealWorldPosition.y > initialRealWorldPosition.y)
+                            {
+                                Debug.Log("moving up");
+                                isRotatingUp = true;
+                            }
+                            else if (newRealWorldPosition.y < initialRealWorldPosition.y)
+                            {
+                                Debug.Log("moving down");
+                                isRotatingDown = true;
+                            }
                         }
                     }
                 }

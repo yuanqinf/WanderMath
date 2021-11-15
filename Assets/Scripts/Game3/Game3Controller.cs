@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,6 @@ public class Game3Controller : GenericClass
     private CannonControl cannonController;
     private Game3SoundManager game3SoundManager;
     public Pose placementPose;
-    public GameObject slingshotObj;
-    public GameObject jointLeftCenter;
-    public GameObject jointRightCenter;
-
-    public GameObject balloonObj;
-    public GameObject axisObj;
     public GameObject door;
 
     public GameObject carnivalBooth;
@@ -34,6 +29,9 @@ public class Game3Controller : GenericClass
 
     public string lastGamePhase = "";
     private bool isResetting = false;
+
+    private GameObject xHandMovement;
+    private GameObject yHandMovement;
 
 
     void Start()
@@ -68,6 +66,8 @@ public class Game3Controller : GenericClass
 
                         SetGamePhase(Constants.GamePhase.PHASE0);
                         cannonController = FindObjectOfType<CannonControl>();
+                        xHandMovement = carnivalBooth.transform.Find("boothAndCannon/cannon_GRP/xHandMovement").gameObject;
+                        yHandMovement = carnivalBooth.transform.Find("boothAndCannon/cannon_GRP/yHandMovement").gameObject;
                         phase0Layout = carnivalBooth.transform.Find("boothAndCannon/Phase0").gameObject;
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
                         phase2Layout = carnivalBooth.transform.Find("boothAndCannon/Phase2").gameObject;
@@ -81,9 +81,10 @@ public class Game3Controller : GenericClass
                 characterController.PlayTalkingAnimationWithDuration(6.5f + 6.2f + 9.3f + 3.2f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE0);
-                SetXMatPosition(0, 0);
-                SetXCollider(true);
+                SetXCollider(false);
                 SetYCollider(false);
+                SetXMatPosition(0, 0);
+                StartCoroutine(ActivatePhase0Collider(6.5f + 6.2f + 9.3f + 3.2f));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
@@ -99,7 +100,8 @@ public class Game3Controller : GenericClass
                 cannonController.ResetCannonPosition();
                 SetYMatPosition(0, 0);
                 SetXCollider(false);
-                SetYCollider(true);
+                SetYCollider(false);
+                StartCoroutine(ActivatePhase1Collider(6.4f + 4.6f));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
@@ -136,6 +138,28 @@ public class Game3Controller : GenericClass
                 lastGamePhase = Constants.GamePhase.PHASE3;
                 break;
         }
+    }
+
+    public void SetXHand(bool active)
+    {
+        xHandMovement.SetActive(active);
+    }
+    public void SetYHand(bool active)
+    {
+        yHandMovement.SetActive(active);
+    }
+    private IEnumerator ActivatePhase0Collider(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        SetXHand(true);
+        SetXMatPosition(0, 0);
+        SetXCollider(true);
+    }
+    private IEnumerator ActivatePhase1Collider(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        SetYHand(true);
+        SetYCollider(true);
     }
 
     private void ShowGifts(string phase)
