@@ -31,6 +31,11 @@ public class TargetControl : MonoBehaviour
                 StartCoroutine(IncreaseTargetWithDelay());
             }
             game3SoundMG.PlayBalloonSplash();
+            if (this.name.Equals("wrongTarget"))
+            {
+                float duration = game3SoundMG.PlayPhase3Wrong();
+                characterController.PlayTalkingAnimationWithDuration(duration);
+            }
         }
     }
     IEnumerator IncreaseTargetWithDelay()

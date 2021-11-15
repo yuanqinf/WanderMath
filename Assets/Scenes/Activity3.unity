@@ -1979,12 +1979,13 @@ MonoBehaviour:
   phase2End:
   - {fileID: 8300000, guid: 16aa21faa3d3f45e198e9fd2fbfe29b7, type: 3}
   phase3Start:
-  - {fileID: 8300000, guid: 55ee49f0c6a5d4740b90b896257622f6, type: 3}
-  - {fileID: 8300000, guid: 79c52fc106b8b4d3ba68603d1818dce9, type: 3}
-  - {fileID: 8300000, guid: a318fa55479e642afadb9814429e4f35, type: 3}
+  - {fileID: 8300000, guid: 94bd268b4555949d1b37561778fd3d1b, type: 3}
+  - {fileID: 8300000, guid: 7b63b13c162564fd59a98cfaa6a89bd8, type: 3}
+  - {fileID: 8300000, guid: 1ac57768ae75647ba91b66e78b05dcb4, type: 3}
   phase3End:
   - {fileID: 8300000, guid: a7356423374f44af69342549fd56facf, type: 3}
   - {fileID: 8300000, guid: 3bc1964d85cd64485b86aa002a5313a6, type: 3}
+  phase3Wrong: {fileID: 8300000, guid: c65e8ef5a677c42ecafcf0a2a86576f8, type: 3}
 --- !u!4 &1314368971
 Transform:
   m_ObjectHideFlags: 0

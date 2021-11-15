@@ -135,7 +135,7 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE3:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Start);
-                characterController.PlayTalkingAnimationWithDuration(7.6f + 7.9f + 2.6f);
+                characterController.PlayTalkingAnimationWithDuration(9.2f + 4.0f + 5.2f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase3/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE3);
                 ResetNumbersMat();

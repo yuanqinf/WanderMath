@@ -60,15 +60,17 @@ public class Game3SoundManager : MonoBehaviour
     public AudioClip[] phase3End;
     private string[] phase3StartSubtitles =
     {
-        "Now, the final challenge... See if you can aim at the targets, when their ordered pairs are hidden!",
-        "To figure out where to aim, look at how far along it is on the X axis, and then on the Y axis.",
-        "When you think you figured it out, throw your balloon over!",
+        "Now, the final challenge... there are a ton of targets, but there's only a prize behind five of them.",
+        "We have the ordered pairs of the prize targets here.",
+        "So figure out where to aim with the ordered pair, and fire your cannon!",
     };
     private string[] phase3EndSubtitles =
     {
         "Wow, you did amazing! You got all the prizes! Let me just pack these up for you...",
         "All right, thanks for coming to my carnival! See you later!",
     };
+    public AudioClip phase3Wrong;
+    private string phase3WrongSubtitle = "That's ok, the order of the pair got switched! The first number is the X axis, and the second number is the Y axis!";
     private void Start()
     {
         audioSource = this.GetComponent<AudioSource>();
@@ -130,6 +132,16 @@ public class Game3SoundManager : MonoBehaviour
             }
             //5. Go back to #2 and play the next audio in the adClips array
         }
+    }
+
+    public float PlayPhase3Wrong()
+    {
+        if (audioSource.clip != phase3Wrong)
+        {
+            audioSource.PlayOneShot(phase3Wrong);
+            uiController.PlaySubtitles(phase3WrongSubtitle, phase3Wrong.length);
+        }
+        return phase3Wrong.length;
     }
 
     public void PlayBalloonSplash()
