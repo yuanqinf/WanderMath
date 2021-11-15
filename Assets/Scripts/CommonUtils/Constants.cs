@@ -49,6 +49,9 @@ public static class Constants
     {
         public const string MainMenu = "main";
         public const string Activity1Ending = "Activity1Ending";
+        public const string Activity1 = "Activity1";
+        public const string Activity2 = "Activity2";
+        public const string Activity3 = "Activity3";
     }
 
     public struct VoiceOvers

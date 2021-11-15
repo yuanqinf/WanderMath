@@ -16,53 +16,49 @@ public class MainGM : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        closeSettingMenu();
+        CloseSettingMenu();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
-    private string activity1SceneName = "Activity1";
-    private string activity2SceneName = "Activity2";
-    private string activity3SceneName = "Activity3";
-
-    public void backMain()
+    public void BackMain()
     {
-        SceneManager.LoadScene("main");
-        setGameObjectsShouldHide();
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
+        SetGameObjectsShouldHide();
         Destroy(this.gameObject);
     }
 
-    public void loadActivity1Scene()
+    public void LoadActivity1Scene()
     {
-        setGameObjectsShouldHide();
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity1SceneName);
+        SetGameObjectsShouldHide();
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity1);
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void loadActivity2Scene()
+    public void LoadActivity2Scene()
     {
-        setGameObjectsShouldHide();
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity2SceneName);
+        SetGameObjectsShouldHide();
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity2);
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void loadActivity3Scene()
+    public void LoadActivity3Scene()
     {
-        setGameObjectsShouldHide();
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(activity3SceneName);
+        SetGameObjectsShouldHide();
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity3);
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void openSettingMenu()
+    public void OpenSettingMenu()
     {
         SettingPanel.SetActive(true);
     }
 
-    public void closeSettingMenu()
+    public void CloseSettingMenu()
     {
         SettingPanel.SetActive(false);
     }
 
-    private void setGameObjectsShouldHide()
+    private void SetGameObjectsShouldHide()
     {
         for(int i = 0; i < GameObjectsShouldHide.Length; i++)
         {
@@ -70,20 +66,20 @@ public class MainGM : MonoBehaviour
         }
     }
 
-    public void resetCurrentPhase()
+    public void ResetCurrentPhase()
     {
-        if(SceneManager.GetActiveScene().name == activity1SceneName)
+        if(SceneManager.GetActiveScene().name == Constants.Scenes.Activity1)
         {
             var gameController = FindObjectOfType<GameController>();
             gameController.ResetPhase();
 
         }
-        if (SceneManager.GetActiveScene().name == activity2SceneName)
+        if (SceneManager.GetActiveScene().name == Constants.Scenes.Activity2)
         {
             var gameController = FindObjectOfType<Game2Manager>();
             gameController.resetPhase();
         }
-        if (SceneManager.GetActiveScene().name == activity3SceneName)
+        if (SceneManager.GetActiveScene().name == Constants.Scenes.Activity3)
         {
             var gameController = FindObjectOfType<Game3Controller>();
             gameController.ResetPhase();
