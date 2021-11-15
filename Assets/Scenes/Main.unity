@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -287,7 +287,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: loadActivity2Scene
+        m_MethodName: LoadActivity2Scene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -574,7 +574,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: closeSettingMenu
+        m_MethodName: CloseSettingMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -707,7 +707,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: loadActivity1Scene
+        m_MethodName: LoadActivity1Scene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1077,7 +1077,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: loadActivity3Scene
+        m_MethodName: LoadActivity3Scene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2221,7 +2221,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: backMain
+        m_MethodName: BackMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2433,7 +2433,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: resetCurrentPhase
+        m_MethodName: ResetCurrentPhase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2565,7 +2565,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450163720}
         m_TargetAssemblyTypeName: MainGM, Assembly-CSharp
-        m_MethodName: openSettingMenu
+        m_MethodName: OpenSettingMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
