@@ -370,7 +370,8 @@ public class Game3Controller : GenericClass
                 Debug.Log("object name " + gift.name);
                 var particleEffect = Instantiate(starParticleEffect, gift.transform);
                 Destroy(particleEffect, 2f);
-                gift.SetActive(false);
+                Destroy(gift, 2f);
+                // gift.SetActive(false);
             }
         }
 
@@ -381,7 +382,7 @@ public class Game3Controller : GenericClass
                 Debug.Log("object name " + gift.name);
                 var particleEffect = Instantiate(starParticleEffect, gift.transform);
                 Destroy(particleEffect, 2f);
-                gift.SetActive(false);
+                Destroy(gift, 2f);
             }
         }
 
@@ -392,7 +393,7 @@ public class Game3Controller : GenericClass
                 Debug.Log("object name " + gift.name);
                 var particleEffect = Instantiate(starParticleEffect, gift.transform);
                 Destroy(particleEffect, 2f);
-                gift.SetActive(false);
+                Destroy(gift, 2f);
             }
         }
 
@@ -403,7 +404,7 @@ public class Game3Controller : GenericClass
                 Debug.Log("object name " + gift.name);
                 var particleEffect = Instantiate(starParticleEffect, gift.transform);
                 Destroy(particleEffect, 2f);
-                gift.SetActive(false);
+                Destroy(gift, 2f);
             }
         }
     }
