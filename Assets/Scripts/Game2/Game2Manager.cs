@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game2Manager : Singleton<Game2Manager>
 {
@@ -271,6 +272,9 @@ public class Game2Manager : Singleton<Game2Manager>
         yield return new WaitForSeconds(0.5f);
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Additional);
         characterController.PlayTalkingAnimationWithDuration(3.8f + 4.5f);
+        yield return new WaitForSeconds(3.8f + 4.5f + 2.0f);
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
+
     }
 
 

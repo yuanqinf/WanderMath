@@ -13,6 +13,6 @@ public class VideoController : MonoBehaviour
 
     private void CheckOver(UnityEngine.Video.VideoPlayer vp)
     {
-        SceneManager.LoadScene("main");
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 }

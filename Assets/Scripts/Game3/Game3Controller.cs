@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Game3Controller : GenericClass
@@ -332,6 +333,8 @@ public class Game3Controller : GenericClass
         HideAllGift();
         yield return new WaitForSeconds(duration);
         SetGamePhase(phase);
+        yield return new WaitForSeconds(1.5f); // add delay
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 
     public void IncreaseTargetHit()
