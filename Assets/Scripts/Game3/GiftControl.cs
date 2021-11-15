@@ -7,7 +7,6 @@ public class GiftControl : MonoBehaviour
     public float m_ThrowForce = 50f;
     public Vector3 targetScale;
     public float speed;
-    public bool isChangeScale = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,31 +14,29 @@ public class GiftControl : MonoBehaviour
         {
             Debug.Log("gift hit by balloon");
             StartCoroutine(WaitUntilTargetCoverOpen());
-            isChangeScale = true;
             StartCoroutine(WaitToSetStatic());
-
         }
     }
 
     IEnumerator WaitUntilTargetCoverOpen()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        ActivateGift();
     }
 
     IEnumerator WaitToSetStatic()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
         this.transform.GetComponent<Rigidbody>().isKinematic = true;
     }
 
-
-    void Update()
+    private void ActivateGift()
     {
-        if (isChangeScale)
+        float step = speed * Time.deltaTime;
+        this.transform.GetComponent<Rigidbody>().useGravity = true;
+        this.transform.GetComponent<Rigidbody>().AddForce(transform.forward * m_ThrowForce);
+        while (transform.localScale.magnitude < targetScale.magnitude)
         {
-            this.transform.GetComponent<Rigidbody>().useGravity = true;
-            this.transform.GetComponent<Rigidbody>().AddForce(transform.forward * m_ThrowForce);
-            float step = speed * Time.deltaTime;
             transform.localScale = Vector3.MoveTowards(this.transform.localScale, targetScale, step);
         }
     }

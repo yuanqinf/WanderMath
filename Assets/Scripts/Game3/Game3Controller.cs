@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Game3Controller : GenericClass
 {
@@ -23,6 +24,8 @@ public class Game3Controller : GenericClass
     private GameObject phase3Layout;
     private int targetHit;
     [SerializeField]
+    private GameObject prizesText;
+    [SerializeField]
     private Material initialMat;
     [SerializeField]
     private Material selectedMat;
@@ -32,6 +35,14 @@ public class Game3Controller : GenericClass
 
     private GameObject xHandMovement;
     private GameObject yHandMovement;
+
+    private string[] prizes = new string[] {
+        "(2,5) - Car",
+        "(3,2) - Guitar",
+        "(4,7) - Skates",
+        "(6,4) - Camera",
+        "(8,3) - Soccer Ball"
+    };
 
 
     void Start()
@@ -130,6 +141,8 @@ public class Game3Controller : GenericClass
                 ResetNumbersMat();
                 cannonController.ResetCannonPosition();
                 SetXMatPosition(0, 0);
+                SetPrizesText();
+                prizesText.SetActive(true);
                 SetXCollider(true);
                 SetYCollider(true);
                 targetHit = isResetting ? targetHit : 0;
@@ -138,6 +151,21 @@ public class Game3Controller : GenericClass
                 lastGamePhase = Constants.GamePhase.PHASE3;
                 break;
         }
+    }
+
+    public void UpdatePrizes(int index, string prize)
+    {
+        prizes[index] = prize;
+    }
+    private void SetPrizesText()
+    {
+        string text = "";
+        foreach (string line in prizes)
+        {
+            text += line;
+            text += "\n";
+        }
+        prizesText.GetComponent<TextMeshProUGUI>().text = text;
     }
 
     public void SetXHand(bool active)
