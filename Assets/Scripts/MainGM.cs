@@ -15,7 +15,7 @@ public class MainGM : MonoBehaviour
     public GameObject LoadCanvas;
     public Image ProgressBar;
 
-    public VideoPlayer VP;
+    public GameObject vpObject;
 
     public Animator animator;
 
@@ -101,20 +101,22 @@ public class MainGM : MonoBehaviour
         SettingPanel.SetActive(false);
     }
 
-    public void ShowCutscene()
+    public void ShowCutScene()
     {
+        vpObject.SetActive(true);
         SetGameObjectsShouldHide();
         PlayCutScene();
     }
 
     private void PlayCutScene()
     {
-        VP.enabled = true;
-        VP.loopPointReached += CheckOver;
+        vpObject.GetComponent<VideoPlayer>().enabled = true;
+        vpObject.GetComponent<VideoPlayer>().loopPointReached += CheckOver;
     }
 
-    private void CheckOver(UnityEngine.Video.VideoPlayer vp)
+    private void CheckOver(VideoPlayer vp)
     {
+        vpObject.SetActive(false);
         SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 }

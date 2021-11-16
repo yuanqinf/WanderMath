@@ -148,11 +148,7 @@ public class GameController : MonoBehaviour
         uiController.PlaySubtitles("Come on, let's go to the party together", duration);
         characterController.PlaySkatingForward(5);
         yield return new WaitForSeconds(duration + 0.5f);
-        LoadEndScene();
-    }
-    private void LoadEndScene() {
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity1Ending);
-        DontDestroyOnLoad(this.gameObject);
+        FindObjectOfType<MainGM>().ShowCutScene();
     }
 
     public Vector3 GetArCharacterPosition()

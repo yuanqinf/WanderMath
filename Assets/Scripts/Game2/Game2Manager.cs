@@ -274,7 +274,6 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.PlayTalkingAnimationWithDuration(3.8f + 4.5f);
         yield return new WaitForSeconds(3.8f + 4.5f + 2.0f);
         SceneManager.LoadScene(Constants.Scenes.MainMenu);
-
     }
 
 

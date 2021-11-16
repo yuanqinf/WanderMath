@@ -15,7 +15,7 @@ public class ProgressSceneLoader : MonoBehaviour
 
 	private void Awake()
 	{
-		DontDestroyOnLoad(gameObject);
+		// DontDestroyOnLoad(gameObject);
 	}
 
 	public void LoadScene(string sceneName)
