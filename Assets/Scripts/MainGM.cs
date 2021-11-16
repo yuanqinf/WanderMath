@@ -19,11 +19,25 @@ public class MainGM : MonoBehaviour
 
     public Animator animator;
 
+    public Button settingBtn;
+
     // Start is called before the first frame update
     private void Start()
     {
         //CloseSettingMenu();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
+
+    private void Update()
+    {
+        if (GameObject.FindObjectOfType<AudioSource>() != null && GameObject.FindObjectOfType<AudioSource>().isPlaying)
+        {
+            settingBtn.interactable = false;
+        }
+        else
+        {
+            settingBtn.interactable = true;
+        }
     }
 
     public void BackMain()
