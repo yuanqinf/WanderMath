@@ -38,8 +38,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     [SerializeField]
     private float lineWidth = 0.05f;
-    private Color randomStartColor = Color.white;
-    private Color randomEndColor = Color.white;
 
     // ramp and line related
     [SerializeField]
@@ -60,7 +58,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {6, 0},
         {7, 0},
     };
+    // phase 2 edge detection logic
     private Dictionary<int, GameObject> rampEdgeObjects = new Dictionary<int, GameObject>();
+    private int[,] edgeLists = new int[6, 6];
     private GameObject rampTopObject = null;
     private float phase2RampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
@@ -96,16 +96,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
+        InitializeEdgeLists();
     }
 
-    private void SetLineSettings(LineRenderer currentLineRenderer)
+    private void InitializeEdgeLists()
     {
-        currentLineRenderer.startWidth = lineWidth;
-        currentLineRenderer.endWidth = lineWidth;
-        currentLineRenderer.numCornerVertices = 8;
-        currentLineRenderer.numCapVertices = 8;
-        currentLineRenderer.startColor = randomStartColor;
-        currentLineRenderer.endColor = randomEndColor;
+        for (int i = 0; i < edgeLists.Rank; i++)
+        {
+            for (int j = 0; j < edgeLists.GetLength(i); j++)
+            {
+                edgeLists[i, j] = 0;
+            }
+        }
     }
 
     public void DrawOnTouch()
@@ -340,6 +342,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             dotsGameObjDict[startObject.gameObject] = currentVal + 1;
                             dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
                             dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
+                            // deserialize gameObj name and update edgeList
+                            int mulFactor = (GamePhase.Equals(Constants.GamePhase.PHASE2)) ? 3 : 4;
+                            (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
+                            (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
+                            var x = x1 * mulFactor + y1;
+                            var y = x2 * mulFactor + y2;
+                            edgeLists[x, y] = 1;
+                            edgeLists[y, x] = 1;
+                            ARDrawHelper.Print2DArray(edgeLists);
                         }
                         HandleSnapObject();
                     }
@@ -483,25 +494,35 @@ public class ARDrawManager : Singleton<ARDrawManager>
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
         }
-        if (GamePhase == Constants.GamePhase.PHASE2 && numLines == 4)
+        if (GamePhase == Constants.GamePhase.PHASE2 && numLines >= 4)
         {
-            GetConnectedDotsInDict();
-            if (dotsGameObjDict.Count != 4)
+            var dotPoints = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict); // 4 & more points
+            var rectDots = ARDrawHelper.CheckRectAndGetValue(dotPoints, edgeLists, 3);
+            if (rectDots == null)
             {
                 Debug.Log("not a rectangle/square");
-                game2Manager.PlayWrongLinesWithAnimation();
-                numLines = 0;
-                ClearLines();
-                dotsGameObjDict.Clear();
+                //game2Manager.PlayWrongLinesWithAnimation();
+                //numLines = 0;
+                //ClearLines();
+                //dotsGameObjDict.Clear();
                 return; // not 4 unique points, so not rectangle
             }
-            var dotPoints = GetSortedDotPoints();
-            var maxLength = GetMaxPoints(dotPoints);
+
+            (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(rectDots);
+            Debug.Log("maxWidth: " + maxWidth + " and maxLength: " + maxLength);
 
             var initializePos = Vector3.zero;
-            foreach(var item in dotsGameObjDict)
+            foreach(var dot in rectDots)
             {
-                initializePos += item.Key.transform.position;
+                string gameName = $"dot_{dot.Item1}_{dot.Item2}";
+                foreach (var item in dotsGameObjDict)
+                {
+                    if (item.Key.name.Equals(gameName))
+                    {
+                        Debug.Log("add object: " + item.Key.name);
+                        initializePos += item.Key.transform.position;
+                    }
+                }
             }
 
             InitializeRamp(initializePos / 4);
@@ -519,8 +540,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
         {
             // same code as above
             if (!CheckIfRect()) return;
-            var dotPoints = GetSortedDotPoints();
-            (var maxWidth, var maxLength) = GetLenAndWidthPoints(dotPoints);
+            var dotPoints = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict);
+            (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(dotPoints);
 
             var initializePos = Vector3.zero;
             foreach (var item in dotsGameObjDict)
@@ -538,18 +559,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         isSnapping = false;
         currentLineRender = null;
-    }
-
-    private void GetConnectedDotsInDict()
-    {
-        var res = dotsGameObjDict.Where(i => i.Value == 2);
-        foreach (var item in dotsGameObjDict)
-        {
-            if (item.Value == 2)
-            {
-                //item.Key;
-            }
-        }
     }
 
     /// <summary>
@@ -608,19 +617,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     }
 
     /// <summary>
-    /// Get length and width of the rect drawn.
-    /// </summary>
-    /// <param name="dotPoints"></param>
-    /// <returns></returns>
-    private (int, int) GetLenAndWidthPoints(List<(int, int)> dotPoints)
-    {
-        var width = dotPoints[2].Item1 - dotPoints[1].Item1;
-        var length = dotPoints[1].Item2 - dotPoints[0].Item2;
-
-        return (width, length);
-    }
-
-    /// <summary>
     /// get the max length of the drawn rect.
     /// </summary>
     /// <param name="dotPoints"></param>
@@ -636,22 +632,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         var res = System.Math.Max(maxX, maxY);
         return res;
-    }
-
-    /// <summary>
-    /// Get the list of drawn sorted dot points in tuple.
-    /// </summary>
-    /// <returns></returns>
-    private List<(int, int)> GetSortedDotPoints()
-    {
-        List<(int, int)> dotPoints = new List<(int, int)>();
-        foreach(var item in dotsGameObjDict)
-        {
-            var res = item.Key.name.Split('_');
-            dotPoints.Add((int.Parse(res[1]), int.Parse(res[2])));
-        }
-        dotPoints.Sort();
-        return dotPoints;
     }
 
     private void InitializePhase3Ramp(Vector3 middlePos)
@@ -696,7 +676,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void DeactivateSelectedDots()
     {
         var dotNameSet = new HashSet<string>();
-        var sortedDots = GetSortedDotPoints();
+        var sortedDots = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict);
         for (int d = 1; d < sortedDots.Count; d++)
         {
             for (int i = sortedDots[0].Item1; i <= sortedDots[d].Item1; i++)
@@ -881,12 +861,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
         goLineRenderer.SetPosition(1, currentLineGameObject.transform.position);
         //goLineRenderer.numCapVertices = 90;
 
-        SetLineSettings(goLineRenderer);
+        ARDrawHelper.SetLineSettings(goLineRenderer, lineWidth);
 
         currentLineRender = goLineRenderer;
         lines.Add(goLineRenderer);
-
-        ARDebugManager.Instance.LogInfo($"New line renderer created");
     }
 
     public void ClearRampRefereces()
@@ -931,64 +909,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     // TODO in the future: convert to touch position to raycast position
     // Tried to minus the diff between raycast and the conversion but it is not accurate.
     //arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distanceFromCamera));
-
-    /// <summary>
-    /// check if it is rectangle and determines maxLength of rect
-    /// </summary>
-    /// <param name="minVector"></param>
-    /// <param name="maxVector"></param>
-    /// <returns></returns>
-    //private (float, bool) CheckRectAndGetValue(Vector3 minVector, Vector3 maxVector)
-    //{
-    //float maxValue = 0.0f;
-
-    //var centerX = drawnPositions.Sum(dot => dot.x) / 4f;
-    //var centerZ = drawnPositions.Sum(dot => dot.z) / 4f;
-
-    //var dot1 = drawnPositions.ElementAt(0);
-    //var dot2 = drawnPositions.ElementAt(1);
-    //var dot3 = drawnPositions.ElementAt(2);
-    //var dot4 = drawnPositions.ElementAt(3);
-    //var line1 = System.Math.Round(System.Math.Pow(centerX - dot1.x, 2) + System.Math.Pow(centerZ - dot1.z, 2), 2);
-    //var line2 = System.Math.Round(System.Math.Pow(centerX - dot2.x, 2) + System.Math.Pow(centerZ - dot2.z, 2), 2);
-    //var line3 = System.Math.Round(System.Math.Pow(centerX - dot3.x, 2) + System.Math.Pow(centerZ - dot3.z, 2), 2);
-    //var line4 = System.Math.Round(System.Math.Pow(centerX - dot4.x, 2) + System.Math.Pow(centerZ - dot4.z, 2), 2);
-
-    //Debug.Log("line1: " + line1.ToString("N4"));
-    //Debug.Log("line2: " + line2.ToString("N4"));
-    //Debug.Log("line3: " + line3.ToString("N4"));
-    //Debug.Log("line4: " + line4.ToString("N4"));
-
-    //if (line1 == line2 && line1 == line3 && line1 == line4)
-    //{
-    //    Debug.Log("rect is formed");
-    //    return (maxValue, true);
-    //} else
-    //{
-    //    Debug.Log("rect is not formed");
-    //    return (maxValue, false);
-    //}
-
-    //foreach (Vector3 pos in drawnPositions)
-    //{
-    //    Debug.Log("drawnPositions: " + pos);
-
-    //var minMag = (minVector - pos).magnitude;
-    //var maxMag = (maxVector - pos).magnitude;
-    //maxValue = Mathf.Max(minMag, maxMag);
-    //Debug.Log("minMag = : " + System.Math.Floor(minMag * 10f) + ", maxMag: " + System.Math.Floor(maxMag * 10f));
-    //if (System.Math.Floor(minMag * 10f) % 3 != 0 || System.Math.Floor(maxMag * 10f) % 3 != 0)
-    //{
-    //    Debug.Log("it is not a square / rectangle");
-    //    game2Manager.PlayWrongDrawingWithAnimation();
-    //    numLines = 0;
-    //    ClearLines();
-    //    drawnPositions.Clear();
-    //    return (maxValue, false);
-    //}
-    //}
-    //return (maxValue, true);
-    //}
 
     /// <summary>
     /// Get min and max vectors from drawnPositions
