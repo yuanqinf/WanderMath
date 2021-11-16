@@ -97,6 +97,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
         game2Manager = FindObjectOfType<Game2Manager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
         InitializeEdgeLists();
+        #if UNITY_EDITOR
+            Debug.unityLogger.logEnabled = true;
+        #else
+            Debug.unityLogger.logEnabled = false;
+        #endif
     }
 
     private void InitializeEdgeLists()
