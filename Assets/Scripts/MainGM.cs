@@ -30,7 +30,7 @@ public class MainGM : MonoBehaviour
 
     private void Update()
     {
-        if (GameObject.FindObjectOfType<AudioSource>() != null && GameObject.FindObjectOfType<AudioSource>().isPlaying)
+        if (FindObjectOfType<AudioSource>() != null && FindObjectOfType<AudioSource>().isPlaying)
         {
             settingBtn.interactable = false;
         }
@@ -124,8 +124,8 @@ public class MainGM : MonoBehaviour
 
     private void PlayCutScene()
     {
-        vpObject.GetComponent<VideoPlayer>().enabled = true;
-        vpObject.GetComponent<VideoPlayer>().loopPointReached += CheckOver;
+        vpObject.GetComponentInChildren<VideoPlayer>().enabled = true;
+        vpObject.GetComponentInChildren<VideoPlayer>().loopPointReached += CheckOver;
     }
 
     private void CheckOver(VideoPlayer vp)

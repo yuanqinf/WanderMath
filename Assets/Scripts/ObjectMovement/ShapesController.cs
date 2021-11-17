@@ -19,26 +19,12 @@ public class ShapesController : GenericClass
 
     internal void StartPhase3(Pose placementPose)
     {
-        StartCoroutine(SetupShapesSubtitleWithAudio());
+        StartCoroutine(SetupShapesSubtitleWithAudio(placementPose));
         var startAudioLen = soundManager.GetPhase3InitShapes(0);
         characterController.PlayTalkingAnimationWithDuration(startAudioLen);
-
-        Vector3 cuboidPos = placementPose.position + new Vector3(0.3f, 0f, 0.0f); ;
-        Vector3 pyramidPos = placementPose.position + new Vector3(0.6f, 0f, 0.8f);
-        Vector3 hexPos = placementPose.position + new Vector3(1.1f, 0f, 0.0f);
-
-        utils.PlaceObjectInSky(cuboid, cuboidPos, cuboid.transform.rotation, startAudioLen, 0.5f);
-        utils.PlaceObjectInSky(pyramid, pyramidPos, pyramid.transform.rotation, startAudioLen, 0.5f);
-        utils.PlaceObjectInSky(hexagon, hexPos, hexagon.transform.rotation, startAudioLen, 0.5f);
-
-        ColliderUtils.SwitchCubesCollider(false);
-
-        FindObjectOfType<CuboidController>().numSnapped = 0;
-        FindObjectOfType<PyramidController>().numSnapped = 0;
-        FindObjectOfType<HexagonController>().numSnapped = 0;
     }
 
-    IEnumerator SetupShapesSubtitleWithAudio()
+    IEnumerator SetupShapesSubtitleWithAudio(Pose placementPose)
     {
         uiController.SetSubtitleActive(true);
 
@@ -46,8 +32,24 @@ public class ShapesController : GenericClass
         uiController.PlaySubtitles(phase3Start, audioDuration);
 
         yield return new WaitForSeconds(audioDuration);
-        ColliderUtils.SwitchCubesCollider(true);
+
         uiController.SetSubtitleActive(false);
+        InstantiateObjects(placementPose);
+    }
+
+    private void InstantiateObjects(Pose placementPose)
+    {
+        Vector3 cuboidPos = placementPose.position + new Vector3(0.3f, 0f, 0.0f); ;
+        Vector3 pyramidPos = placementPose.position + new Vector3(0.6f, 0f, 0.8f);
+        Vector3 hexPos = placementPose.position + new Vector3(1.1f, 0f, 0.0f);
+
+        Instantiate(cuboid, cuboidPos, cuboid.transform.rotation);
+        Instantiate(pyramid, pyramidPos, pyramid.transform.rotation);
+        Instantiate(hexagon, hexPos, hexagon.transform.rotation);
+
+        FindObjectOfType<CuboidController>().numSnapped = 0;
+        FindObjectOfType<PyramidController>().numSnapped = 0;
+        FindObjectOfType<HexagonController>().numSnapped = 0;
     }
 
     public IEnumerator PlayPyramidSubtitleWithAudio()

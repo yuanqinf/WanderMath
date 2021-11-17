@@ -15,28 +15,28 @@ public class PyramidController : GenericClass
         switch (touchedObject.name)
         {
             case "isoTriangle1":
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "isoTriangle2":
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z || newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "isoTriangle3":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "isoTriangle4":
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     SnapDetection(touchedObject);

@@ -15,28 +15,28 @@ public class CuboidController : GenericClass
         switch (touchedObject.name)
         {
             case "cuboid1":
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "cuboid2":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x || newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "cuboid3":
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z < initialRealWorldPosition.z || newRealWorldPosition.x > initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
                 }
                 break;
             case "cuboid4":
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject);
@@ -44,7 +44,7 @@ public class CuboidController : GenericClass
                 break;
             // special one as a child
             case "cuboid5":
-                if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.y < initialRealWorldPosition.y)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.y < initialRealWorldPosition.y)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapDetection(touchedObject, true);

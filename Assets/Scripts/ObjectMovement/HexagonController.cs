@@ -15,7 +15,7 @@ public class HexagonController : GenericClass
         {
             case "hexSquare3":
             case "hexSquare1":
-                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
@@ -23,28 +23,28 @@ public class HexagonController : GenericClass
                 break;
             case "hexSquare2":
             case "hexSquare4":
-                if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                if (newRealWorldPosition.x < initialRealWorldPosition.x || newRealWorldPosition.z < initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
                 }
                 break;
             case "hexSquare5":
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
                 }
                 break;
             case "hexSquare6":
-                if (newRealWorldPosition.z > initialRealWorldPosition.z)
+                if (newRealWorldPosition.x > initialRealWorldPosition.x || newRealWorldPosition.z > initialRealWorldPosition.z)
                 {
                     touchedObject.transform.Rotate(new Vector3(0, 0, Constants.ROTATION_DEGREE));
                     SnapHexSquareDetection(touchedObject);
                 }
                 break;
             case "hexCylinder":
-                if (newRealWorldPosition.z < initialRealWorldPosition.z)
+                if (newRealWorldPosition.z > initialRealWorldPosition.z || newRealWorldPosition.x < initialRealWorldPosition.x)
                 {
                     touchedObject.transform.Rotate(new Vector3(Constants.ROTATION_DEGREE, 0, 0));
                     //touchedObject.transform.eulerAngles += new Vector3(Constants.ROTATION_DEGREE, 0, 0);

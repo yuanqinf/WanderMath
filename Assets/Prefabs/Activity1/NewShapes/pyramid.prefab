@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502086179156964665}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0.57071376, z: -0, w: -0.8211491}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 4914123245584932434}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 290.4, z: 0}
 --- !u!114 &6641443103489983010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502086179156964665}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c80b772806d940ca819b555c3c55674, type: 3}
   m_Name: 
@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: d91adcc6eb2ea4ddfa866acbcc97fa88, type: 3}
       propertyPath: m_ReceiveShadows
@@ -257,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_ReceiveShadows
@@ -425,7 +425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_ReceiveShadows
@@ -520,7 +520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_ReceiveShadows
@@ -684,7 +684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2022004982152311485, guid: a5fc0df20bdbf42ccb40d5852cdd3e9f, type: 3}
       propertyPath: m_ReceiveShadows

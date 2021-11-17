@@ -24,13 +24,14 @@ public class CharacterController : GenericClass
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPos.forward * 0.4f) + (-placementPos.right * 0.4f);
+            + (placementPos.forward * 0.4f) + (-placementPos.right * 0.2f);
 
         Quaternion characterRot = Quaternion.Euler(rot);
 
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, characterRot
         );
+        arCharacterToSpawn.transform.localScale *= 0.6f;
         animator = arCharacterToSpawn.GetComponent<Animator>();
         return StartFirstLine();
     }
