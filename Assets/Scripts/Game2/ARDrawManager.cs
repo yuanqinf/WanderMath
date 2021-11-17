@@ -111,7 +111,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private void ResetEdgeLists()
     {
-        for (int i = 0; i < edgeLists.Rank; i++)
+        for (int i = 0; i < edgeLists.GetLength(0); i++)
         {
             for (int j = 0; j < edgeLists.GetLength(i); j++)
             {
