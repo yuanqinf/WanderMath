@@ -38,7 +38,7 @@ public static class ARDrawHelper
     /// <param name="minVector"></param>
     /// <param name="maxVector"></param>
     /// <returns></returns>
-    public static List<(int, int)> CheckRectAndGetValue(List<(int, int)> connectedDots, int[,] edgeLists, int mul = 3)
+    public static List<(int, int)> CheckRectAndGetValue(List<(int, int)> connectedDots, int[,] edgeLists, int mul)
     {
         Dictionary<(int, int), List<(int, int)>> rectangles = new Dictionary<(int, int), List<(int, int)>>();
         int maxDots = connectedDots.Count;

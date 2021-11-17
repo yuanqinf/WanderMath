@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultColorMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  failedColorMaterial: {fileID: 2100000, guid: 81267b4771683499194f6612f4e67ce0, type: 2}
+  failedColorMaterial: {fileID: 2100000, guid: 0e73f8b7a075d48fa9df98798b939a39, type: 2}
   arCamera: {fileID: 922230702}
   lineWidth: 0.01
   linePrefab: {fileID: 6799044895285963287, guid: c2fc2852c3d0b406cadf803c1c9cce1f, type: 3}

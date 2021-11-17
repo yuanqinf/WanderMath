@@ -60,7 +60,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
     };
     // phase 2 edge detection logic
     private Dictionary<int, GameObject> rampEdgeObjects = new Dictionary<int, GameObject>();
-    private int[,] edgeLists = new int[6, 6];
+    private int[,] edgeLists = new int[16, 16];
+    private int mulFactor;
     private GameObject rampTopObject = null;
     private float phase2RampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
@@ -96,7 +97,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
-        InitializeEdgeLists();
+        ResetEdgeLists();
         #if UNITY_EDITOR
             Debug.unityLogger.logEnabled = true;
         #else
@@ -104,7 +105,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         #endif
     }
 
-    private void InitializeEdgeLists()
+    private void ResetEdgeLists()
     {
         for (int i = 0; i < edgeLists.Rank; i++)
         {
@@ -348,7 +349,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
                             dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
                             // deserialize gameObj name and update edgeList
-                            int mulFactor = (GamePhase.Equals(Constants.GamePhase.PHASE2)) ? 3 : 4;
+                            mulFactor = (GamePhase.Equals(Constants.GamePhase.PHASE2)) ? 3 : 4;
                             (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
                             (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
                             var x = x1 * mulFactor + y1;
@@ -502,7 +503,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines >= 4)
         {
             var dotPoints = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict); // 4 & more points
-            var rectDots = ARDrawHelper.CheckRectAndGetValue(dotPoints, edgeLists, 3);
+            var rectDots = ARDrawHelper.CheckRectAndGetValue(dotPoints, edgeLists, mulFactor);
             if (rectDots == null)
             {
                 Debug.Log("not a rectangle/square");
@@ -516,45 +517,47 @@ public class ARDrawManager : Singleton<ARDrawManager>
             (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(rectDots);
             Debug.Log("maxWidth: " + maxWidth + " and maxLength: " + maxLength);
 
-            var initializePos = Vector3.zero;
-            foreach(var dot in rectDots)
-            {
-                string gameName = $"dot_{dot.Item1}_{dot.Item2}";
-                foreach (var item in dotsGameObjDict)
-                {
-                    if (item.Key.name.Equals(gameName))
-                    {
-                        Debug.Log("add object: " + item.Key.name);
-                        initializePos += item.Key.transform.position;
-                    }
-                }
-            }
-
-            InitializeRamp(initializePos / 4);
+            var initialRampPos = GetInitialRampPos(rectDots);
+            InitializeRamp(initialRampPos / 4);
             phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
+
+            // reset lines, edges, dots
+            DotsManager.Instance.ClearDots();
+            dotsGameObjDict.Clear();
+            ResetEdgeLists();
+            numLines = 0;
 
             // set initial volume and set up
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(maxLength);
             uiNumberControl.Height = 0;
             game2Manager.StartPhase2Mid();
-            numLines = 0;
         }
 
-        if (GamePhase == Constants.GamePhase.PHASE3 && numLines == 4)
+        if (GamePhase == Constants.GamePhase.PHASE3 && numLines >= 4)
         {
             // same code as above
-            if (!CheckIfRect()) return;
-            var dotPoints = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict);
-            (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(dotPoints);
+            var dotPoints = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict); // 4 & more points
+            var rectDots = ARDrawHelper.CheckRectAndGetValue(dotPoints, edgeLists, mulFactor);
 
-            var initializePos = Vector3.zero;
-            foreach (var item in dotsGameObjDict)
+            if (rectDots == null)
             {
-                initializePos += item.Key.transform.position;
+                Debug.Log("not a rectangle/square");
+                return; // not a rectangle
             }
 
-            InitializePhase3Ramp(initializePos / 4);
+            (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(rectDots);
+            Debug.Log("maxWidth: " + maxWidth + " and maxLength: " + maxLength);
+
+            // get points based on rectangle or ramp
+            if (phase2Ramp != null)
+            {
+                AddPhase3AnimationPoint();
+            }
+
+            var initialRampPos = GetInitialRampPos(rectDots);
+            InitializePhase3Ramp(initialRampPos / 4, rectDots);
+
             phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, maxWidth * Constants.ONE_FEET);
             // set initial volume and set up
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
@@ -564,6 +567,25 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         isSnapping = false;
         currentLineRender = null;
+    }
+
+    // figure out the mid point of a ramp
+    private Vector3 GetInitialRampPos(List<(int, int)> rectFromDots)
+    {
+        var initializePos = Vector3.zero;
+        foreach (var dot in rectFromDots)
+        {
+            string gameName = $"dot_{dot.Item1}_{dot.Item2}";
+            foreach (var item in dotsGameObjDict)
+            {
+                if (item.Key.name.Equals(gameName))
+                {
+                    Debug.Log("add object: " + item.Key.name);
+                    initializePos += item.Key.transform.position;
+                }
+            }
+        }
+        return initializePos;
     }
 
     /// <summary>
@@ -607,56 +629,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return (animeStartPt, animeEndPt);
     }
 
-    private bool CheckIfRect()
+    private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots)
     {
-        if (dotsGameObjDict.Count != 4)
-        {
-            Debug.Log("not a rectangle/square");
-            game2Manager.PlayWrongLinesWithAnimation();
-            numLines = 0;
-            ClearLines();
-            dotsGameObjDict.Clear();
-            return false; // not 4 unique points, so not rectangle
-        }
-        return true;
-    }
-
-    /// <summary>
-    /// get the max length of the drawn rect.
-    /// </summary>
-    /// <param name="dotPoints"></param>
-    /// <returns></returns>
-    private int GetMaxPoints(List<(int, int)> dotPoints)
-    {
-        int maxX = 0;
-        int maxY = 0;
-        for (int i = 1; i < dotPoints.Count; i++)
-        {
-            maxX = System.Math.Max(System.Math.Abs(dotPoints[0].Item1 - dotPoints[i].Item1), maxX);
-            maxY = System.Math.Max(System.Math.Abs(dotPoints[0].Item2 - dotPoints[i].Item2), maxY);
-        }
-        var res = System.Math.Max(maxX, maxY);
-        return res;
-    }
-
-    private void InitializePhase3Ramp(Vector3 middlePos)
-    {
-        // get points based on rectangle or ramp
-        if (phase2Ramp != null)
-        {
-            AddPhase3AnimationPoint();
-        }
-
         // re-initalize references
         if (prevVolume == 0.0f) prevVolume = phase2RampVolume;
         // disable colliders
         SetRampEdgeCollider(false);
-        DeactivateSelectedDots();
+        DeactivateSelectedDots(rectDots);
         dotsGameObjDict.Clear();
+        ResetEdgeLists();
 
         if (rampTopObject != null) SetRampTopCollider(false);
-        ClearRampRefereces();
 
+        ClearRampRefereces();
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
         ClearLines();
@@ -669,6 +654,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         // find edge/top
         (var rampPoint, var rampHeight) = FindSelectedEdgeOrTop();
+        if (rampHeight == 0) return;
         // get ramp animation endpoints
         (var startPoint, var endPoint) = GetRampAnimationPoints(rampPoint);
         var isJump = (rampPoint == 1) ? true : false;
@@ -678,15 +664,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
     /// <summary>
     /// Deactivate dots interactions.
     /// </summary>
-    private void DeactivateSelectedDots()
+    private void DeactivateSelectedDots(List<(int, int)> rectDots)
     {
         var dotNameSet = new HashSet<string>();
-        var sortedDots = ARDrawHelper.GetSortedDotPoints(dotsGameObjDict);
-        for (int d = 1; d < sortedDots.Count; d++)
+        for (int d = 1; d < rectDots.Count; d++)
         {
-            for (int i = sortedDots[0].Item1; i <= sortedDots[d].Item1; i++)
+            for (int i = rectDots[0].Item1; i <= rectDots[d].Item1; i++)
             {
-                for (int j = sortedDots[0].Item2; j <= sortedDots[d].Item2; j++)
+                for (int j = rectDots[0].Item2; j <= rectDots[d].Item2; j++)
                 {
                     dotNameSet.Add($"dot_{i}_{j}");
                 }
@@ -710,8 +695,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void InitializeRamp(Vector3 middlePos)
     {
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
-        DotsManager.Instance.ClearDots();
-        dotsGameObjDict.Clear();
         phase2Ramp.transform.Find("top").gameObject.SetActive(false);
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);
@@ -738,6 +721,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         lineController.SetPosition(midPointOfTwoPos);
     }
 
+    // get the height of the ramp and the vertex number
     private (int, float) FindSelectedEdgeOrTop()
     {
         var heightNum = 0;
