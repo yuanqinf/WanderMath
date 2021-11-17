@@ -147,7 +147,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("points ratio is: " + ratio);
 
                         ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
-                        if ((ratio > 0.85 && ratio < 1.15) || (ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15))
+                        // only allow line by line mechanism now
+                        // || (ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15)
+                        if (ratio > 0.85 && ratio < 1.15)
                         {
                             numLines++;
                             isSnapping = true;
@@ -267,7 +269,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         concreteVolDisplay.text = "Vol: " + phase2RampVolume + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = phase2RampVolume;
-                        ShowOverusedText(phase2RampVolume, 1.15f);
+                        ShowOverusedText(phase2RampVolume, 1.3f);
                     }
                     if (GamePhase == Constants.GamePhase.PHASE3)
                     {
@@ -275,7 +277,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("total vol: " + totalVol);
                         concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
-                        ShowOverusedText(totalVol, 6.15f);
+                        ShowOverusedText(totalVol, 6.5f);
                     }
 
                     // activate glowing effect in phase2 only
@@ -318,7 +320,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
                     concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
-                    ShowOverusedText(totalVol, 6.15f);
+                    ShowOverusedText(totalVol, 6.5f);
                 }
                 // drawing line logic
                 if (currentLineRender != null && !isSnapping)
@@ -390,7 +392,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (GamePhase == Constants.GamePhase.PHASE2)
                 {
                     // snaping for ramp
-                    if (phase2RampVolume > 0.8f && phase2RampVolume < 1.2f && rampEdgeCollider != null)
+                    if (phase2RampVolume > 0.7f && phase2RampVolume < 1.3f && rampEdgeCollider != null)
                     {
                         int edgeNum = int.Parse(rampEdgeCollider.transform.name);
 

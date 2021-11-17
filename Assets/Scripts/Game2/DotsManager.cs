@@ -141,7 +141,7 @@ public class DotsManager : Singleton<DotsManager>
     {
         yield return new WaitForSeconds(0.1f);
         Vector3 topLeft = placementPose.position
-            + (placementPose.forward * -3 * Constants.HALF_FEET) + (placementPose.right * -3 * Constants.HALF_FEET);
+            + (placementPose.forward * -3 * Constants.HALF_FEET) + (-placementPose.right * 2.0f * Constants.HALF_FEET);
         InitializeDots(topLeft, 4, 4);
         InstantiateOthersWithAnchor(plane, topLeft - new Vector3(0, 0.001f, 0), placementPose.rotation);
     }
