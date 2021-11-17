@@ -78,7 +78,6 @@ public class GameController : MonoBehaviour
                 //DestroyImmediate(birthdayCardController.BirthdayCard, true);
                 DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard), true);
                 cubeController.StartPhase1(placementPose);
-                Debug.Log("start phase 1 now!!!!!!!!!!!!");
                 gamePhase = Constants.GamePhase.WAITING;
                 lastGamePhase = Constants.GamePhase.PHASE1;
                 break;

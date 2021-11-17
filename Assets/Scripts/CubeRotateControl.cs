@@ -64,22 +64,6 @@ public class CubeRotateControl : GenericClass
         lastSelectedShape = touchedObject.transform.root.gameObject;
     }
 
-    /// <summary>
-    /// Instantiate cube easy for phase 1
-    /// </summary>
-    /// <param name="pose"></param>
-    /// <param name="duration"></param>
-    private void InitializeCubeEasy(Pose pose, float duration)
-    {
-        Vector3 cubeEasyPos = pose.position + new Vector3(0.5f, 0f, 0.5f);
-
-        Vector3 rot = pose.rotation.eulerAngles;
-        rot = new Vector3(rot.x, rot.y + 180, rot.z);
-
-        utils.PlaceObjectInSky(cubeEasy, cubeEasyPos, Quaternion.Euler(rot), duration, 0.5f);
-        FindObjectOfType<CubeEasy>().numSnapped = 0;
-    }
-
     #region phase1 code
     /// <summary>
     /// Play subtitles and audio for phase 1
@@ -104,9 +88,15 @@ public class CubeRotateControl : GenericClass
             yield return new WaitForSeconds(audioDuration);
         }
         var duration = SetupCubeEasyWithSubtitles();
-        InitializeCubeEasy(placementPose, duration);
-        ColliderUtils.SwitchCubeEasyCollider(false);
         yield return new WaitForSeconds(duration);
+
+        Vector3 cubeEasyPos = placementPose.position + new Vector3(0.5f, 0f, 0.5f);
+
+        Vector3 rot = placementPose.rotation.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+        Instantiate(cubeEasy, cubeEasyPos, Quaternion.Euler(rot));
+        FindObjectOfType<CubeEasy>().numSnapped = 0;
         ColliderUtils.SwitchCubeEasyCollider(true);
     }
 
@@ -162,29 +152,12 @@ public class CubeRotateControl : GenericClass
     /// </summary>
     public void StartPhase2(Pose placementPose)
     {
-        StartCoroutine(SetupCubesSubtitleWithAudio());
+        StartCoroutine(SetupCubesSubtitleWithAudio(placementPose));
         var audioLen = soundManager.GetInitPlayCubesSubtitleAudio();
         characterController.PlayTalkingAnimationWithDuration(audioLen);
-
-        Vector3 rot = placementPose.rotation.eulerAngles;
-        var wrongRot = new Vector3(rot.x, rot.y, rot.z);
-        rot = new Vector3(rot.x, rot.y + 165, rot.z);
-        Vector3 pos1 = placementPose.position;
-        Vector3 pos2 = placementPose.position + new Vector3(0.6f, 0f, 0.9f);
-        Vector3 pos3 = placementPose.position + new Vector3(0.95f, 0f, 0.0f);
-
-        utils.PlaceObjectInSky(cubeMed, pos1, Quaternion.Euler(rot), audioLen, 0.5f);
-        utils.PlaceObjectInSky(cubeWrong, pos2, Quaternion.Euler(wrongRot), audioLen, 0.5f);
-        utils.PlaceObjectInSky(cubeMed2, pos3, Quaternion.Euler(rot), audioLen, 0.5f);
-
-        ColliderUtils.SwitchCubesCollider(false); // disable colliders
-
-        FindObjectOfType<CubeMed>().numSnapped = 0;
-        FindObjectOfType<CubeWrong>().numSnapped = 0;
-        FindObjectOfType<CubeMedTwo>().numSnapped = 0;
     }
 
-    IEnumerator SetupCubesSubtitleWithAudio()
+    IEnumerator SetupCubesSubtitleWithAudio(Pose placementPose)
     {
         var totalLen = initPhase2Subtitles.Length;
         for (int i = 0; i < totalLen; i++)
@@ -194,6 +167,21 @@ public class CubeRotateControl : GenericClass
             yield return new WaitForSeconds(audioDuration);
         }
         uiController.SetSubtitleActive(false);
+
+        Vector3 rot = placementPose.rotation.eulerAngles;
+        var wrongRot = new Vector3(rot.x, rot.y, rot.z);
+        rot = new Vector3(rot.x, rot.y + 165, rot.z);
+        Vector3 pos1 = placementPose.position;
+        Vector3 pos2 = placementPose.position + new Vector3(0.6f, 0f, 0.9f);
+        Vector3 pos3 = placementPose.position + new Vector3(0.95f, 0f, 0.0f);
+
+        Instantiate(cubeMed, pos1, Quaternion.Euler(rot));
+        Instantiate(cubeWrong, pos2, Quaternion.Euler(wrongRot));
+        Instantiate(cubeMed2, pos3, Quaternion.Euler(rot));
+
+        FindObjectOfType<CubeMed>().numSnapped = 0;
+        FindObjectOfType<CubeWrong>().numSnapped = 0;
+        FindObjectOfType<CubeMedTwo>().numSnapped = 0;
         ColliderUtils.SwitchCubesCollider(true); // enable colliders
     }
 

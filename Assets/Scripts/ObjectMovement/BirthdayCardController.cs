@@ -64,19 +64,23 @@ public class BirthdayCardController : GenericClass
     /// <param name="duration"></param>
     public void InitializeBirthdayCard(Pose pose, float duration)
     {
+        StartCoroutine(ShowBirthdayCard(duration, pose));
+    }
+
+    IEnumerator ShowBirthdayCard(float duration, Pose pose)
+    {
+        yield return new WaitForSeconds(duration);
         Debug.Log("placing birthday card object: " + pose);
         Vector3 rot = pose.rotation.eulerAngles; // may not need this as log shows that it is 0,0,0
         var newRot = new Vector3(rot.x - 90, rot.y + 180, rot.z);
 
-        birthdayCard = utils.PlaceObjectInSky(birthdayCard, pose.position, Quaternion.Euler(newRot), duration, 0.5f);
+        birthdayCard = Instantiate(birthdayCard, pose.position, Quaternion.Euler(newRot));
         spinArrow = birthdayCard.transform.Find("spinArrow").gameObject;
         touchDrag = birthdayCard.transform.Find("touchDrag").gameObject;
-        Debug.Log("spinArrow.name: " + spinArrow.name);
-        // TODO: turn off collider and turn on after
-        SwitchOffAnimation(spinArrow, touchDrag);
-        ColliderUtils.SwitchBirthdayCollider(false);
 
-        StartCoroutine(ShowTutorialAnimation(duration));
+        SwitchOnAnimation();
+        ColliderUtils.SwitchBirthdayCollider(true);
+        objectMovementController.SetObjectMovementEnabled(true);
     }
 
     /// <summary>
@@ -111,15 +115,7 @@ public class BirthdayCardController : GenericClass
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 150);
         gameObject.transform.GetComponent<BoxCollider>().enabled = false;
         // move cube to character
-        StartCoroutine(utils.LerpMovement(gameObject.transform.position, gameController.GetArCharacterPosition(), duration, gameObject.transform.parent.gameObject));
-    }
-
-    IEnumerator ShowTutorialAnimation(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        SwitchOnAnimation();
-        ColliderUtils.SwitchBirthdayCollider(true);
-        objectMovementController.SetObjectMovementEnabled(true);
+        // StartCoroutine(utils.LerpMovement(gameObject.transform.position, gameController.GetArCharacterPosition(), duration, gameObject.transform.parent.gameObject));
     }
 
     private void SwitchOnAnimation()
