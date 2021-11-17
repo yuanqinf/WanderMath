@@ -445,6 +445,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         concreteUIFill.fillAmount = 0;
                         AddPhase3AnimationPoint();
                         // play phase 3 animations
+                        DotsManager.Instance.ClearDots();
                         game2Manager.StartPhase3End(phase3AnimationPoints);
                         // disable colliders
                         SetRampEdgeCollider(false);
@@ -647,6 +648,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (rampTopObject != null) SetRampTopCollider(false);
 
         ClearRampRefereces();
+        phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
         ClearLines();
