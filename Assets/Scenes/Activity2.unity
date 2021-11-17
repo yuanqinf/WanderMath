@@ -241,6 +241,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultLineColorMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   failedDotMaterial: {fileID: 2100000, guid: 0e73f8b7a075d48fa9df98798b939a39, type: 2}
+  initialRampMaterial: {fileID: 2100000, guid: 232162324df3c42d8ad4efe6e1f60c59, type: 2}
+  completeRampMaterial: {fileID: 2100000, guid: 4cfc91b4765704652a4dda3d54c8c1d7, type: 2}
   arCamera: {fileID: 922230702}
   lineWidth: 0.01
   linePrefab: {fileID: 6799044895285963287, guid: c2fc2852c3d0b406cadf803c1c9cce1f, type: 3}

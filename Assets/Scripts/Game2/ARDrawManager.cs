@@ -33,7 +33,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
     [SerializeField]
     private Material failedDotMaterial;
     [SerializeField]
-    private Material succeedRampMaterial;
+    private Material initialRampMaterial;
+    [SerializeField]
+    private Material completeRampMaterial;
 
     [SerializeField]
     private Camera arCamera;
@@ -281,14 +283,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
 
                     // activate glowing effect in phase2 only
-                    var targetMat = phase2Ramp.GetComponent<Renderer>().material;
                     //targetMat.color.a = 0.2f;
-                    if (phase2RampVolume > 0.8f && phase2RampVolume < 1.2f && GamePhase == Constants.GamePhase.PHASE2 && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
-                        targetMat.SetFloat("_EmissIntensity", 1.2f);
+                    if (phase2RampVolume > 0.8f && phase2RampVolume < 1.2f && GamePhase == Constants.GamePhase.PHASE2) {
+                        phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial;
                     }
-                    else if (targetMat.GetFloat("_EmissIntensity") != 0.66f)
+                    else
                     {
-                        targetMat.SetFloat("_EmissIntensity", 0.66f);
+                        phase2Ramp.GetComponent<MeshRenderer>().material = initialRampMaterial;
                     }
                 }
                 // moving ramp face in phase3
