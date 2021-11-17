@@ -110,7 +110,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     private float PlaceObjectAndAudio()
     {
-        float duration = characterController.InitCharacterAndAudio(placementPose, placementController.GetPlacementIndicatorLocation());
+        float duration = characterController.InitCharacterAndAudioGame1(placementPose, placementController.GetPlacementIndicatorLocation());
         placementController.TurnOffPlacementAndText();
         return duration;
     }

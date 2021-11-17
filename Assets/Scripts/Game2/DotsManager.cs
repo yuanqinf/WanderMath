@@ -45,7 +45,7 @@ public class DotsManager : Singleton<DotsManager>
 
                 // change this to determine which phase to go to
                 g2Manager.SetGamePhase(Constants.GamePhase.PHASE0);
-                characterController.InitCharacterSkatingAndAudio(placementPose);
+                characterController.InitCharacterSkatingAndAudioGame2(placementPose);
                 //InstantiateOthersWithAnchor(plane, placementPose.position - new Vector3(0, 0.001f, 0), placementPose.rotation);
                 placementController.TurnOffPlacementAndText();
             }

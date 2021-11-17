@@ -15,7 +15,7 @@ public class CharacterController : GenericClass
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
 
-    public void InitCharacter(Pose placementPose, Transform placementPos)
+    public float InitCharacterAndAudioGame1(Pose placementPose, Transform placementPos)
     {
         // to be placed at the corner
         Debug.Log("placement Pose: " + placementPose.rotation);
@@ -32,6 +32,7 @@ public class CharacterController : GenericClass
             arCharacterToSpawn, characterPos, characterRot
         );
         animator = arCharacterToSpawn.GetComponent<Animator>();
+        return StartFirstLine();
     }
 
     public void InitCharacterGame3(Pose placementPose, Transform placementPos)
@@ -54,28 +55,24 @@ public class CharacterController : GenericClass
         animator = arCharacterToSpawn.GetComponent<Animator>();
     }
 
-    public float InitCharacterAndAudio(Pose placementPose, Transform placementPos)
-    {
-        InitCharacter(placementPose, placementPos);
-        return StartFirstLine();
-    }
-
     /// <summary>
     /// Finley initialization for activity2.
     /// </summary>
     /// <param name="placementPose"></param>
     /// <returns></returns>
-    public float InitCharacterSkatingAndAudio(Pose placementPose)
+    public float InitCharacterSkatingAndAudioGame2(Pose placementPose)
     {
         Vector3 rot = placementPose.rotation.eulerAngles;
         rot = new Vector3(rot.x, rot.y + 180, rot.z);
 
         Vector3 characterPos = placementPose.position
-            + (placementPose.forward * 1.1f) + (-placementPose.right * 0.7f);
+            + (placementPose.forward * 1.1f) + (-placementPose.right * 0.5f);
         Debug.Log(characterPos);
         arCharacterToSpawn = Instantiate(
             arCharacterToSpawn, characterPos, Quaternion.Euler(rot)
         );
+        // rescale finley to be smaller
+        arCharacterToSpawn.transform.localScale *= 0.5f;
         animator = arCharacterToSpawn.GetComponent<Animator>();
         Vector3 endPos = characterPos - placementPose.forward;
         // audio & animation
