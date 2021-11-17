@@ -29,9 +29,11 @@ public struct AnimationPoint
 public class ARDrawManager : Singleton<ARDrawManager>
 {
     [SerializeField]
-    private Material defaultColorMaterial;
+    private Material defaultLineColorMaterial;
     [SerializeField]
-    private Material failedColorMaterial;
+    private Material failedDotMaterial;
+    [SerializeField]
+    private Material succeedRampMaterial;
 
     [SerializeField]
     private Camera arCamera;
@@ -201,7 +203,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     var uINumberControl = liftableCube.transform.root.gameObject.GetComponent<UINumberControl>();
                     var curVolNum = (float)System.Math.Round((liftableCube.transform.parent.transform.localScale.y / 0.57f), 1);
 
-                    if (curVolNum > 0.85 && curVolNum < 1.15)
+                    if (curVolNum > 0.7 && curVolNum < 1.3)
                     {
                         //glow effect here
                         GameObject.FindGameObjectWithTag(Constants.Tags.ForceFieldMat).GetComponent<MeshRenderer>().enabled = true;
@@ -215,7 +217,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     uINumberControl.SetVolDisplay(curVolNum);
                     concreteVolDisplay.text = "Vol: " + curVolNum + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = curVolNum;
-                    ShowOverusedText(curVolNum, 1.15f);
+                    ShowOverusedText(curVolNum, 1.3f);
 
                     if (newTouchpos.y - rec2DTouchPosition.y > 0 && curVolNum <= 2)
                     {
@@ -278,6 +280,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                     // activate glowing effect in phase2 only
                     var targetMat = phase2Ramp.GetComponent<Renderer>().material;
+                    //targetMat.color.a = 0.2f;
                     if (phase2RampVolume > 0.8f && phase2RampVolume < 1.2f && GamePhase == Constants.GamePhase.PHASE2 && targetMat.GetFloat("_EmissIntensity") != 1.2f) {
                         targetMat.SetFloat("_EmissIntensity", 1.2f);
                     }
@@ -372,6 +375,16 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         rec2DTouchPosition = Vector2.zero;
                         liftableCube = null;
                     }
+                    if (canCubeLiftingSnap == true)
+                    {
+                        concreteUIFill.fillAmount = 0;
+                        concreteUIDisplay.SetActive(false);
+                        FindObjectOfType<UINumberControl>().SetVolDisplay(1);
+                        canCubeLiftingSnap = false;
+                        game2Manager.EndPhase1();
+                        g2SoundManager.PlayGoodSoundEffect();
+                        GameObject.FindGameObjectWithTag("liftable_shape").GetComponent<BoxCollider>().enabled = false;
+                    }
                 }
                 // phase2 moving ramp 
                 if (GamePhase == Constants.GamePhase.PHASE2)
@@ -456,17 +469,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         ramp2DTouchPosition = Vector2.zero;
                         rampTopCollider = null;
                     }
-                }
-
-                if (canCubeLiftingSnap == true)
-                {
-                    concreteUIFill.fillAmount = 0;
-                    concreteUIDisplay.SetActive(false);
-                    FindObjectOfType<UINumberControl>().SetVolDisplay(1);
-                    canCubeLiftingSnap = false;
-                    game2Manager.EndPhase1();
-                    g2SoundManager.PlayGoodSoundEffect();
-                    GameObject.FindGameObjectWithTag("liftable_shape").GetComponent<BoxCollider>().enabled = false;
                 }
             }
         }
@@ -682,7 +684,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         foreach (var dotObj in allDots)
         {
             if (dotNameSet.Contains(dotObj.name)) {
-                dotObj.GetComponent<MeshRenderer>().material = failedColorMaterial;
+                dotObj.GetComponent<MeshRenderer>().material = failedDotMaterial;
                 dotObj.GetComponent<Collider>().enabled = false;
             }
         }
@@ -843,7 +845,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         LineRenderer goLineRenderer = currentLineGameObject.AddComponent<LineRenderer>();
         goLineRenderer.startWidth = lineWidth;
         goLineRenderer.endWidth = lineWidth;
-        goLineRenderer.material = defaultColorMaterial;
+        goLineRenderer.material = defaultLineColorMaterial;
         goLineRenderer.useWorldSpace = true;
         goLineRenderer.positionCount = 2;
         goLineRenderer.SetPosition(0, currentLineGameObject.transform.position);
