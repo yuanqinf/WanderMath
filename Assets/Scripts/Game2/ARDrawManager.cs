@@ -401,6 +401,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         game2Manager.rampHeight = phase2RampHeight;
                         // phase 2 vol number snap
                         var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+                        phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
                         uiNumberControl.SetVolDisplay(1);
                         uiNumberControl.Height = System.Math.Round(phase2RampHeight / Constants.ONE_FEET);
                         concreteUIDisplay.SetActive(false);
@@ -437,9 +438,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         Debug.Log("phase3 snap is called");
                         // phase 2 vol number snap
                         var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-                        var leftoverVol = (float)System.Math.Round(6 - prevVolume, 1);
-                        uiNumberControl.SetVolDisplay(leftoverVol);
-                        uiNumberControl.Height = System.Math.Round(leftoverVol / Constants.ONE_FEET);
+                        // TODO: fix this calculation
+                        //var leftoverVol = (float)System.Math.Round(6 *  - prevVolume, 1);
+                        //uiNumberControl.SetVolDisplay(leftoverVol);
+                        //uiNumberControl.Height = System.Math.Round(leftoverVol / Constants.ONE_FEET);
                         concreteUIDisplay.SetActive(false);
                         concreteVolDisplay.text = "Vol: 6 ft<sup>3</sup>";
                         concreteUIFill.fillAmount = 0;
@@ -564,14 +566,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
 
             var initialRampPos = GetInitialRampPos(rectDots);
-            InitializePhase3Ramp(initialRampPos / 4, rectDots);
-
-            phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, maxWidth * Constants.ONE_FEET);
-            // set initial volume and set up
-            var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
-            uiNumberControl.SetAreaDisplay(maxWidth * maxLength);
-            uiNumberControl.Height = 0;
-            // difference in code
+            InitializePhase3Ramp(initialRampPos / 4, rectDots, maxLength, maxWidth);
         }
         isSnapping = false;
         currentLineRender = null;
@@ -637,7 +632,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return (animeStartPt, animeEndPt);
     }
 
-    private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots)
+    private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots, int maxLength, int maxWidth)
     {
         // re-initalize references
         prevVolume += rampVolume;
@@ -652,6 +647,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
         ClearRampRefereces();
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
+        phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, maxWidth * Constants.ONE_FEET);
+        // set initial volume and set up
+        var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+        uiNumberControl.SetAreaDisplay(maxWidth * maxLength);
+        uiNumberControl.Height = 0;
+
         ClearLines();
         InitializeRampEdges();
         InitializeRampEdgeObjects(phase2Ramp.gameObject);

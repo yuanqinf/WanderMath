@@ -9658,8 +9658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21dea25e465542bf91c5b7be019e599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ThrowForce: 3
-  targetScale: {x: 5, y: 5, z: 5}
+  m_ThrowForce: 6
+  targetScale: {x: 10, y: 10, z: 10}
   speed: 50
 --- !u!1 &5753646184719309075
 GameObject:
