@@ -36,23 +36,9 @@ public class CharacterController : GenericClass
         return StartFirstLine();
     }
 
-    public void InitCharacterGame3(Pose placementPose, Transform placementPos)
+    public void InitCharacterGame3(GameObject carnivalBooth)
     {
-        // to be placed at the corner
-        Debug.Log("placement Pose: " + placementPose.rotation);
-
-        Vector3 rot = placementPose.rotation.eulerAngles;
-        rot = new Vector3(rot.x, rot.y + 180, rot.z);
-
-        Vector3 characterPos = placementPose.position
-            + (placementPos.forward * 4.65f) + (placementPos.right * 0.9f);
-
-        Quaternion characterRot = Quaternion.Euler(rot);
-
-        arCharacterToSpawn = Instantiate(
-            arCharacterToSpawn, characterPos, characterRot
-        );
-        arCharacterToSpawn.transform.localScale = new Vector3(2, 2, 2);
+        arCharacterToSpawn = carnivalBooth.transform.Find("Finley").gameObject;
         animator = arCharacterToSpawn.GetComponent<Animator>();
     }
 

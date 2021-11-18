@@ -25,6 +25,8 @@ public class Game3Controller : GenericClass
     private GameObject phase3Layout;
     private int targetHit;
     [SerializeField]
+    private GameObject prizesUI;
+    [SerializeField]
     private GameObject prizesText;
     [SerializeField]
     private Material initialMat;
@@ -38,11 +40,11 @@ public class Game3Controller : GenericClass
     private GameObject yHandMovement;
 
     private string[] prizes = new string[] {
-        "(1,5) - Car",
-        "(3,2) - Guitar",
-        "(4,7) - Skates",
-        "(6,4) - Camera",
-        "(8,3) - Soccer Ball"
+        "(1,5)",
+        "(3,2)",
+        "(4,7)",
+        "(6,4)",
+        "(8,3)"
     };
 
 
@@ -84,7 +86,7 @@ public class Game3Controller : GenericClass
                         phase1Layout = carnivalBooth.transform.Find("boothAndCannon/Phase1").gameObject;
                         phase2Layout = carnivalBooth.transform.Find("boothAndCannon/Phase2").gameObject;
                         phase3Layout = carnivalBooth.transform.Find("boothAndCannon/Phase3").gameObject;
-                        characterController.InitCharacterGame3(placementPose, placementController.GetPlacementIndicatorLocation());
+                        characterController.InitCharacterGame3(carnivalBooth);
                     }   
                 }
                 break;
@@ -146,7 +148,7 @@ public class Game3Controller : GenericClass
                 cannonController.ResetCannonPosition();
                 SetXMatPosition(0, 0);
                 SetPrizesText();
-                prizesText.SetActive(true);
+                prizesUI.SetActive(true);
                 SetXCollider(false);
                 SetYCollider(false);
                 StartCoroutine(ActivateAllColliders(audioDuration));

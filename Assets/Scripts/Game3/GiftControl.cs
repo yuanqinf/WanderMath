@@ -24,19 +24,19 @@ public class GiftControl : MonoBehaviour
             switch (this.name)
             {
                 case "car":
-                    gameController.UpdatePrizes(0, "<s>(1,5) - Car</s>");
+                    gameController.UpdatePrizes(0, "<s>(1,5)</s>");
                     break;
                 case "guitar":
-                    gameController.UpdatePrizes(1, "<s>(3,2) - Guitar</s>");
+                    gameController.UpdatePrizes(1, "<s>(3,2)</s>");
                     break;
                 case "skates":
-                    gameController.UpdatePrizes(2, "<s>(4,7) - Skates</s>");
+                    gameController.UpdatePrizes(2, "<s>(4,7)</s>");
                     break;
                 case "camera":
-                    gameController.UpdatePrizes(3, "<s>(6,4) - Camera</s>");
+                    gameController.UpdatePrizes(3, "<s>(6,4)</s>");
                     break;
                 case "soccer":
-                    gameController.UpdatePrizes(4, "<s>(8,3) - Soccer Ball</s>");
+                    gameController.UpdatePrizes(4, "<s>(8,3)</s>");
                     break;
             }
         }
