@@ -67,7 +67,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private int[,] edgeLists = new int[16, 16];
     private int mulFactor;
     private GameObject rampTopObject = null;
-    private float phase2RampVolume = 0.0f;
+    private float rampVolume = 0.0f;
     private float phase2RampHeight = 0.0f;
     private float prevVolume = 0.0f;
     public Vector2 ramp2DTouchPosition = Vector2.zero;
@@ -264,18 +264,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     phase2RampHeight = edgeHeights[edgeNum];
                     uiNumberControl.Height = phase2RampHeight / Constants.ONE_FEET;
                     // formula for ramp: 0.5 * area * height
-                    phase2RampVolume = (float)System.Math.Round(0.5 * phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET, 1);
-                    uiNumberControl.SetVolDisplay(phase2RampVolume);
+                    rampVolume = (float)System.Math.Round(0.5 * phase2RampHeight * uiNumberControl.area / Constants.ONE_FEET, 1);
+                    uiNumberControl.SetVolDisplay(rampVolume);
                     // add concrete text & details
                     if (GamePhase == Constants.GamePhase.PHASE2)
                     {
-                        concreteVolDisplay.text = "Vol: " + phase2RampVolume + " ft<sup>3</sup>";
-                        concreteUIFill.fillAmount = phase2RampVolume;
-                        ShowOverusedText(phase2RampVolume, 1.3f);
+                        concreteVolDisplay.text = "Vol: " + rampVolume + " ft<sup>3</sup>";
+                        concreteUIFill.fillAmount = rampVolume;
+                        ShowOverusedText(rampVolume, 1.2f);
                     }
                     if (GamePhase == Constants.GamePhase.PHASE3)
                     {
-                        var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
+                        var totalVol = (float)System.Math.Round(prevVolume + rampVolume, 1);
                         Debug.Log("total vol: " + totalVol);
                         concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                         concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
@@ -284,7 +284,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                     // activate glowing effect in phase2 only
                     //targetMat.color.a = 0.2f;
-                    if (phase2RampVolume > 0.8f && phase2RampVolume < 1.2f && GamePhase == Constants.GamePhase.PHASE2) {
+                    if (rampVolume > 0.8f && rampVolume < 1.2f && GamePhase == Constants.GamePhase.PHASE2) {
                         phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial;
                     }
                     else
@@ -315,10 +315,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     // set UI height: with face height
                     uiNumberControl.Height = rampTopHeight / Constants.ONE_FEET;
-                    phase2RampVolume = (float)(rampTopHeight * uiNumberControl.area / Constants.ONE_FEET);
-                    uiNumberControl.SetVolDisplay((float)System.Math.Round(phase2RampVolume, 1));
+                    rampVolume = (float)(rampTopHeight * uiNumberControl.area / Constants.ONE_FEET);
+                    uiNumberControl.SetVolDisplay((float)System.Math.Round(rampVolume, 1));
                     // add concrete text
-                    var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
+                    var totalVol = (float)System.Math.Round(prevVolume + rampVolume, 1);
                     concreteVolDisplay.text = "Vol: " + totalVol + " ft<sup>3</sup>";
                     concreteUIFill.fillAmount = totalVol / Constants.FillAmountVolFor6;
                     ShowOverusedText(totalVol, 6.5f);
@@ -393,7 +393,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (GamePhase == Constants.GamePhase.PHASE2)
                 {
                     // snaping for ramp
-                    if (phase2RampVolume > 0.7f && phase2RampVolume < 1.3f && rampEdgeCollider != null)
+                    if (rampVolume > 0.7f && rampVolume < 1.3f && rampEdgeCollider != null)
                     {
                         int edgeNum = int.Parse(rampEdgeCollider.transform.name);
 
@@ -406,7 +406,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         concreteUIDisplay.SetActive(false);
                         concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
                         concreteUIFill.fillAmount = 0;
-                        phase2RampVolume = 0;
+                        rampVolume = 0;
 
                         (var animeStartPt, var animeEndPt) = GetRampAnimationPoints(edgeNum);
                         Debug.Log("animeStartPt: " + animeStartPt);
@@ -430,7 +430,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 // phase2 moving ramp & cube 
                 if (GamePhase == Constants.GamePhase.PHASE3)
                 {
-                    var totalVol = (float)System.Math.Round(prevVolume + phase2RampVolume, 1);
+                    var totalVol = (float)System.Math.Round(prevVolume + rampVolume, 1);
                     Debug.Log("totalVol is: " + totalVol);
                     if (totalVol > 5.5f && totalVol < 6.5f && (rampEdgeCollider != null || rampTopCollider != null))
                     {
@@ -446,6 +446,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         AddPhase3AnimationPoint();
                         // play phase 3 animations
                         DotsManager.Instance.ClearDots();
+                        phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
                         game2Manager.StartPhase3End(phase3AnimationPoints);
                         // disable colliders
                         SetRampEdgeCollider(false);
@@ -559,6 +560,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             if (phase2Ramp != null)
             {
                 AddPhase3AnimationPoint();
+                phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
             }
 
             var initialRampPos = GetInitialRampPos(rectDots);
@@ -638,7 +640,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots)
     {
         // re-initalize references
-        if (prevVolume == 0.0f) prevVolume = phase2RampVolume;
+        prevVolume += rampVolume;
         // disable colliders
         SetRampEdgeCollider(false);
         DeactivateSelectedDots(rectDots);
@@ -648,7 +650,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         if (rampTopObject != null) SetRampTopCollider(false);
 
         ClearRampRefereces();
-        phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
         phase2Ramp = Instantiate(genericRamp, middlePos, genericRamp.transform.rotation);
         concreteUIDisplay.SetActive(true);
         ClearLines();
