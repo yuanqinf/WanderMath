@@ -58,8 +58,8 @@ public class DotsManager : Singleton<DotsManager>
 
     public void InstantiatePhase0Dots()
     {
-        Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.HALF_FEET);
-        Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.HALF_FEET);
+        Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.HALF_FEET) + -placementPose.forward * 0.1f;
+        Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.HALF_FEET) + -placementPose.forward * 0.1f;
         InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
         InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
         InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
