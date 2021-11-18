@@ -85,6 +85,7 @@ public class CannonControl : MonoBehaviour
 {
     private Camera arCamera;
     private Vector3 initialRealWorldPosition;
+    private Vector2 initialPosition;
     private bool isReadyToMove;
     private bool isMovingRight;
     private bool isMovingLeft;
@@ -94,12 +95,13 @@ public class CannonControl : MonoBehaviour
     private bool isRotatingDown;
     private bool isFirstXMove = true;
     private bool isFirstYMove = true;
-    private Vector2 newTouchPosition;
     public GameObject muzzle;
     private Cannon cannonPosition;
     private Animator cannonAnimator;
     private Game3Controller game3Controller;
     private Game3SoundManager soundManager;
+    [SerializeField]
+    private bool is2DMap = true;
 
     // Start is called before the first frame update
     void Start()
@@ -125,14 +127,28 @@ public class CannonControl : MonoBehaviour
 
                     if (hitObject.transform.tag == Constants.Tags.Cannon)
                     {
-                        initialRealWorldPosition = hitObject.point;
+                        if (is2DMap)
+                        {
+                            initialPosition = touch.position;
+                        }
+                        else
+                        {
+                            initialRealWorldPosition = hitObject.point;
+                        }
                         isReadyToMove = true;
                         Debug.Log("move begin");
                     }
 
                     if (hitObject.transform.tag == Constants.Tags.Muzzle)
                     {
-                        initialRealWorldPosition = hitObject.point;
+                        if (is2DMap)
+                        {
+                            initialPosition = touch.position;
+                        }
+                        else
+                        {
+                            initialRealWorldPosition = hitObject.point;
+                        }
                         isReadyToRotate = true;
                         Debug.Log("rotate begin");
                     }
@@ -142,44 +158,71 @@ public class CannonControl : MonoBehaviour
             {
                 if (isReadyToMove)
                 {
-                    newTouchPosition = Input.GetTouch(0).position;
-                    Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
-                    if (Physics.Raycast(ray, out RaycastHit rayLocation))
+                    Vector2 newTouchPosition = Input.GetTouch(0).position;
+                    if (is2DMap)
                     {
-                        Vector3 newRealWorldPosition = rayLocation.point;
-                        if (rayLocation.transform.tag == Constants.Tags.Cannon)
+                        if (newTouchPosition.x < initialPosition.x)
                         {
-                            if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                            isMovingLeft = true;
+                        } else if (newTouchPosition.x > initialPosition.x)
+                        {
+                            isMovingRight = true;
+                        }
+                    }
+                    else
+                    {
+                        Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
+                        if (Physics.Raycast(ray, out RaycastHit rayLocation))
+                        {
+                            Vector3 newRealWorldPosition = rayLocation.point;
+                            if (rayLocation.transform.tag == Constants.Tags.Cannon)
                             {
-                                Debug.Log("moving left");
-                                isMovingLeft = true;
-                            }
-                            else if (newRealWorldPosition.x > initialRealWorldPosition.x)
-                            {
-                                Debug.Log("moving right");
-                                isMovingRight = true;
+                                if (newRealWorldPosition.x < initialRealWorldPosition.x)
+                                {
+                                    Debug.Log("moving left");
+                                    isMovingLeft = true;
+                                }
+                                else if (newRealWorldPosition.x > initialRealWorldPosition.x)
+                                {
+                                    Debug.Log("moving right");
+                                    isMovingRight = true;
+                                }
                             }
                         }
                     }
                 }
                 if (isReadyToRotate)
                 {
-                    newTouchPosition = Input.GetTouch(0).position;
-                    Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
-                    if (Physics.Raycast(ray, out RaycastHit rayLocation))
+                    Vector2 newTouchPosition = Input.GetTouch(0).position;
+                    if (is2DMap)
                     {
-                        Vector3 newRealWorldPosition = rayLocation.point;
-                        if (rayLocation.transform.tag == Constants.Tags.Muzzle)
+                        if (newTouchPosition.y > initialPosition.y)
                         {
-                            if (newRealWorldPosition.y > initialRealWorldPosition.y)
+                            isRotatingUp = true;
+                        }
+                        else if (newTouchPosition.y < initialPosition.y)
+                        {
+                            isRotatingDown = true;
+                        }
+                    }
+                    else
+                    {
+                        Ray ray = arCamera.ScreenPointToRay(newTouchPosition);
+                        if (Physics.Raycast(ray, out RaycastHit rayLocation))
+                        {
+                            Vector3 newRealWorldPosition = rayLocation.point;
+                            if (rayLocation.transform.tag == Constants.Tags.Muzzle)
                             {
-                                Debug.Log("moving up");
-                                isRotatingUp = true;
-                            }
-                            else if (newRealWorldPosition.y < initialRealWorldPosition.y)
-                            {
-                                Debug.Log("moving down");
-                                isRotatingDown = true;
+                                if (newRealWorldPosition.y > initialRealWorldPosition.y)
+                                {
+                                    Debug.Log("moving up");
+                                    isRotatingUp = true;
+                                }
+                                else if (newRealWorldPosition.y < initialRealWorldPosition.y)
+                                {
+                                    Debug.Log("moving down");
+                                    isRotatingDown = true;
+                                }
                             }
                         }
                     }
