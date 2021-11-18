@@ -113,7 +113,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         for (int i = 0; i < edgeLists.GetLength(0); i++)
         {
-            for (int j = 0; j < edgeLists.GetLength(i); j++)
+            for (int j = 0; j < edgeLists.GetLength(1); j++)
             {
                 edgeLists[i, j] = 0;
             }
