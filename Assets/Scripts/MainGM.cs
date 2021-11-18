@@ -19,24 +19,25 @@ public class MainGM : MonoBehaviour
 
     public Animator animator;
 
-    public Button settingBtn;
+    public GameObject settingBtn;
 
     // Start is called before the first frame update
     private void Start()
     {
         //CloseSettingMenu();
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        settingBtn.SetActive(false);
     }
 
     private void Update()
     {
         if (FindObjectOfType<AudioSource>() != null && FindObjectOfType<AudioSource>().isPlaying)
         {
-            settingBtn.interactable = false;
+            settingBtn.GetComponent<Button>().interactable = false;
         }
         else
         {
-            settingBtn.interactable = true;
+            settingBtn.GetComponent<Button>().interactable = true;
         }
     }
 
@@ -50,6 +51,7 @@ public class MainGM : MonoBehaviour
     public void LoadActivity1Scene()
     {
         SetGameObjectsShouldHide();
+        settingBtn.SetActive(true);
         FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity1);
         DontDestroyOnLoad(this.gameObject);
     }
@@ -57,6 +59,7 @@ public class MainGM : MonoBehaviour
     public void LoadActivity2Scene()
     {
         SetGameObjectsShouldHide();
+        settingBtn.SetActive(true);
         FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity2);
         DontDestroyOnLoad(this.gameObject);
     }
@@ -64,6 +67,7 @@ public class MainGM : MonoBehaviour
     public void LoadActivity3Scene()
     {
         SetGameObjectsShouldHide();
+        settingBtn.SetActive(true);
         FindObjectOfType<ProgressSceneLoader>().LoadScene(Constants.Scenes.Activity3);
         DontDestroyOnLoad(this.gameObject);
     }
