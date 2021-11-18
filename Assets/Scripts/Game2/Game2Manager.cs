@@ -231,7 +231,7 @@ public class Game2Manager : Singleton<Game2Manager>
     {
         StartCoroutine(Phase3EndingAnimation(animationPoints));
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3End);
-        characterController.PlayTalkingAnimationWithDuration(6.4f);
+        characterController.PlayTalkingAnimationWithDuration(3.3f);
     }
     IEnumerator Phase3EndingAnimation(List<AnimationPoint> animationPoints)
     {
@@ -271,8 +271,8 @@ public class Game2Manager : Singleton<Game2Manager>
         }
         yield return new WaitForSeconds(0.5f);
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE3Additional);
-        characterController.PlayTalkingAnimationWithDuration(3.8f + 4.5f);
-        yield return new WaitForSeconds(3.8f + 4.5f + 2.0f);
+        characterController.PlayTalkingAnimationWithDuration(3.8f + 6.5f);
+        yield return new WaitForSeconds(3.8f + 6.5f + 2.0f);
         SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 

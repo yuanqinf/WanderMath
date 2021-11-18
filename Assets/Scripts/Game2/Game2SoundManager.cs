@@ -76,12 +76,12 @@ public class Game2SoundManager : MonoBehaviour
     };
     private string[] phase3EndSubtitles =
     {
-        "Okay, I think Finley park is complete! Thanks for helping me, and see you on the flip side!",
+        "Woohoo! Totally rad!"
     };
     private string[] phase3AdditionalSubtitles =
     {
         "Awesome! I feel like a pro skater.",
-        "Best! Skate park! Ever!"
+        "Okay, I think Finley park is complete! Thanks for helping me, and see you on the flip side!"
     };
 
     public AudioClip skatingSoundEffect;

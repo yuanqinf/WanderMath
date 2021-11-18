@@ -1946,10 +1946,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9a2e5d9341d5347d18d810933fcda40f, type: 3}
   - {fileID: 8300000, guid: 39dba318f1ccf4cfcad214324f759b02, type: 3}
   phase3End:
-  - {fileID: 8300000, guid: 6a7d900cf85574f35bb687194d4c483c, type: 3}
+  - {fileID: 8300000, guid: 453baa7f11e78409aaac15a955db2fef, type: 3}
   phase3Additional:
   - {fileID: 8300000, guid: 90537273ebf38439fa12c2690b635b8a, type: 3}
-  - {fileID: 8300000, guid: 6464a4e1890a24ce49efa18aeb00ed2c, type: 3}
+  - {fileID: 8300000, guid: 6a7d900cf85574f35bb687194d4c483c, type: 3}
   skatingSoundEffect: {fileID: 8300000, guid: 009c408f9241b46f48df768e96950c91, type: 3}
   goodSoundEffect: {fileID: 8300000, guid: 16a6bbba3fd3547479b80dfcaab6cd3c, type: 3}
   finishDrawingEffect: {fileID: 8300000, guid: 172752bd7fe9a47019e1aa68e45d7aea, type: 3}
