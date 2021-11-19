@@ -98,7 +98,7 @@ public class CubeMed : GenericClass
         if (numSnapped == 5)
         {
             //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
-            cubeRotateControl.EndPhase1();
+            cubeRotateControl.EndPhase2(Constants.ShapeNames.CUBE_MED);
             soundManager.PlaySuccessSound();
             gameController.playSuccessEffect(gameObject);
             gameController.createGiftBox(gameObject);

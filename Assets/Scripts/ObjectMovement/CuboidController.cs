@@ -10,7 +10,14 @@ public class CuboidController : GenericClass
 
     public void UpdateCuboidRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //cubeRotateControl.handleOutline(touchedObject);
+        gameController.waitTime -= Time.deltaTime;
+        if (gameController.waitTime <= 0 && !gameController.showedHelper)
+        {
+            gameController.showedHelper = true;
+            gameController.showHelperText();
+        }
+
+        cubeRotateControl.handleSelected(touchedObject);
         Debug.Log(touchedObject.name + " : " + initialRealWorldPosition.ToString("N4") + " newWorld: " + newRealWorldPosition.ToString("N4"));
         switch (touchedObject.name)
         {
@@ -78,7 +85,7 @@ public class CuboidController : GenericClass
         }
     }
 
-    private void SnapObject(GameObject gameObject, bool isSecondLevel = false)
+    public void SnapObject(GameObject gameObject, bool isSecondLevel = false)
     {
         numSnapped++;
 
@@ -91,5 +98,11 @@ public class CuboidController : GenericClass
         }
         objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.CUBOID, numSnapped);
+        if (numSnapped == 5)
+        {
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            gameController.playSuccessEffect(gameObject);
+            gameController.createCuboidGiftBox(gameObject);
+        }
     }
 }

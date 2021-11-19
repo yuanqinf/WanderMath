@@ -10,6 +10,7 @@ public class ShapesController : GenericClass
     public GameObject hexagon;
 
     private int numShapesCompleted = 0;
+    public GameObject lastSelectedShape;
 
     private string phase3Start = "Ok, these ones definitely won't make a cube. But let's see what they will make!";
     private string phase3Pyramid = "Whoa, this one's a pyramid! The bottom is a square, so it's called a square pyramid. That's such a cool gift box.";
@@ -106,5 +107,10 @@ public class ShapesController : GenericClass
         {
             FindObjectOfType<GameController>().PlayEndingAnimation();
         }
+    }
+
+    public void handleSelected(GameObject touchedObject)
+    {
+        lastSelectedShape = touchedObject.transform.root.gameObject;
     }
 }

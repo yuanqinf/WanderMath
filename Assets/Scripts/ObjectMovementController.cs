@@ -166,18 +166,19 @@ public class ObjectMovementController : MonoBehaviour
             case "cube_wrong":
                 cubeWrong.SnapObject(touchedObject);
                 break;
-            //case "pyramid":
-            //    pyramidController.UpdatePyramidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-            //    break;
-            //case "hexagon":
-            //    hexagonController.UpdateHexRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-            //    break;
-            //case "cuboid":
-            //    cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
-            //    break;
+            case "pyramid":
+                pyramidController.SnapObject(touchedObject);
+                break;
+            case "hexagon":
+                hexagonController.SnapHexObject(touchedObject);
+                break;
+            case "cuboid":
+                cuboidController.SnapObject(touchedObject);
+                break;
             default:
                 break;
         }
         holdDuration = 1f;
+        gameController.showedHelper = false;
     }
 }

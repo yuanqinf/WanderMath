@@ -9,7 +9,14 @@ public class HexagonController : GenericClass
 
     public void UpdateHexRotation(GameObject touchedObject, Vector3 newRealWorldPosition, Vector3 initialRealWorldPosition)
     {
-        //cubeRotateControl.handleOutline(touchedObject);
+        gameController.waitTime -= Time.deltaTime;
+        if (gameController.waitTime <= 0 && !gameController.showedHelper)
+        {
+            gameController.showedHelper = true;
+            gameController.showHelperText();
+        }
+
+        cubeRotateControl.handleSelected(touchedObject);
         Debug.Log(touchedObject.name + " : " + initialRealWorldPosition.ToString("N4") + " newWorld: " + newRealWorldPosition.ToString("N4"));
         switch (touchedObject.name)
         {
@@ -92,11 +99,17 @@ public class HexagonController : GenericClass
         }
     }
 
-    private void SnapHexObject(GameObject gameObject)
+    public void SnapHexObject(GameObject gameObject)
     {
         numSnapped++;
         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, hexSetDegree);
         objectMovementController.ResetGameObject();
         utils.HandlePhase3SnapEffect(Constants.ShapeNames.HEXAGON, numSnapped);
+        if (numSnapped == 7)
+        {
+            //touchedObject.transform.root.GetComponent<Outline>().enabled = false;
+            gameController.playSuccessEffect(gameObject);
+            gameController.createHexGiftBox(gameObject);
+        }
     }
 }

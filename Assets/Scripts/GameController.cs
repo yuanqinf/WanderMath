@@ -266,7 +266,7 @@ public class GameController : MonoBehaviour
     IEnumerator showHelperTextFunc()
     {
         helperTextAnimator.SetTrigger("show");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         helperTextAnimator.SetTrigger("hide");
     }
 }
