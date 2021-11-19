@@ -33,11 +33,11 @@ public class MainGM : MonoBehaviour
     {
         if (FindObjectOfType<AudioSource>() != null && FindObjectOfType<AudioSource>().isPlaying)
         {
-            settingBtn.GetComponent<Button>().interactable = false;
+            SettingPanel.transform.Find("ResetButton").GetComponent<Button>().interactable = false;
         }
         else
         {
-            settingBtn.GetComponent<Button>().interactable = true;
+            SettingPanel.transform.Find("ResetButton").GetComponent<Button>().interactable = true;
         }
     }
 
