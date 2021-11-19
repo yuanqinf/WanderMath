@@ -508,6 +508,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
             concreteUIDisplay.SetActive(true);
             Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
+            var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
+            uiNumberControl.SetAreaDisplay(1);
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines >= 4)
         {

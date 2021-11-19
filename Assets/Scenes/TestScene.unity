@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964124, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -648,67 +648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3c53875ce694102b9d23f8af9d6325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1934571602
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3474713655831517625, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_Name
-      value: booth
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517625, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 3474713655831517630, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b7e38ab6ed673134ca0481429d10a56b, type: 3}
 --- !u!1 &2079007804
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,7 +917,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3593091181202392616, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3593091181202392616, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1023,6 +962,10 @@ PrefabInstance:
     - target: {fileID: 3593091181202392619, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}
       propertyPath: m_Name
       value: SpawnParticleEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3593091181202392619, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}

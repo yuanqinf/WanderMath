@@ -114,6 +114,8 @@ public class DotsManager : Singleton<DotsManager>
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
         characterController.PlayTalkingAnimationWithDuration(7.5f + 3.8f + 5.0f);
         yield return new WaitForSeconds(7.5f);
+        var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
+        uiNumberControl.SetVolDisplay(0);
         arDrawManager.ClearLines();
     }
 
