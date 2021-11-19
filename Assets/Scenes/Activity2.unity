@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -241,8 +241,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultLineColorMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   failedDotMaterial: {fileID: 2100000, guid: 0e73f8b7a075d48fa9df98798b939a39, type: 2}
-  initialRampMaterial: {fileID: 2100000, guid: 232162324df3c42d8ad4efe6e1f60c59, type: 2}
-  completeRampMaterial: {fileID: 2100000, guid: 4cfc91b4765704652a4dda3d54c8c1d7, type: 2}
+  initialRampMaterial: {fileID: 2100000, guid: fd97ac40c529f4e0facae730b05ad0b3, type: 2}
+  completeRampMaterial: {fileID: 2100000, guid: 3cb052a4e2f7e487489e9cafea6b7fc0, type: 2}
   arCamera: {fileID: 922230702}
   lineWidth: 0.01
   linePrefab: {fileID: 6799044895285963287, guid: c2fc2852c3d0b406cadf803c1c9cce1f, type: 3}
