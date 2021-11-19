@@ -963,9 +963,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnParticleEffect
       objectReference: {fileID: 0}
-    - target: {fileID: 3593091181202392619, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 634432e88443a48c3b00ed31aa37613d, type: 3}

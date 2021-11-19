@@ -33,6 +33,12 @@ public class GameController : MonoBehaviour
 
     public bool touchEnabled = true;
 
+    public GameObject helperText;
+    public float waitTime = 1f;
+    public bool showedHelper = false;
+
+    private Animator helperTextAnimator;
+
     private void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
@@ -43,6 +49,7 @@ public class GameController : MonoBehaviour
         shapesController = FindObjectOfType<ShapesController>();
         uiController = FindObjectOfType<UiController>();
         soundManager = FindObjectOfType<SoundManager>();
+        helperTextAnimator = helperText.GetComponent<Animator>();
     }
 
     private void Update()
@@ -248,5 +255,18 @@ public class GameController : MonoBehaviour
 
         }
         gamePhase = lastGamePhase;
+    }
+
+    public void showHelperText()
+    {
+        waitTime = 1f;
+        StartCoroutine(showHelperTextFunc());
+    }
+
+    IEnumerator showHelperTextFunc()
+    {
+        helperTextAnimator.SetTrigger("show");
+        yield return new WaitForSeconds(3f);
+        helperTextAnimator.SetTrigger("hide");
     }
 }

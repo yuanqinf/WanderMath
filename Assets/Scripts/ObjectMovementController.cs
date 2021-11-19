@@ -27,6 +27,9 @@ public class ObjectMovementController : MonoBehaviour
     private HexagonController hexagonController;
     private CuboidController cuboidController;
 
+    public RectTransform objectToHold;
+    public float holdDuration = 1f;
+
     void Start()
     {
         characterController = FindObjectOfType<CharacterController>();
@@ -70,6 +73,17 @@ public class ObjectMovementController : MonoBehaviour
                     // arCamera.ScreenToWorldPoint(new Vector3(initTouchPosition.x, initTouchPosition.y, arCamera.nearClipPlane)) // doesnt work, always the same value
                     touchedObject = hitObject.transform.gameObject;
                     //Debug.Log("touchedObject location: " + touchedObject.transform.position);
+                }
+            }
+
+            if (touch.phase == TouchPhase.Stationary && touchedObject != null && cubeControl.lastSelectedShape == touchedObject.transform.root.gameObject)
+            {
+                Debug.Log("is pressing and holding one face");
+                holdDuration -= Time.deltaTime;
+
+                if (holdDuration <= 0)
+                {
+                    StartForgivenMode(touchedObject);
                 }
             }
 
@@ -134,5 +148,36 @@ public class ObjectMovementController : MonoBehaviour
     public void SetObjectMovementEnabled(bool isActive)
     {
         isObjectMovementEnabled = isActive;
+    }
+
+    public void StartForgivenMode(GameObject touchedObject)
+    {
+        switch (touchedObject.tag)
+        {
+            case "cube_easy":
+                cubeEasy.SnapObject(touchedObject);
+                break;
+            case "cube_med":
+                cubeMed.SnapObject(touchedObject);
+                break;
+            case "cube_med2":
+                cubeMedTwo.SnapObject(touchedObject);
+                break;
+            case "cube_wrong":
+                cubeWrong.SnapObject(touchedObject);
+                break;
+            //case "pyramid":
+            //    pyramidController.UpdatePyramidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+            //    break;
+            //case "hexagon":
+            //    hexagonController.UpdateHexRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+            //    break;
+            //case "cuboid":
+            //    cuboidController.UpdateCuboidRotation(touchedObject, newRealWorldPosition, initialRealWorldPosition);
+            //    break;
+            default:
+                break;
+        }
+        holdDuration = 1f;
     }
 }

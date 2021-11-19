@@ -48,19 +48,8 @@ public class CubeRotateControl : GenericClass
     public int curCubeSnappedSides = 0;
 
 
-    public void handleOutline(GameObject touchedObject)
+    public void handleSelected(GameObject touchedObject)
     {
-        // handle outline here
-        if (lastSelectedShape != null && lastSelectedShape != touchedObject.transform.root.gameObject)
-        {
-            Debug.Log("outing is being deactivated");
-            lastSelectedShape.GetComponent<Outline>().enabled = false;
-        }
-        if (touchedObject.transform.root.GetComponent<Outline>() != null)
-        {
-            Debug.Log("outing is being activated");
-            touchedObject.transform.root.GetComponent<Outline>().enabled = true;
-        }
         lastSelectedShape = touchedObject.transform.root.gameObject;
     }
 
