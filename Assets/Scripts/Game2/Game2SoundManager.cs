@@ -87,8 +87,6 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip skatingSoundEffect;
     public AudioClip goodSoundEffect;
     public AudioClip finishDrawingEffect;
-    public AudioClip WrongDrawingAudio;
-    private string wrongDrawing = "That's too small for my ledge, I need a square.";
     public AudioClip WrongDiagonalAudio;
     private string wrongDiagonal = "That's a diagonal line! We don't need a diagonal line to draw a rectangle.";
     public AudioClip WrongLinesAudio;
@@ -190,15 +188,6 @@ public class Game2SoundManager : MonoBehaviour
     public void playFinishDrawing()
     {
         audioSource.PlayOneShot(finishDrawingEffect);
-    }
-
-    public void PlayWrongDrawing()
-    {
-        if (!audioSource.isPlaying) 
-        {
-            uiController.PlaySubtitles(wrongDrawing, WrongDrawingAudio.length);
-            audioSource.PlayOneShot(WrongDrawingAudio);
-        }
     }
 
     public void PlayWrongDiagonal()

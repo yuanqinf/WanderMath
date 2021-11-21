@@ -51,6 +51,7 @@ public class Game3Controller : GenericClass
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         placementController = FindObjectOfType<PlacementIndicatorController>();
+        characterController = FindObjectOfType<CharacterController>();
         game3SoundManager = FindObjectOfType<Game3SoundManager>();
     }
 

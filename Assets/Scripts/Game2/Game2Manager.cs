@@ -280,11 +280,6 @@ public class Game2Manager : Singleton<Game2Manager>
     #endregion
 
     #region helper functions
-    public void PlayWrongDrawingWithAnimation()
-    {
-        characterController.PlayTalkingAnimationWithDuration(3.4f);
-        g2SoundManager.PlayWrongDrawing();
-    }
     public void PlayWrongDiagonalWithAnimation()
     {
         characterController.PlayTalkingAnimationWithDuration(3f);
