@@ -298,7 +298,6 @@ Transform:
   m_LocalPosition: {x: 0.005720377, y: 0, z: -0.16843618}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
-  - {fileID: 8494040761820583517}
   - {fileID: 6511678433487769844}
   m_Father: {fileID: 1238467571129601725}
   m_RootOrder: 0
@@ -638,91 +637,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 31.687601, y: 0.42335007, z: 31.687601}
   m_Center: {x: 15.843801, y: 0, z: 2.251539e-13}
---- !u!1 &9127448157115993319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8494040761820583517}
-  - component: {fileID: 4778106468636170744}
-  - component: {fileID: 7326171102766361906}
-  m_Layer: 0
-  m_Name: skates
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
---- !u!4 &8494040761820583517
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9127448157115993319}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.243619, y: 0, z: -0.027963523}
-  m_LocalScale: {x: 0.49999997, y: 0.5, z: 0.50000006}
-  m_Children: []
-  m_Father: {fileID: 6885048342780882817}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!33 &4778106468636170744
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9127448157115993319}
-  m_Mesh: {fileID: -8134244234950295250, guid: a80258f9e58a64b91b6eaab4584533f1, type: 3}
---- !u!23 &7326171102766361906
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9127448157115993319}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 03b150b736b804a6e8af1467bdb0edbf, type: 2}
-  - {fileID: 2100000, guid: d2ab75107b4ae454887bd8a85853f75d, type: 2}
-  - {fileID: 2100000, guid: 8d235c09422d14bccb890f4b2de68c83, type: 2}
-  - {fileID: 2100000, guid: 1706f3fb29fe745ef89035da8856960c, type: 2}
-  - {fileID: 2100000, guid: 9a755d5cfb46742099f6ce3e50b14e5c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1366669589953169523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -732,7 +646,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5235790570850392199, guid: 359e1d690b01a0248b7b6ee3fb7a4cd6, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5235790570850392199, guid: 359e1d690b01a0248b7b6ee3fb7a4cd6, type: 3}
       propertyPath: m_LocalScale.x
