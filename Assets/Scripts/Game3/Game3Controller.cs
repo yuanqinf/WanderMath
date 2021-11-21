@@ -10,7 +10,6 @@ public class Game3Controller : GenericClass
     private string gamePhase = Constants.GamePhase.SETUP;
     private string currGamePhase = Constants.GamePhase.SETUP;
     private PlacementIndicatorController placementController;
-    private CharacterController characterController;
     private CannonControl cannonController;
     private Game3SoundManager game3SoundManager;
     public Pose placementPose;
@@ -51,7 +50,6 @@ public class Game3Controller : GenericClass
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
-        characterController = FindObjectOfType<CharacterController>();
         placementController = FindObjectOfType<PlacementIndicatorController>();
         game3SoundManager = FindObjectOfType<Game3SoundManager>();
     }
