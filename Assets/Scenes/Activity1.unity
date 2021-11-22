@@ -1828,7 +1828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: If one of the faces is hard to fold, hold it for 1s
+  m_text: If one of the faces is hard to fold, press it for 1s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 413d49111754c425486a8fca961ef498, type: 2}
   m_sharedMaterial: {fileID: 8508489450622428167, guid: 413d49111754c425486a8fca961ef498, type: 2}
