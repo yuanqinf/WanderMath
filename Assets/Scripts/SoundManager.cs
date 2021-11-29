@@ -34,6 +34,8 @@ public class SoundManager : MonoBehaviour
     private AudioClip[] phase3Clips;
     [SerializeField]
     private AudioClip phase3Ending;
+    [SerializeField]
+    private AudioClip helperTextSound;
 
     void Start()
     {
@@ -184,6 +186,11 @@ public class SoundManager : MonoBehaviour
     public void PlayWrongSound()
     {
         audioSource.PlayOneShot(wrongCubeSoundEffect);
+    }
+
+    public void PlayHelperTextSound()
+    {
+        audioSource.PlayOneShot(helperTextSound);
     }
 
     // Play character sound

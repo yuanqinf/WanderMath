@@ -260,6 +260,7 @@ public class GameController : MonoBehaviour
     public void showHelperText()
     {
         waitTime = 1f;
+        soundManager.PlayHelperTextSound();
         StartCoroutine(showHelperTextFunc());
     }
 

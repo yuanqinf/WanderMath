@@ -1056,6 +1056,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 752a418fe9eab4a349cc3b209876590f, type: 3}
   - {fileID: 8300000, guid: f527fc76c855f447fbee65dec7c6ffde, type: 3}
   phase3Ending: {fileID: 8300000, guid: 5dfd2d9fc82ab42f581ebf5ea6cd965c, type: 3}
+  helperTextSound: {fileID: 8300000, guid: 70b8e76f9c2084bab8d1224963f699be, type: 3}
 --- !u!4 &897245920
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,7 +1829,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: If one of the faces is hard to fold, press it for 1s
+  m_text: If you are stuck, just hold down on the face you want to fold
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 413d49111754c425486a8fca961ef498, type: 2}
   m_sharedMaterial: {fileID: 8508489450622428167, guid: 413d49111754c425486a8fca961ef498, type: 2}

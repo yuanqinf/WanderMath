@@ -200,11 +200,13 @@ public class CannonControl : MonoBehaviour
                     {
                         if (newTouchPosition.y > initialPosition.y)
                         {
-                            isRotatingUp = true;
+                            isRotatingDown = true;
+                            //isRotatingUp = true;
                         }
                         else if (newTouchPosition.y < initialPosition.y)
                         {
-                            isRotatingDown = true;
+                            isRotatingUp = true;
+                            //isRotatingDown = true;
                         }
                     }
                     else
@@ -217,13 +219,20 @@ public class CannonControl : MonoBehaviour
                             {
                                 if (newRealWorldPosition.y > initialRealWorldPosition.y)
                                 {
-                                    Debug.Log("moving up");
-                                    isRotatingUp = true;
+                                    Debug.Log("moving down");
+                                    isRotatingDown = true;
+
+                                    //Debug.Log("moving up");
+                                    //isRotatingUp = true;
                                 }
                                 else if (newRealWorldPosition.y < initialRealWorldPosition.y)
                                 {
-                                    Debug.Log("moving down");
-                                    isRotatingDown = true;
+
+                                    Debug.Log("moving up");
+                                    isRotatingUp = true;
+
+                                    //Debug.Log("moving down");
+                                    //isRotatingDown = true;
                                 }
                             }
                         }
