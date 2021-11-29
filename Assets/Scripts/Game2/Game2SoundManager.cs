@@ -91,6 +91,8 @@ public class Game2SoundManager : MonoBehaviour
     private string wrongDiagonal = "That's a diagonal line! We don't need a diagonal line to draw a rectangle.";
     public AudioClip WrongLinesAudio;
     private string wrong4Lines = "Make sure to draw your rectangle with four lines! Let's try again.";
+    public AudioClip WrongLongLinesAudio;
+    private string wrongLongLines = "Make sure to draw your rectangle by connecting dots that is next to each other. If you skip a dot, we would not know where to build it.";
     public AudioClip phase1PerfectAudio;
     private string phase1PerfectLine = "It's perfect. I'll save it for later.";
 
@@ -207,6 +209,19 @@ public class Game2SoundManager : MonoBehaviour
         {
             uiController.PlaySubtitles(wrong4Lines, 4.2f);
             audioSource.PlayOneShot(WrongLinesAudio);
+        }
+    }
+
+    public void PlayWrongLongLines()
+    {
+        if (audioSource.clip == WrongLongLinesAudio && audioSource.isPlaying)
+        {
+            return;
+        }
+        else
+        {
+            uiController.PlaySubtitles(wrongLongLines, 7.3f);
+            audioSource.PlayOneShot(WrongLongLinesAudio);
         }
     }
 
