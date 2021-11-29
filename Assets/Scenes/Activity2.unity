@@ -1863,6 +1863,7 @@ MonoBehaviour:
   WrongDiagonalAudio: {fileID: 8300000, guid: a3ac036b606f54b928507ea56908681a, type: 3}
   WrongLinesAudio: {fileID: 8300000, guid: 9dafb04a662f545328b8ef3738a8ee5c, type: 3}
   WrongLongLinesAudio: {fileID: 8300000, guid: e7420ff07699746d297f77d208fad6e1, type: 3}
+  RepeatedLinesAudio: {fileID: 8300000, guid: 2eb7686df20bb41b080806433030cc40, type: 3}
   phase1PerfectAudio: {fileID: 8300000, guid: 4b1639e27a0284490ad80a186b0da5b0, type: 3}
   liftWrongVolAudio: {fileID: 8300000, guid: bc91f8d772fe04291a8f9162abd6e4ec, type: 3}
 --- !u!4 &1314368971
