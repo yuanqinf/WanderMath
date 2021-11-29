@@ -91,13 +91,13 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE0:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE0Start);
-                characterController.PlayTalkingAnimationWithDuration(6.5f + 6.2f + 9.3f + 3.2f);
+                characterController.PlayTalkingAnimationWithDuration(6.5f + 6.2f + 9.0f + 3.2f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase0/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE0);
                 SetXCollider(false);
                 SetYCollider(false);
                 SetXMatPosition(0, 0);
-                StartCoroutine(ActivatePhase0Collider(6.5f + 6.2f + 9.3f + 3.2f));
+                StartCoroutine(ActivatePhase0Collider(6.5f + 6.2f + 9.0f + 3.2f));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
@@ -105,7 +105,7 @@ public class Game3Controller : GenericClass
                 break;
             case Constants.GamePhase.PHASE1:
                 game3SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
-                characterController.PlayTalkingAnimationWithDuration(6.4f + 4.6f);
+                characterController.PlayTalkingAnimationWithDuration(6.4f + 3.4f);
                 numbers = carnivalBooth.transform.Find("boothAndCannon/Phase1/numbers").gameObject;
                 SetPhaseLayout(Constants.GamePhase.PHASE1);
                 // reset materials
@@ -114,7 +114,7 @@ public class Game3Controller : GenericClass
                 SetYMatPosition(0, 0);
                 SetXCollider(false);
                 SetYCollider(false);
-                StartCoroutine(ActivatePhase1Collider(6.4f + 4.6f));
+                StartCoroutine(ActivatePhase1Collider(6.4f + 3.4f));
                 targetHit = isResetting ? targetHit : 0;
                 isResetting = false;
                 gamePhase = Constants.GamePhase.WAITING;
