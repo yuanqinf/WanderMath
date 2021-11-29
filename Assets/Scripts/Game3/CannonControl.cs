@@ -103,6 +103,8 @@ public class CannonControl : MonoBehaviour
     [SerializeField]
     private bool is2DMap = true;
 
+    public Animator buttonAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -283,6 +285,8 @@ public class CannonControl : MonoBehaviour
     {
         Debug.Log("play cannon animation");
         cannonAnimator.SetTrigger(Constants.Animation.IsShootingTrigger);
+        buttonAnimator.SetTrigger("Press");
+        StartCoroutine(ResetButtonPos());
         soundManager.PlayCannonShoot();
     }
 
@@ -297,5 +301,12 @@ public class CannonControl : MonoBehaviour
             cannonPosition.MoveYDown();
         }
         Debug.Log($"cannont positions {cannonPosition.x} and {cannonPosition.x}");
+    }
+
+    IEnumerator ResetButtonPos()
+    {
+        yield return new WaitForSeconds(1f);
+
+        buttonAnimator.SetTrigger("Reset");
     }
 }
