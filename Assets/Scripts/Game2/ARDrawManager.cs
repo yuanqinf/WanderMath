@@ -653,6 +653,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
         prevVolume += rampVolume;
         // disable colliders
         SetRampEdgeCollider(false);
+        if (rectDots.Contains((1, 1)) && rectDots.Contains((1, 2)) && rectDots.Contains((2, 1)) && rectDots.Contains((2, 2)))
+        {
+            rectDots.Clear();
+            rectDots.Add((0, 0));
+            rectDots.Add((0, 3));
+            rectDots.Add((3, 0));
+            rectDots.Add((3, 3));
+        }
         DeactivateSelectedDots(rectDots);
         dotsGameObjDict.Clear();
         ResetEdgeLists();

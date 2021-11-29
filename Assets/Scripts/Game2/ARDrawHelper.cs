@@ -60,7 +60,7 @@ public static class ARDrawHelper
                         if (IsRectangle(newList, edgeLists, mul))
                         {
                             newList.ForEach(p => Debug.Log(i + ": rect formed with dot: " + p));
-                            (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(newList);
+                            (var maxWidth, var maxLength) = GetLenAndWidthPoints(newList);
                             rectangles.Add((maxWidth, maxLength), newList);
                         }
                     }
