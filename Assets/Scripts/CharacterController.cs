@@ -12,6 +12,7 @@ public class CharacterController : GenericClass
     private float stopSkatingAnimationLen = 2.7f;
     private float skateJumpAnimationLen = 1.3f;
     private float idleToSkateAnimationLen = 1.4f;
+    private bool isTalking = false;
 
     private string introLine = "Oh, hi! I'm Finley. Nice to meet you!";
 
@@ -275,7 +276,11 @@ public class CharacterController : GenericClass
     #region talking
     public void PlayTalkingAnimationWithDuration(float duration)
     {
-        StartCoroutine(PlayTalkingAnimationWithinDuration(duration));
+        if (!isTalking)
+        {
+            StartCoroutine(PlayTalkingAnimationWithinDuration(duration));
+            isTalking = true;
+        }
     }
 
     IEnumerator PlayTalkingAnimationWithinDuration(float duration)
@@ -283,6 +288,7 @@ public class CharacterController : GenericClass
         animator.SetBool("isTalking", true);
         yield return new WaitForSeconds(duration);
         animator.SetBool("isTalking", false);
+        isTalking = false;
     }
     #endregion
 

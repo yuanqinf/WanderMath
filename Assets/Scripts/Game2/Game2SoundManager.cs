@@ -94,7 +94,7 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip WrongLongLinesAudio;
     private string wrongLongLines = "Make sure to draw your rectangle by connecting dots that is next to each other. If you skip a dot, we would not know where to build it.";
     public AudioClip RepeatedLinesAudio;
-    private string repeatedLines = "You don't need to go back over the same line twice! Just draw four lines to make a rectangle.";
+    private string repeatedLines = "You don't need to go back over the same line twice!";
     public AudioClip phase1PerfectAudio;
     private string phase1PerfectLine = "It's perfect. I'll save it for later.";
 
@@ -204,10 +204,7 @@ public class Game2SoundManager : MonoBehaviour
     }
     public void PlayWrongLines()
     {
-        if (audioSource.clip == WrongLinesAudio && audioSource.isPlaying)
-        {
-            return;
-        } else
+        if (!audioSource.isPlaying)
         {
             uiController.PlaySubtitles(wrong4Lines, 4.2f);
             audioSource.PlayOneShot(WrongLinesAudio);
@@ -216,11 +213,7 @@ public class Game2SoundManager : MonoBehaviour
 
     public void PlayWrongLongLines()
     {
-        if (audioSource.clip == WrongLongLinesAudio && audioSource.isPlaying)
-        {
-            return;
-        }
-        else
+        if (!audioSource.isPlaying)
         {
             uiController.PlaySubtitles(wrongLongLines, 7.3f);
             audioSource.PlayOneShot(WrongLongLinesAudio);
@@ -229,13 +222,9 @@ public class Game2SoundManager : MonoBehaviour
 
     public void PlayRepeatedLines()
     {
-        if (audioSource.clip == RepeatedLinesAudio && audioSource.isPlaying)
+        if (!audioSource.isPlaying)
         {
-            return;
-        }
-        else
-        {
-            uiController.PlaySubtitles(repeatedLines, 5.3f);
+            uiController.PlaySubtitles(repeatedLines, 2.5f);
             audioSource.PlayOneShot(RepeatedLinesAudio);
         }
     }

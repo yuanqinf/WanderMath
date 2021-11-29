@@ -60,8 +60,11 @@ public class DotsManager : Singleton<DotsManager>
     {
         Vector3 cornerPos1 = placementPose.position + (placementPose.right * Constants.HALF_FEET) + -placementPose.forward * 0.1f;
         Vector3 cornerPos2 = placementPose.position + (placementPose.right * -Constants.HALF_FEET) + -placementPose.forward * 0.1f;
-        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        
+        var dot1 = InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
+        dot1.name = "dot_0_0";
+        var dot2 = InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        dot2.name = "dot_0_1";
         InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
     }
 
@@ -87,10 +90,14 @@ public class DotsManager : Singleton<DotsManager>
         Vector3 cornerPos3 = placementPose.position
             + (placementPose.forward * -Constants.HALF_FEET) + (placementPose.right * Constants.HALF_FEET);
         phase1DotsMatrix = new Vector3[,] { { cornerPos2, cornerPos1 }, { cornerPos4, cornerPos3} };
-        InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
-        InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
+        var dot1 = InstantiateDotsWithAnchor(dot, cornerPos1, placementPose.rotation);
+        dot1.name = "dot_0_0";
+        var dot2 = InstantiateDotsWithAnchor(dot, cornerPos2, placementPose.rotation);
+        dot2.name = "dot_0_1";
+        var dot3 = InstantiateDotsWithAnchor(dot, cornerPos3, placementPose.rotation);
+        dot3.name = "dot_1_0";
+        var dot4 = InstantiateDotsWithAnchor(dot, cornerPos4, placementPose.rotation);
+        dot4.name = "dot_1_1";
         InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
     }
 

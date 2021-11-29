@@ -282,13 +282,18 @@ public class Game2Manager : Singleton<Game2Manager>
     #region helper functions
     public void PlayWrongDiagonalWithAnimation()
     {
-        characterController.PlayTalkingAnimationWithDuration(3f);
+        characterController.PlayTalkingAnimationWithDuration(5.5f);
         g2SoundManager.PlayWrongDiagonal();
     }
     public void PlayWrongLinesWithAnimation()
     {
-        characterController.PlayTalkingAnimationWithDuration(3f);
+        characterController.PlayTalkingAnimationWithDuration(4.2f);
         g2SoundManager.PlayWrongLines();
+    }
+    public void PlayRepeatedLinesWithAnimation()
+    {
+        characterController.PlayTalkingAnimationWithDuration(2.5f);
+        g2SoundManager.PlayRepeatedLines();
     }
     #endregion
 

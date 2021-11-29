@@ -152,9 +152,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         // only allow line by line mechanism now
                         if (ratio > 0.85 && ratio < 1.15)
                         {
-                            numLines++;
                             isSnapping = true;
-                            g2SoundManager.PlayGoodSoundEffect();
                         }
                         else if ((ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15))
                         {
@@ -345,29 +343,40 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     else
                     {
-                        // create line and handle logic
-                        endPos = hitObject.transform.gameObject.transform.position;
-                        currentLineRender.SetPosition(1, endPos);
-                        var lineMagnitude = (endPos - startPos).magnitude;
-                        currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                        if (GamePhase == Constants.GamePhase.PHASE2 || GamePhase == Constants.GamePhase.PHASE3)
+                        // deserialize gameObj name and update edgeList
+                        mulFactor = GamePhase.Equals(Constants.GamePhase.PHASE3) ? 4 : 3;
+                        (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
+                        (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
+                        var x = x1 * mulFactor + y1;
+                        var y = x2 * mulFactor + y2;
+                        // check for repeated drawing of lines
+                        if (edgeLists[x, y] == 1 && edgeLists[y, x] == 1)
                         {
+                            game2Manager.PlayRepeatedLinesWithAnimation();
+                            Destroy(currentLineGameObject);
+                        }
+                        else
+                        {
+                            numLines++;
+                            g2SoundManager.PlayGoodSoundEffect();
+
+                            // create line and handle logic
+                            endPos = hitObject.transform.gameObject.transform.position;
+                            currentLineRender.SetPosition(1, endPos);
+                            var lineMagnitude = (endPos - startPos).magnitude;
+                            currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+                            // add mapping of edge
+                            edgeLists[x, y] = 1;
+                            edgeLists[y, x] = 1;
+                            // add mapping of object dict
                             int currentVal;
                             dotsGameObjDict.TryGetValue(startObject.gameObject, out currentVal);
                             dotsGameObjDict[startObject.gameObject] = currentVal + 1;
                             dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
                             dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
-                            // deserialize gameObj name and update edgeList
-                            mulFactor = (GamePhase.Equals(Constants.GamePhase.PHASE2)) ? 3 : 4;
-                            (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
-                            (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
-                            var x = x1 * mulFactor + y1;
-                            var y = x2 * mulFactor + y2;
-                            edgeLists[x, y] = 1;
-                            edgeLists[y, x] = 1;
-                            ARDrawHelper.Print2DArray(edgeLists);
+                            HandleSnapObject();
                         }
-                        HandleSnapObject();
+                        //ARDrawHelper.Print2DArray(edgeLists);
                     }
                     ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
                     currentLineRender = null;
@@ -505,14 +514,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
             game2Manager.EndPhase0();
             numLines = 0;
             Destroy(currentLineGameObject);
+            ResetEdgeLists();
         }
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
             concreteUIDisplay.SetActive(true);
-            Debug.Log("phase1 mid now!!!!!!!!!!!!!!!~~~~~~~~~~~~~~~~`");
             DotsManager.Instance.ActivatePhase1Cube();
             var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(1);
+            ResetEdgeLists();
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines >= 4)
         {
