@@ -150,12 +150,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
                         ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
                         // only allow line by line mechanism now
-                        // || (ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15)
                         if (ratio > 0.85 && ratio < 1.15)
                         {
                             numLines++;
                             isSnapping = true;
                             g2SoundManager.PlayGoodSoundEffect();
+                        }
+                        else if ((ratio > 1.85 && ratio < 2.15) || (ratio > 2.85 && ratio < 3.15) || (ratio > 3.85 && ratio < 4.15) || (ratio > 4.85 && ratio < 5.15))
+                        {
+                            g2SoundManager.PlayWrongLongLines();
                         }
                         else if (ratio > 0.2)
                         {
