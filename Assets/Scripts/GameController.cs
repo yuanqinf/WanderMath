@@ -151,7 +151,7 @@ public class GameController : MonoBehaviour
     private IEnumerator EndingAnimationWithSound()
     {
         float duration = soundManager.PlayPhase3Ending();
-        uiController.PlaySubtitles("Come on, let's go to the party together", duration);
+        uiController.PlaySubtitles("Come on, let's go to the party together.", duration);
         characterController.PlaySkatingForward(5);
         yield return new WaitForSeconds(duration + 0.5f);
         FindObjectOfType<MainGM>().ShowCutScene();
