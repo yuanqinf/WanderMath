@@ -21,7 +21,7 @@ public class Game3SoundManager : MonoBehaviour
     {
         "Step right up to Finley's Cartesian Carnival! It's water balloon time!",
         "There's something cool behind every door. If you hit the target with your balloon, you'll get it!",
-        "First up, the targets are on the X axis. Press and drag side to side to aim your cannon at the right number!",
+        "First up, the targets are on the X axis. Swipe side to side to aim your cannon at the right number!",
         "Then, press the button to throw it!",
     };
     private string[] phase0EndSubtitles =
@@ -34,7 +34,7 @@ public class Game3SoundManager : MonoBehaviour
     private string[] phase1StartSubtitles =
     {
         "Okay, now, the numbers are on the Y axis. The prizes are even cooler!",
-        "Press and drag up and down to aim the cannon this time!",
+        "Swipe up and down to aim the cannon this time!",
     };
     private string[] phase1EndSubtitles =
     {
