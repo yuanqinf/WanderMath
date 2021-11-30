@@ -92,7 +92,7 @@ public class Game2SoundManager : MonoBehaviour
     public AudioClip WrongLinesAudio;
     private string wrong4Lines = "Make sure to draw your rectangle with four lines! Let's try again.";
     public AudioClip WrongLongLinesAudio;
-    private string wrongLongLines = "Make sure to draw your rectangle by connecting dots that is next to each other. If you skip a dot, we would not know where to build it.";
+    private string wrongLongLines = "Make sure to draw your rectangle by connecting dots that are next to each other. If you skip a dot, we would not know where to build it.";
     public AudioClip RepeatedLinesAudio;
     private string repeatedLines = "You don't need to go back over the same line twice!";
     public AudioClip phase1PerfectAudio;

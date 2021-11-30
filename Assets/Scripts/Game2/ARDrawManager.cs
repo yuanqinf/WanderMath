@@ -101,7 +101,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         game2Manager = FindObjectOfType<Game2Manager>();
         g2SoundManager = FindObjectOfType<Game2SoundManager>();
-        ResetEdgeLists();
+        ResetEdgeListsAndDict();
         #if UNITY_EDITOR
             Debug.unityLogger.logEnabled = true;
         #else
@@ -109,7 +109,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         #endif
     }
 
-    private void ResetEdgeLists()
+    private void ResetEdgeListsAndDict()
     {
         for (int i = 0; i < edgeLists.GetLength(0); i++)
         {
@@ -118,6 +118,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 edgeLists[i, j] = 0;
             }
         }
+        dotsGameObjDict.Clear();
     }
 
     public void DrawOnTouch()
@@ -376,7 +377,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                             dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
                             HandleSnapObject();
                         }
-                        //ARDrawHelper.Print2DArray(edgeLists);
+                        ARDrawHelper.Print2DArray(edgeLists);
                     }
                     ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
                     currentLineRender = null;
@@ -514,7 +515,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             game2Manager.EndPhase0();
             numLines = 0;
             Destroy(currentLineGameObject);
-            ResetEdgeLists();
+            ResetEdgeListsAndDict();
         }
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
@@ -522,7 +523,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             DotsManager.Instance.ActivatePhase1Cube();
             var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(1);
-            ResetEdgeLists();
+            ResetEdgeListsAndDict();
         }
         if (GamePhase == Constants.GamePhase.PHASE2 && numLines >= 4)
         {
@@ -548,7 +549,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // reset lines, edges, dots
             DotsManager.Instance.ClearDots();
             dotsGameObjDict.Clear();
-            ResetEdgeLists();
+            ResetEdgeListsAndDict();
             numLines = 0;
 
             // set initial volume and set up
@@ -663,7 +664,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         DeactivateSelectedDots(rectDots);
         dotsGameObjDict.Clear();
-        ResetEdgeLists();
+        ResetEdgeListsAndDict();
 
         if (rampTopObject != null) SetRampTopCollider(false);
 
