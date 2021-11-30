@@ -122,7 +122,9 @@ public class Game2Manager : Singleton<Game2Manager>
         characterController.PlayTalkingAnimationWithDuration(2.0f);
         yield return new WaitForSeconds(2.0f);
         // animate towards railing
-        characterController.SkateOnRailing(objectLocations[Constants.Objects.RailingStartPoint], objectLocations[Constants.Objects.RailingEndPoint]);
+        var preJumpPos = phase0Object.transform.Find("preJumpPoint").position;
+        Debug.Log(preJumpPos);
+        characterController.SkateOnRailing(objectLocations[Constants.Objects.RailingStartPoint], objectLocations[Constants.Objects.RailingEndPoint], preJumpPos);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
         Destroy(phase0Object);
@@ -147,8 +149,11 @@ public class Game2Manager : Singleton<Game2Manager>
         yield return new WaitForSeconds(6.8f + 1.6f);
         // animate towards jumping
         var flatRectangle = GameObject.FindGameObjectWithTag("phase1Rect");
-        characterController.SkateOnCube(flatRectangle.transform.Find("TopLeft").transform.position,
-                                        flatRectangle.transform.Find("BotRight").transform.position);
+        var startPos = flatRectangle.transform.Find("point1").transform.position;
+        var preJumpPos = flatRectangle.transform.Find("point2").transform.position;
+        var jumpPos = flatRectangle.transform.Find("point3").transform.position;
+        var landPos = flatRectangle.transform.Find("point4").transform.position;
+        characterController.SkateOnCubeNew(startPos, preJumpPos, jumpPos, landPos);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
         g2SoundManager.PlayPhase1Perfect();

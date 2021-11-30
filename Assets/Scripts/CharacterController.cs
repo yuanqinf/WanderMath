@@ -138,11 +138,68 @@ public class CharacterController : GenericClass
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
 
-    public void SkateOnRailing(Vector3 pointToJumpUp, Vector3 pointToJumpDown)
+    public void SkateOnCubeNew(Vector3 startPos, Vector3 preJumpPos, Vector3 jumpPos, Vector3 landPos, bool isPhase3 = false)
     {
-        StartCoroutine(SkatingOnRailingMove(pointToJumpUp, pointToJumpDown));
+        StartCoroutine(SkatingOnCubeMoveNew(startPos, preJumpPos, jumpPos, landPos, isPhase3));
     }
-    IEnumerator SkatingOnRailingMove(Vector3 pointToJumpUp, Vector3 pointToJumpDown)
+
+    IEnumerator SkatingOnCubeMoveNew(Vector3 startPos, Vector3 preJumpPos, Vector3 jumpPos, Vector3 landPos, bool isPhase3)
+    {
+        var initialPos = arCharacterToSpawn.transform.position;
+        if (!isPhase3)
+        {
+            StartSkating();
+            yield return new WaitForSeconds(idleToSkateAnimationLen);
+        }
+        // move to start position
+        //yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
+        if (!isPhase3)
+        {
+            //pointToJumpUp += new Vector3(0.7f, 0, 0);
+            //pointToJumpDown -= new Vector3(0.7f, 0, 0);
+        }
+        else
+        {
+            //pointToJumpUp += new Vector3(0.15f, 0, 0);
+            //pointToJumpDown -= new Vector3(0.15f, 0, 0);
+        }
+
+        // skate to the front
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(startPos);
+        var skateToRailingDuration = 1.5f;
+        StartCoroutine(utils.LerpMovement(initialPos, startPos, skateToRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRailingDuration);
+        // skate to pre jump position
+        var skateToPreJumpPosDuration = 1.5f;
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(preJumpPos);
+        StartCoroutine(utils.LerpMovement(startPos, preJumpPos, skateToPreJumpPosDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToPreJumpPosDuration);
+
+        // jump up
+        SkateJump();
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(landPos);
+        StartCoroutine(utils.LerpMovement(preJumpPos, jumpPos, skateJumpAnimationLen / 2, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateJumpAnimationLen / 2);
+        StartCoroutine(utils.LerpMovement(jumpPos, landPos, skateJumpAnimationLen / 2, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateJumpAnimationLen / 2);
+
+        // skate back to position
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
+        StartCoroutine(utils.LerpMovement(landPos, initialPos, skateToRailingDuration, arCharacterToSpawn));
+        yield return new WaitForSeconds(skateToRailingDuration);
+        // stop skating
+        if (!isPhase3)
+        {
+            StopSkating();
+        }
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
+    }
+
+    public void SkateOnRailing(Vector3 pointToJumpUp, Vector3 pointToJumpDown, Vector3 preJumpPos)
+    {
+        StartCoroutine(SkatingOnRailingMove(pointToJumpUp, pointToJumpDown, preJumpPos));
+    }
+    IEnumerator SkatingOnRailingMove(Vector3 pointToJumpUp, Vector3 pointToJumpDown, Vector3 preJumpPos)
     {
         var initialPos = arCharacterToSpawn.transform.position;
         var railingHeight = new Vector3(0, 0.11f, 0);
@@ -150,17 +207,17 @@ public class CharacterController : GenericClass
         // 1. start skating & wait for idle to skate
         StartSkating();
         yield return new WaitForSeconds(idleToSkateAnimationLen);
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(pointToJumpUp + offset);
+        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(preJumpPos);
         // move to start position
         //yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
-        var skateToRailingDuration = 2.0f;
+        var skateToRailingDuration = 1.5f;
         //var skateboardPosTemp = arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().GetSkateBoardPos() - arCharacterToSpawn.transform.position;
         //var skateboardPosDiff = new Vector3(skateboardPosTemp.x, 0, skateboardPosTemp.z);
-        StartCoroutine(utils.LerpMovement(initialPos, pointToJumpUp + offset, skateToRailingDuration, arCharacterToSpawn));
+        StartCoroutine(utils.LerpMovement(initialPos, preJumpPos, skateToRailingDuration, arCharacterToSpawn));
         yield return new WaitForSeconds(skateToRailingDuration);
         // jump up
         SkateJump();
-        StartCoroutine(utils.LerpMovement(pointToJumpUp + offset, pointToJumpUp + railingHeight, skateJumpAnimationLen, arCharacterToSpawn));
+        StartCoroutine(utils.LerpMovement(preJumpPos, pointToJumpUp + railingHeight, skateJumpAnimationLen, arCharacterToSpawn));
         yield return new WaitForSeconds(skateJumpAnimationLen);
         // skate on railing
         var skateOnRailingDuration = 2.5f;
