@@ -901,9 +901,12 @@ public class ARDrawManager : Singleton<ARDrawManager>
     // destroy ramp to calculate next ramp
     public void DestoryRampAndReferences()
     {
-        Destroy(phase2Ramp.gameObject);
-        phase2Ramp = null;
-        ClearRampRefereces();
+        if(phase2Ramp != null)
+        {
+            Destroy(phase2Ramp.gameObject);
+            phase2Ramp = null;
+            ClearRampRefereces();
+        }
     }
 
     public void ClearLineRenders()
