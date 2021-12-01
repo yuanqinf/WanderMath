@@ -74,9 +74,9 @@ public class BirthdayCardController : GenericClass
         Vector3 rot = pose.rotation.eulerAngles; // may not need this as log shows that it is 0,0,0
         var newRot = new Vector3(rot.x - 90, rot.y + 180, rot.z);
 
-        birthdayCard = Instantiate(birthdayCard, pose.position, Quaternion.Euler(newRot));
-        spinArrow = birthdayCard.transform.Find("spinArrow").gameObject;
-        touchDrag = birthdayCard.transform.Find("touchDrag").gameObject;
+        var birthdayCardCopy = Instantiate(birthdayCard, pose.position, Quaternion.Euler(newRot));
+        spinArrow = birthdayCardCopy.transform.Find("spinArrow").gameObject;
+        touchDrag = birthdayCardCopy.transform.Find("touchDrag").gameObject;
 
         SwitchOnAnimation();
         ColliderUtils.SwitchBirthdayCollider(true);

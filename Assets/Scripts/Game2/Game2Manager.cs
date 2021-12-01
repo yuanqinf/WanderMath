@@ -328,6 +328,8 @@ public class Game2Manager : Singleton<Game2Manager>
             DestroyImmediate(dot, true);
         }
 
+        ARDrawManager.Instance.ResetEdgeListsAndDict();
+
         ARDrawManager.Instance.ClearLines();
         dotsManager.dots.Clear();
 

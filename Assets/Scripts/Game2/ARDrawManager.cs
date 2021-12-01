@@ -109,7 +109,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         #endif
     }
 
-    private void ResetEdgeListsAndDict()
+    public void ResetEdgeListsAndDict()
     {
         for (int i = 0; i < edgeLists.GetLength(0); i++)
         {
