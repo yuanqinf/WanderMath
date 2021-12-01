@@ -264,7 +264,7 @@ public class Game2Manager : Singleton<Game2Manager>
     }
     IEnumerator Phase3EndingAnimation(List<AnimationPoint> animationPoints)
     {
-        yield return new WaitForSeconds(6.4f);
+        yield return new WaitForSeconds(3.3f);
         for (int i = 0; i < animationPoints.Count; i++)
         {
             var point = animationPoints[i];
