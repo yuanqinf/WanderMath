@@ -19,7 +19,12 @@ public class MainGM : MonoBehaviour
 
     public Animator animator;
 
+    public Animator creditCanvasAnim;
+    public GameObject CreditCanvas;
+
     public GameObject settingBtn;
+
+    public GameObject TeamImage;
 
     // Start is called before the first frame update
     private void Start()
@@ -90,6 +95,26 @@ public class MainGM : MonoBehaviour
         animator.SetTrigger("fold");
     }
 
+    public void OpenCreditCanvas()
+    {
+        creditCanvasAnim.SetTrigger("pop");
+    }
+
+    public void CloseCreditCanvas()
+    {
+        creditCanvasAnim.SetTrigger("fold");
+    }
+
+    public void OpenTeamImg()
+    {
+        TeamImage.SetActive(true);
+    }
+
+    public void CloseTeamImg()
+    {
+        TeamImage.SetActive(false);
+    }
+
     private void SetGameObjectsShouldHide()
     {
         for(int i = 0; i < GameObjectsShouldHide.Length; i++)
@@ -137,4 +162,10 @@ public class MainGM : MonoBehaviour
         vpObject.SetActive(false);
         SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
+
+    public void openTeacherGuide()
+    {
+        Application.OpenURL("https://projects.etc.cmu.edu/wandermath/teacher-resource/");
+    }
+
 }
