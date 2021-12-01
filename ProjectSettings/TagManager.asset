@@ -37,6 +37,7 @@ TagManager:
   - muzzle
   - shoot_btn
   - g3Prizes
+  - shoot_target
   layers:
   - Default
   - TransparentFX

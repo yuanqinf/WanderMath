@@ -128,5 +128,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ThrowForce: 6
   targetScale: {x: 5, y: 5, z: 5}
-  speed: 0.5
-  isChangeScale: 0
+  speed: 0.8

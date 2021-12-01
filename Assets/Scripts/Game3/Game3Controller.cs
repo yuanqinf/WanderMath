@@ -370,8 +370,32 @@ public class Game3Controller : GenericClass
 
     public void ResetPhase()
     {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("shoot_target");
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            targets[i].transform.GetComponent<Animator>().SetTrigger("closeTarget");
+            targets[i].transform.GetComponent<SphereCollider>().enabled = true;
+        }
+
+        StartCoroutine(waitForReset());
         SetGamePhase(lastGamePhase);
+        if(lastGamePhase == Constants.GamePhase.PHASE0)
+        {
+            cannonController.ResetCannonPosition();
+        }
+        ResetNumbersMat();
         isResetting = true;
+        if (lastGamePhase != Constants.GamePhase.PHASE3)
+        {
+            targetHit = 0;
+        }
+
+    }
+
+    IEnumerator waitForReset()
+    {
+        yield return new WaitForSeconds(1f);
     }
 
 

@@ -22,6 +22,7 @@ public class TargetControl : MonoBehaviour
         {
             Debug.Log("hit by balloon");
             this.GetComponent<SphereCollider>().enabled = false;
+            this.GetComponent<Animator>().ResetTrigger("closeTarget");
             this.GetComponent<Animator>().SetTrigger(Constants.Animation.IsShotTrigger);
             var tempEffect = Instantiate(effect, this.transform);
             Destroy(tempEffect, 1);

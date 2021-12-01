@@ -249,11 +249,11 @@ public class CannonControl : MonoBehaviour
                         cannonPosition.MoveXRight();
                         isMovingRight = false;
                         game3Controller.SetXMatPosition(cannonPosition.x, cannonPosition.x - 1);
-                        if (isFirstXMove)
-                        {
+                        //if (isFirstXMove)
+                        //{
                             game3Controller.SetXHand(false);
-                            isFirstXMove = false;
-                        }
+                            //isFirstXMove = false;
+                        //}
                     }
                     else if (isMovingLeft)
                     {
@@ -272,11 +272,11 @@ public class CannonControl : MonoBehaviour
                         cannonPosition.MoveYUp();
                         isRotatingUp = false;
                         game3Controller.SetYMatPosition(cannonPosition.y, cannonPosition.y - 1);
-                        if (isFirstYMove)
-                        {
+                        //if (isFirstYMove)
+                        //{
                             game3Controller.SetYHand(false);
-                            isFirstYMove = false;
-                        }
+                            //isFirstYMove = false;
+                        //}
                     }
                     else if (isRotatingDown)
                     {
