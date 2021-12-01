@@ -222,6 +222,30 @@ public class Game2Manager : Singleton<Game2Manager>
         SetGamePhase(Constants.GamePhase.PHASE3);
         arDrawManager.DestoryRampAndReferences();
     }
+
+    public void StartPhase2EndNew(List<Vector3> animePts, string lowSlopeLoc)
+    {
+        dotsManager.ClearDots();
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2End);
+        characterController.PlayTalkingAnimationWithDuration(4.4f + 8.2f + 8f + 1.7f);
+        StartCoroutine(Phase2EndingAnimationNew(animePts, lowSlopeLoc));
+    }
+
+    private IEnumerator Phase2EndingAnimationNew(List<Vector3> animePts, string lowSlopeLoc)
+    {
+        yield return new WaitForSeconds(4.4f + 8.2f + 8f + 1.7f + 1f);
+        arDrawManager.ClearLines();
+        characterController.SkateOnRampNew(animePts, lowSlopeLoc);
+        var skatingTime = (animePts.Count + 1) * 2.0f;
+        g2SoundManager.PlaySkatingSoundForTime(skatingTime);
+        yield return new WaitForSeconds(skatingTime);
+        // play best ramp ever line after animation
+        g2SoundManager.PlayBestRampEver();
+        characterController.PlayTalkingAnimationWithDuration(3.9f);
+        yield return new WaitForSeconds(4f);
+        SetGamePhase(Constants.GamePhase.PHASE3);
+        arDrawManager.DestoryRampAndReferences();
+    }
     #endregion
 
     #region phase3 related
@@ -240,7 +264,7 @@ public class Game2Manager : Singleton<Game2Manager>
     }
     IEnumerator Phase3EndingAnimation(List<AnimationPoint> animationPoints)
     {
-        yield return new WaitForSeconds(6.4f);
+        yield return new WaitForSeconds(3.3f);
         for (int i = 0; i < animationPoints.Count; i++)
         {
             var point = animationPoints[i];
@@ -251,27 +275,24 @@ public class Game2Manager : Singleton<Game2Manager>
             }
             if (point.isJump)
             {
-                Debug.Log($"play jumping animation. {point.height}");
-                characterController.SkateOnCube(point.startPos, point.endPos, point.height, true);
-                g2SoundManager.PlaySkatingSoundForTime(5.6f);
-                yield return new WaitForSeconds(5.6f);
-                if (i == animationPoints.Count - 1)
-                {
-                    characterController.StopSkating();
-                    yield return new WaitForSeconds(2.7f);
-                }
+                //Debug.Log($"play jumping animation. {point.height}");
+                var points = point.animPts;
+                characterController.SkateOnCubeNew(points[0], points[1], points[2], points[3], true);
+                g2SoundManager.PlaySkatingSoundForTime(6.0f);
+                yield return new WaitForSeconds(6.0f);
             }
             else
             {
-                Debug.Log($"play ramp animation: {point.height}");
-                characterController.SkateOnRamp(point.startPos, point.endPos, point.height / 2.0f, true);
-                g2SoundManager.PlaySkatingSoundForTime(7.1f);
-                yield return new WaitForSeconds(7.1f);
-                if (i == animationPoints.Count - 1)
-                {
-                    characterController.StopSkating();
-                    yield return new WaitForSeconds(2.7f);
-                }
+                //Debug.Log($"play ramp animation: {point.height}");
+                characterController.SkateOnRampNew(point.animPts, point.rampLoc, true);
+                var skatingTime = (point.animPts.Count + 1) * 2.0f;
+                g2SoundManager.PlaySkatingSoundForTime(skatingTime);
+                yield return new WaitForSeconds(skatingTime);
+            }
+            if (i == animationPoints.Count - 1)
+            {
+                characterController.StopSkating();
+                yield return new WaitForSeconds(2.7f);
             }
         }
         yield return new WaitForSeconds(0.5f);
@@ -280,7 +301,6 @@ public class Game2Manager : Singleton<Game2Manager>
         yield return new WaitForSeconds(3.8f + 6.5f + 2.0f);
         SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
-
 
     #endregion
 
