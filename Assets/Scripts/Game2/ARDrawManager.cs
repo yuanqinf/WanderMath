@@ -11,16 +11,14 @@ using TMPro;
 
 public struct AnimationPoint
 {
-    public Vector3 startPos;
-    public Vector3 endPos;
-    public float height;
+    public List<Vector3> animPts;
+    public string rampLoc;
     public bool isJump;
 
-    public AnimationPoint(Vector3 start, Vector3 end, float height, bool isJump)
+    public AnimationPoint(List<Vector3> animPts, string rampLoc, bool isJump)
     {
-        this.startPos = start;
-        this.endPos = end;
-        this.height = height;
+        this.animPts = animPts;
+        this.rampLoc = rampLoc;
         this.isJump = isJump;
     }
 };
@@ -422,11 +420,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         concreteUIFill.fillAmount = 0;
                         rampVolume = 0;
 
-                        (var animeStartPt, var animeEndPt) = GetRampAnimationPoints(edgeNum);
-                        Debug.Log("animeStartPt: " + animeStartPt);
-                        Debug.Log("phase2RampHeight: " + phase2RampHeight);
+                        (var animePts, var lowSlopeLoc) = GetRampAnimationPointsNew(edgeNum, phase2RampHeight);
 
-                        game2Manager.StartPhase2End(animeStartPt, animeEndPt, phase2RampHeight);
+                        game2Manager.StartPhase2EndNew(animePts, lowSlopeLoc);
                         SetRampEdgeCollider(false);
                     }
 
@@ -493,7 +489,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
         }
     }
-
 
     private void ShowOverusedText(float curVolNum, float limit)
     {
@@ -624,28 +619,113 @@ public class ARDrawManager : Singleton<ARDrawManager>
         var animeStartPt = Vector3.zero;
         switch (edgeNum)
         {
+            // left is low slope
             case 4:
                 animeEndPt = (topRight + botRight) / 2; // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topLeft + botLeft) / 2;
                 break;
+            // top is low slope
             case 5:
                 animeEndPt = (botLeft + botRight) / 2;
                 animeStartPt = (topLeft + topRight) / 2;
                 break;
+            // bottom is low slope
             case 6:
                 animeEndPt = (topLeft + topRight) / 2;
                 animeStartPt = (botLeft + botRight) / 2;
                 break;
+            // right is low slope
             case 7:
                 animeEndPt = (topLeft + botLeft) / 2; // change x to prevent hitting the ramp when jump down
                 animeStartPt = (topRight + botRight) / 2;
                 break;
+            // no slope, jump in the middle
             case 1:
                 animeEndPt = (topLeft + botLeft) / 2;
                 animeStartPt = (topRight + botRight) / 2;
                 break;
         }
         return (animeStartPt, animeEndPt);
+    }
+
+    /// <summary>
+    /// animation points for ramp
+    /// </summary>
+    /// <param name="edgeNum"></param>
+    /// <returns></returns>
+    private (List<Vector3>, string) GetRampAnimationPointsNew(int edgeNum, float rampHeight)
+    {
+        var rampPos = new Vector3(0, rampHeight / 2.0f, 0);
+        var boxPos = new Vector3(0, rampHeight, 0);
+        // settle which position to use for animation
+        var topLeft = phase2Ramp.transform.Find("TopLeft").transform.position;
+        var topRight = phase2Ramp.transform.Find("TopRight").transform.position;
+        var botLeft = phase2Ramp.transform.Find("BotLeft").transform.position;
+        var botRight = phase2Ramp.transform.Find("BotRight").transform.position;
+
+        var pointLeft = phase2Ramp.transform.Find("pointLeft").transform.position;
+        var pointRight = phase2Ramp.transform.Find("pointRight").transform.position;
+        var pointTop = phase2Ramp.transform.Find("pointTop").transform.position;
+        var pointBot = phase2Ramp.transform.Find("pointBot").transform.position;
+
+        var animationPts = new List<Vector3>();
+        var lowSlopeLoc = "";
+        var slopeEndPt = Vector3.zero;
+        var slopeStartPt = Vector3.zero;
+        switch (edgeNum)
+        {
+            // left is low slope
+            case 4:
+                slopeEndPt = (topRight + botRight) / 2 + rampPos; // change x to prevent hitting the ramp when jump down
+                slopeStartPt = (topLeft + botLeft) / 2;
+                animationPts.Add(pointLeft);
+                animationPts.Add(slopeStartPt);
+                animationPts.Add(slopeEndPt);
+                animationPts.Add(pointRight);
+                animationPts.Add(pointBot);
+                lowSlopeLoc = "left";
+                break;
+            // top is low slope
+            case 5:
+                slopeEndPt = (botLeft + botRight) / 2 + rampPos;
+                slopeStartPt = (topLeft + topRight) / 2;
+                animationPts.Add(pointTop);
+                animationPts.Add(slopeStartPt);
+                animationPts.Add(slopeEndPt);
+                animationPts.Add(pointBot);
+                lowSlopeLoc = "top";
+                break;
+            // bottom is low slope
+            case 6:
+                slopeEndPt = (topLeft + topRight) / 2 + rampPos;
+                slopeStartPt = (botLeft + botRight) / 2;
+                animationPts.Add(pointBot);
+                animationPts.Add(slopeStartPt);
+                animationPts.Add(slopeEndPt);
+                animationPts.Add(pointTop);
+                lowSlopeLoc = "bottom";
+                break;
+            // right is low slope
+            case 7:
+                slopeEndPt = (topLeft + botLeft) / 2 + rampPos; // change x to prevent hitting the ramp when jump down
+                slopeStartPt = (topRight + botRight) / 2;
+                animationPts.Add(pointBot);
+                animationPts.Add(pointRight);
+                animationPts.Add(slopeStartPt);
+                animationPts.Add(slopeEndPt);
+                animationPts.Add(pointLeft);
+                lowSlopeLoc = "right";
+                break;
+            // no slope, jump in the middle
+            case 1:
+                var pointJump = phase2Ramp.transform.Find("pointJump").transform.position + boxPos;
+                animationPts.Add(pointBot);
+                animationPts.Add(pointRight);
+                animationPts.Add(pointJump);
+                animationPts.Add(pointLeft);
+                break;
+        }
+        return (animationPts, lowSlopeLoc);
     }
 
     private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots, int maxLength, int maxWidth)
@@ -689,9 +769,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
         (var rampPoint, var rampHeight) = FindSelectedEdgeOrTop();
         if (rampHeight == 0) return;
         // get ramp animation endpoints
-        (var startPoint, var endPoint) = GetRampAnimationPoints(rampPoint);
+        (var animePts, var lowSlopeLoc) = GetRampAnimationPointsNew(rampPoint, rampHeight);
         var isJump = (rampPoint == 1) ? true : false;
-        phase3AnimationPoints.Add(new AnimationPoint(startPoint, endPoint, rampHeight, isJump));
+        phase3AnimationPoints.Add(new AnimationPoint(animePts, lowSlopeLoc, isJump));
     }
 
     /// <summary>
