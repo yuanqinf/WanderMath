@@ -176,7 +176,6 @@ public class CubeRotateControl : GenericClass
 
     public IEnumerator CompletePhase2WrongCubeSubtitleWithAudio()
     {
-        yield return new WaitForSeconds(Constants.BIGWIN_ANIMATION_DELAY);
         uiController.SetSubtitleActive(true);
         for (int i = 0; i < wrongPhase2Subtitles.Length; i++)
         {

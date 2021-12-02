@@ -180,11 +180,19 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySuccessSound() 
     {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
         audioSource.PlayOneShot(soundEffects[0]);
     }
 
     public void PlayWrongSound()
     {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
         audioSource.PlayOneShot(wrongCubeSoundEffect);
     }
 

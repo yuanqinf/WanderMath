@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour
             case Constants.GamePhase.PHASE1:
                 // instantiate
                 //DestroyImmediate(birthdayCardController.BirthdayCard, true);
-                DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard), true);
+                DeactivateObjectWithParticle(GameObject.FindGameObjectWithTag(Constants.Tags.BirthdayCard));
                 cubeController.StartPhase1(placementPose);
                 gamePhase = Constants.GamePhase.WAITING;
                 lastGamePhase = Constants.GamePhase.PHASE1;
@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
             // handles multiple cubes
             case Constants.GamePhase.PHASE2:
                 // instantiate one cube and move on
-                DestroyImmediate(GameObject.FindGameObjectWithTag(Constants.Tags.CubeMain), true);
+                DeactivateObjectWithParticle(GameObject.FindGameObjectWithTag(Constants.Tags.CubeMain));
                 cubeController.StartPhase2(placementPose);
                 gamePhase = Constants.GamePhase.WAITING;
                 lastGamePhase = Constants.GamePhase.PHASE2;
@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour
             case Constants.GamePhase.PHASE3:
                 foreach (GameObject cube in GameObject.FindGameObjectsWithTag(Constants.Tags.CubeMain))
                 {
-                    DestroyImmediate(cube, true);
+                    DeactivateObjectWithParticle(cube);
                 }
                 shapesController.StartPhase3(placementPose);
                 gamePhase = Constants.GamePhase.WAITING;
@@ -109,6 +109,12 @@ public class GameController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void DeactivateObjectWithParticle(GameObject obj)
+    {
+        obj.transform.Find("SpawnParticleEffect/ParticleEffect").GetComponent<ParticleSystem>().Play();
+        Destroy(obj, 0.8f);
     }
 
     /// <summary>

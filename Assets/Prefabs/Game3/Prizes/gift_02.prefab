@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3634645216156778594}
   - component: {fileID: 3038181209807836758}
   m_Layer: 0
-  m_Name: polySurface179
+  m_Name: gift_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
