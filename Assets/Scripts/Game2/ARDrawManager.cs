@@ -242,6 +242,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 if (ramp2DTouchPosition != Vector2.zero && rampEdgeCollider != null)
                 {
                     var movingRangeX = new Vector3(Constants.MOVEMENT_RANGE, 0, 0) ;
+                    var movingRangeY = new Vector3(0, Constants.MOVEMENT_RANGE / 2.0f, 0) ;
                     var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
                     int edgeNum = int.Parse(rampEdgeCollider.transform.name);
                     var movingEdge = Enumerable.Repeat(rampTopEdges[edgeNum], 1);
@@ -250,13 +251,15 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         edgeHeights[edgeNum] += Constants.MOVEMENT_RANGE; // tracking height movement
                         phase2Ramp.TranslateVertices(movingEdge, movingRangeX); // actual ramp moving
-                        rampEdgeCollider.transform.localScale += movingRangeX * 15; // collider scaling
+                        rampEdgeCollider.transform.position += movingRangeY;
+                        //rampEdgeCollider.transform.localScale += movingRangeX * 15; // collider scaling
                         uiNumberControl.IncreaseCanvasY(Constants.MOVEMENT_RANGE / 4); // moving UI element upwards
                     } else if (newTouchpos.y - ramp2DTouchPosition.y < 0 && edgeHeights[edgeNum] > 0f)
                     {
                         edgeHeights[edgeNum] -= Constants.MOVEMENT_RANGE;
                         phase2Ramp.TranslateVertices(movingEdge, -movingRangeX);
-                        rampEdgeCollider.transform.localScale -= movingRangeX * 15;
+                        rampEdgeCollider.transform.position -= movingRangeY;
+                        //rampEdgeCollider.transform.localScale -= movingRangeX * 15;
                         uiNumberControl.IncreaseCanvasY(-Constants.MOVEMENT_RANGE / 4);
                     }
                     // set UI height: with edgeHeights[i]
@@ -493,19 +496,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
         //ARDrawHelper.Print2DArray(edgeLists);
     }
 
-    private void ShowOverusedText(float curVolNum, float limit)
-    {
-        if (curVolNum > limit)
-        {
-            concreteVolDisplay.text = "Overused";
-            concreteUIFill.color = Color.red;
-        }
-        else
-        {
-            concreteUIFill.color = Color.white;
-        }
-    }
-
     /// <summary>
     /// Logic to determine what object to initialize.
     /// </summary>
@@ -668,6 +658,18 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return (animationPts, lowSlopeLoc);
     }
 
+    private void ShowOverusedText(float curVolNum, float limit)
+    {
+        if (curVolNum > limit)
+        {
+            concreteVolDisplay.text = "Overused";
+            concreteUIFill.color = Color.red;
+        }
+        else
+        {
+            concreteUIFill.color = Color.white;
+        }
+    }
     private void InitializePhase3Ramp(Vector3 middlePos, List<(int, int)> rectDots, int maxLength, int maxWidth)
     {
         // re-initalize references
@@ -847,7 +849,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             if (edge.transform.IsChildOf(parent.transform))
             {
                 Debug.Log("edge object found: " + edge.gameObject.name);
-                rampEdgeObjects.Add(int.Parse(edge.gameObject.name), edge);
+                rampEdgeObjects[int.Parse(edge.gameObject.name)] = edge;
             }
         }
     }

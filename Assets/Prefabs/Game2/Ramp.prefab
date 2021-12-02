@@ -446,7 +446,7 @@ BoxCollider:
   m_GameObject: {fileID: 1119603364069227238}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.8, z: 0.1}
   m_Center: {x: 0.04, y: -0.5, z: 0}
@@ -544,8 +544,8 @@ GameObject:
   - component: {fileID: 1496229604267888254}
   - component: {fileID: 810054712174563544}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: 6
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -558,7 +558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318819254833115013}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -0.081}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.073}
   m_LocalScale: {x: 0.05, y: 0.35, z: 0.05}
   m_Children: []
   m_Father: {fileID: 8379047280794152254}
@@ -623,7 +623,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000003
+  m_Radius: 1.3
   m_Height: 2.000001
   m_Direction: 1
   m_Center: {x: 0.00000005960467, y: 0, z: -0.00000008940697}
@@ -684,8 +684,8 @@ GameObject:
   - component: {fileID: 7411715235569091003}
   - component: {fileID: 1352905250196860067}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: 4
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -698,7 +698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956782396454220641}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.493, z: -0.098}
+  m_LocalPosition: {x: -0, y: -0.493, z: -0.088}
   m_LocalScale: {x: 0.05, y: 0.35, z: 0.05}
   m_Children: []
   m_Father: {fileID: 1747276600439455775}
@@ -763,10 +763,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000003
+  m_Radius: 1.3
   m_Height: 2.000001
   m_Direction: 1
-  m_Center: {x: 0.00000005960467, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.2384539, y: 0, z: -0.000000088718615}
 --- !u!1 &2224065978593400883
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,8 +780,8 @@ GameObject:
   - component: {fileID: 5503117140464100792}
   - component: {fileID: 8387777404794912286}
   m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
+  m_Name: top
+  m_TagString: p3Ramp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -795,7 +795,7 @@ Transform:
   m_GameObject: {fileID: 2224065978593400883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.050000004, y: 0.32999998, z: 0.48}
+  m_LocalScale: {x: 0.050000004, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 817543653903689337}
   m_RootOrder: 0
@@ -1256,7 +1256,7 @@ BoxCollider:
   m_GameObject: {fileID: 2589563219616708019}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.8, z: 0.1}
   m_Center: {x: 0.09, y: 0.5, z: 0}
@@ -1303,7 +1303,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.75, z: 0.75}
+  m_Size: {x: 0.2, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3423250627008525623
 GameObject:
@@ -1318,8 +1318,8 @@ GameObject:
   - component: {fileID: 1450433131287195533}
   - component: {fileID: 2402644539470877000}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: 7
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1332,7 +1332,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3423250627008525623}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.493, z: -0.917}
+  m_LocalPosition: {x: 0, y: -0.493, z: -0.931}
   m_LocalScale: {x: 0.05, y: 0.35, z: 0.05}
   m_Children: []
   m_Father: {fileID: 4575869964048439098}
@@ -1397,7 +1397,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000003
+  m_Radius: 1.3
   m_Height: 2.000001
   m_Direction: 1
   m_Center: {x: 0.00000005960467, y: 0, z: -0.00000008940697}
@@ -1442,7 +1442,7 @@ BoxCollider:
   m_GameObject: {fileID: 4648148686000382537}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.8, z: 0.1}
   m_Center: {x: 0.04, y: -0.5, z: -1}
@@ -2166,8 +2166,8 @@ GameObject:
   - component: {fileID: 8862380912728316555}
   - component: {fileID: 6576030873560100893}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: 5
+  m_TagString: rampEdge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2180,7 +2180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7098722941679388353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -0.892}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.922}
   m_LocalScale: {x: 0.05, y: 0.35, z: 0.05}
   m_Children: []
   m_Father: {fileID: 8834941752221159746}
@@ -2245,7 +2245,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000003
+  m_Radius: 1.3
   m_Height: 2.000001
   m_Direction: 1
   m_Center: {x: 0.00000005960467, y: 0, z: -0.00000008940697}
@@ -2558,7 +2558,7 @@ BoxCollider:
   m_GameObject: {fileID: 7724387970525539972}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.05, y: 0.8, z: 0.1}
   m_Center: {x: 0.04, y: 0.5, z: -1}
