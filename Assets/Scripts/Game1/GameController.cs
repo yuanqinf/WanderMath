@@ -258,7 +258,7 @@ public class GameController : MonoBehaviour
             {
                 DestroyImmediate(cube, true);
             }
-
+            shapesController.numShapesCompleted = 0;
         }
         gamePhase = lastGamePhase;
     }

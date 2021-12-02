@@ -9,7 +9,7 @@ public class ShapesController : GenericClass
     public GameObject pyramid;
     public GameObject hexagon;
 
-    private int numShapesCompleted = 0;
+    public int numShapesCompleted = 0;
     public GameObject lastSelectedShape;
 
     private string phase3Start = "Ok, these ones definitely won't make a cube. But let's see what they will make!";
