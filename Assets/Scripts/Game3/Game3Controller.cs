@@ -129,6 +129,7 @@ public class Game3Controller : GenericClass
                 ResetNumbersMat();
                 cannonController.ResetCannonPosition();
                 SetXMatPosition(0, 0);
+                SetYMatPosition(0, 0);
                 SetXCollider(false);
                 SetYCollider(false);
                 StartCoroutine(ActivateAllColliders(audioDuration));
@@ -146,6 +147,7 @@ public class Game3Controller : GenericClass
                 ResetNumbersMat();
                 cannonController.ResetCannonPosition();
                 SetXMatPosition(0, 0);
+                SetYMatPosition(0, 0);
                 SetPrizesText();
                 prizesUI.SetActive(true);
                 SetXCollider(false);
