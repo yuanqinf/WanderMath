@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Game2Manager : Singleton<Game2Manager>
 {
@@ -123,7 +124,6 @@ public class Game2Manager : Singleton<Game2Manager>
         yield return new WaitForSeconds(2.0f);
         // animate towards railing
         var preJumpPos = phase0Object.transform.Find("preJumpPoint").position;
-        Debug.Log(preJumpPos);
         characterController.SkateOnRailing(objectLocations[Constants.Objects.RailingStartPoint], objectLocations[Constants.Objects.RailingEndPoint], preJumpPos);
         g2SoundManager.PlaySkatingSoundForTime(10.5f);
         yield return new WaitForSeconds(10.5f);
@@ -133,14 +133,34 @@ public class Game2Manager : Singleton<Game2Manager>
     #endregion
 
     #region phase1 related
+    private void StartPhase1()
+    {
+        dotsManager.InstantiatePhase1Dots();
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
+        characterController.PlayTalkingAnimationWithDuration(7f);
+    }
+
+    public void StartPhase1Mid(GameObject concreteUIDisplay)
+    {
+        StartCoroutine(SetGamePhase1Mid(concreteUIDisplay));
+    }
+    IEnumerator SetGamePhase1Mid(GameObject concreteUIDisplay)
+    {
+        Debug.Log("setting game2 phase1 mid");
+        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
+        characterController.PlayTalkingAnimationWithDuration(7.5f + 3.8f + 5.0f);
+        yield return new WaitForSeconds(7.5f);
+        var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
+        uiNumberControl.SetVolDisplay(0);
+        arDrawManager.ClearLines();
+        concreteUIDisplay.SetActive(true);
+        concreteUIDisplay.transform.Find("VolUI").GetComponent<TextMeshProUGUI>().text = "Vol: 0 ft<sup>3</sup>";
+    }
     public void EndPhase1()
     {
         g2SoundManager.PlayGoodSoundEffect();
-        ARDebugManager.Instance.LogInfo("Endphase1 is called");
-
         StartCoroutine(PlayPhase1EndAnimationAndAudio());
     }
-
     IEnumerator PlayPhase1EndAnimationAndAudio()
     {
         yield return new WaitForSeconds(1.0f); // wait for good effect sound
@@ -163,13 +183,6 @@ public class Game2Manager : Singleton<Game2Manager>
         Destroy(phase1Rect);
         arDrawManager.ClearLines();
         SetGamePhase(Constants.GamePhase.PHASE2);
-    }
-
-    private void StartPhase1()
-    {
-        dotsManager.InstantiatePhase1Dots();
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Start);
-        characterController.PlayTalkingAnimationWithDuration(7f);
     }
     #endregion
 

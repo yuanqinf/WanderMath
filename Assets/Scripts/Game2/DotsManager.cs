@@ -101,29 +101,17 @@ public class DotsManager : Singleton<DotsManager>
         InstantiateOthersWithAnchor(plane, cornerPos1 - new Vector3(0, 0.001f, 0), placementPose.rotation);
     }
 
-    public void ActivatePhase1Cube()
+    public void ActivatePhase1Cube(GameObject concreteUIDisplay)
     {
         var recPos = Vector3.zero;
         foreach(GameObject dot in dots)
         {
-            Debug.Log("dot pos: " + dot.transform.position.ToString("N4"));
             recPos += dot.transform.position;
         }
         Debug.Log("recPos pos: " + recPos.ToString("N4"));
         Instantiate(flatRectangle, recPos / 4f, placementPose.rotation);
         ClearDots();
-        StartCoroutine(SetGamePhase1Mid());
-    }
-
-    IEnumerator SetGamePhase1Mid()
-    {
-        Debug.Log("setting game2 phase1 mid");
-        g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE1Mid);
-        characterController.PlayTalkingAnimationWithDuration(7.5f + 3.8f + 5.0f);
-        yield return new WaitForSeconds(7.5f);
-        var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
-        uiNumberControl.SetVolDisplay(0);
-        arDrawManager.ClearLines();
+        g2Manager.StartPhase1Mid(concreteUIDisplay);
     }
 
     public void InstantiatePhase2Dots()

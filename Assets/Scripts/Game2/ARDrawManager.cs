@@ -147,7 +147,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                         var ratio = (hitObject.transform.position - startObject.transform.position).magnitude / Constants.ONE_FEET;
                         Debug.Log("points ratio is: " + ratio);
 
-                        ARDebugManager.Instance.LogInfo("magnitude ratio is: " + ratio);
                         // only allow line by line mechanism now
                         if (ratio > 0.85 && ratio < 1.15)
                         {
@@ -342,42 +341,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     }
                     else
                     {
-                        // deserialize gameObj name and update edgeList
-                        mulFactor = GamePhase.Equals(Constants.GamePhase.PHASE3) ? 4 : 3;
-                        (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
-                        (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
-                        var x = x1 * mulFactor + y1;
-                        var y = x2 * mulFactor + y2;
-                        // check for repeated drawing of lines
-                        if (edgeLists[x, y] == 1 && edgeLists[y, x] == 1)
-                        {
-                            game2Manager.PlayRepeatedLinesWithAnimation();
-                            Destroy(currentLineGameObject);
-                        }
-                        else
-                        {
-                            numLines++;
-                            g2SoundManager.PlayGoodSoundEffect();
-
-                            // create line and handle logic
-                            endPos = hitObject.transform.gameObject.transform.position;
-                            currentLineRender.SetPosition(1, endPos);
-                            var lineMagnitude = (endPos - startPos).magnitude;
-                            currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
-                            // add mapping of edge
-                            edgeLists[x, y] = 1;
-                            edgeLists[y, x] = 1;
-                            // add mapping of object dict
-                            int currentVal;
-                            dotsGameObjDict.TryGetValue(startObject.gameObject, out currentVal);
-                            dotsGameObjDict[startObject.gameObject] = currentVal + 1;
-                            dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
-                            dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
-                            HandleSnapObject();
-                        }
-                        ARDrawHelper.Print2DArray(edgeLists);
+                        CheckRepeatedEdgeAndUpdate(hitObject);
                     }
-                    ARDebugManager.Instance.LogInfo("let go. gamephase: " + GamePhase + "with numLines: " + numLines);
                     currentLineRender = null;
                     startObject = null;
                     isSnapping = false;
@@ -446,7 +411,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
                     {
                         Debug.Log("phase3 snap is called");
                         // phase 2 vol number snap
-                        var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
+                        //var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
                         // TODO: fix this calculation
                         //var leftoverVol = (float)System.Math.Round(6 *  - prevVolume, 1);
                         //uiNumberControl.SetVolDisplay(leftoverVol);
@@ -490,6 +455,44 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
+    private void CheckRepeatedEdgeAndUpdate(RaycastHit hitObject)
+    {
+        // deserialize gameObj name and update edgeList
+        mulFactor = GamePhase.Equals(Constants.GamePhase.PHASE3) ? 4 : 3;
+        (int x1, int y1) = ARDrawHelper.DeserializeDotObj(startObject.gameObject);
+        (int x2, int y2) = ARDrawHelper.DeserializeDotObj(hitObject.transform.gameObject);
+        var x = x1 * mulFactor + y1;
+        var y = x2 * mulFactor + y2;
+        // check for repeated drawing of lines
+        if (edgeLists[x, y] == 1 && edgeLists[y, x] == 1)
+        {
+            game2Manager.PlayRepeatedLinesWithAnimation();
+            Destroy(currentLineGameObject);
+        }
+        else
+        {
+            numLines++;
+            g2SoundManager.PlayGoodSoundEffect();
+
+            // create line and handle logic
+            endPos = hitObject.transform.gameObject.transform.position;
+            currentLineRender.SetPosition(1, endPos);
+            var lineMagnitude = (endPos - startPos).magnitude;
+            currentLineGameObject.GetComponent<LineController>().SetDistance(lineMagnitude);
+            // add mapping of edge
+            edgeLists[x, y] = 1;
+            edgeLists[y, x] = 1;
+            // add mapping of object dict
+            int currentVal;
+            dotsGameObjDict.TryGetValue(startObject.gameObject, out currentVal);
+            dotsGameObjDict[startObject.gameObject] = currentVal + 1;
+            dotsGameObjDict.TryGetValue(hitObject.transform.gameObject, out currentVal);
+            dotsGameObjDict[hitObject.transform.gameObject] = currentVal + 1;
+            HandleSnapObject();
+        }
+        //ARDrawHelper.Print2DArray(edgeLists);
+    }
+
     private void ShowOverusedText(float curVolNum, float limit)
     {
         if (curVolNum > limit)
@@ -503,6 +506,9 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
+    /// <summary>
+    /// Logic to determine what object to initialize.
+    /// </summary>
     private void HandleSnapObject()
     {
         if (GamePhase == Constants.GamePhase.PHASE0 && numLines == 1)
@@ -514,8 +520,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
         if (GamePhase == Constants.GamePhase.PHASE1 && numLines == 4)
         {
-            concreteUIDisplay.SetActive(true);
-            DotsManager.Instance.ActivatePhase1Cube();
+            DotsManager.Instance.ActivatePhase1Cube(concreteUIDisplay);
             var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(1);
             ResetEdgeListsAndDict();
@@ -537,7 +542,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             (var maxWidth, var maxLength) = ARDrawHelper.GetLenAndWidthPoints(rectDots);
             Debug.Log("maxWidth: " + maxWidth + " and maxLength: " + maxLength);
 
-            var initialRampPos = GetInitialRampPos(rectDots);
+            var initialRampPos = ARDrawHelper.GetInitialRampPos(rectDots, dotsGameObjDict);
             InitializeRamp(initialRampPos / 4);
             phase2Ramp.transform.localScale = new Vector3(0.5f, maxLength * Constants.ONE_FEET, Constants.ONE_FEET);
 
@@ -576,30 +581,11 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 phase2Ramp.GetComponent<MeshRenderer>().material = completeRampMaterial; // update material to show complete
             }
 
-            var initialRampPos = GetInitialRampPos(rectDots);
+            var initialRampPos = ARDrawHelper.GetInitialRampPos(rectDots, dotsGameObjDict);
             InitializePhase3Ramp(initialRampPos / 4, rectDots, maxLength, maxWidth);
         }
         isSnapping = false;
         currentLineRender = null;
-    }
-
-    // figure out the mid point of a ramp
-    private Vector3 GetInitialRampPos(List<(int, int)> rectFromDots)
-    {
-        var initializePos = Vector3.zero;
-        foreach (var dot in rectFromDots)
-        {
-            string gameName = $"dot_{dot.Item1}_{dot.Item2}";
-            foreach (var item in dotsGameObjDict)
-            {
-                if (item.Key.name.Equals(gameName))
-                {
-                    Debug.Log("add object: " + item.Key.name);
-                    initializePos += item.Key.transform.position;
-                }
-            }
-        }
-        return initializePos;
     }
 
     /// <summary>
@@ -624,8 +610,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
         var animationPts = new List<Vector3>();
         var lowSlopeLoc = "";
-        var slopeEndPt = Vector3.zero;
-        var slopeStartPt = Vector3.zero;
+        Vector3 slopeEndPt;
+        Vector3 slopeStartPt;
         switch (edgeNum)
         {
             // left is low slope

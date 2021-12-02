@@ -179,12 +179,31 @@ public static class ARDrawHelper
     {
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            String s = i + ": ";
+            string s = i + ": ";
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
                 s += matrix[i, j] + " ,";
             }
             Debug.Log($"{s}\n");
         }
+    }
+
+    // figure out the mid point of a ramp
+    public static Vector3 GetInitialRampPos(List<(int, int)> rectFromDots, Dictionary<GameObject, int> dotsGameObjDict)
+    {
+        var initializePos = Vector3.zero;
+        foreach (var dot in rectFromDots)
+        {
+            string gameName = $"dot_{dot.Item1}_{dot.Item2}";
+            foreach (var item in dotsGameObjDict)
+            {
+                if (item.Key.name.Equals(gameName))
+                {
+                    Debug.Log("add object: " + item.Key.name);
+                    initializePos += item.Key.transform.position;
+                }
+            }
+        }
+        return initializePos;
     }
 }
