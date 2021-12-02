@@ -153,6 +153,7 @@ public class Game2Manager : Singleton<Game2Manager>
         var uiNumberControl = GameObject.FindGameObjectWithTag("phase1Rect").GetComponent<UINumberControl>();
         uiNumberControl.SetVolDisplay(0);
         arDrawManager.ClearLines();
+        arDrawManager.concreteUIFill.fillAmount = 0;
         concreteUIDisplay.SetActive(true);
         concreteUIDisplay.transform.Find("VolUI").GetComponent<TextMeshProUGUI>().text = "Vol: 0 ft<sup>3</sup>";
     }
@@ -193,24 +194,33 @@ public class Game2Manager : Singleton<Game2Manager>
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Start);
         characterController.PlayTalkingAnimationWithDuration(5.5f + 6.2f);
     }
-    public void StartPhase2Mid()
+    public void StartPhase2Mid(int maxLength)
     {
         dotsManager.ClearDots();
         g2SoundManager.PlayVoiceovers(Constants.VoiceOvers.PHASE2Mid);
         characterController.PlayTalkingAnimationWithDuration(2.6f + 5.3f + 5.3f + 7.6f);
-        StartCoroutine(DeletePhase2Lines());
+        StartCoroutine(DeletePhase2Lines(maxLength));
     }
 
-    IEnumerator DeletePhase2Lines()
+    IEnumerator DeletePhase2Lines(int maxLength)
     {
-        yield return new WaitForSeconds(2.6f + 5.3f);
+        yield return new WaitForSeconds(2.6f); // 2.6f - rectangle, 5.3f - length * width line
         arDrawManager.ClearLines();
+        var uiNumberControl = GameObject.FindGameObjectWithTag("ramp").GetComponent<UINumberControl>();
+        // activate length & width
+        uiNumberControl.SetLengthDisplay($"Length: {maxLength} ft");
+        uiNumberControl.SetWidthDisplay("Width: 1 ft");
+        yield return new WaitForSeconds(5.3f + 7.6f);
+        // turn off length & width
+        uiNumberControl.SetLengthDisplay("");
+        uiNumberControl.SetWidthDisplay("");
+        // change text to volume
+        uiNumberControl.SetVolDisplay(0);
         // activate concrete text
         arDrawManager.concreteUIDisplay.SetActive(true);
         arDrawManager.concreteVolDisplay.text = "Vol: 0 ft<sup>3</sup>";
         arDrawManager.concreteUIFill.fillAmount = 0;
-        // TODO: remove height earlier and add here
-        yield return new WaitForSeconds(5.3f + 7.6f);
+        // enable collider
         arDrawManager.SetRampEdgeCollider(true);
     }
 

@@ -165,6 +165,24 @@ public static class ARDrawHelper
         return dd1 == dd2 && dd1 == dd3 && dd1 == dd4;
     }
 
+    private static bool IsDoubleTap()
+    {
+        bool result = false;
+        float MaxTimeWait = 1;
+        float VariancePosition = 1;
+
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+
+            float DeltaTime = Input.GetTouch(0).deltaTime;
+            float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
+
+            if (DeltaTime > 0 && DeltaTime < MaxTimeWait && DeltaPositionLenght < VariancePosition)
+                result = true;
+        }
+        return result;
+    }
+
     public static void SetLineSettings(LineRenderer currentLineRenderer, float lineWidth)
     {
         currentLineRenderer.startWidth = lineWidth;

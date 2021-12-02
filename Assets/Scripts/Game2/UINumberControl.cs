@@ -9,6 +9,8 @@ public class UINumberControl : MonoBehaviour
 {
     public TextMeshProUGUI volDisplay;
     public TextMeshProUGUI heightDisplay;
+    public TextMeshProUGUI lengthDisplay;
+    public TextMeshProUGUI widthDisplay;
     public Canvas uiDisplay;
     private Camera cam;
     private double _height;
@@ -31,6 +33,16 @@ public class UINumberControl : MonoBehaviour
         string formattedDisplayStr = "Area: " + num + " ft<sup>2</sup>";
         this.area = num;
         volDisplay.text = formattedDisplayStr;
+    }
+
+    public void SetWidthDisplay(string text)
+    {
+        widthDisplay.text = text;
+    }
+
+    public void SetLengthDisplay(string text)
+    {
+        lengthDisplay.text = text;
     }
 
     public void IncreaseCanvasY(float num)

@@ -556,7 +556,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             var uiNumberControl = phase2Ramp.GetComponent<UINumberControl>();
             uiNumberControl.SetAreaDisplay(maxLength);
             uiNumberControl.Height = 0;
-            game2Manager.StartPhase2Mid();
+            game2Manager.StartPhase2Mid(maxLength);
         }
 
         if (GamePhase == Constants.GamePhase.PHASE3 && numLines >= 4)
@@ -867,24 +867,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 }
             }
         }
-    }
-
-    private bool IsDoubleTap()
-    {
-        bool result = false;
-        float MaxTimeWait = 1;
-        float VariancePosition = 1;
-
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            
-            float DeltaTime = Input.GetTouch(0).deltaTime;
-            float DeltaPositionLenght = Input.GetTouch(0).deltaPosition.magnitude;
-
-            if (DeltaTime > 0 && DeltaTime < MaxTimeWait && DeltaPositionLenght < VariancePosition)
-                result = true;
-        }
-        return result;
     }
 
     private void AddNewLineRenderer(Vector3 touchPosition)
