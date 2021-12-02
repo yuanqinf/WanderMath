@@ -93,8 +93,8 @@ public class CannonControl : MonoBehaviour
     private bool isReadyToRotate;
     private bool isRotatingUp;
     private bool isRotatingDown;
-    private bool isFirstXMove = true;
-    private bool isFirstYMove = true;
+    //private bool isFirstXMove = true;
+    //private bool isFirstYMove = true;
     public GameObject muzzle;
     private Cannon cannonPosition;
     private Animator cannonAnimator;

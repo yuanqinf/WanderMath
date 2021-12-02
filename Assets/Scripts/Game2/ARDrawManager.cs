@@ -607,52 +607,6 @@ public class ARDrawManager : Singleton<ARDrawManager>
     /// </summary>
     /// <param name="edgeNum"></param>
     /// <returns></returns>
-    private (Vector3, Vector3) GetRampAnimationPoints(int edgeNum)
-    {
-        // settle which position to use for animation
-        var topLeft = phase2Ramp.transform.Find("TopLeft").transform.position;
-        var topRight = phase2Ramp.transform.Find("TopRight").transform.position;
-        var botLeft = phase2Ramp.transform.Find("BotLeft").transform.position;
-        var botRight = phase2Ramp.transform.Find("BotRight").transform.position;
-
-        var animeEndPt = Vector3.zero;
-        var animeStartPt = Vector3.zero;
-        switch (edgeNum)
-        {
-            // left is low slope
-            case 4:
-                animeEndPt = (topRight + botRight) / 2; // change x to prevent hitting the ramp when jump down
-                animeStartPt = (topLeft + botLeft) / 2;
-                break;
-            // top is low slope
-            case 5:
-                animeEndPt = (botLeft + botRight) / 2;
-                animeStartPt = (topLeft + topRight) / 2;
-                break;
-            // bottom is low slope
-            case 6:
-                animeEndPt = (topLeft + topRight) / 2;
-                animeStartPt = (botLeft + botRight) / 2;
-                break;
-            // right is low slope
-            case 7:
-                animeEndPt = (topLeft + botLeft) / 2; // change x to prevent hitting the ramp when jump down
-                animeStartPt = (topRight + botRight) / 2;
-                break;
-            // no slope, jump in the middle
-            case 1:
-                animeEndPt = (topLeft + botLeft) / 2;
-                animeStartPt = (topRight + botRight) / 2;
-                break;
-        }
-        return (animeStartPt, animeEndPt);
-    }
-
-    /// <summary>
-    /// animation points for ramp
-    /// </summary>
-    /// <param name="edgeNum"></param>
-    /// <returns></returns>
     private (List<Vector3>, string) GetRampAnimationPointsNew(int edgeNum, float rampHeight)
     {
         var rampPos = new Vector3(0, rampHeight / 2.0f, 0);

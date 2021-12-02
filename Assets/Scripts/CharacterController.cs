@@ -80,64 +80,6 @@ public class CharacterController : GenericClass
         PlayTalkingAnimationWithDuration(talkingDuration);
     }
 
-    public void SkateOnCube(Vector3 pointToJumpUp, Vector3 pointToJumpDown, float height = 0.4f, bool isPhase3 = false)
-    {
-        StartCoroutine(SkatingOnCubeMove(pointToJumpUp, pointToJumpDown, height, isPhase3));
-    }
-
-    IEnumerator SkatingOnCubeMove(Vector3 pointToJumpUp, Vector3 pointToJumpDown, float height, bool isPhase3)
-    {
-        var initialPos = arCharacterToSpawn.transform.position;
-        // 1. start skating & wait for idle to skate
-        if (!isPhase3)
-        {
-            StartSkating();
-            yield return new WaitForSeconds(idleToSkateAnimationLen);
-        }
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(Camera.main.transform.position);
-        // move to start position
-        //yield return new WaitForSeconds(0.25f); // Important to add a delay to calculate the distance after the spinning is complete
-        var skateToRailingDuration = 2.0f;
-
-        if (!isPhase3)
-        {
-            pointToJumpUp += new Vector3(0.7f, 0, 0);
-            pointToJumpDown -= new Vector3(0.7f, 0, 0);
-        } else
-        {
-            pointToJumpUp += new Vector3(0.15f, 0, 0);
-            pointToJumpDown -= new Vector3(0.15f, 0, 0);
-        }
-
-        StartCoroutine(utils.LerpMovement(initialPos, pointToJumpUp, skateToRailingDuration, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateToRailingDuration);
-        // mid jump point
-
-        Vector3 midPointOfTwoPos = new Vector3();
-        midPointOfTwoPos.x = pointToJumpUp.x + (pointToJumpDown.x - pointToJumpUp.x) / 2;
-        midPointOfTwoPos.y = pointToJumpUp.y + (pointToJumpDown.y - pointToJumpUp.y) / 2 + height;
-        midPointOfTwoPos.z = pointToJumpUp.z + (pointToJumpDown.z - pointToJumpUp.z) / 2;
-        Debug.Log($"jump up point: {midPointOfTwoPos.y} and height: {height}");
-
-        // jump up
-        SkateJump();
-        StartCoroutine(utils.LerpMovement(pointToJumpUp, midPointOfTwoPos, skateJumpAnimationLen / 2, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateJumpAnimationLen / 2);
-        StartCoroutine(utils.LerpMovement(midPointOfTwoPos, pointToJumpDown, skateJumpAnimationLen / 2, arCharacterToSpawn));
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
-        yield return new WaitForSeconds(skateJumpAnimationLen / 2);
-
-        // skate back to position
-        StartCoroutine(utils.LerpMovement(pointToJumpDown, initialPos, skateToRailingDuration, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateToRailingDuration);
-        // stop skating
-        if (!isPhase3)
-        {
-            StopSkating();
-        }
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
-    }
-
     public void SkateOnCubeNew(Vector3 startPos, Vector3 preJumpPos, Vector3 jumpPos, Vector3 landPos, bool isPhase3 = false)
     {
         StartCoroutine(SkatingOnCubeMoveNew(startPos, preJumpPos, jumpPos, landPos, isPhase3));
@@ -229,47 +171,6 @@ public class CharacterController : GenericClass
         yield return new WaitForSeconds(skateToRailingDuration);
         // stop skating
         StopSkating();
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
-    }
-
-    public void SkateOnRamp(Vector3 startingPoint, Vector3 endingPoint, float height, bool isPhase3 = false)
-    {
-        StartCoroutine(SkatingOnRamp(startingPoint, endingPoint, height, isPhase3));
-    }
-
-    IEnumerator SkatingOnRamp(Vector3 startingPoint, Vector3 endingPoint, float height, bool isPhase3)
-    {
-        var initialPos = arCharacterToSpawn.transform.position;
-        // 1. start skating to ramp starting
-        if (!isPhase3)
-        {
-            StartSkating();
-            yield return new WaitForSeconds(idleToSkateAnimationLen);
-        }
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(Camera.main.transform.position);
-        var skateToRampDuration = 2.0f;
-        StartCoroutine(utils.LerpMovement(initialPos, startingPoint, skateToRampDuration, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateToRampDuration);
-        // 2. skate to ramp endpoint with height
-        var skateOnRampDuration = 2.5f;
-        var rampEndPoint = endingPoint + new Vector3(0, height, 0);
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(rampEndPoint);
-        StartCoroutine(utils.LerpMovement(startingPoint, rampEndPoint, skateOnRampDuration, arCharacterToSpawn));
-        yield return new WaitForSeconds(skateOnRampDuration);
-        // 3. jump down to ramp lowest point
-        SkateJump();
-        StartCoroutine(utils.LerpMovement(rampEndPoint, endingPoint, skateJumpAnimationLen, arCharacterToSpawn));
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
-        yield return new WaitForSeconds(skateJumpAnimationLen);
-        // 4. skate back to initialPos
-        StartCoroutine(utils.LerpMovement(endingPoint, initialPos, skateToRampDuration, arCharacterToSpawn));
-        arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().SkateDirection(initialPos);
-        yield return new WaitForSeconds(skateToRampDuration);
-
-        if (!isPhase3)
-        {
-            StopSkating();
-        }
         arCharacterToSpawn.GetComponentInChildren<CharacterLookAt>().StopSkating();
     }
 
